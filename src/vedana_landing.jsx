@@ -53,15 +53,15 @@ function ProcessDiagram() {
         aria-label="Reasoning process: Question ↓ Data model ↓ Semantic search ↓ Reasoning ↓ Answer"
       >
         <defs>
-          <marker id="arrowV" markerWidth="10" markerHeight="10" refX="5" refY="9" orient="auto">
-            <path d="M0 0 L10 5 L0 10 z" className="fill-slate-400" />
+          <marker id="arrowV" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#cbd5e1" />
           </marker>
         </defs>
 
-        <line x1="150" y1="80" x2="150" y2="120" className="stroke-slate-300" strokeWidth="2" markerEnd="url(#arrowV)" />
-        <line x1="150" y1="180" x2="150" y2="220" className="stroke-slate-300" strokeWidth="2" markerEnd="url(#arrowV)" />
-        <line x1="150" y1="280" x2="150" y2="320" className="stroke-slate-300" strokeWidth="2" markerEnd="url(#arrowV)" />
-        <line x1="150" y1="380" x2="150" y2="420" className="stroke-slate-300" strokeWidth="2" markerEnd="url(#arrowV)" />
+        <line x1="150" y1="80" x2="150" y2="120" stroke="#cbd5e1" strokeWidth="2" markerEnd="url(#arrowV)" />
+        <line x1="150" y1="180" x2="150" y2="220" stroke="#cbd5e1" strokeWidth="2" markerEnd="url(#arrowV)" />
+        <line x1="150" y1="280" x2="150" y2="320" stroke="#cbd5e1" strokeWidth="2" markerEnd="url(#arrowV)" />
+        <line x1="150" y1="380" x2="150" y2="420" stroke="#cbd5e1" strokeWidth="2" markerEnd="url(#arrowV)" />
 
         <rect x="70" y="20" width="160" height="60" rx="14" className="fill-slate-50 stroke-slate-300" strokeWidth="2" />
         <text x="150" y="55" textAnchor="middle" className="fill-current" fontSize="14" fontWeight="600">Question</text>

@@ -33,7 +33,6 @@ function Nav() {
           <a href="#demo" className="hover:text-blue-600">Demo</a>
           <a href="#methodology" className="hover:text-blue-600">Methodology</a>
           <a href="#faq" className="hover:text-blue-600">FAQ</a>
-          <a href="#login" className="text-slate-600">Log in</a>
           <a href="#signup" className="inline-flex items-center rounded-full px-4 py-2 bg-blue-600 text-white font-medium shadow hover:bg-blue-700 transition">Get started</a>
         </nav>
         <button className="md:hidden inline-flex items-center rounded-full px-3 py-2 border border-slate-300" aria-label="Open menu">Menu</button>
@@ -731,7 +730,7 @@ function Footer() {
           </div>
         ))}
       </div>
-      <div className="border-t border-slate-200 py-6 text-center text-sm text-slate-500">© {new Date().getFullYear()} Vedana, Inc.</div>
+      <div className="border-t border-slate-200 py-6 text-center text-sm text-slate-500">© {new Date().getFullYear()} Epoch8 LLC</div>
     </footer>
   );
 }

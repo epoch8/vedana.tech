@@ -668,7 +668,9 @@ function FAQ() {
             <details key={item.q} className="group p-5 open:bg-slate-50">
               <summary className="flex cursor-pointer list-none items-center justify-between">
                 <span className="font-medium">{item.q}</span>
-                <span className="ml-4 inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-300 text-slate-500 group-open:rotate-45 transition">+</span>
+                <span className="ml-4 inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-300 text-slate-500 group-open:rotate-45 transition leading-none">
+                  <span className="text-sm font-medium">+</span>
+                </span>
               </summary>
               <p className="mt-3 text-slate-600">{item.a}</p>
             </details>

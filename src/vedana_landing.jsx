@@ -862,7 +862,7 @@ export default function VedanaLanding() {
       <FAQ />
       <CTA />
       <Footer />
-      <TestPanel />
+      {/* <TestPanel /> */}
     </div>
   );
 }

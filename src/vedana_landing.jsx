@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // Vedana Landing — React + Tailwind
 // Updates:
-// - Demo block: show 3 clickable queries first; responses + "Why this" appear only after click (no collapse on second click)
+// - Demo block: show 3 clickable querieries first; responses + "Why this" appear only after click (no collapse on second click)
 // - Keep existing tests; append config tests for Demo
 // - Previous removals kept: no Testimonials, Pricing, Integrations, Features, Logos
 // - Methodology block after Demo with photo
@@ -127,7 +127,7 @@ function Problem() {
   return (
     <section id="problem" className="py-20 bg-white">
       <div className="mx-auto max-w-7xl px-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-600 shadow-sm">Problem</div>
+        <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-lg text-slate-600 shadow-sm">Problem</div>
         <h2 className="mt-4 text-3xl md:text-4xl font-bold text-slate-900">Why classic RAG isn’t enough</h2>
 
         <div className="mt-6 overflow-x-auto">

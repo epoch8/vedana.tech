@@ -15,19 +15,19 @@ export default function Nav() {
     <ConfigProvider theme={theme}>
       <header className={styles['nav-header']}>
         <div className={styles['nav-inner']}>
-          <a href="#home" aria-label="Go to home" className={styles['nav-logo-link']}>
+          <a href="/#home" aria-label="Go to home" className={styles['nav-logo-link']}>
             <span className={styles['brand-logo']} role="img" aria-label="Vedana brand">
               <span className={styles['brand-icon']}></span>
               <span>Vedana</span>
             </span>
           </a>
           <nav className={styles['nav-links']}>
-            <a href="#problem">Problem</a>
-            <a href="#demo">Demo</a>
-            <a href="#methodology">Methodology</a>
-            <a href="#faq">FAQ</a>
+            <a href="/#problem">Problem</a>
+            <a href="/#demo">Demo</a>
+            <a href="/#methodology">Methodology</a>
+            <a href="/#faq">FAQ</a>
             <a href="/docs">Docs</a>
-            <Button type="primary" shape="round" href="#signup" size="middle">
+            <Button type="primary" shape="round" href="/#signup" size="middle">
               Get started
             </Button>
           </nav>

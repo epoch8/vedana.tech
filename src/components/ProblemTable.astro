@@ -1,0 +1,118 @@
+---
+// ProblemTable.astro
+
+const data = [
+  {
+    key: "1",
+    aspect: "Full lists & filters",
+    classic: 'Returns only a handful of "similar" items',
+    semanticHtml:
+      "Always returns the <strong>complete set</strong> that matches filters",
+  },
+  {
+    key: "2",
+    aspect: "Exact codes / SKUs",
+    classic: "Can confuse similar codes or product IDs",
+    semanticHtml:
+      "<strong>Precise match</strong> by code → correct results every time",
+  },
+  {
+    key: "3",
+    aspect: "Logic & relations",
+    classic: "Can't handle real constraints (e.g., accessory compatibility)",
+    semanticHtml:
+      "<strong>Understands links</strong> like Product → Accessory → Compatibility",
+  },
+  {
+    key: "4",
+    aspect: "Explainability",
+    classic: '"Because it was similar"',
+    semanticHtml:
+      "<strong>Traceable reasoning</strong>: which rules and data led to the answer",
+  },
+  {
+    key: "5",
+    aspect: "Consistency",
+    classic: "Same query may give different answers",
+    semanticHtml: "<strong>Deterministic</strong>: same model → same result",
+  },
+];
+---
+
+<div class="problem-table-container">
+  <table
+    class="problem-table"
+    aria-label="Comparison of Classic RAG and Semantic RAG (Vedana)"
+  >
+    <thead>
+      <tr>
+        <th style="width: 28%">Aspect</th>
+        <th style="width: 36%">Classic RAG</th>
+        <th style="width: 36%">Semantic RAG (Vedana)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        data.map((row) => (
+          <tr>
+            <td>
+              <strong>{row.aspect}</strong>
+            </td>
+            <td>{row.classic}</td>
+            <td set:html={row.semanticHtml} />
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .problem-table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .problem-table {
+    width: 100%;
+    min-width: 600px;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: inherit;
+    color: rgba(0, 0, 0, 0.88);
+  }
+
+  .problem-table th {
+    background: #fafafa;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 12px 8px; /* size="middle" equivalent */
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.88);
+    transition: background 0.3s ease;
+  }
+
+  .problem-table th:first-child {
+    border-start-start-radius: 8px;
+  }
+
+  .problem-table th:last-child {
+    border-start-end-radius: 8px;
+  }
+
+  .problem-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.3s;
+  }
+
+  .problem-table tbody tr:hover td {
+    background: #fafafa;
+  }
+
+  .problem-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+</style>

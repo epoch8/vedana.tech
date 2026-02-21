@@ -1,27 +1,36 @@
 ---
-import Nav from '../components/Nav.jsx';
-import Footer from '../components/Footer.astro';
-import DocsSidebar from '../components/DocsSidebar.jsx';
-import '../styles/global.css';
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import DocsSidebar from "../components/DocsSidebar.astro";
+import "../styles/global.css";
 
 const { currentSlug, headings, allDocs, title, description } = Astro.props;
 ---
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title ? `${title} - Vedana Docs` : 'Vedana Docs'}</title>
+    <title>{title ? `${title} - Vedana Docs` : "Vedana Docs"}</title>
     {description && <meta name="description" content={description} />}
   </head>
   <body>
     <div class="page-root">
-      <Nav client:load />
-      <div class="docs-container" style="display: flex; max-width: 1280px; margin: 0 auto; width: 100%; align-items: flex-start; padding-top: 4rem; padding-bottom: 4rem;">
-        <aside style="width: 280px; position: sticky; top: 100px; height: calc(100vh - 100px); overflow-y: auto; flex-shrink: 0;">
-          <DocsSidebar allDocs={allDocs} currentSlug={currentSlug} client:load />
+      <Nav />
+      <div
+        class="docs-container"
+        style="display: flex; max-width: 1280px; margin: 0 auto; width: 100%; align-items: flex-start; padding-top: 4rem; padding-bottom: 4rem;"
+      >
+        <aside
+          style="width: 280px; position: sticky; top: 100px; height: calc(100vh - 100px); overflow-y: auto; flex-shrink: 0;"
+        >
+          <DocsSidebar allDocs={allDocs} currentSlug={currentSlug} />
         </aside>
-        <main style="flex: 1; padding: 0 3rem; min-width: 0;" class="docs-content">
+        <main
+          style="flex: 1; padding: 0 3rem; min-width: 0;"
+          class="docs-content"
+        >
           <slot />
         </main>
       </div>
@@ -64,7 +73,8 @@ const { currentSlug, headings, allDocs, title, description } = Astro.props;
   .docs-content a:hover {
     text-decoration: underline;
   }
-  .docs-content ul, .docs-content ol {
+  .docs-content ul,
+  .docs-content ol {
     margin-bottom: 1.25rem;
     padding-left: 1.5rem;
     color: #4b5563;
@@ -83,10 +93,13 @@ const { currentSlug, headings, allDocs, title, description } = Astro.props;
     margin-bottom: 1.5rem;
   }
   .docs-content code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
     font-size: 0.875rem;
   }
-  .docs-content p > code, .docs-content li > code {
+  .docs-content p > code,
+  .docs-content li > code {
     background-color: #f3f4f6;
     color: #111827;
     padding: 0.2rem 0.4rem;

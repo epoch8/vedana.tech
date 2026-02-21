@@ -1,0 +1,49 @@
+---
+import styles from "./Nav.module.css";
+---
+
+<header class={styles["nav-header"]}>
+  <div class={styles["nav-inner"]}>
+    <a href="/#home" aria-label="Go to home" class={styles["nav-logo-link"]}>
+      <span class={styles["brand-logo"]} role="img" aria-label="Vedana brand">
+        <span class={styles["brand-icon"]}></span>
+        <span>Vedana</span>
+      </span>
+    </a>
+    <nav class={styles["nav-links"]}>
+      <a href="/#problem">Problem</a>
+      <a href="/#demo">Demo</a>
+      <a href="/#methodology">Methodology</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/docs">Docs</a>
+      <a href="/#signup" class="btn-primary"> Get started </a>
+    </nav>
+    <button class={styles["nav-menu-toggle"]} aria-label="Open menu"
+      >Menu</button
+    >
+  </div>
+</header>
+
+<style>
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 9999px; /* Matches shape="round" */
+    padding: 4px 15px; /* Matches size="middle" */
+    font-size: 14px;
+    font-weight: 400;
+    height: 32px;
+    transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+    font-family: inherit;
+    border: 1px solid transparent;
+  }
+  .btn-primary:hover {
+    background-color: #3b82f6; /* Lighter shade of primary */
+    color: white;
+  }
+</style>

@@ -11,6 +11,11 @@ function deriveSection(id: string): string {
 }
 
 const docsCollection = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    section: z.string().optional(),
+    order: z.number().optional().default(0),
+  }),
   loader: {
     name: 'docs',
     load: async (ctx: any) => {
@@ -24,11 +29,6 @@ const docsCollection = defineCollection({
       }
     },
   },
-  schema: z.object({
-    title: z.string(),
-    section: z.string().optional(),
-    order: z.number().optional().default(0),
-  }),
 });
 
 export const collections = {

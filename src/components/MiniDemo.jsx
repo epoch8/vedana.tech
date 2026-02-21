@@ -36,13 +36,13 @@ const PRESETS = {
     },
     right: {
       lines: [
-        { chunks: [ { text: 'There are ' }, { text: '128 Philips lamps', mark: 'green' }, { text: ' in the catalog.' } ] },
+        { chunks: [{ text: 'There are ' }, { text: '128 Philips lamps', mark: 'green' }, { text: ' in the catalog.' }] },
         { text: '' },
-        { chunks: [ { text: 'By type: ', mark: 'green' }, { text: 'bulbs (76), tubes (22), fixtures (30).' } ] },
+        { chunks: [{ text: 'By type: ', mark: 'green' }, { text: 'bulbs (76), tubes (22), fixtures (30).' }] },
         { text: '' },
-        { chunks: [ { text: 'By socket: ', mark: 'green' }, { text: 'E27 (54), GU10 (18), E14 (12), other (44).' } ] },
+        { chunks: [{ text: 'By socket: ', mark: 'green' }, { text: 'E27 (54), GU10 (18), E14 (12), other (44).' }] },
         { text: '' },
-        { chunks: [ { text: 'Here are top 3 bestsellers:', mark: 'green' } ] },
+        { chunks: [{ text: 'Here are top 3 bestsellers:', mark: 'green' }] },
         { text: '1) Philips Hue Go' },
         { text: '2) Philips LED 9W E27' },
         { text: '3) Master LEDspot GU10 4.2W' },
@@ -282,8 +282,8 @@ function StaticLines({ lines, className = '' }) {
                 <React.Fragment key={i}>
                   {c.mark === 'red' ? <span className={styles['mark-red']}>{c.text}</span>
                     : c.mark === 'green' ? <span className={styles['mark-green']}>{c.text}</span>
-                    : c.mark ? <strong>{c.text}</strong>
-                    : c.text}
+                      : c.mark ? <strong>{c.text}</strong>
+                        : c.text}
                 </React.Fragment>
               ))}
             </p>
@@ -317,7 +317,9 @@ export default function MiniDemo() {
   const rightMeasureRef = React.useRef(null);
   const [contentH, setContentH] = React.useState(null);
 
-  React.useLayoutEffect(() => {
+  const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+
+  useIsomorphicLayoutEffect(() => {
     if (!opened) return;
     const measure = () => {
       if (!rightMeasureRef.current) return;

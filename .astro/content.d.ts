@@ -1,5 +1,5 @@
 declare module 'astro:content' {
-	interface RenderResult {
+	export interface RenderResult {
 		Content: import('astro/runtime/server/index.js').AstroComponentFactory;
 		headings: import('astro').MarkdownHeading[];
 		remarkPluginFrontmatter: Record<string, any>;
@@ -31,6 +31,25 @@ declare module 'astro:content' {
 		ContentEntryMap[C]
 	>['slug'];
 
+	export type ReferenceDataEntry<
+		C extends CollectionKey,
+		E extends keyof DataEntryMap[C] = string,
+	> = {
+		collection: C;
+		id: E;
+	};
+	export type ReferenceContentEntry<
+		C extends keyof ContentEntryMap,
+		E extends ValidContentEntrySlug<C> | (string & {}) = string,
+	> = {
+		collection: C;
+		slug: E;
+	};
+	export type ReferenceLiveEntry<C extends keyof LiveContentConfig['collections']> = {
+		collection: C;
+		id: string;
+	};
+
 	/** @deprecated Use `getEntry` instead. */
 	export function getEntryBySlug<
 		C extends keyof ContentEntryMap,
@@ -58,22 +77,27 @@ declare module 'astro:content' {
 		filter?: (entry: CollectionEntry<C>) => unknown,
 	): Promise<CollectionEntry<C>[]>;
 
+	export function getLiveCollection<C extends keyof LiveContentConfig['collections']>(
+		collection: C,
+		filter?: LiveLoaderCollectionFilterType<C>,
+	): Promise<
+		import('astro').LiveDataCollectionResult<LiveLoaderDataType<C>, LiveLoaderErrorType<C>>
+	>;
+
 	export function getEntry<
 		C extends keyof ContentEntryMap,
 		E extends ValidContentEntrySlug<C> | (string & {}),
-	>(entry: {
-		collection: C;
-		slug: E;
-	}): E extends ValidContentEntrySlug<C>
+	>(
+		entry: ReferenceContentEntry<C, E>,
+	): E extends ValidContentEntrySlug<C>
 		? Promise<CollectionEntry<C>>
 		: Promise<CollectionEntry<C> | undefined>;
 	export function getEntry<
 		C extends keyof DataEntryMap,
 		E extends keyof DataEntryMap[C] | (string & {}),
-	>(entry: {
-		collection: C;
-		id: E;
-	}): E extends keyof DataEntryMap[C]
+	>(
+		entry: ReferenceDataEntry<C, E>,
+	): E extends keyof DataEntryMap[C]
 		? Promise<DataEntryMap[C][E]>
 		: Promise<CollectionEntry<C> | undefined>;
 	export function getEntry<
@@ -92,21 +116,21 @@ declare module 'astro:content' {
 		collection: C,
 		id: E,
 	): E extends keyof DataEntryMap[C]
-		? Promise<DataEntryMap[C][E]>
+		? string extends keyof DataEntryMap[C]
+			? Promise<DataEntryMap[C][E]> | undefined
+			: Promise<DataEntryMap[C][E]>
 		: Promise<CollectionEntry<C> | undefined>;
+	export function getLiveEntry<C extends keyof LiveContentConfig['collections']>(
+		collection: C,
+		filter: string | LiveLoaderEntryFilterType<C>,
+	): Promise<import('astro').LiveDataEntryResult<LiveLoaderDataType<C>, LiveLoaderErrorType<C>>>;
 
 	/** Resolve an array of entry references from the same collection */
 	export function getEntries<C extends keyof ContentEntryMap>(
-		entries: {
-			collection: C;
-			slug: ValidContentEntrySlug<C>;
-		}[],
+		entries: ReferenceContentEntry<C, ValidContentEntrySlug<C>>[],
 	): Promise<CollectionEntry<C>[]>;
 	export function getEntries<C extends keyof DataEntryMap>(
-		entries: {
-			collection: C;
-			id: keyof DataEntryMap[C];
-		}[],
+		entries: ReferenceDataEntry<C, keyof DataEntryMap[C]>[],
 	): Promise<CollectionEntry<C>[]>;
 
 	export function render<C extends keyof AnyEntryMap>(
@@ -118,14 +142,8 @@ declare module 'astro:content' {
 	): import('astro/zod').ZodEffects<
 		import('astro/zod').ZodString,
 		C extends keyof ContentEntryMap
-			? {
-					collection: C;
-					slug: ValidContentEntrySlug<C>;
-				}
-			: {
-					collection: C;
-					id: keyof DataEntryMap[C];
-				}
+			? ReferenceContentEntry<C, ValidContentEntrySlug<C>>
+			: ReferenceDataEntry<C, keyof DataEntryMap[C]>
 	>;
 	// Allow generic `string` to avoid excessive type errors in the config
 	// if `dev` is not running to update as you edit.
@@ -140,58 +158,50 @@ declare module 'astro:content' {
 	>;
 
 	type ContentEntryMap = {
-		"docs": {
-"01-concepts/01-why-classic-rag-fails.md": {
-	id: "01-concepts/01-why-classic-rag-fails.md";
-  slug: "01-concepts/01-why-classic-rag-fails";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"01-concepts/20-semantic-rag-overview.md": {
-	id: "01-concepts/20-semantic-rag-overview.md";
-  slug: "01-concepts/20-semantic-rag-overview";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"01-concepts/21-data-for-vedana.md": {
-	id: "01-concepts/21-data-for-vedana.md";
-  slug: "01-concepts/21-data-for-vedana";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"01-concepts/22-data-model-for-vedana.md": {
-	id: "01-concepts/22-data-model-for-vedana.md";
-  slug: "01-concepts/22-data-model-for-vedana";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"01-concepts/23-tools-for-vedana.md": {
-	id: "01-concepts/23-tools-for-vedana.md";
-  slug: "01-concepts/23-tools-for-vedana";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"01-concepts/24-playbook-for-vedana.md": {
-	id: "01-concepts/24-playbook-for-vedana.md";
-  slug: "01-concepts/24-playbook-for-vedana";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-};
-
+		
 	};
 
 	type DataEntryMap = {
-		
+		"docs": Record<string, {
+  id: string;
+  body?: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">;
+  rendered?: RenderedContent;
+  filePath?: string;
+}>;
+
 	};
 
 	type AnyEntryMap = ContentEntryMap & DataEntryMap;
 
-	export type ContentConfig = typeof import("../../src/content/config.js");
+	type ExtractLoaderTypes<T> = T extends import('astro/loaders').LiveLoader<
+		infer TData,
+		infer TEntryFilter,
+		infer TCollectionFilter,
+		infer TError
+	>
+		? { data: TData; entryFilter: TEntryFilter; collectionFilter: TCollectionFilter; error: TError }
+		: { data: never; entryFilter: never; collectionFilter: never; error: never };
+	type ExtractDataType<T> = ExtractLoaderTypes<T>['data'];
+	type ExtractEntryFilterType<T> = ExtractLoaderTypes<T>['entryFilter'];
+	type ExtractCollectionFilterType<T> = ExtractLoaderTypes<T>['collectionFilter'];
+	type ExtractErrorType<T> = ExtractLoaderTypes<T>['error'];
+
+	type LiveLoaderDataType<C extends keyof LiveContentConfig['collections']> =
+		LiveContentConfig['collections'][C]['schema'] extends undefined
+			? ExtractDataType<LiveContentConfig['collections'][C]['loader']>
+			: import('astro/zod').infer<
+					Exclude<LiveContentConfig['collections'][C]['schema'], undefined>
+				>;
+	type LiveLoaderEntryFilterType<C extends keyof LiveContentConfig['collections']> =
+		ExtractEntryFilterType<LiveContentConfig['collections'][C]['loader']>;
+	type LiveLoaderCollectionFilterType<C extends keyof LiveContentConfig['collections']> =
+		ExtractCollectionFilterType<LiveContentConfig['collections'][C]['loader']>;
+	type LiveLoaderErrorType<C extends keyof LiveContentConfig['collections']> = ExtractErrorType<
+		LiveContentConfig['collections'][C]['loader']
+	>;
+
+	export type ContentConfig = typeof import("../src/content/config.js");
+	export type LiveContentConfig = never;
 }

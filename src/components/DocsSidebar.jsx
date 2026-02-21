@@ -37,22 +37,16 @@ export default function DocsSidebar({ allDocs, currentSlug }) {
         const rootItems = [];
 
         allDocs.forEach(doc => {
-            const { slug, data } = doc;
+            const { id: slug, data } = doc;
             const { title, section, order = 0 } = data;
 
             const slugParts = slug.split('/');
             let explicitSectionOrder = 0;
             let explicitPageOrder = 0;
 
-            let cleanSectionSlug = '';
             if (slugParts.length > 1) {
-                const sm = slugParts[0].match(/^(\d+)-(.*)/);
-                if (sm) {
-                    explicitSectionOrder = parseInt(sm[1], 10);
-                    cleanSectionSlug = sm[2];
-                } else {
-                    cleanSectionSlug = slugParts[0];
-                }
+                const sm = slugParts[0].match(/^(\d+)/);
+                if (sm) explicitSectionOrder = parseInt(sm[1], 10);
             }
 
             const lastPart = slugParts[slugParts.length - 1];
@@ -65,14 +59,6 @@ export default function DocsSidebar({ allDocs, currentSlug }) {
 
             const cleanTotalSlug = normalizeDocSlug(slug);
 
-            let effectiveSection = section;
-            if (!effectiveSection && slugParts.length > 1) {
-                effectiveSection = cleanSectionSlug
-                    .split('-')
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(' ');
-            }
-
             const finalOrder = (order !== 0) ? order : explicitPageOrder;
             const finalSectionOrder = explicitSectionOrder;
 
@@ -84,13 +70,13 @@ export default function DocsSidebar({ allDocs, currentSlug }) {
                 order: finalOrder,
             };
 
-            if (effectiveSection) {
-                if (!sectionsMap[effectiveSection]) {
-                    sectionsMap[effectiveSection] = { items: [], order: finalSectionOrder };
-                } else if (finalSectionOrder > 0 && sectionsMap[effectiveSection].order === 0) {
-                    sectionsMap[effectiveSection].order = finalSectionOrder;
+            if (section) {
+                if (!sectionsMap[section]) {
+                    sectionsMap[section] = { items: [], order: finalSectionOrder };
+                } else if (finalSectionOrder > 0 && sectionsMap[section].order === 0) {
+                    sectionsMap[section].order = finalSectionOrder;
                 }
-                sectionsMap[effectiveSection].items.push(item);
+                sectionsMap[section].items.push(item);
             } else {
                 rootItems.push(item);
             }

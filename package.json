@@ -9,15 +9,17 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.4.0",
+    "@astrojs/check": "^0.9.6",
+    "antd": "^5.20.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "antd": "^5.20.0",
-    "@ant-design/icons": "^5.4.0"
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "astro": "^4.15.0",
-    "@astrojs/react": "^3.6.0",
+    "@astrojs/react": "^4.0.0",
     "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22"
+    "@types/react-dom": "^18.2.22",
+    "astro": "^5.0.0"
   }
 }

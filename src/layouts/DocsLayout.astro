@@ -1,7 +1,8 @@
 ---
-import Nav from "../components/Nav.astro";
-import Footer from "../components/Footer.astro";
-import DocsSidebar from "../components/DocsSidebar.astro";
+import Nav from "../components/common/header/Nav.astro";
+import Footer from "../components/common/footer/Footer.astro";
+import DocsSidebar from "../components/docs/sidebar/DocsSidebar.astro";
+import styles from "./DocsLayout.module.css";
 import "../styles/global.css";
 
 const { currentSlug, headings, allDocs, title, description } = Astro.props;
@@ -15,109 +16,22 @@ const { currentSlug, headings, allDocs, title, description } = Astro.props;
     <title>{title ? `${title} - Vedana Docs` : "Vedana Docs"}</title>
     {description && <meta name="description" content={description} />}
   </head>
+
   <body>
     <div class="page-root">
       <Nav />
-      <div
-        class="docs-container"
-        style="display: flex; max-width: 1280px; margin: 0 auto; width: 100%; align-items: flex-start; padding-top: 4rem; padding-bottom: 4rem;"
-      >
-        <aside
-          style="width: 280px; position: sticky; top: 100px; height: calc(100vh - 100px); overflow-y: auto; flex-shrink: 0;"
-        >
+
+      <div class={styles.container}>
+        <aside class={styles.sidebar}>
           <DocsSidebar allDocs={allDocs} currentSlug={currentSlug} />
         </aside>
-        <main
-          style="flex: 1; padding: 0 3rem; min-width: 0;"
-          class="docs-content"
-        >
+
+        <main class={styles.content}>
           <slot />
         </main>
       </div>
+
       <Footer />
     </div>
   </body>
 </html>
-
-<style is:global>
-  .docs-content h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #111827;
-  }
-  .docs-content h2 {
-    font-size: 1.75rem;
-    font-weight: 600;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    color: #1f2937;
-  }
-  .docs-content h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
-    color: #374151;
-  }
-  .docs-content p {
-    font-size: 1.05rem;
-    line-height: 1.75;
-    margin-bottom: 1.25rem;
-    color: #4b5563;
-  }
-  .docs-content a {
-    color: #2563eb;
-    text-decoration: none;
-  }
-  .docs-content a:hover {
-    text-decoration: underline;
-  }
-  .docs-content ul,
-  .docs-content ol {
-    margin-bottom: 1.25rem;
-    padding-left: 1.5rem;
-    color: #4b5563;
-    line-height: 1.75;
-  }
-  .docs-content li {
-    margin-bottom: 0.5rem;
-    font-size: 1.05rem;
-  }
-  .docs-content pre {
-    background-color: #1f2937;
-    color: #f3f4f6;
-    padding: 1.25rem;
-    border-radius: 0.5rem;
-    overflow-x: auto;
-    margin-bottom: 1.5rem;
-  }
-  .docs-content code {
-    font-family:
-      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-      "Courier New", monospace;
-    font-size: 0.875rem;
-  }
-  .docs-content p > code,
-  .docs-content li > code {
-    background-color: #f3f4f6;
-    color: #111827;
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.25rem;
-  }
-  @media (max-width: 768px) {
-    .docs-container {
-      flex-direction: column;
-      padding-top: 2rem;
-    }
-    .docs-container aside {
-      width: 100%;
-      height: auto;
-      position: static;
-      margin-bottom: 2rem;
-    }
-    .docs-content {
-      padding: 0 1rem;
-    }
-  }
-</style>

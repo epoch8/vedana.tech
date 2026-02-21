@@ -183,6 +183,55 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
+"02-preparing-data-for-vedana/01-documents-and-document-chunks.md": {
+	id: "02-preparing-data-for-vedana/01-documents-and-document-chunks.md";
+  slug: "02-preparing-data-for-vedana/01-documents-and-document-chunks";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"02-preparing-data-for-vedana/02-questions-and-answers.md": {
+	id: "02-preparing-data-for-vedana/02-questions-and-answers.md";
+  slug: "02-preparing-data-for-vedana/02-questions-and-answers";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"02-preparing-data-for-vedana/03-adding-structured-data.md": {
+	id: "02-preparing-data-for-vedana/03-adding-structured-data.md";
+  slug: "02-preparing-data-for-vedana/03-adding-structured-data";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"03-data-model/01-anchors.md": {
+	id: "03-data-model/01-anchors.md";
+  slug: "03-data-model/01-anchors";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"03-data-model/02-attributes.md": {
+	id: "03-data-model/02-attributes.md";
+  slug: "03-data-model/02-attributes";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"03-data-model/03-links.md": {
+	id: "03-data-model/03-links.md";
+  slug: "03-data-model/03-links";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"04-self-host/01-quickstart.md": {
+	id: "04-self-host/01-quickstart.md";
+  slug: "04-self-host/01-quickstart";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
 };
 
 	};

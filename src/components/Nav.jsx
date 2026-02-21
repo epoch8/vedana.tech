@@ -26,6 +26,7 @@ export default function Nav() {
             <a href="#demo">Demo</a>
             <a href="#methodology">Methodology</a>
             <a href="#faq">FAQ</a>
+            <a href="/docs">Docs</a>
             <Button type="primary" shape="round" href="#signup" size="middle">
               Get started
             </Button>

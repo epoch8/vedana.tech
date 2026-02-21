@@ -1,0 +1,34 @@
+---
+import styles from "./Nav.module.css";
+import BrandLogo from "../logo/BrandLogo.astro";
+---
+
+<header
+  id="site-header"
+  class={styles["nav-header"]}
+  data-open="false"
+>
+  <div class={styles["nav-inner"]}>
+    <BrandLogo href="/#home" />
+
+    <nav class={styles["nav-links"]}>
+      <a href="/#problem">Problem</a>
+      <a href="/#demo">Demo</a>
+      <a href="/#methodology">Methodology</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/docs">Docs</a>
+      <a href="/#signup" class="btn-primary">Get started</a>
+    </nav>
+
+    <button
+      id="menu-toggle"
+      class={styles["nav-menu-toggle"]}
+      aria-label="Toggle menu"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+  </div>
+
+  <script type="module" src="/src/components/common/header/nav.ts"></script>
+</header>

@@ -1,0 +1,50 @@
+---
+import styles from "./FAQ.module.css";
+
+const items = [
+  {
+    label: "Do I need code skills?",
+    content: "No. You can build flows with blocks and rules.",
+  },
+  {
+    label: "Which channels are supported?",
+    content:
+      "Instagram DM, WhatsApp, Facebook Messenger, SMS, email, and more.",
+  },
+  {
+    label: "Can I connect my shop?",
+    content:
+      "Yes. Shopify and others. You can sync products and orders.",
+  },
+  {
+    label: "Is there a free plan?",
+    content: "Yes. Start free and upgrade any time.",
+  },
+];
+---
+
+<section id="faq" class={styles.section}>
+  <div class={styles.container}>
+    <h2 class={styles.title}>FAQ</h2>
+
+    <div class={styles.accordion}>
+      {items.map((item) => (
+        <details class={styles.item}>
+          <summary class={styles.summary}>
+            <span>{item.label}</span>
+            <span class={styles.icon}>
+              <svg viewBox="64 64 896 896" width="1em" height="1em">
+                <path d="M482 152h60v720h-60z"></path>
+                <path d="M176 474h672v60H176z"></path>
+              </svg>
+            </span>
+          </summary>
+
+          <div class={styles.content}>
+            <p>{item.content}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

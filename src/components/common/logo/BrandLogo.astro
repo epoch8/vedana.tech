@@ -1,0 +1,38 @@
+---
+// src/components/common/BrandLogo.astro
+
+interface Props {
+  href?: string;
+}
+
+const { href = "/" } = Astro.props;
+---
+
+<a href={href} class="brand-logo">
+  <div class="brand-icon"></div>
+  <span>Vedana</span>
+</a>
+
+<style>
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.brand-icon {
+  height: 1.75rem;
+  width: 1.75rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    to bottom right,
+    var(--color-primary),
+    #4f46e5
+  );
+  flex-shrink: 0;
+}
+</style>

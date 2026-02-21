@@ -9,5 +9,5 @@ export default defineConfig({
   build: {
     assets: '_astro',
   },
-  experimental: { contentLayer: true }
+//  experimental: { contentLayer: true }
 });

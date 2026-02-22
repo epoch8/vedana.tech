@@ -2,33 +2,40 @@
   <div class="hero-bg-gradient"></div>
 
   <div class="hero-inner">
-
     <h1>
-      Enterprise AI that reasons over your knowledge
+      Graph-first AI that reasons <br />
+      over your knowledge
     </h1>
 
     <!-- Rotating block -->
-    <div class="dynamic-viewport">
+    <div class="dynamic-viewport" id="dynamicViewport">
       <div class="dynamic-stack" id="dynamicStack">
         <span>Knows your business like your best engineer</span>
         <span>Knows your numbers like your CFO</span>
         <span>Knows your protocols like your clinician</span>
-        <span>Knows your сompliance like your regulator</span>
+        <span>Knows your compliance like your regulator</span>
         <span>Knows your inventory like your operations lead</span>
         <span>Knows your customers like your account manager</span>
       </div>
     </div>
 
     <p class="hero-lead">
-      VEDANA turns your knowledge into 
-      <strong>structured data</strong> 
-      and makes 
-      <strong>answers follow your rules</strong>.
+      VEDANA turns your knowledge into
+      <strong>structured data</strong><br>
+      and makes answers
+      <strong>follow your business rules</strong>
     </p>
 
     <div class="hero-ctas">
       <a href="#demo" class="btn-primary">See how it works</a>
-      <a href="#contact" class="btn-dark">Talk to us</a>
+      <a href="#contact" class="btn-secondary">Talk to us</a>
+    </div>
+
+    <!-- Feature strip -->
+    <div class="hero-features">
+      <span>Open-core engine</span>
+      <span>Managed cloud</span>
+      <span>Enterprise support</span>
     </div>
 
   </div>
@@ -36,26 +43,34 @@
 
 <script is:inline>
   const stack = document.getElementById("dynamicStack");
+  const viewport = document.getElementById("dynamicViewport");
 
-  if (stack) {
-    const items = stack.children;
+  if (stack && viewport) {
+    const items = Array.from(stack.children);
     let index = 0;
+    let offsets = [];
 
-    function updateHeight() {
-      const itemHeight = items[0].offsetHeight;
-      stack.parentElement.style.height = itemHeight + "px";
-      return itemHeight;
+    function calculateOffsets() {
+      offsets = [];
+      let total = 0;
+
+      items.forEach((item) => {
+        offsets.push(total);
+        total += item.offsetHeight;
+      });
+
+      viewport.style.height = items[index].offsetHeight + "px";
     }
 
-    let itemHeight = updateHeight();
-    window.addEventListener("resize", () => {
-      itemHeight = updateHeight();
-    });
+    calculateOffsets();
+    requestAnimationFrame(calculateOffsets);
+    window.addEventListener("resize", calculateOffsets);
 
     setInterval(() => {
       index = (index + 1) % items.length;
-      stack.style.transform = `translateY(-${index * itemHeight}px)`;
-    }, 2500);
+      stack.style.transform = `translateY(-${offsets[index]}px)`;
+      viewport.style.height = items[index].offsetHeight + "px";
+    }, 2600);
   }
 </script>
 
@@ -63,108 +78,139 @@
 .hero-section {
   position: relative;
   overflow: hidden;
-  padding: 9rem 1rem;
+  padding: 7rem 1rem 5.5rem; /* компактнее */
   text-align: center;
+  background: linear-gradient(to bottom, #f9fafb 0%, #ffffff 100%);
 }
 
 .hero-bg-gradient {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at top, #eef2ff 0%, transparent 60%);
+  background: radial-gradient(ellipse at top, rgba(30,64,175,0.04), transparent 60%);
   pointer-events: none;
 }
 
 .hero-inner {
   position: relative;
-  max-width: 64rem;
+  max-width: 58rem;
   margin: 0 auto;
 }
 
-/* Main heading */
+/* H1 */
 
 h1 {
-  font-size: 2.75rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  color: #0f172a;
+  font-size: 2.3rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #0b1220;
 }
 
 @media (min-width: 768px) {
   h1 {
-    font-size: 3.75rem;
+    font-size: 3.3rem;
   }
 }
 
-/* Knows your */
-
-/* Knows your — спокойный серый */
-
-.hero-static {
-  margin-top: 3rem;
-  font-size: 1.35rem;
-  font-weight: 500;
-  color: #64748b;
-  letter-spacing: -0.01em;
-}
-
-/* Крутилка — активная, синяя */
+/* Rotating */
 
 .dynamic-viewport {
-  margin-top: 0.5rem;
+  margin-top: 2rem; /* меньше */
   overflow: hidden;
-  position: relative;
+  transition: height 0.3s ease;
 }
 
 .dynamic-stack {
   display: flex;
   flex-direction: column;
-  transition: transform 0.6s cubic-bezier(.65,.05,.36,1);
+  transition: transform 0.6s cubic-bezier(.4,0,.2,1);
 }
 
 .dynamic-stack span {
-  display: flex;
-  justify-content: center;
-
-  font-size: 1.8rem;           /* меньше чем было */
-  font-weight: 600;
-  color: #2563eb;              /* тот же синий что у кнопки */
-  letter-spacing: -0.015em;
-  white-space: nowrap;
+  font-size: 1.45rem;
+  font-weight: 400;
+  color: #2563eb;
+  letter-spacing: 0.01em;
+  text-align: center;
+  padding: 0 1rem;
 }
 
 @media (min-width: 768px) {
   .dynamic-stack span {
-    font-size: 2rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .dynamic-stack span {
-    font-size: 2.4rem;
+    font-size: 1.85rem;
   }
 }
 
 /* Lead */
 
 .hero-lead {
-  margin-top: 3rem;
-  font-size: 1.2rem;
+  margin-top: 1.8rem; /* уменьшили */
+  font-size: 1.05rem;
   line-height: 1.6;
   color: #475569;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hero-lead strong {
-  color: #111827;
+  color: #0b1220;
+}
+
+/* Feature strip */
+
+.hero-features {
+  margin-top: 1.6rem; /* компактнее */
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.hero-features span + span::before {
+  content: "·";
+  margin: 0 0.8rem 0 0.2rem;
+  color: #94a3b8;
 }
 
 /* CTA */
 
 .hero-ctas {
-  margin-top: 3rem;
+  margin-top: 2.2rem; /* было 3.5 */
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  align-items: center;
+  gap: 1.2rem;
   flex-wrap: wrap;
+}
+
+/* Buttons */
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  padding: 0.75rem 1.6rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #1e40af;
+}
+
+.btn-secondary {
+  color: #1e40af;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.75rem 0.2rem;
+}
+
+.btn-secondary:hover {
+  text-decoration: underline;
 }
 </style>

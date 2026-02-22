@@ -1,49 +1,33 @@
 function initNav() {
   const header = document.getElementById("site-header");
   const button = document.getElementById("menu-toggle");
-  const nav = header?.querySelector("nav");
+  const nav = document.getElementById("primary-nav");
+  const overlay = document.getElementById("nav-overlay");
 
-  if (!header || !button || !nav) return;
+  if (!header || !button || !nav || !overlay) return;
 
-  const navLinks = Array.from(
-    header.querySelectorAll<HTMLAnchorElement>("nav a")
-  );
+  const navLinks = nav.querySelectorAll<HTMLAnchorElement>("a");
 
-  const closeMenu = () => {
-    header.dataset.open = "false";
-    button.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
+  const setOpen = (open: boolean) => {
+    header.dataset.open = String(open);
+    button.setAttribute("aria-expanded", String(open));
+    nav.setAttribute("aria-hidden", String(!open));
+    document.body.style.overflow = open ? "hidden" : "";
   };
 
-  const openMenu = () => {
-    header.dataset.open = "true";
-    button.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
-  };
+  const isOpen = () => header.dataset.open === "true";
 
-  button.addEventListener("click", (e) => {
-    e.stopPropagation(); // чтобы клик не улетал в document
-    header.dataset.open === "true" ? closeMenu() : openMenu();
-  });
+  const toggleMenu = () => setOpen(!isOpen());
+
+  button.addEventListener("click", toggleMenu);
+  overlay.addEventListener("click", () => setOpen(false));
 
   navLinks.forEach((link) => {
-    link.addEventListener("click", closeMenu);
+    link.addEventListener("click", () => setOpen(false));
   });
 
-  document.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.key === "Escape") closeMenu();
-  });
-
-  /* 🔥 Клик вне меню */
-  document.addEventListener("click", (e) => {
-    if (header.dataset.open !== "true") return;
-
-    const target = e.target as Node;
-
-    // если клик вне nav и вне кнопки
-    if (!nav.contains(target) && !button.contains(target)) {
-      closeMenu();
-    }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setOpen(false);
   });
 }
 

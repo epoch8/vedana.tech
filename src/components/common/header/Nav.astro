@@ -11,7 +11,11 @@ import BrandLogo from "../logo/BrandLogo.astro";
   <div class={styles["nav-inner"]}>
     <BrandLogo href="/#home" />
 
-    <nav class={styles["nav-links"]}>
+    <nav
+      id="primary-nav"
+      class={styles["nav-links"]}
+      aria-hidden="true"
+    >
       <a href="/#problem">Problem</a>
       <a href="/#demo">Demo</a>
       <a href="/#methodology">Methodology</a>
@@ -24,11 +28,65 @@ import BrandLogo from "../logo/BrandLogo.astro";
       id="menu-toggle"
       class={styles["nav-menu-toggle"]}
       aria-label="Toggle menu"
+      aria-controls="primary-nav"
       aria-expanded="false"
+      type="button"
     >
       ☰
     </button>
   </div>
-
-  <script type="module" src="/src/components/common/header/nav.ts"></script>
 </header>
+
+<!-- Overlay вынесен наружу -->
+<div
+  id="nav-overlay"
+  class={styles["nav-overlay"]}
+></div>
+
+<script type="module">
+  function initNav() {
+    const header = document.getElementById("site-header");
+    const button = document.getElementById("menu-toggle");
+    const nav = document.getElementById("primary-nav");
+    const overlay = document.getElementById("nav-overlay");
+
+    if (!header || !button || !nav || !overlay) return;
+
+    const navLinks = nav.querySelectorAll("a");
+
+    const closeMenu = () => {
+      header.dataset.open = "false";
+      button.setAttribute("aria-expanded", "false");
+      nav.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    };
+
+    const openMenu = () => {
+      header.dataset.open = "true";
+      button.setAttribute("aria-expanded", "true");
+      nav.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    };
+
+    const toggleMenu = () => {
+      header.dataset.open === "true" ? closeMenu() : openMenu();
+    };
+
+    button.addEventListener("click", toggleMenu);
+    overlay.addEventListener("click", closeMenu);
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeMenu();
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initNav);
+  } else {
+    initNav();
+  }
+</script>

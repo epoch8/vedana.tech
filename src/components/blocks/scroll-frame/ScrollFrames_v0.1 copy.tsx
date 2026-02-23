@@ -237,28 +237,56 @@ export default function ScrollFrames() {
     offset: ["start start", "end end"],
   });
 
-  const frame1Opacity = useTransform(
+  /* 
+    Timeline
+
+    0.00 – 0.30  → Frame 1
+    0.30 – 0.45  → 1 → 2 transition
+    0.45 – 0.60  → Frame 2
+    0.60 – 0.75  → 2 → 3 transition
+    0.75 – 1.00  → Frame 3
+  */
+
+  /* ---------- FRAME 1 ---------- */
+
+  const f1Y = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.33],
+    [0, 0.30, 0.45],
+    [0, 0, -620]
+  );
+
+  const f1Opacity = useTransform(
+    scrollYProgress,
+    [0, 0.44, 0.45],
     [1, 1, 0]
   );
 
-  const frame2Opacity = useTransform(
+  /* ---------- FRAME 2 ---------- */
+
+  const f2Y = useTransform(
     scrollYProgress,
-    [0.33, 0.5, 0.66],
-    [0, 1, 0]
+    [0.30, 0.45, 0.60, 0.75],
+    [620, 0, 0, -620]
   );
 
-  const frame3Opacity = useTransform(
+  const f2Opacity = useTransform(
     scrollYProgress,
-    [0.75, 0.9],
+    [0.30, 0.31, 0.74, 0.75],
+    [0, 1, 1, 0]
+  );
+
+  /* ---------- FRAME 3 ---------- */
+
+  const f3Y = useTransform(
+    scrollYProgress,
+    [0.60, 0.75],
+    [620, 0]
+  );
+
+  const f3Opacity = useTransform(
+    scrollYProgress,
+    [0.60, 0.61],
     [0, 1]
-  );
-
-  const frame3Y = useTransform(
-    scrollYProgress,
-    [0.75, 0.9],
-    [100, 0]
   );
 
   return (
@@ -289,13 +317,25 @@ export default function ScrollFrames() {
             margin: "0 auto",
           }}
         >
-          <motion.div style={{ opacity: frame1Opacity }}>
+          <motion.div
+            style={{
+              position: "absolute",
+              y: f1Y,
+              opacity: f1Opacity,
+            }}
+          >
             <h2><b>Your company knowledge lives in many places at once.</b></h2>
             <p>PDFs. Specs. Excel sheets. Shared drives. Emails. Wikis. ERP exports.</p>
             <p>AI can read text. But your knowledge isn't text. It's a fragmented structure.</p>
           </motion.div>
 
-          <motion.div style={{ opacity: frame2Opacity, position: "absolute" }}>
+          <motion.div
+            style={{
+              position: "absolute",
+              y: f2Y,
+              opacity: f2Opacity,
+            }}
+          >
             <h2><b>Vedana builds a data model of your domain.</b></h2>
             <p>It turns scattered documents into structured knowledge:</p>
             <p>Anchors (entities), Attributes (facts), Links (relations)</p>
@@ -304,9 +344,9 @@ export default function ScrollFrames() {
 
           <motion.div
             style={{
-              opacity: frame3Opacity,
-              y: frame3Y,
               position: "absolute",
+              y: f3Y,
+              opacity: f3Opacity,
             }}
           >
             <h2>AI works differently on structured knowledge.</h2>

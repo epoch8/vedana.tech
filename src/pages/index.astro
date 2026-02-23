@@ -8,6 +8,8 @@ import FAQ from "../components/common/faq/FAQ.astro";
 import CTA from "../components/CTA.astro";
 import Footer from "../components/common/footer/Footer.astro";
 
+import ScrollFrames from "../components/blocks/ScrollFrames";
+
 import "../styles/global.css";
 ---
 
@@ -28,6 +30,7 @@ import "../styles/global.css";
       <SiteHeader client:load />
 
       <Hero />
+      <ScrollFrames client:load />
       <Problem />
       <MiniDemo client:visible />
       <Methodology />

@@ -51,6 +51,9 @@
 
   --color-border: #e2e8f0;
 
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+
   /* Radius */
   --radius-sm: 4px;
   --radius-md: 8px;

@@ -19,7 +19,7 @@ function random(min: number, max: number) {
 }
 
 /* =========================
-   Documents Layer (НЕ ТРОГАЕМ)
+   Documents Layer 
 ========================= */
 
 type DocType = "PDF" | "DOCX" | "XLSX";
@@ -29,23 +29,36 @@ function BackgroundDocs({
 }: {
   scroll: MotionValue<number>;
 }) {
+
   const docs = useMemo(() => {
-    return Array.from({ length: 15 }).map((_, i) => {
+    const COUNT = 26;
+
+    return Array.from({ length: COUNT }).map((_, i) => {
       const side = i % 2 === 0 ? "left" : "right";
+
+      /* ---- SIDE CLUSTERS ---- */
+
+      const leftPos =
+        side === "left"
+          ? random(-14, 18)     // левый край
+          : random(82, 114);    // правый край
+
+      /* вертикальное распределение
+         чуть более равномерное */
+      const verticalBand = (i / COUNT) * 100;
 
       return {
         id: i,
-        top: random(5, 90),
-        left:
-          side === "left"
-            ? random(-12, 28)
-            : random(72, 112),
-        rotate: random(-35, 35),
-        floatOffset: random(-25, 25),
-        delay: random(0, 2),
-        scale: random(0.92, 1.06),
-        type: ["PDF", "DOCX", "XLSX"][i % 3] as DocType,
         side,
+        top: verticalBand + random(-6, 6),
+        left: leftPos,
+
+        rotate: random(-28, 28),
+        floatOffset: random(-22, 22),
+        delay: random(0, 2),
+        scale: random(0.9, 1.05),
+
+        type: ["PDF", "DOCX", "XLSX"][i % 3] as DocType,
       };
     });
   }, []);
@@ -56,6 +69,7 @@ function BackgroundDocs({
     XLSX: "#DCFCE7",
   };
 
+  /* enter animation */
   const enter = useTransform(scroll, [0, 0.2], [0, 1]);
 
   const containerOpacity = useTransform(
@@ -67,7 +81,7 @@ function BackgroundDocs({
   const containerScale = useTransform(
     scroll,
     [0.50, 0.58],
-    [1, 0.8]
+    [1, 0.82]
   );
 
   return (
@@ -82,12 +96,17 @@ function BackgroundDocs({
       }}
     >
       {docs.map((doc) => {
+
         const scale = useTransform(enter, [0, 1], [0.2, doc.scale]);
         const opacity = useTransform(enter, [0, 1], [0, 1]);
+
+        /* документы приезжают С КРАЁВ */
         const x = useTransform(
           enter,
           [0, 1],
-          doc.side === "left" ? [-300, 0] : [300, 0]
+          doc.side === "left"
+            ? [-420, 0]
+            : [420, 0]
         );
 
         return (
@@ -104,12 +123,15 @@ function BackgroundDocs({
               position: "absolute",
               top: `${doc.top}%`,
               left: `${doc.left}%`,
+
               width: 160,
               height: 200,
               borderRadius: 22,
               padding: 18,
+
               background: colors[doc.type],
               boxShadow: "0 30px 70px rgba(0,0,0,0.12)",
+
               rotate: doc.rotate,
               scale,
               opacity,

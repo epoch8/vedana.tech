@@ -1,163 +1,146 @@
----
-import PhotoCircle from "./PhotoCircle.astro";
----
-
 <section id="methodology" class="methodology-section">
-  <div class="methodology-inner">
+  <div class="container">
     <div class="methodology-card">
-      <div class="methodology-layout">
-        <div class="methodology-photo">
-          <PhotoCircle />
-        </div>
-        <div class="methodology-body">
-          <p class="methodology-eyebrow">Proven methodology inside</p>
-          <h3>At the core of Vedana lies Minimal Modeling</h3>
-          <p class="methodology-text">
-            <a
-              href="https://minimalmodeling.com/"
-              target="_blank"
-              rel="noreferrer"
-              class="methodology-link">Minimal Modeling</a
-            >
-            {" "}— a methodology developed by Alexey Makhotkin, author of the
-            {" "}<a
-              href="https://databasedesignbook.com/"
-              target="_blank"
-              rel="noreferrer"
-              class="methodology-link">Database Design Book</a
-            >.
-          </p>
-          <p class="methodology-text2">
-            This foundation ensures that our Semantic RAG system combines:
-          </p>
-          <ul class="methodology-bullets">
-            <li>
-              <span class="bullet-amber"></span>
-              <span
-                ><strong>AI flexibility</strong> — LLMs that can reason, not just
-                guess.</span
-              >
-            </li>
-            <li>
-              <span class="bullet-amber"></span>
-              <span
-                ><strong>Enterprise-grade data discipline</strong> — structured, auditable,
-                and transparent.</span
-              >
-            </li>
-          </ul>
-          <p class="methodology-text3">
-            With Vedana, you're not experimenting on a hunch. You're building on
-            a clear, proven modeling approach that was designed to handle
-            real-world business complexity.
-          </p>
-        </div>
+      <div class="methodology-body">
+
+        <p class="methodology-eyebrow">
+          Modeling foundation
+        </p>
+
+        <h3 class="methodology-title">
+          Vedana is built on Minimal Modeling
+        </h3>
+
+        <p class="methodology-text">
+          <a href="https://minimalmodeling.com/" class="methodology-link">Minimal Modeling</a>
+          is a data modeling discipline created by Alexey Makhotkin,
+          author of the <a href="https://databasedesignbook.com/" class="methodology-link">Database Design Book</a>.
+        </p>
+
+        <p class="methodology-text">
+          It focuses on clarity, constraints, and explicit structure —
+          exactly what enterprise AI systems lack.
+        </p>
+
+        <ul class="methodology-bullets">
+          <li>
+            <span class="bullet-dot"></span>
+            <span>
+              <strong>Structured reasoning</strong> — AI works with defined entities,
+              relationships and constraints.
+            </span>
+          </li>
+          <li>
+            <span class="bullet-dot"></span>
+            <span>
+              <strong>Auditability</strong> — every answer is grounded in a
+              transparent data model.
+            </span>
+          </li>
+          <li>
+            <span class="bullet-dot"></span>
+            <span>
+              <strong>Controlled flexibility</strong> — LLMs interpret,
+              but never override business logic.
+            </span>
+          </li>
+        </ul>
+
+        <p class="methodology-note">
+          Vedana doesn’t rely on prompts alone.
+          It reasons on top of a disciplined data structure.
+        </p>
+
       </div>
     </div>
   </div>
 </section>
 
+
 <style>
-  .methodology-section {
-    padding: 4rem 0;
-  }
-  .methodology-inner {
-    max-width: 72rem;
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
-  .methodology-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 1.5rem;
-    border: 1px solid #fde68a;
-    background: linear-gradient(to bottom right, #fffbeb, #fff7ed, #fff1f2);
-    padding: 1.5rem;
-  }
-  @media (min-width: 768px) {
-    .methodology-card {
-      padding: 2rem;
-    }
-  }
-  .methodology-layout {
-    display: grid;
-    gap: 1.5rem;
-    align-items: center;
-  }
-  @media (min-width: 768px) {
-    .methodology-layout {
-      grid-template-columns: auto 1fr;
-    }
-  }
-  .methodology-photo {
-    flex-shrink: 0;
-  }
-  .methodology-eyebrow {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #b45309;
-    margin: 0;
-  }
-  @media (min-width: 768px) {
-    .methodology-eyebrow {
-      font-size: 0.875rem;
-    }
-  }
-  h3 {
-    margin: 0.25rem 0 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #0f172a;
-  }
-  @media (min-width: 768px) {
-    h3 {
-      font-size: 1.875rem;
-    }
-  }
-  .methodology-text {
-    margin: 0.75rem 0 0;
-    color: #1e293b;
-  }
-  .methodology-text2 {
-    margin: 0.5rem 0 0;
-    color: #334155;
-  }
-  .methodology-text3 {
-    margin: 0.75rem 0 0;
-    color: #334155;
-  }
-  .methodology-link {
-    text-decoration: underline;
-    text-decoration-color: #f59e0b;
-    text-underline-offset: 2px;
-    color: inherit;
-  }
-  .methodology-link:hover {
-    color: #b45309;
-  }
-  .methodology-bullets {
-    margin: 0.5rem 0 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  .methodology-bullets li {
-    display: flex;
-    gap: 0.5rem;
-    color: #1e293b;
-    align-items: flex-start;
-  }
-  .bullet-amber {
-    display: inline-block;
-    margin-top: 0.375rem;
-    height: 0.5rem;
-    width: 0.5rem;
-    border-radius: 9999px;
-    background: #d97706;
-    flex-shrink: 0;
-  }
+
+.methodology-section {
+  padding: var(--space-12) 0;
+}
+
+.methodology-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-8);
+  background: var(--color-bg-muted);
+}
+
+.methodology-body {
+  max-width: 100rem;
+}
+
+.methodology-eyebrow {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-wide);
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.methodology-title {
+  margin: var(--space-2) 0 var(--space-4);
+  font-size: var(--frame-title-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-tight);
+  color: var(--color-text-strong);
+}
+
+.methodology-text {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-muted);
+  line-height: var(--line-height-base);
+  max-width: 102ch;
+}
+
+.methodology-note {
+  margin-top: var(--space-6);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.methodology-link {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--dur-fast) ease;
+}
+
+.methodology-link:hover {
+  color: var(--color-primary-hover);
+}
+
+.methodology-bullets {
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.methodology-bullets li {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  color: var(--color-text);
+}
+
+.methodology-link {
+  white-space: nowrap;
+}
+
+.bullet-dot {
+  margin-top: 0.45rem;
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
 </style>

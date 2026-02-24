@@ -1,3 +1,4 @@
+/* src/components/MiniDemo.module.css*/ 
 .demo-section {
   padding: 5rem 0;
   background: #f8fafc;
@@ -160,11 +161,114 @@
   color: #991b1b;
   background: #fee2e2;
   border-radius: 2px;
-  padding: 0 2px;
+  padding: 0 0px;
 }
+
 .mark-green {
   color: #14532d;
   background: #dcfce7;
   border-radius: 2px;
   padding: 0 2px;
+}
+
+.mark-red,
+.mark-green {
+  display: inline;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  line-height: 1.4;
+}
+
+.why-panel {
+  border-radius: 0.75rem;
+  border: 1px dashed #cbd5e1;
+  background: #f8fafc;
+  padding: 1rem;
+  box-shadow: none;
+}
+
+.why-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.why-title::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: #94a3b8;
+}
+
+.why-list {
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+  font-size: 0.875rem;
+  color: #334155;
+}
+
+.response-label {
+  position: absolute;
+  top: -0.65rem;
+  left: 1rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  background: #f8fafc;      /* как demo-section */
+  padding: 0.1rem 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-bottom: none;
+  border-top-left-radius: 9999px;
+  border-top-right-radius: 9999px;
+}
+
+/* =======================
+   MiniDemo.module.css (patch)
+   Response label as FULL PILL
+   =======================
+
+   Replace previous tab styles with this.
+   This makes “Response 1 / Response 2” a clean floating pill
+   fully rounded, not attached to the border.
+*/
+
+/* attach pill to the card border line */
+.response-panel {
+  /* remove extra top padding so layout stays tight */
+  padding-top: 1.25rem;
+  position: relative;
+}
+
+.response-label {
+  position: absolute;
+  top: 0;                 /* anchor to top border */
+  left: 1rem;
+  transform: translateY(-50%);  /* lift so it sits on the border line */
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 1.6rem;
+  padding: 0 0.9rem;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
+  color: #334155;
+  background: #ffffff; /* match card surface */
+
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+
+  z-index: 3;
 }

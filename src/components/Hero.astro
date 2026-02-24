@@ -2,8 +2,8 @@
   <div class="hero-bg-gradient"></div>
 
   <div class="hero-inner">
-    <h1>
-      Structure-first AI that reasons <br> over your knowledge 
+    <h1 class="hero-title">
+      Structure-first AI that reasons <br /> over your knowledge
     </h1>
 
     <!-- Rotating block -->
@@ -20,7 +20,7 @@
 
     <p class="hero-lead">
       VEDANA turns your knowledge into
-      <strong>structured data</strong><br>
+      <strong>structured data</strong><br />
       and lets AI
       <strong>explore it with tools</strong>
     </p>
@@ -36,7 +36,6 @@
       <span>Managed cloud</span>
       <span>Enterprise support</span>
     </div>
-
   </div>
 </section>
 
@@ -72,144 +71,3 @@
     }, 2600);
   }
 </script>
-
-<style>
-.hero-section {
-  position: relative;
-  overflow: hidden;
-  padding: 7rem 1rem 5.5rem; /* компактнее */
-  text-align: center;
-  background: linear-gradient(to bottom, #f9fafb 0%, #ffffff 100%);
-}
-
-.hero-bg-gradient {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at top, rgba(30,64,175,0.04), transparent 60%);
-  pointer-events: none;
-}
-
-.hero-inner {
-  position: relative;
-  max-width: 58rem;
-  margin: 0 auto;
-}
-
-/* H1 */
-
-h1 {
-  font-size: 2.3rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  color: #0b1220;
-}
-
-@media (min-width: 768px) {
-  h1 {
-    font-size: 3.3rem;
-  }
-}
-
-/* Rotating */
-
-.dynamic-viewport {
-  margin-top: 2rem; /* меньше */
-  overflow: hidden;
-  transition: height 0.3s ease;
-}
-
-.dynamic-stack {
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.6s cubic-bezier(.4,0,.2,1);
-}
-
-.dynamic-stack span {
-  font-size: 1.45rem;
-  font-weight: 400;
-  color: #2563eb;
-  letter-spacing: 0.01em;
-  text-align: center;
-  padding: 0 1rem;
-}
-
-@media (min-width: 768px) {
-  .dynamic-stack span {
-    font-size: 1.85rem;
-  }
-}
-
-/* Lead */
-
-.hero-lead {
-  margin-top: 1.8rem; /* уменьшили */
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: #475569;
-  max-width: 40rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.hero-lead strong {
-  color: #0b1220;
-}
-
-/* Feature strip */
-
-.hero-features {
-  margin-top: 1.6rem; /* компактнее */
-  display: flex;
-  justify-content: center;
-  gap: 1.2rem;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #64748b;
-}
-
-.hero-features span + span::before {
-  content: "·";
-  margin: 0 0.8rem 0 0.2rem;
-  color: #94a3b8;
-}
-
-/* CTA */
-
-.hero-ctas {
-  margin-top: 2.2rem; /* было 3.5 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.2rem;
-  flex-wrap: wrap;
-}
-
-/* Buttons */
-
-.btn-primary {
-  background: #2563eb;
-  color: white;
-  padding: 0.75rem 1.6rem;
-  border-radius: 8px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
-
-.btn-primary:hover {
-  background: #1e40af;
-}
-
-.btn-secondary {
-  color: #1e40af;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.75rem 0.2rem;
-}
-
-.btn-secondary:hover {
-  text-decoration: underline;
-}
-</style>

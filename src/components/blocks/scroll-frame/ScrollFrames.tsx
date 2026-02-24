@@ -209,24 +209,24 @@ export default function ScrollFrames() {
           margin: "0 auto",
         }}
       >
-          <motion.div style={{ position: "absolute", y: f1Y, opacity: f1Opacity }}>
-            <h2><b>Your company knowledge lives in many places at once.</b></h2>
-            <p>PDFs. Specs. Excel sheets. Shared drives. Emails. Wikis. ERP exports.</p>
-            <p>AI can read text. But your knowledge isn't text. It's a fragmented structure.</p>
-          </motion.div>
+        <motion.div className="frame-copy" style={{ position: "absolute", y: f1Y, opacity: f1Opacity }}>
+          <h2 className="frame-title">Your company knowledge<br /> lives in many places at once.</h2>
+          <p className="frame-lead">PDFs. Specs. Excel sheets. Shared drives. Emails. Wikis. ERP exports.</p>
+          <p className="frame-text">AI can read text. But your knowledge isn’t text – it’s a fragmented system.</p>
+        </motion.div>
 
-          <motion.div style={{ position: "absolute", y: f2Y, opacity: f2Opacity }}>
-            <h2><b>Vedana builds a data model of your domain.</b></h2>
-            <p>It turns scattered documents into structured knowledge:</p>
-            <p>Anchors (entities), Attributes (facts), Links (relations)</p>
-            <p>You get a model of how your world works.</p>
-          </motion.div>
+        <motion.div className="frame-copy" style={{ position: "absolute", y: f2Y, opacity: f2Opacity }}>
+          <h2 className="frame-title">Vedana builds a data model of your domain.</h2>
+          <p className="frame-text">It turns scattered documents into structured knowledge:</p>
+          <p className="frame-text frame-accent">Anchors (entities), Attributes (facts), Links (relations)</p>
+          <p className="frame-text">AI gets a model of how your world works.</p>
+        </motion.div>
 
-          <motion.div style={{ position: "absolute", y: f3Y, opacity: f3Opacity }}>
-            <h2>AI works differently on structured knowledge.</h2>
-            <p>It can query your domain. Compare options. Apply constraints.</p>
-            <p>So the answers follow your reasoning guidelines.</p>
-          </motion.div>
+        <motion.div className="frame-copy" style={{ position: "absolute", y: f3Y, opacity: f3Opacity }}>
+          <h2 className="frame-title">AI explores your structured knowledge<br/> with tools.</h2>
+          <p className="frame-text">It queries the model, compares options, and applies constraints step by step.</p>
+          <p className="frame-text">So answers follow your rules and you can trace how they were reached.</p>
+        </motion.div>
         </div>
       </div>
     </section>

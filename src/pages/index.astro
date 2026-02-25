@@ -1,42 +1,50 @@
 ---
+import BaseLayout from "@components/layout/BaseLayout.astro";
+
+import { SEOBase } from "@content/vedana/seo/seo";
+
 import SiteHeader from "../components/common/header/Nav.astro";
 import Hero from "../components/Hero.astro";
 import Problem from "../components/Problem.astro";
 import MiniDemo from "../components/MiniDemo.jsx";
 import Methodology from "../components/Methodology.astro";
-import FAQ from "../components/common/faq/FAQ.astro";
 import CTA from "../components/CTA.astro";
 import Footer from "../components/common/footer/Footer.astro";
+
+import FAQ from "../components/common/faq/FAQ.astro";
+import { vedanaFaq } from "@content/vedana/faq";
 
 import ScrollFrames from "../components/blocks/scroll-frame/ScrollFrames";
 
 import "../styles/global.css";
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vedana - AI-powered Customer Support</title>
-    <meta
-      name="description"
-      content="Vedana uses Semantic RAG — a clear data model of your domain — so AI answers are grounded and explained."
-    />
-  </head>
+<BaseLayout
+  baseSEO={SEOBase}
+  pageSEO={{
+    title: "Vedana — Deterministic Graph-First AI",
+    description:
+      "Vedana builds structured knowledge graphs so AI answers follow business rules, not similarity guesses.",
+    canonical: "https://vedana.tech/",
+  }}
+>
+  <div class="page-root">
+    <SiteHeader client:load />
 
-  <body>
-    <div class="page-root">
-      <SiteHeader client:load />
+    <Hero />
 
-      <Hero />
-      <ScrollFrames client:load />
-      <Problem />
-      <MiniDemo client:visible />
-      <Methodology />
-      <FAQ />
-      <CTA />
-      <Footer />
-    </div>
-  </body>
-</html>
+    <ScrollFrames client:load />
+
+    <Problem />
+
+    <MiniDemo client:visible />
+
+    <Methodology />
+
+    <FAQ title="FAQ" items={vedanaFaq} />
+
+    <CTA />
+
+    <Footer />
+  </div>
+</BaseLayout>

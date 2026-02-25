@@ -1,39 +1,29 @@
 ---
 import styles from "./FAQ.module.css";
 
-const items = [
-  {
-    label: "Is Vedana just another RAG chatbot?",
-    content: "No. Vedana is graph-first reasoning infrastructure. It does not rely on similarity search alone. It builds and queries structured knowledge graphs to answer questions under explicit constraints.",
-  },
-  {
-    label: "How is this different from vector search?",
-    content:
-      "Vector search retrieves similar text fragments. Vedana evaluates entities, attributes, and relationships before answering. This reduces hallucinations and ensures answers follow business rules.",
-  },
-  {
-    label: "Do I need a knowledge graph beforehand?",
-    content:
-      "No. Vedana extracts entities and relations from your documents, normalizes them, and builds a structured graph layer on top of your existing data sources.",
-  },
-  {
-    label: "What kind of companies is Vedana built for?",
-    content: "Enterprises where answers must follow constraints: healthcare compliance, product eligibility, logistics rules, regulatory environments, complex catalogs, and operational playbooks.",
-  },
-  {
-    label: "How long does a pilot take?",
-    content: "A structured pilot can be delivered in 4 weeks. It includes data extraction, graph modeling, reasoning setup, and measurable validation.",
-  },
-  {
-    label: "Is this SaaS or on-premise?",
-    content: "Both. Vedana can run in a managed cloud environment or be deployed inside your infrastructure, depending on security and compliance requirements.",
-  },
-];
+export interface FAQItem {
+  label: string;
+  content: string;
+}
+
+interface Props {
+  items: FAQItem[];
+  title?: string;
+  id?: string;
+  withSchema?: boolean;
+}
+
+const {
+  items,
+  title = "FAQ",
+  id = "faq",
+  withSchema = true,
+} = Astro.props;
 ---
 
-<section id="faq" class={styles.section}>
+<section id={id} class={styles.section}>
   <div class={styles.container}>
-    <h2 class={styles.title}>FAQ</h2>
+    {title && <h2 class={styles.title}>{title}</h2>}
 
     <div class={styles.accordion}>
       {items.map((item) => (
@@ -55,4 +45,21 @@ const items = [
       ))}
     </div>
   </div>
+
+  {withSchema && (
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: items.map((item) => ({
+          "@type": "Question",
+          name: item.label,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.content,
+          },
+        })),
+      })}
+    </script>
+  )}
 </section>

@@ -32,53 +32,63 @@ src/
 ├── pages/
 │   └── index.astro                # Page composition (assembles sections)
 │
+├── layouts/                       # Global document/layout layer
+│   └── BaseLayout.astro           # SEO, meta, structured data, <html> shell
+│
 ├── components/
-│   ├── primitives/                # Atomic UI building blocks
-│   │   ├── Button.astro
-│   │   ├── Container.astro
-│   │   ├── Section.astro
-│   │   ├── Heading.astro
-│   │   └── Icon.astro
+│   ├── primitives/                # Atomic UI building blocks (pure UI)
+│   │   ├── Button/
+│   │   ├── Container/
+│   │   ├── Section/
+│   │   ├── Heading/
+│   │   └── Icon/
 │   │
-│   ├── common/                    # Reusable structured blocks
+│   ├── blocks/                    # Reusable structured UI blocks
 │   │   ├── FAQ/
 │   │   │   ├── FAQ.astro
 │   │   │   └── FAQ.module.css
+│   │   │
 │   │   ├── CTA/
 │   │   │   ├── CTA.astro
 │   │   │   └── CTA.module.css
+│   │   │
 │   │   ├── FeatureGrid/
+│   │   │
 │   │   ├── ProblemTable/
 │   │   │   ├── ProblemTable.jsx   # React island (if needed)
 │   │   │   └── ProblemTable.module.css
+│   │   │
 │   │   └── MiniDemo/
 │   │       ├── MiniDemo.jsx       # React island
 │   │       └── MiniDemo.module.css
 │   │
-│   ├── sections/                  # Marketing compositions
+│   ├── sections/                  # Reusable marketing compositions
 │   │   ├── Hero/
-│   │   │   └── Hero.astro
 │   │   ├── Problem/
-│   │   │   └── Problem.astro
 │   │   ├── Methodology/
-│   │   │   └── Methodology.astro
 │   │   ├── Industries/
 │   │   └── Pilot/
 │   │
-│   └── layout/                    # Global layout infrastructure
-│       ├── Header/
-│       │   ├── Nav.jsx            # React island (sticky nav)
-│       │   └── Nav.module.css
-│       ├── Footer/
-│       │   └── Footer.astro
-│       └── PageLayout.astro
+│   └── products/                  # Product-specific components
+│       └── vedana/
+│           ├── ScrollFrames/
+│           ├── HeroDynamic/
+│           └── GraphFlow/
 │
-├── content/                       # Product-specific content
+├── content/                       # Product-specific content (data only)
 │   ├── vedana/
 │   │   ├── faq.ts
 │   │   ├── hero.ts
-│   │   └── industries.ts
+│   │   ├── industries.ts
+│   │   └── seo/
+│   │       └── seo.ts
+│   │
 │   └── epoch/
+│
+├── lib/                           # Pure logic (no UI)
+│   └── seo/
+│       ├── types.ts
+│       └── extend.ts
 │
 ├── styles/
 │   ├── tokens.css                 # Design tokens (CSS variables)

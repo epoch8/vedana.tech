@@ -15,6 +15,9 @@ import ScrollFrames from "@/components/products/vedana/scroll-frame/ScrollFrames
 import FAQ from "@/components/blocks/faq/FAQ.astro";
 import { vedanaFaq } from "@content/vedana/faq";
 
+import Timeline from "@/components/blocks/timeline/timeline.astro";
+import TimelineItem from "@/components/blocks/timeline/TimelineItem.astro";
+
 
 import "../styles/global.css";
 ---
@@ -40,6 +43,46 @@ import "../styles/global.css";
     <MiniDemo client:visible />
 
     <Methodology />
+
+  <Timeline orientation="horizontal" side="one-sided" lines={true}>
+
+    <TimelineItem index="1" title="Week 1: Discovery & Data Mapping">
+      <p>
+        We meet with your experts to identify recurring questions and key data sources – your products, services, pricing, operating procedures and other important knowledge sources.
+      </p>
+      <p>
+        <strong>Outcome:</strong> Your domain map + list of structured and unstructured sources.
+      </p>
+    </TimelineItem>
+
+    <TimelineItem index="2" title="Week 2: Domain Modeling">
+      <p>
+        We build your knowledge graph (entities, attributes, links) and define how VEDANA should reason via Playbook logic.
+      </p>
+      <p>
+        <strong>Outcome:</strong> Custom data model + reasoning framework for your  use cases.
+      </p>
+    </TimelineItem>
+
+    <TimelineItem index="3" title="Week 3: Data Loading">
+      <p>
+        We ingest and normalize your data using the data model.
+      </p>
+      <p>
+        <strong>Outcome:</strong> Live knowledge graph populated with your real operational data.
+      </p>
+    </TimelineItem>
+
+    <TimelineItem index="4" title="Week 4: Testing & Launch">
+      <p>
+        We test the system on your golden dataset, fine-tune the Playbook reasoning rules, and launch an internal demo of your working assistant.
+      </p>
+      <p>
+        <strong>Outcome:</strong> AI Assistant that answers your team’s real questions with structured, constraint-aware reasoning.
+      </p>
+    </TimelineItem>
+
+  </Timeline>
 
     <FAQ title="FAQ" items={vedanaFaq} />
 

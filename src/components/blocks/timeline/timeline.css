@@ -1,0 +1,232 @@
+/* ======================================================
+   TIMELINE — CLEAN ARCHITECTURE (H + V isolated)
+====================================================== */
+
+/* ======================================================
+   ROOT
+====================================================== */
+
+.timeline {
+  --timeline-color: var(--color-primary);
+  --timeline-line-color: var(--color-border);
+  --timeline-marker-bg: #fff;
+  --timeline-marker-size: 40px;
+
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+
+  padding: 0 var(--container-padding-x);
+  margin: 0 auto;
+}
+
+.timeline > * {
+  box-sizing: border-box;
+}
+
+/* ======================================================
+   HORIZONTAL (GRID-BASED — STABLE)
+====================================================== */
+
+.timeline--horizontal {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-12);
+
+  max-width: var(--container-wide);
+  margin: 0 auto;
+
+  position: relative;
+  padding-top: 0;
+}
+
+/* horizontal main line */
+.timeline--with-lines.timeline--horizontal::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--timeline-marker-size) / 2);
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--timeline-line-color);
+  z-index: 0;
+}
+
+.timeline--horizontal .timeline__item {
+  position: relative;
+  text-align: center;
+  padding-top: calc(var(--timeline-marker-size) / 2 + var(--space-12));
+}
+
+/* marker positioned on line */
+.timeline--horizontal .timeline__marker {
+  position: absolute;
+  /* center of circle aligns with horizontal line */
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* vertical connector line */
+.timeline--with-lines.timeline--horizontal .timeline__item::after {
+  content: "";
+  position: absolute;
+  top: var(--timeline-marker-size);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: var(--space-6);
+  background: var(--timeline-line-color);
+}
+
+.timeline--horizontal .timeline__title {
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-3);
+}
+
+/* ======================================================
+   VERTICAL
+====================================================== */
+
+.timeline--vertical {
+  max-width: var(--container-wide);
+  margin: 0 auto;
+  position: relative;
+  padding: var(--space-6) 0;
+}
+
+/* vertical main line */
+.timeline--with-lines.timeline--vertical::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--timeline-line-color);
+  z-index: 0;
+}
+
+.timeline--vertical .timeline__item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  margin: var(--space-10) 0;
+}
+
+/* two-sided layout */
+.timeline--vertical.timeline--two-sided .timeline__item {
+  width: 50%;
+}
+
+.timeline--vertical.timeline--two-sided .timeline__item:nth-child(odd) {
+  margin-left: 0;
+  justify-content: flex-end;
+  text-align: right;
+  padding-right: var(--space-6);
+}
+
+.timeline--vertical.timeline--two-sided .timeline__item:nth-child(even) {
+  margin-left: 50%;
+  justify-content: flex-start;
+  text-align: left;
+  padding-left: var(--space-6);
+}
+
+/* one-sided layout */
+.timeline--vertical.timeline--one-sided .timeline__item {
+  width: 100%;
+  justify-content: flex-start;
+  padding-left: calc(var(--timeline-marker-size) + var(--space-5));
+}
+
+/* marker for vertical */
+.timeline--vertical .timeline__marker {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ======================================================
+   MARKER
+====================================================== */
+
+.timeline__marker {
+  width: var(--timeline-marker-size);
+  height: var(--timeline-marker-size);
+  border-radius: 50%;
+
+  border: 2px solid var(--timeline-color);
+  background: var(--timeline-marker-bg);
+  color: var(--timeline-color);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: var(--font-weight-semibold);
+  z-index: 2;
+}
+
+/* ======================================================
+   CONTENT
+====================================================== */
+
+.timeline__content {
+  max-width: 340px;
+}
+
+.timeline__title {
+  margin: 0 0 var(--space-2);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-strong);
+}
+
+.timeline__description {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: var(--line-height-base);
+}
+
+/* remove default list numbers from <ol> */
+.timeline {
+  list-style: none;
+  padding-left: 0;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media (max-width: 900px) {
+
+  /* vertical becomes single column */
+  .timeline--vertical.timeline--two-sided .timeline__item,
+  .timeline--vertical.timeline--two-sided .timeline__item:nth-child(even) {
+    width: 100%;
+    margin-left: 0;
+    padding-left: calc(var(--timeline-marker-size) + var(--space-5));
+    justify-content: flex-start;
+    text-align: center;
+  }
+
+  .timeline--with-lines.timeline--vertical::before {
+    left: calc(var(--timeline-marker-size) / 2);
+    transform: none;
+  }
+
+  /* horizontal stacks */
+  .timeline--horizontal {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline--horizontal .timeline__item {
+    text-align: center;
+  }
+
+  .timeline__content {
+    margin: 0 auto;
+  }
+}

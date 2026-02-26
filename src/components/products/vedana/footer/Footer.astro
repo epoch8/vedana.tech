@@ -1,5 +1,5 @@
 ---
-import BrandLogo from "../logo/BrandLogo.astro";
+import BrandLogoStatic from "../logo/BrandLogoStatic.astro";
 import styles from "./Footer.module.css";
 
 const cols = [
@@ -16,7 +16,7 @@ const year = new Date().getFullYear();
   <div class={styles.container}>
     <div class={styles.grid}>
       <div class={styles.brand}>
-        <BrandLogo />
+        <BrandLogoStatic />
         <p class={styles.tagline}>
           Omni-channel chat for growth and support. Replace this text with your brand line.
         </p>

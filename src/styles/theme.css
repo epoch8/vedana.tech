@@ -31,7 +31,7 @@
   --font-size-hero-rotate: 1.45rem;
   --font-size-hero-rotate-md: 1.85rem;
 
-  --font-size-hero-lead: 1.05rem;
+  --font-size-hero-lead: 1.2rem;
   --font-size-hero-features: 0.78rem;
 
   /* Colors */
@@ -135,6 +135,30 @@
   /* FAQ */
   --faq-question-size: var(--font-size-lg);
   --faq-answer-size: var(--font-size-base);
+
+
+  /* =========================
+     PAGE HERO (inner pages)
+  ========================== */
+
+  --page-hero-padding-top: 6rem;
+  --page-hero-padding-bottom: 4.5rem;
+
+  --page-hero-max-width: 64rem;
+  --page-hero-lead-max-width: 48rem;
+
+  --page-hero-title-size: clamp(2.2rem, 3.5vw, 3rem);
+  --page-hero-title-line-height: var(--line-height-tight);
+  --page-hero-title-letter: var(--letter-tight);
+
+  --page-hero-lead-size: 1.2rem;
+  --page-hero-lead-line-height: 1.7;
+
+  --page-hero-lead-color: var(--color-text-muted);
+  --page-hero-accent-color: var(--color-text-strong);
+
+  --page-hero-divider-color: var(--color-border);
+  --page-hero-divider-width: 72px;
 }
 
 /* =========================
@@ -323,6 +347,7 @@ h6 {
   color: var(--color-text-strong);
 }
 
+
 @media (min-width: 768px) {
   .hero-title {
     font-size: var(--font-size-hero-title-md);
@@ -442,4 +467,52 @@ h6 {
   .frame-lead {
     font-size: var(--frame-text-size-md);
   }
+}
+
+
+  /* =========================
+   PAGE HERO (inner pages)
+========================= */
+
+.page-hero {
+  padding: var(--page-hero-padding-top) 0 var(--page-hero-padding-bottom);
+  text-align: center;
+}
+
+.page-hero-inner {
+  max-width: var(--page-hero-max-width);
+  margin: 0 auto;
+  padding: 0 var(--container-padding-x);
+}
+
+.page-hero-title {
+  font-size: var(--page-hero-title-size);
+  line-height: var(--page-hero-title-line-height);
+  letter-spacing: var(--page-hero-title-letter);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-strong);
+
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-12);
+}
+
+.page-hero-title strong {
+  color: var(--color-text);
+}
+
+.page-hero-lead {
+  margin-top: var(--space-6);
+  max-width: var(--page-hero-lead-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-12);
+
+  font-size: var(--page-hero-lead-size);
+  line-height: var(--page-hero-lead-line-height);
+  color: var(--page-hero-lead-color);
+}
+
+.page-hero-lead strong {
+  color: var(--page-hero-accent-color);
 }

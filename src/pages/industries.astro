@@ -1,0 +1,82 @@
+---
+import BaseLayout from "@/layouts/baseLayout.astro";
+
+import { SEOBase } from "@content/vedana/seo/seo";
+
+import SiteHeader from "@/components/products/vedana/header/Nav.astro";
+import Footer from "@/components/products/vedana/footer/Footer.astro";
+
+import FeatureGrid from "@/components/blocks/feature-grid/FeatureGrid.astro"
+import FeatureGridItem from "@/components/blocks/feature-grid/FeatureGridItem.astro"
+
+
+
+import "../styles/global.css";
+---
+
+<BaseLayout
+  baseSEO={SEOBase}
+  pageSEO={{
+    title: "Vedana — Deterministic Graph-First AI",
+    description:
+      "Vedana builds structured knowledge graphs so AI answers follow business rules, not similarity guesses.",
+    canonical: "https://vedana.tech/",
+  }}
+>
+  <div class="page-root">
+    <SiteHeader client:load />
+
+    <section class="section">
+        <div class="container page-hero-inner text-center">
+            <h1 class="page-hero-title">
+            VEDANA is built for industries<br />
+            where correct answers are critical
+            </h1>
+
+            <p class="page-hero-lead">
+            Vedana is an open-core AI platform for teams who can’t afford 
+            <strong>mostly right.</strong>  
+            Built for regulated environments with strict rules,
+            complex catalogs, and audit requirements.
+            </p>
+
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="text-center">Why VEDANA is different?</h2>
+            <FeatureGrid id="approach">
+                <FeatureGridItem
+                    position={1}
+                    title="Generic LLM Chatbots"
+                    image="/images/llm.png"
+                    text={`
+                    <ul>
+                        <li>Retrieve something that looks relevant, then improvise the answer</li>
+                        <li>Produce plausible outputs that erode trust under scrutiny</li>
+                    </ul>
+                    `}
+                />
+
+                <FeatureGridItem
+                    position={2}
+                    title="Vedana's Approach"
+                    image="/images/graph.png"
+                    text={`
+                    <ul>
+                        <li>AI is the language interface — not the brain</li>
+                        <li>The brain is structured knowledge and deterministic logic</li>
+                        <li>Answers grounded in verifiable reasoning</li>
+                    </ul>
+                    `}
+                />
+                </FeatureGrid>
+
+        </div>
+    </section>
+
+
+    <Footer />
+  </div>
+</BaseLayout>

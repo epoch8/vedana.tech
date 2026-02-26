@@ -1,0 +1,20 @@
+---
+import styles from "./FeatureGrid.module.css";
+
+interface Props {
+  id?: string;
+}
+
+const { id = "feature-grid" } = Astro.props;
+---
+
+<section
+  id={id}
+  class={styles["feature-grid"]}
+  itemscope
+  itemtype="https://schema.org/ItemList"
+>
+  <div class={styles["feature-grid__container"]}>
+    <slot />
+  </div>
+</section>

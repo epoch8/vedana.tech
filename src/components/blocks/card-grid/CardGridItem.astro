@@ -1,0 +1,73 @@
+---
+import styles from "./CardGrid.module.css";
+
+interface Props {
+  title?: string;
+  image?: string;
+  imageAlt?: string;
+  text?: string;
+  href?: string;
+  buttonLabel?: string;
+  position?: number;
+}
+
+const {
+  title,
+  image,
+  imageAlt = "",
+  text,
+  href,
+  buttonLabel = "Learn more",
+  position
+} = Astro.props as Props;
+
+const isLink = Boolean(href);
+const Tag = isLink ? "a" : "div";
+---
+
+<Tag
+  {...(isLink ? { href } : {})}
+  class={styles["card"]}
+  itemscope
+  itemprop="itemListElement"
+  itemtype="https://schema.org/ListItem"
+>
+  {position && (
+    <meta itemprop="position" content={String(position)} />
+  )}
+
+  <div class={styles["card__body"]}>
+    {title && (
+      <h3 class={styles["card__title"]} itemprop="name">
+        {title}
+      </h3>
+    )}
+
+    {image && (
+      <div class={styles["card__media"]}>
+        <img
+          src={image}
+          alt={imageAlt}
+          class={styles["card__image"]}
+          itemprop="image"
+        />
+      </div>
+    )}
+
+    {text && (
+      <div
+        class={styles["card__text"]}
+        itemprop="description"
+        set:html={text}
+      />
+    )}
+  </div>
+
+  {isLink && (
+    <div class={styles["card__footer"]}>
+      <span class="btn-secondary">
+        {buttonLabel}
+      </span>
+    </div>
+  )}
+</Tag>

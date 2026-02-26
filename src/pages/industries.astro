@@ -14,6 +14,9 @@ import IconGridItem from "@/components/blocks/icon-grid/IconGridItem.astro";
 
 import Callout from "@/components/blocks/callout/Callout.astro";
 
+import CardGrid from "../components/blocks/card-grid/CardGrid.astro";
+import CardGridItem from "../components/blocks/card-grid/CardGridItem.astro";
+
 import "../styles/global.css";
 ---
 
@@ -49,32 +52,34 @@ import "../styles/global.css";
     <section class="section">
         <div class="container">
             <h2 class="text-center">Why VEDANA is different?</h2>
-            <FeatureGrid id="approach">
-                <FeatureGridItem
-                    position={1}
-                    title="Generic LLM Chatbots"
-                    image="/images/llm.png"
-                    text={`
-                    <ul>
-                        <li>Retrieve something that looks relevant, then improvise the answer</li>
-                        <li>Produce plausible outputs that erode trust under scrutiny</li>
-                    </ul>
-                    `}
-                />
+            <CardGrid id="approach">
 
-                <FeatureGridItem
-                    position={2}
-                    title="Vedana's Approach"
-                    image="/images/graph.png"
-                    text={`
-                    <ul>
-                        <li>AI is the language interface — not the brain</li>
-                        <li>The brain is structured knowledge and deterministic logic</li>
-                        <li>Answers grounded in verifiable reasoning</li>
-                    </ul>
-                    `}
-                />
-                </FeatureGrid>
+            <CardGridItem
+                position={1}
+                title="Generic LLM Chatbots"
+                imageAlt="Generic LLM chatbot architecture"
+                text={`
+                <ul>
+                    <li>Retrieve something that looks relevant, then improvise the answer</li>
+                    <li>Produce plausible outputs that erode trust under scrutiny</li>
+                </ul>
+                `}
+            />
+
+            <CardGridItem
+                position={2}
+                title="Vedana's Approach"
+                imageAlt="Graph-based deterministic reasoning"
+                text={`
+                <ul>
+                    <li>AI is the language interface — not the brain</li>
+                    <li>The brain is structured knowledge and deterministic logic</li>
+                    <li>Answers grounded in verifiable reasoning</li>
+                </ul>
+                `}
+            />
+
+            </CardGrid>
 
         </div>
     </section>
@@ -185,6 +190,29 @@ import "../styles/global.css";
     </div>
     </section>
 
+    <section class="section">
+    <div class="container">
+        <CardGrid id="industries">
+
+        <CardGridItem
+            title="Automotive"
+            text="Compliance, homologation, and structured product validation for regulated automotive environments."
+            href="/industries/automotive"
+            buttonLabel="Explore Automotive"
+            position={1}
+        />
+
+        <CardGridItem
+            title="Legal"
+            text="Deterministic reasoning over regulations, contracts, and structured legal knowledge."
+            href="/industries/legal"
+            buttonLabel="Explore Legal"
+            position={2}
+        />
+
+        </CardGrid>
+    </div>
+    </section>
 
     <Footer />
   </div>

@@ -1,0 +1,129 @@
+/* ======================================================
+   CARD GRID
+====================================================== */
+
+.card-grid__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-12);
+}
+
+/* ======================================================
+   CARD
+====================================================== */
+
+.card {
+  background: var(--color-bg-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-10);
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ======================================================
+   BODY
+====================================================== */
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ======================================================
+   TITLE
+====================================================== */
+
+.card__title {
+  margin: 0;
+
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-tight);
+  color: var(--color-text-strong);
+}
+
+/* ======================================================
+   IMAGE
+====================================================== */
+
+.card__media {
+  margin: 0;
+}
+
+.card__image {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  display: block;
+}
+
+/* ======================================================
+   TEXT
+====================================================== */
+
+.card__text {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text-muted);
+}
+
+.card__text ul {
+  padding-left: var(--space-6);
+  margin: 0;
+}
+
+.card__text li {
+  margin-bottom: var(--space-3);
+}
+
+/* ======================================================
+   FOOTER
+====================================================== */
+
+.card__footer {
+  margin-top: auto;
+}
+
+/* ======================================================
+   CARD INTERACTIVE
+====================================================== */
+
+.card {
+  text-decoration: none;
+  color: inherit;
+
+  background: var(--color-bg-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-10);
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+
+  transition:
+    border-color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-standard);
+}
+
+/* Hover effect */
+
+.card[href]:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+/* Optional subtle title shift */
+
+.card[href]:hover .card__title {
+  color: var(--color-primary);
+}

@@ -22,6 +22,8 @@
   /* Font sizes */
   --font-size-base: 1rem;
   --font-size-sm: 0.875rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
 
   --font-size-hero-title: 2.3rem;
   --font-size-hero-title-md: 3.3rem;
@@ -129,6 +131,10 @@
 
   --frame-lead-color: var(--color-text);
   --frame-accent-color: var(--color-primary);
+
+  /* FAQ */
+  --faq-question-size: var(--font-size-lg);
+  --faq-answer-size: var(--font-size-base);
 }
 
 /* =========================
@@ -139,6 +145,14 @@
   max-width: var(--container-wide);
   margin: 0 auto;
   padding: 0 var(--container-padding-x);
+}
+
+section {
+  padding: clamp(2rem, 2vw, 4rem) 0;
+}
+
+.section .container > * + * {
+  margin-top: var(--space-10);
 }
 
 /* =========================
@@ -206,6 +220,70 @@
 .btn-dark:hover {
   background: var(--color-dark-hover);
   color: #fff;
+}
+
+/* ======================================================
+   HEADINGS — GLOBAL TYPOGRAPHY SYSTEM
+====================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-tight);
+  color: var(--color-text-strong);
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* ------------------ H1 ------------------ */
+
+h1 {
+  font-size: clamp(2.4rem, 4vw, 3.2rem);
+  line-height: var(--line-height-tight);
+}
+
+/* ------------------ H2 ------------------ */
+
+h2 {
+  font-size: clamp(1.9rem, 3vw, 2.4rem);
+  line-height: var(--line-height-tight);
+}
+
+/* ------------------ H3 ------------------ */
+
+h3 {
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+  line-height: var(--line-height-tight);
+}
+
+/* ------------------ H4 ------------------ */
+
+h4 {
+  font-size: 1.25rem;
+  line-height: var(--line-height-base);
+}
+
+/* ------------------ H5 ------------------ */
+
+h5 {
+  font-size: 1.1rem;
+  line-height: var(--line-height-base);
+}
+
+/* ------------------ H6 ------------------ */
+
+h6 {
+  font-size: 1rem;
+  line-height: var(--line-height-base);
+  font-weight: var(--font-weight-medium);
 }
 
 /* =========================

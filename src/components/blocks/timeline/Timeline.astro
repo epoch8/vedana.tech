@@ -3,20 +3,18 @@ import "./timeline.css";
 
 interface Props {
   orientation?: "horizontal" | "vertical";
-  side?: "one-sided" | "two-sided";
   lines?: boolean;
 }
 
 const {
   orientation = "horizontal",
-  side = "two-sided",
   lines = true,
 } = Astro.props;
 
 const classes = [
   "timeline",
   `timeline--${orientation}`,
-  `timeline--${side}`,
+  "timeline--one-sided",
   lines ? "timeline--with-lines" : "timeline--no-lines",
 ].join(" ");
 ---
@@ -27,5 +25,4 @@ const classes = [
   itemtype="https://schema.org/HowTo"
 >
   <slot />
-  
 </ol>

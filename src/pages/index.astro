@@ -13,6 +13,8 @@ import Footer from "@/components/products/vedana/footer/Footer.astro";
 import ScrollFrames from "@/components/products/vedana/scroll-frame/ScrollFrames.js";
 
 import FAQ from "@/components/blocks/faq/FAQ.astro";
+import FAQItem from "@/components/blocks/faq/FAQItem.astro";
+
 import { vedanaFaq } from "@content/vedana/faq";
 
 import Timeline from "@/components/blocks/timeline/Timeline.astro";
@@ -44,47 +46,87 @@ import "../styles/global.css";
 
     <Methodology />
 
-  <Timeline orientation="horizontal" side="one-sided" lines={true}>
+  <section class="section timeline-section">
+    <div class="container">
 
-    <TimelineItem index="1" title="Week 1: Discovery & Data Mapping">
-      <p>
-        We meet with your experts to identify recurring questions and key data sources – your products, services, pricing, operating procedures and other important knowledge sources.
-      </p>
-      <p>
-        <strong>Outcome:</strong> Your domain map + list of structured and unstructured sources.
-      </p>
-    </TimelineItem>
+      <h2 class="text-center">Implementation timeline</h2>
 
-    <TimelineItem index="2" title="Week 2: Domain Modeling">
-      <p>
-        We build your knowledge graph (entities, attributes, links) and define how VEDANA should reason via Playbook logic.
-      </p>
-      <p>
-        <strong>Outcome:</strong> Custom data model + reasoning framework for your  use cases.
-      </p>
-    </TimelineItem>
+      <Timeline orientation="horizontal" lines={true}>
+        <TimelineItem index="1" title="Week 1: Discovery & Data Mapping">
+          <p>
+            We meet with your experts to identify recurring questions and key data sources – your products, services, pricing, operating procedures and other important knowledge sources.
+          </p>
+          <p>
+            <strong>Outcome:</strong> Your domain map + list of structured and unstructured sources.
+          </p>
+        </TimelineItem>
 
-    <TimelineItem index="3" title="Week 3: Data Loading">
-      <p>
-        We ingest and normalize your data using the data model.
-      </p>
-      <p>
-        <strong>Outcome:</strong> Live knowledge graph populated with your real operational data.
-      </p>
-    </TimelineItem>
+        <TimelineItem index="2" title="Week 2: Domain Modeling">
+          <p>
+            We build your knowledge graph (entities, attributes, links) and define how VEDANA should reason via Playbook logic.
+          </p>
+          <p>
+            <strong>Outcome:</strong> Custom data model + reasoning framework for your use cases.
+          </p>
+        </TimelineItem>
 
-    <TimelineItem index="4" title="Week 4: Testing & Launch">
-      <p>
-        We test the system on your golden dataset, fine-tune the Playbook reasoning rules, and launch an internal demo of your working assistant.
-      </p>
-      <p>
-        <strong>Outcome:</strong> AI Assistant that answers your team’s real questions with structured, constraint-aware reasoning.
-      </p>
-    </TimelineItem>
+        <TimelineItem index="3" title="Week 3: Data Loading">
+          <p>
+            We ingest and normalize your data using the data model.
+          </p>
+          <p>
+            <strong>Outcome:</strong> Live knowledge graph populated with your real operational data.
+          </p>
+        </TimelineItem>
 
-  </Timeline>
+        <TimelineItem index="4" title="Week 4: Testing & Launch">
+          <p>
+            We test the system on your golden dataset, fine-tune the Playbook reasoning rules, and launch an internal demo of your working assistant.
+          </p>
+          <p>
+            <strong>Outcome:</strong> AI Assistant that answers your team’s real questions with structured, constraint-aware reasoning.
+          </p>
+        </TimelineItem>
+      </Timeline>
 
-    <FAQ title="FAQ" items={vedanaFaq} />
+    </div>
+  </section>
+
+  <section class="section faq-section">
+    <div class="container">
+      <h2 class="text-center">Frequently Asked Questions</h2>
+
+      <FAQ>
+
+        <FAQItem question="Is Vedana just another RAG chatbot?">
+          <p>No. Vedana is graph-first reasoning infrastructure. It does not rely on similarity search alone. It builds and queries structured knowledge graphs to answer questions under explicit constraints.</p>
+        </FAQItem>
+
+        <FAQItem question="How is this different from vector search?">
+          <p>Vector search retrieves similar text fragments. Vedana evaluates entities, attributes, and relationships before answering. This reduces hallucinations and ensures answers follow business rules.</p>
+        </FAQItem>
+
+        <FAQItem question="Do I need a knowledge graph beforehand?">
+          <p>No. Vedana extracts entities and relations from your documents, normalizes them, and builds a structured graph layer on top of your existing data sources.</p>
+        </FAQItem>
+
+        <FAQItem question="What kind of companies is Vedana built for?">
+          <p>Enterprises where answers must follow constraints: healthcare compliance, product eligibility, logistics rules, regulatory environments, complex catalogs, and operational playbooks.</p>
+        </FAQItem>
+
+
+        <FAQItem question="How long does a pilot take?">
+          <p>A structured pilot can be delivered in 4 weeks. It includes data extraction, graph modeling, reasoning setup, and measurable validation.</p>
+        </FAQItem>
+
+        <FAQItem question="Is this SaaS or on-premise?">
+          <p>Both. Vedana can run in a managed cloud environment or be deployed inside your infrastructure, depending on security and compliance requirements."</p>
+        </FAQItem>
+
+    </FAQ>
+
+    </div>
+  </section>
 
     <CTA />
 

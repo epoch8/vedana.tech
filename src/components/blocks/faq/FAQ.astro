@@ -1,65 +1,16 @@
 ---
-import styles from "./FAQ.module.css";
-
-export interface FAQItem {
-  label: string;
-  content: string;
-}
-
 interface Props {
-  items: FAQItem[];
-  title?: string;
   id?: string;
-  withSchema?: boolean;
 }
 
-const {
-  items,
-  title = "FAQ",
-  id = "faq",
-  withSchema = true,
-} = Astro.props;
+const { id = "faq" } = Astro.props;
 ---
 
-<section id={id} class={styles.section}>
-  <div class={styles.container}>
-    {title && <h2 class={styles.title}>{title}</h2>}
-
-    <div class={styles.accordion}>
-      {items.map((item) => (
-        <details class={styles.item}>
-          <summary class={styles.summary}>
-            <span>{item.label}</span>
-            <span class={styles.icon}>
-              <svg viewBox="64 64 896 896" width="1em" height="1em">
-                <path d="M482 152h60v720h-60z"></path>
-                <path d="M176 474h672v60H176z"></path>
-              </svg>
-            </span>
-          </summary>
-
-          <div class={styles.content}>
-            <p>{item.content}</p>
-          </div>
-        </details>
-      ))}
-    </div>
-  </div>
-
-  {withSchema && (
-    <script type="application/ld+json">
-      {JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: items.map((item) => ({
-          "@type": "Question",
-          name: item.label,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: item.content,
-          },
-        })),
-      })}
-    </script>
-  )}
-</section>
+<div
+  id={id}
+  class="faq"
+  itemscope
+  itemtype="https://schema.org/FAQPage"
+>
+  <slot />
+</div>

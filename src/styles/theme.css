@@ -56,6 +56,21 @@
   --color-success: #16a34a;
   --color-danger: #dc2626;
 
+  /* Primary soft */
+--color-primary-soft: #eff6ff;
+--color-primary-border: #bfdbfe;
+
+/* Success soft */
+--color-success-soft: #f0fdf4;
+--color-success-border: #bbf7d0;
+
+/* Danger soft */
+--color-danger-soft: #fef2f2;
+--color-danger-border: #fecaca;
+
+/* Neutral soft */
+--color-neutral-soft: #f1f5f9;
+
   /* Radius */
   --radius-sm: 4px;
   --radius-md: 8px;

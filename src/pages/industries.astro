@@ -9,7 +9,10 @@ import Footer from "@/components/products/vedana/footer/Footer.astro";
 import FeatureGrid from "@/components/blocks/feature-grid/FeatureGrid.astro"
 import FeatureGridItem from "@/components/blocks/feature-grid/FeatureGridItem.astro"
 
+import IconGrid from "@/components/blocks/icon-grid/IconGrid.astro";
+import IconGridItem from "@/components/blocks/icon-grid/IconGridItem.astro";
 
+import Callout from "@/components/blocks/callout/Callout.astro";
 
 import "../styles/global.css";
 ---
@@ -74,6 +77,112 @@ import "../styles/global.css";
                 </FeatureGrid>
 
         </div>
+    </section>
+
+    <section class="section">
+    <div class="container">
+        <h2 class="text-center">Where VEDANA makes the biggest impact</h2>
+        <p class="page-hero-lead">
+            Vedana is a strong fit when at least <strong>two</strong> of the following conditions describe your environment. The more that apply, the greater the gap between what generic AI delivers and what your organization actually needs.
+        </p>
+
+        <IconGrid>
+        <IconGridItem
+            title="Rules & Exceptions Matter"
+            text="Policies, regulations, eligibility criteria, and approval workflows include nuanced edge cases."
+        >
+            <svg
+            slot="icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            >
+            <path d="M12 2l7 4v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-4z"/>
+            </svg>
+        </IconGridItem>
+
+        <IconGridItem
+            title="Exact Identifiers Required"
+            text="SKUs, product codes, legal references, and clause numbers must be precise — never hallucinated."
+        >
+            <svg
+            slot="icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            >
+            <path d="M20 12V7a2 2 0 0 0-2-2h-5l-5 5 5 5h5a2 2 0 0 0 2-2v-1"/>
+            <path d="M8 7h.01"/>
+            </svg>
+        </IconGridItem>
+
+        <IconGridItem
+            title="Auditability Is Required"
+            text="Stakeholders need to see why this answer was given, based on which rules and sources."
+        >
+            <svg
+            slot="icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            >
+            <path d="M9 11l3 3L22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+        </IconGridItem>
+
+        <IconGridItem
+            title="Errors Are Expensive"
+            text="Mistakes carry legal, financial, operational, or safety consequences that can't be walked back."
+        >
+            <svg
+            slot="icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            >
+            <path d="M12 9v4"/>
+            <path d="M12 17h.01"/>
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.72 3h16.92a2 2 0 0 0 1.72-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            </svg>
+        </IconGridItem>
+        </IconGrid>
+
+            <Callout style="--callout-bg: var(--color-danger-soft);">
+                <svg
+                    slot="icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.72 3h16.92a2 2 0 0 0 1.72-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                </svg>
+
+                If your main goal is creative writing, open-ended brainstorming, or casual Q&A —
+                Vedana is not the right tool.
+                It is purpose-built for <strong>decision-grade answers</strong> in high-stakes environments.
+            </Callout>
+    </div>
     </section>
 
 

@@ -1,0 +1,23 @@
+---
+import styles from "./Callout.module.css";
+
+interface Props extends astroHTML.JSX.HTMLAttributes {}
+
+const { id, class: className, ...rest } = Astro.props;
+---
+
+<div
+  id={id}
+  class={`${styles.callout} ${className ?? ""}`}
+  {...rest}
+>
+  <div class={styles.callout__inner}>
+    <div class={styles.callout__icon}>
+      <slot name="icon" />
+    </div>
+
+    <div class={styles.callout__content}>
+      <slot />
+    </div>
+  </div>
+</div>

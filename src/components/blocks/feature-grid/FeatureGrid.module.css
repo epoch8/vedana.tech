@@ -1,29 +1,48 @@
+/* ======================================================
+   FEATURE GRID
+   (layout-agnostic: no max-width, no outer padding)
+====================================================== */
+
 .feature-grid {
-  padding: var(--space-16) var(--container-padding-x);
+  /* was: padding: var(--space-16) var(--container-padding-x); */
 }
 
+/* Container becomes the grid itself (no max-width / auto margins) */
 .feature-grid__container {
-  max-width: var(--container-max-width, 1200px);
-  margin: 0 auto;
-
+  /* was: max-width + margin auto */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: var(--space-12);
 }
 
+/* ======================================================
+   ITEM
+====================================================== */
+
 .feature-grid__item {
-  background: var(--color-surface, #f5f5f5);
-  border-radius: var(--radius-lg, 16px);
+  background: var(--color-bg-muted);         /* was: --color-surface fallback */
+  border: 1px solid var(--color-border);    /* keeps cards stable across sections */
+  border-radius: var(--radius-md);          /* was: --radius-lg fallback */
   padding: var(--space-10);
   box-sizing: border-box;
 }
 
+/* ======================================================
+   TITLE
+====================================================== */
+
 .feature-grid__title {
   margin: 0 0 var(--space-6);
-  font-size: var(--font-size-xl, 24px);
-  font-weight: 600;
-  line-height: 1.3;
+  font-size: var(--font-size-xl);           /* was: fallback 24px */
+  font-weight: var(--font-weight-semibold);/* was: 600 */
+  line-height: var(--line-height-tight);    /* was: 1.3 */
+  letter-spacing: var(--letter-tight);
+  color: var(--color-text-strong);
 }
+
+/* ======================================================
+   IMAGE
+====================================================== */
 
 .feature-grid__image-wrapper {
   margin-bottom: var(--space-6);
@@ -32,20 +51,25 @@
 .feature-grid__image {
   width: 100%;
   height: auto;
-  border-radius: var(--radius-md, 12px);
+  border-radius: var(--radius-md);          /* was: fallback 12px */
   display: block;
 }
 
+/* ======================================================
+   TEXT
+====================================================== */
+
 .feature-grid__text {
-  font-size: var(--font-size-md, 16px);
-  line-height: 1.6;
+  font-size: var(--font-size-base);         /* was: --font-size-md fallback */
+  line-height: var(--line-height-base);     /* was: 1.6 */
+  color: var(--color-text-muted);
 }
 
 .feature-grid__text ul {
-  padding-left: 1.2em;
+  padding-left: var(--space-6);             /* was: 1.2em */
   margin: 0;
 }
 
 .feature-grid__text li {
-  margin-bottom: 0.5em;
+  margin-bottom: var(--space-3);            /* was: 0.5em */
 }

@@ -2,24 +2,34 @@
 @import 'antd/dist/reset.css';
 
 /* Design tokens */
-@import "./theme.css";
+@import "./tokens.css";
+@import "./ui.css";
+@import "./components.css";
+
+/* Box sizing */
 
 *, *::before, *::after {
   box-sizing: border-box;
 }
+
+/* Root reset */
 
 html, body {
   margin: 0;
   padding: 0;
 }
 
+/* Body defaults */
+
 body {
   font-family: var(--font-family-base);
-  line-height: 1.5;
+  line-height: var(--line-height-base);
   background: var(--color-bg);
   color: var(--color-text);
 }
 
+/* Page root wrapper */
+
 .page-root {
-  min-height: 100vh;
+  min-height: 100dvh;
 }

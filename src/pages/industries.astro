@@ -14,6 +14,9 @@ import Callout from "@/components/blocks/callout/Callout.astro";
 import CardGrid from "../components/blocks/card-grid/CardGrid.astro";
 import CardGridItem from "../components/blocks/card-grid/CardGridItem.astro";
 
+import Timeline from "@/components/blocks/timeline/Timeline.astro";
+import TimelineItem from "@/components/blocks/timeline/TimelineItem.astro";
+
 import "../styles/global.css";
 ---
 
@@ -30,7 +33,7 @@ import "../styles/global.css";
     <SiteHeader client:load />
 
     <section class="section">
-        <div class="container page-hero-inner text-center">
+        <div class="container page-hero-inner">
             <h1 class="page-hero-title">
             VEDANA is built for industries<br />
             where correct answers are critical
@@ -47,8 +50,8 @@ import "../styles/global.css";
     </section>
 
     <section class="section">
-        <div class="container">
-            <h2 class="text-center">Why VEDANA is different?</h2>
+        <div class="container flow page-structure">
+            <h2>Why VEDANA is different?</h2>
             <CardGrid id="approach">
 
             <CardGridItem
@@ -82,9 +85,9 @@ import "../styles/global.css";
     </section>
 
     <section class="section">
-    <div class="container">
-        <h2 class="text-center">Where VEDANA makes the biggest impact</h2>
-        <p class="page-hero-lead">
+    <div class="container flow">
+        <h2>Where VEDANA makes the biggest impact</h2>
+        <p>
             Vedana is a strong fit when at least <strong>two</strong> of the following conditions describe your environment. The more that apply, the greater the gap between what generic AI delivers and what your organization actually needs.
         </p>
 
@@ -188,8 +191,8 @@ import "../styles/global.css";
     </section>
 
     <section class="section">
-    <div class="container">
-        <h2 class="text-center">Industry specifics</h2>
+    <div class="container flow">
+        <h2>Industry specifics</h2>
 
         <CardGrid id="industry">
 
@@ -212,6 +215,35 @@ import "../styles/global.css";
         </CardGrid>
     </div>
     </section>
+
+    <section class="section">
+        <div class="container flow"> 
+            <h2ыч>Why we don't list every industry</h2>
+            <p>
+                Most AI vendors claim they serve everyone. In reality, they ship the same generic chatbot everywhere and let customers absorb the risk when it fails. Vedana is intentionally narrower — it is built for environments where you must be able to demonstrate, clearly and defensibly, how every answer was produced.
+            </p>
+
+            <Timeline orientation="vertical" lines={false}>
+                    <TimelineItem index="1" title="What was checked">
+                    <p>
+                      Full visibility into which knowledge sources, graph entities, and constraints were evaluated during answer generation
+                    </p>
+                    </TimelineItem> 
+                    <TimelineItem index="2" title="What rules applied">
+                    <p>
+                      Explicit mapping of which policies, conditions, and business logic governed the response
+                    </p>
+                    </TimelineItem> 
+                    <TimelineItem index="3" title="What sources were used">
+                    <p>
+                      Direct traceability to the specific documents, data points, and structured entries that informed the answer
+                    </p>
+                    </TimelineItem> 
+            </Timeline>
+
+        </div>
+    </section>
+        
 
     <Footer />
   </div>

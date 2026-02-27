@@ -2,11 +2,11 @@
 title: "Why Classic RAG Fails"
 ---
 
-Before diving into Vedana's architecture, it helps to understand the problem it was built to solve.
+Before diving into Vedana's architecture, it helps to understand the problem it was built to solve. This chapter walks through the failure modes of classic RAG, not to dismiss the approach, but to clarify exactly where it breaks down and why a different architecture is needed.
 
 ## What Is Classic RAG?
 
-Classic RAG (Retrieval-Augmented Generation) works like this:
+Classic RAG (Retrieval-Augmented Generation) is a widely-used pattern for connecting a language model to a body of documents. The pipeline works like this:
 
 1. Split documents into small chunks
 2. Turn each chunk into embeddings (vectors)
@@ -20,7 +20,7 @@ In short:
 Chunks → Embeddings → Top-K → LLM → Answer
 ```
 
-This works surprisingly well for many things.
+This works surprisingly well for many tasks. When the answer lives neatly inside one or two chunks, classic RAG is fast, cheap to set up, and often accurate enough.
 
 ## Where Classic RAG Works Fine
 
@@ -30,9 +30,9 @@ Classic RAG is good at:
 - Answering simple factual questions
 - Searching small documents
 - Extracting information from one paragraph
+- Approximate answers are acceptable
 
-When the answer 'lives' clearly inside one or two chunks, RAG performs well.
-This approach works for many use-cases, but not for all. Below is an explanation of why some scenarios require more than classic RAG.
+> **Rule of thumb**: If the answer "lives" visibly inside one or two paragraphs and completeness doesn't matter, classic RAG will serve you well. Problems start the moment a question requires structure, completeness, or logic across multiple records.
 
 ## Where Classic RAG Breaks
 

@@ -4,9 +4,10 @@ title: "Adding Structured Data"
 
 ## Why Structured Data Matters
 
-Document chunks are a good starting point, but chunk-based retrieval has limits. Vector search works well for explanatory content: policies, manuals, long-form documents where the answer is somewhere in the text and needs to be found by meaning. 
+Document chunks are a good starting point, but chunk-based retrieval has limits. 
+Vector search works well for explanatory content: policies, manuals, or any other long-form documents where the answer is somewhere in the text and needs to be found by meaning. But it is not reliable when the answer needs to be exact. 
 
-It is not reliable when the answer needs to be exact. If you need precise, deterministic answers, your data must be structured.
+If you need precise, deterministic answers, your data must be structured.
 
 Take for example questions like:
 - "Which products cost less than 500?"

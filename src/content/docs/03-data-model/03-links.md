@@ -35,11 +35,11 @@ Actual relationships are created during ETL based on structured data tables you 
 
 Each link definition typically includes:
 
-- link_name — a verb-like identifier (e.g., `belongs_to`)
-- source_anchor — the anchor the relationship originates from (e.g., `Product`)
-- target_anchor — the anchor the relationship points to (e.g., `Category`)
-- direction — always explicit, even if the relationship feels symmetric
-- description — a human-readable explanation of what the relationship means
+- link_name — a verb-like identifier (e.g., `belongs_to`).
+- source_anchor — the anchor the relationship originates from (e.g., `Product`).
+- target_anchor — the anchor the relationship points to (e.g., `Category`).
+- direction — always explicit, even if the relationship feels symmetric.
+- description — a human-readable explanation of what the relationship means.
     
 Links are directional by design.
 Even if the relationship is conceptually symmetric,the graph direction must be explicit.
@@ -86,14 +86,14 @@ Use a **string attribute** when the value is simple and will only ever be read �
 
 Use a **link** when:
 
-- The target entity has its own attributes
-- You may query it independently
-- It participates in multiple relationships
+- The target entity has its own attributes.
+- You may query it independently.
+- It participates in multiple relationships.
 
 Example:
 
-- Product.category as string → attribute (simpler)
-- Product → belongs_to → Category → anchor (more powerful)
+- Product.category as string → attribute (simpler).
+- Product → belongs_to → Category → anchor (more powerful).
     
 The second approach (modeling Category as a separate anchor connected via `belongs_to`) enables category-level filtering, hierarchy modeling, and multi-hop queries that a string attribute cannot support.
 The more the target participates in the graph, the stronger the case for making it an anchor with a link.
@@ -118,10 +118,10 @@ If links are not defined, the LLM has no graph to explore and falls back to text
 
 ## Best Practices
 
-- Use clear verb-like names for links (belongs_to, applies_to, located_in)
-- Keep direction consistent across model
-- Avoid redundant reciprocal links unless necessary
-- Model real-world relationships explicitly
+- Use clear verb-like names for links (belongs_to, applies_to, located_in).
+- Keep direction consistent across model.
+- Avoid redundant reciprocal links unless necessary.
+- Model real-world relationships explicitly.
 
 Clean link modeling directly improves reasoning quality.
 
@@ -131,8 +131,8 @@ Clean link modeling directly improves reasoning quality.
 The most frequent mistakes include:
 
 - Encoding relationships as string attributes instead of links.
-- Creating too many generic links (e.g., "related_to")
-- Not defining link direction clearly 
-- Creating circular structures without clear semantics 
+- Creating too many generic links (e.g., "related_to").
+- Not defining link direction clearly.
+- Creating circular structures without clear semantics.
 
 All of these reduce the determinism and clarity that make Semantic RAG work.

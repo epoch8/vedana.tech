@@ -25,18 +25,18 @@ The table is predefined and ready to use — you only need to populate it.
 When a user asks a question, the system checks whether it matches a FAQ entry by applying vector similarity against the question column. If a match is found above the configured threshold, the corresponding answer is retrieved and returned.
 
 The workflow:
-1. User asks a question
-2. System checks FAQ intent
-3. Vector similarity (or direct matching) is applied to the `question` column
-4. Matching FAQ entry is retrieved
-5. The corresponding `answer` is returned or formatted
+1. User asks a question.
+2. System checks FAQ intent.
+3. Vector similarity (or direct matching) is applied to the `question` column.
+4. Matching FAQ entry is retrieved.
+5. The corresponding `answer` is returned or formatted.
 
 FAQ retrieval is lightweight and efficient. It bypasses graph traversal and document retrieval entirely, making it well-suited for:
 
-- Common support questions
-- Standard policy responses
-- Fixed operational answers
-- Any question where the response must not vary
+- Common support questions.
+- Standard policy responses.
+- Fixed operational answers.
+- Any question where the response must not vary.
     
 ## Controlling FAQ Behaviour
 

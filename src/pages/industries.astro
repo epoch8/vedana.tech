@@ -10,6 +10,8 @@ import IconGrid from "@/components/blocks/icon-grid/IconGrid.astro";
 import IconGridItem from "@/components/blocks/icon-grid/IconGridItem.astro";
 
 import Callout from "@/components/blocks/callout/Callout.astro";
+import Anchor from "@/components/blocks/graph-elements/Anchor.astro";
+
 
 import CardGrid from "../components/blocks/card-grid/CardGrid.astro";
 import CardGridItem from "../components/blocks/card-grid/CardGridItem.astro";
@@ -32,19 +34,26 @@ import "../styles/global.css";
   <div class="page-root">
     <SiteHeader client:load />
 
-    <section class="section">
-        <div class="container page-hero-inner">
+    <section class="section graph-hero">
+        <div class="container graph-layout">
+
+            <div class="graph-node">
+            <Anchor size="lg">Industry</Anchor>
+            </div>
+
+            <div class="graph-content">
             <h1 class="page-hero-title">
-            VEDANA is built for industries<br />
-            where correct answers are critical
+                VEDANA is built for industries<br />
+                where correct answers are critical
             </h1>
 
             <p class="page-hero-lead">
-            Vedana is an open-core AI platform for teams who can’t afford 
-            <strong>mostly right.</strong>  
-            Built for regulated environments with strict rules,
-            complex catalogs, and audit requirements.
+                Vedana is an open-core AI platform for teams who can’t afford 
+                <strong>mostly right.</strong>  
+                Built for regulated environments with strict rules,
+                complex catalogs, and audit requirements.
             </p>
+            </div>
 
         </div>
     </section>

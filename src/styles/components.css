@@ -20,19 +20,6 @@
   );
 }
 
-.hero-bg-gradient {
-  position: absolute;
-  inset: 0;
-
-  background: radial-gradient(
-    ellipse at top,
-    var(--hero-radial-color),
-    transparent var(--hero-radial-stop)
-  );
-
-  pointer-events: none;
-}
-
 .hero-inner {
   position: relative;
   max-width: var(--hero-max-width);
@@ -161,107 +148,37 @@
 
 
 /* ======================================================
-   PAGE HERO — GRAPH LAYOUT ONLY
+   PAGE HERO — INTERNAL
 ====================================================== */
 
 .page-hero {
   position: relative;
-  padding:
-    var(--page-hero-padding-top)
-    0
-    var(--page-hero-padding-bottom);
+
+  padding-top: var(--page-hero-padding-top);
+  padding-bottom: var(--page-hero-padding-bottom);
 }
 
-/* Container */
+/* Container inner */
 
 .page-hero-inner {
-  position: relative;
-
   max-width: var(--page-hero-max-width);
-  margin: 0 auto;
-  padding: 0 var(--container-padding-x);
 }
 
-/* Axis */
-
-.page-hero-inner::before {
-  content: "";
-  position: absolute;
-
-  left: 0;
-  top: var(--space-6);
-  bottom: var(--space-6);
-
-  width: var(--page-hero-axis-width);
-
-  background: var(--color-border);
-  opacity: var(--page-hero-axis-opacity);
-}
-
-/* Title node — inherits h1 */
+/* Title */
 
 .page-hero-title {
-  position: relative;
-
-  padding-left: var(--page-hero-structure-offset);
-
-  margin-bottom: var(--space-8);
-}
-
-/* Node dot */
-
-.page-hero-title::before {
-  content: "";
-  position: absolute;
-
-  left: 0;
-  top: 0.6em;
-
-  transform: translateX(
-    calc(
-      (var(--page-hero-axis-width) - var(--page-hero-node-size)) / 2
-    )
-  );
-
-  width: var(--page-hero-node-size);
-  height: var(--page-hero-node-size);
-
-  border-radius: 50%;
-  background: var(--color-primary);
+  margin: 0 0 var(--space-8) 0;
 }
 
 /* Lead */
 
 .page-hero-lead {
-  padding-left: var(--page-hero-structure-offset);
-
   max-width: var(--page-hero-lead-max-width);
+
+  margin: 0;
 
   font-size: var(--font-size-lg);
   line-height: 1.6;
 
   color: var(--color-text-muted);
-
-  margin: 0;
-}
-
-.page-hero-lead strong {
-  color: var(--color-text-strong);
-}
-
-/* Subtle graph texture */
-
-.page-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  pointer-events: none;
-
-  background-image:
-    radial-gradient(circle at 25% 30%, var(--color-border) 1px, transparent 1px),
-    radial-gradient(circle at 70% 60%, var(--color-border) 1px, transparent 1px);
-
-  background-size: 420px 420px;
-  opacity: 0.04;
 }

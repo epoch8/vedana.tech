@@ -9,7 +9,7 @@
 .container {
   max-width: var(--container-wide);
   margin: 0 auto;
-  padding: 0 var(--container-padding-x);
+/*  padding: 0 var(--container-padding-x);*/
 }
 
 /* Vertical rhythm utility */
@@ -17,9 +17,13 @@
   margin-top: var(--space-10);
 }
 
-/* Graph axis continuation */
-.page-structure {
-  padding-left: var(--page-hero-structure-offset);
+/* Horizontal rhythm utility */
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center; /* или flex-start */
+  gap: var(--space-6);
 }
 
 /* =========================

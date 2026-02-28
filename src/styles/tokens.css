@@ -191,15 +191,10 @@
   ----------------- */
 
   --page-hero-padding-top: 5rem;
-  --page-hero-padding-bottom: 4rem;
+  --page-hero-padding-bottom: 3rem;
 
   --page-hero-max-width: 64rem;
   --page-hero-lead-max-width: 48rem;
-
-  --page-hero-structure-offset: var(--space-7);
-  --page-hero-node-size: 8px;
-  --page-hero-axis-width: 1px;
-  --page-hero-axis-opacity: 0.6;
 
   --page-hero-divider-width: 72px;
 
@@ -218,5 +213,78 @@
 
   --faq-question-size: var(--font-size-lg);
   --faq-answer-size: var(--font-size-base);
+
+
+
+/* -----------------
+   GRAPH BREADCRUMB (SPINE)
+----------------- */
+
+/* Geometry */
+--spine-column-width: 280px;              /* ширина левой колонки */
+--spine-x-offset: 22px;                   /* центр оси относительно колонки */
+
+--spine-line-width: 1px;
+--spine-line-length: 28px;
+
+/* Node */
+--spine-node-padding-y: var(--space-2);
+--spine-node-padding-x: var(--space-3);
+
+--spine-node-radius: 999px;
+--spine-node-font-size: var(--font-size-sm);
+--spine-node-font-weight: var(--font-weight-medium);
+--spine-node-font-weight-current: var(--font-weight-semibold);
+
+/* Colors */
+--spine-line-color: var(--color-border);
+--spine-line-hover-color: var(--color-divider);
+
+--spine-node-bg: var(--color-bg);
+--spine-node-border: var(--color-border);
+--spine-node-border-hover: var(--color-divider);
+
+--spine-node-color: var(--color-text-muted);
+--spine-node-color-hover: var(--color-text);
+--spine-node-color-current: var(--color-text);
+
+/* Motion */
+--spine-transition: color var(--dur-fast) var(--ease-standard),
+                    border-color var(--dur-fast) var(--ease-standard),
+                    background var(--dur-fast) var(--ease-standard);
+
+/* -----------------
+   STRUCTURAL AXIS
+----------------- */
+
+--layout-left-offset: 72px;      /* расстояние от края viewport */
+--layout-spine-width: 120px;     /* ширина breadcrumb оси */
+--layout-content-offset: 160px;  /* отступ контента от левого края */
+
+--header-height: 64px;
+
+/* -----------------
+   ANCHOR
+----------------- */
+
+--anchor-size-sm: 44px;
+--anchor-size-md: 60px;
+--anchor-size-lg: 80px;
+
+/* structural default */
+--anchor-size: var(--anchor-size-lg);
+
+--heading-1-baseline-ratio: 0.78;
+
+--internal-baseline-optical-shift: -12px;
+
+--internal-hero-offset: calc(
+  var(--header-height)
+  + var(--page-hero-padding-top)
+  + (var(--heading-1-size) * var(--heading-1-baseline-ratio))
+  - (var(--anchor-size-md) / 2)
+  + var(--internal-baseline-optical-shift)
+);
+
 
 }

@@ -2,11 +2,11 @@
 title: "Why Classic RAG Fails"
 ---
 
-Before diving into Vedana's architecture, it helps to understand the problem it was built to solve.
+Before diving into Vedana's architecture, it helps to understand the problem it was built to solve. This chapter walks through the failure modes of classic RAG, not to dismiss the approach, but to clarify exactly where it breaks down and why a different architecture is needed.
 
 ## What Is Classic RAG?
 
-Classic RAG (Retrieval-Augmented Generation) works like this:
+Classic RAG (Retrieval-Augmented Generation) is a widely-used pattern for connecting a language model to a body of documents. The pipeline works like this:
 
 1. Split documents into small chunks
 2. Turn each chunk into embeddings (vectors)
@@ -20,7 +20,7 @@ In short:
 Chunks → Embeddings → Top-K → LLM → Answer
 ```
 
-This works surprisingly well for many things.
+This works surprisingly well for many tasks. When the answer lives neatly inside one or two chunks, classic RAG is fast, cheap to set up, and often accurate enough.
 
 ## Where Classic RAG Works Fine
 
@@ -30,46 +30,40 @@ Classic RAG is good at:
 - Answering simple factual questions
 - Searching small documents
 - Extracting information from one paragraph
+- Approximate answers are acceptable
 
-When the answer 'lives' clearly inside one or two chunks, RAG performs well.
-This approach works for many use-cases, but not for all. Below is an explanation of why some scenarios require more than classic RAG.
+> **Rule of thumb**: If the answer "lives" visibly inside one or two paragraphs and completeness doesn't matter, classic RAG will serve you well. 
 
 ## Where Classic RAG Breaks
 
-Problems start when a question requires structure, completeness, or logic.
+Problems start the moment a question requires structure, completeness, or logic across multiple records.
+In practice, real-world users ask questions that go beyond text similarity and require a more precise answers. Below are the four most common failure modes, encountered repeatedly across different domains.
 
 #### 1. Aggregation Queries - “How many?”
 
-Example:
+**Example query:** *"How many certified products do we have?"*
 
-> How many certified products do we have?
+Classic RAG does not count. It retrieves a few similar chunks and has the LLM estimate. The result is almost always wrong:
 
-Classic RAG does not count.  
-It retrieves a few similar chunks and guesses.
+- *"Around 10"* — a guess based on what appeared in the top chunks
+- *"About 15"* — a different guess on the next run
+- A list of examples instead of a count at all
 
-It might answer:
-
-- “Around 10”
-- “About 15”
-- Or give examples instead of a real number
-    
-It does not know the full dataset. It only sees top-K chunks.
+The root problem: classic RAG only sees the top-K chunks, not the full dataset. The model has no way to count across all records. It approximates, and approximation is not acceptable when business decisions depend on the number.
 
 #### 2. Exhaustive Queries - “Show me all”
 
-Example:
+**Example query:** *"Show me all bathroom lighting products."*
 
-> List all products that require document X.
+Classic RAG retrieves only the top matches. If your catalog has 200 bathroom lights, you will see maybe 5–10. The rest are silently omitted, and the assistant typically doesn't signal that the list is incomplete.
 
-Classic RAG retrieves only the top matches.
-If there are 47 items, it may show 5 or 8.
-It does not know what “all” means.
+This failure is especially damaging in high-stakes contexts. A user who asks *"Show me all required compliance documents for this product"* and receives a partial list may assume the list is complete. Missing documents can mean regulatory violations, delays, or legal liability.
+
+> ⚠️ In a relational or graph database, these queries are trivial: a simple filter or JOIN returns every matching record. Classic RAG has no mechanism for exhaustive retrieval. It is fundamentally a "top-N most similar" system.
 
 #### 3. Compatibility Quieries
 
-Example:
-
-> Is product A compatible with regulation B?
+**Example:** *"Is product A compatible with regulation B?"*
 
 The answer may require:
 
@@ -78,7 +72,7 @@ The answer may require:
 - Logical conditions
 
 Classic RAG cannot reliably reason over structured relationships.  
-It just reads text and guesses.
+It just reads text and makes a guess.
 
 #### 4. Domain Logic (Rules and Regulations)
 
@@ -88,8 +82,7 @@ In real-world systems, answers depend on rules:
 - If voltage > 50V → certification required
     
 Classic RAG does not execute logic.  
-It predicts text.
-Prediction is not reasoning.
+It predicts text. But prediction is not reasoning.
 
 ## Why “Increase K” Is Not a Solution
 

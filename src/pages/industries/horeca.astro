@@ -1,0 +1,83 @@
+---
+import InternalLayout from "@/layouts/InternalLayout.astro";
+import { SEOBase } from "@content/vedana/seo/seo";
+import type { SEOConfig } from "@/lib/seo/types";
+
+const crumbs = [
+  { label: "Industry", href: "/industries" },
+  { label: "Horeca" }
+];
+
+const pageSEO: Partial<SEOConfig> = {
+  title: "Vedana for Horeca",
+  description:
+    "Structured AI platform for restaurants and hospitality.",
+  canonical: "https://vedana.tech/industries/horeca",
+  og: {
+    type: "website",
+    image: "https://vedana.tech/og-horeca.png",
+    imageAlt: "Vedana for Horeca"
+  }
+};
+---
+
+<InternalLayout
+  baseSEO={SEOBase}
+  pageSEO={pageSEO}
+  crumbs={crumbs}
+>
+
+    <section class="page-hero">
+        <div class="page-hero-inner">
+            <h1 class="page-hero-title">
+                VEDANA is built for industries<br />
+                where correct answers are critical
+            </h1>
+
+          <p class="page-hero-lead">
+                Vedana is an open-core AI platform for teams who can’t afford 
+                <strong>mostly right.</strong>  
+                Built for regulated environments with strict rules,
+                complex catalogs, and audit requirements.
+          </p>
+        </div>
+    </section>
+    
+    <section class="section">
+        <div class="container flow">
+        <h2>
+            Page header H2
+        </h1>
+
+        <p>
+            Simple page text.
+        </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container flow">
+        <h2>
+            Page header H2-2
+        </h1>
+
+        <p>
+            Simple page text.
+        </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container flow">
+        <h2>
+            Page header H2-3
+        </h1>
+
+        <p>
+            Simple page text.
+        </p>
+        </div>
+    </section>
+
+
+</InternalLayout>

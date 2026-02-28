@@ -1,67 +1,85 @@
-/* =========================
-   Header base
-========================= */
+/* ======================================
+   HEADER
+====================================== */
 
 .nav-header {
   width: 100%;
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-bg);
-
   position: sticky;
   top: 0;
+  z-index: 1000;
 
-  z-index: 1000; /* выше overlay */
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
 }
 
-/* =========================
-   Inner layout
-========================= */
+
+/* ======================================
+   INNER LAYOUT
+====================================== */
 
 .nav-inner {
-  max-width: var(--container-width);
+  max-width: var(--container-wide);
   margin: 0 auto;
-  padding: 16px 24px;
+  padding: var(--space-4) var(--container-padding-x);
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* =========================
-   Logo
-========================= */
 
-.nav-logo-link {
-  text-decoration: none;
-  color: var(--color-text);
-  font-weight: 600;
-  font-size: var(--font-size-md);
-}
-
-/* =========================
-   Desktop nav
-========================= */
+/* ======================================
+   NAV LINKS (DESKTOP)
+====================================== */
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-6);
 }
 
-.nav-links a {
+.nav-link {
   text-decoration: none;
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+
   transition: color 0.15s ease;
 }
 
-.nav-links a:hover {
+.nav-link:hover {
   color: var(--color-text);
 }
 
-/* =========================
-   Burger button
-========================= */
+/* Optional active state (можем позже включить через data-attr) */
+.nav-link[aria-current="page"] {
+  color: var(--color-text);
+}
+
+
+/* ======================================
+   CTA
+====================================== */
+
+.nav-cta {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+
+  background: var(--color-primary);
+  color: #fff;
+
+  font-weight: var(--font-weight-semibold);
+}
+
+.nav-cta:hover {
+  background: var(--color-primary-hover);
+  color: #fff;
+}
+
+
+/* ======================================
+   BURGER
+====================================== */
 
 .nav-menu-toggle {
   display: none;
@@ -71,28 +89,28 @@
   cursor: pointer;
 }
 
-/* =========================
-   Overlay (outside header)
-========================= */
+
+/* ======================================
+   OVERLAY
+====================================== */
 
 .nav-overlay {
   position: fixed;
   inset: 0;
+  z-index: 900;
 
   background: rgba(15, 23, 42, 0.45);
   backdrop-filter: blur(2px);
 
   opacity: 0;
   pointer-events: none;
-
   transition: opacity 0.25s ease;
-
-  z-index: 900; /* ниже header и drawer */
 }
 
-/* =========================
-   Mobile styles
-========================= */
+
+/* ======================================
+   MOBILE
+====================================== */
 
 @media (max-width: 768px) {
 
@@ -110,9 +128,9 @@
 
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: var(--space-6);
 
-    padding: 96px 32px;
+    padding: 96px var(--space-8);
 
     background: var(--color-bg);
     box-shadow: var(--shadow-lg);
@@ -120,16 +138,12 @@
     transform: translateX(100%);
     transition: transform 0.3s ease;
 
-    z-index: 1100; /* выше header */
+    z-index: 1100;
   }
-
-  /* OPEN STATE — drawer */
 
   .nav-header[data-open="true"] .nav-links {
     transform: translateX(0);
   }
-
-  /* OPEN STATE — overlay (сосед header) */
 
   .nav-header[data-open="true"] + .nav-overlay {
     opacity: 1;

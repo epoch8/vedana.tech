@@ -1,7 +1,8 @@
 ---
-import BaseLayout from "@/layouts/baseLayout.astro";
+import InternalLayout from "@/layouts/InternalLayout.astro";
 
 import { SEOBase } from "@content/vedana/seo/seo";
+import type { SEOConfig } from "@/lib/seo/types";
 
 import SiteHeader from "@/components/products/vedana/header/Nav.astro";
 import Footer from "@/components/products/vedana/footer/Footer.astro";
@@ -20,41 +21,43 @@ import Timeline from "@/components/blocks/timeline/Timeline.astro";
 import TimelineItem from "@/components/blocks/timeline/TimelineItem.astro";
 
 import "../styles/global.css";
+
+const crumbs = [
+  { label: "Industries", href: "/industries" }
+];
+
+const pageSEO: Partial<SEOConfig> = {
+  title: "Vedana for Industrues",
+  description:
+    "Structured AI platform for different industries.",
+  canonical: "https://vedana.tech/industries/",
+  og: {
+    type: "website",
+    image: "https://vedana.tech/og-industries.png",
+    imageAlt: "Vedana for Industries"
+  }
+};
 ---
 
-<BaseLayout
+<InternalLayout
   baseSEO={SEOBase}
-  pageSEO={{
-    title: "Vedana — Deterministic Graph-First AI",
-    description:
-      "Vedana builds structured knowledge graphs so AI answers follow business rules, not similarity guesses.",
-    canonical: "https://vedana.tech/",
-  }}
+  pageSEO={pageSEO}
+  crumbs={crumbs}
 >
-  <div class="page-root">
-    <SiteHeader client:load />
 
-    <section class="section graph-hero">
-        <div class="container graph-layout">
-
-            <div class="graph-node">
-            <Anchor size="lg">Industry</Anchor>
-            </div>
-
-            <div class="graph-content">
+    <section class="page-hero">
+        <div class="page-hero-inner">
             <h1 class="page-hero-title">
                 VEDANA is built for industries<br />
                 where correct answers are critical
             </h1>
 
-            <p class="page-hero-lead">
+          <p class="page-hero-lead">
                 Vedana is an open-core AI platform for teams who can’t afford 
                 <strong>mostly right.</strong>  
                 Built for regulated environments with strict rules,
                 complex catalogs, and audit requirements.
-            </p>
-            </div>
-
+          </p>
         </div>
     </section>
 
@@ -255,5 +258,3 @@ import "../styles/global.css";
         
 
     <Footer />
-  </div>
-</BaseLayout>

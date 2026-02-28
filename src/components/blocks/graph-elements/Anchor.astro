@@ -8,8 +8,6 @@ interface Props {
   size?: "sm" | "md" | "lg" | number;
   maxLines?: 1 | 2 | 3;
 
-  variant?: "circle" | "inline";
-
   title?: string;
   class?: string;
 }
@@ -19,7 +17,6 @@ const {
   href,
   size = "md",
   maxLines = 2,
-  variant = "circle",
   title,
   class: className,
 } = Astro.props;
@@ -40,14 +37,8 @@ const ariaLabel =
 ---
 
 <Tag
-  class={`
-    ${styles.anchor}
-    ${variant === "circle" ? styles["anchor--circle"] : styles["anchor--inline"]}
-    ${className ?? ""}
-  `}
-  style={variant === "circle"
-    ? `--anchor-size:${sizeVar};--anchor-lines:${maxLines};`
-    : undefined}
+  class={`${styles.anchor} ${className ?? ""}`}
+  style={`--anchor-size:${sizeVar};--anchor-lines:${maxLines};`}
   href={href}
   title={title}
   aria-label={ariaLabel}

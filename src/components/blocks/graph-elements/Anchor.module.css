@@ -5,17 +5,19 @@
 .anchor {
   text-decoration: none;
   user-select: none;
+
   transition:
     border-color var(--dur-fast) var(--ease-standard),
     transform var(--dur-fast) var(--ease-standard),
     box-shadow var(--dur-fast) var(--ease-standard);
 }
 
+
 /* =========================================
-   CIRCLE VARIANT (graph node)
+   CIRCLE (graph node)
 ========================================= */
 
-.anchor--circle {
+.anchor {
   position: relative;
 
   width: var(--anchor-size);
@@ -36,35 +38,20 @@
   opacity: 0.9;
 }
 
-.anchor--circle:hover {
+.anchor:hover {
   border-color: var(--color-primary);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
-/* =========================================
-   INLINE VARIANT (breadcrumb)
-========================================= */
-
-.anchor--inline {
-  display: inline;
-  border: none;
-  background: none;
-  padding: 0;
-  border-radius: 0;
-}
-
-.anchor--inline:hover {
-  text-decoration: underline;
-  transform: none;
-  box-shadow: none;
-}
 
 /* =========================================
    TEXT
 ========================================= */
 
 .anchor__text {
+  width: 100%;
+
   text-align: center;
   letter-spacing: var(--letter-tight);
   font-weight: var(--font-weight-semibold);
@@ -74,11 +61,7 @@
     var(--color-primary) 60%,
     var(--color-text)
   );
-}
 
-/* circle text behaviour */
-.anchor--circle .anchor__text {
-  width: 100%;
   line-height: 1.05;
 
   white-space: normal;
@@ -94,11 +77,4 @@
   overflow: hidden;
 
   font-size: clamp(10px, calc(var(--anchor-size) / 5.5), 14px);
-}
-
-/* inline text */
-.anchor--inline .anchor__text {
-  display: inline;
-  font-size: var(--font-size-sm);
-  line-height: 1.4;
 }

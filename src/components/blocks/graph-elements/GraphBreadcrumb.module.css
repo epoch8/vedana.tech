@@ -71,22 +71,3 @@
   display: none;
 }
 
-@media (max-width: 768px) {
-
-  .desktop-only {
-    display: none;
-  }
-
-  .mobile-only {
-    display: inline;
-  }
-
-}
-
-@media (max-width: 768px) {
-
-  .spine-anchor {
-    left: 0 !important;
-  }
-
-}

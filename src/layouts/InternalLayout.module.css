@@ -102,20 +102,16 @@
 ------------------------------------------ */
 
 @media (max-width: 1024px) {
+  .spine {
+    display: none;
+  }
 
   .internal-layout::before {
     display: none;
   }
 
-  .spine {
-     position: static;
-    left: auto;
-    top: auto;
-    width: auto;
-  }
-
   .content {
     padding-left: var(--container-padding-x);
+    padding-right: var(--container-padding-x);
   }
 }
-

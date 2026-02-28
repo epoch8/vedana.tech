@@ -108,12 +108,14 @@
   }
 
   .spine {
-    position: static;
+     position: static;
+    left: auto;
+    top: auto;
     width: auto;
-    margin-bottom: var(--space-6);
   }
 
   .content {
     padding-left: var(--container-padding-x);
   }
 }
+

@@ -82,3 +82,11 @@
   }
 
 }
+
+@media (max-width: 768px) {
+
+  .spine-anchor {
+    left: 0 !important;
+  }
+
+}

@@ -4,7 +4,6 @@ import InternalLayout from "@/layouts/InternalLayout.astro";
 import { SEOBase } from "@content/vedana/seo/seo";
 import type { SEOConfig } from "@/lib/seo/types";
 
-import SiteHeader from "@/components/products/vedana/header/Nav.astro";
 import Footer from "@/components/products/vedana/footer/Footer.astro";
 
 import IconGrid from "@/components/blocks/icon-grid/IconGrid.astro";
@@ -59,6 +58,32 @@ const pageSEO: Partial<SEOConfig> = {
                 complex catalogs, and audit requirements.
           </p>
         </div>
+    </section>
+
+    <section class="section">
+    <div class="container flow">
+        <h2>Industry specifics</h2>
+
+        <CardGrid id="industry">
+
+        <CardGridItem
+            title="Automotive"
+            text="Compliance, homologation, and structured product validation for regulated automotive environments."
+            href="/industries/automotive"
+            buttonLabel="Explore Automotive"
+            position={1}
+        />
+
+        <CardGridItem
+            title="Legal"
+            text="Deterministic reasoning over regulations, contracts, and structured legal knowledge."
+            href="/industries/legal"
+            buttonLabel="Explore Legal"
+            position={2}
+        />
+
+        </CardGrid>
+    </div>
     </section>
 
     <section class="section">
@@ -199,32 +224,6 @@ const pageSEO: Partial<SEOConfig> = {
                 Vedana is not the right tool.
                 It is purpose-built for <strong>decision-grade answers</strong> in high-stakes environments.
             </Callout>
-    </div>
-    </section>
-
-    <section class="section">
-    <div class="container flow">
-        <h2>Industry specifics</h2>
-
-        <CardGrid id="industry">
-
-        <CardGridItem
-            title="Automotive"
-            text="Compliance, homologation, and structured product validation for regulated automotive environments."
-            href="/industries/automotive"
-            buttonLabel="Explore Automotive"
-            position={1}
-        />
-
-        <CardGridItem
-            title="Legal"
-            text="Deterministic reasoning over regulations, contracts, and structured legal knowledge."
-            href="/industries/legal"
-            buttonLabel="Explore Legal"
-            position={2}
-        />
-
-        </CardGrid>
     </div>
     </section>
 

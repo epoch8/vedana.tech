@@ -1,0 +1,63 @@
+---
+import styles from "./Nav.module.css";
+import BrandLogo from "../../products/vedana/logo/BrandLogo.astro";
+
+/* ================================
+   Types
+================================ */
+
+export interface NavItem {
+  label: string;
+  href: string;
+  variant?: "primary";
+}
+
+interface Props {
+  items: NavItem[];
+}
+
+const { items = [] } = Astro.props;
+---
+
+<header
+  id="site-header"
+  class={styles["nav-header"]}
+  data-open="false"
+>
+  <div class={styles["nav-inner"]}>
+    <BrandLogo href="/#home" />
+
+    <nav
+      id="primary-nav"
+      class={styles["nav-links"]}
+      aria-hidden="true"
+    >
+      {items.map((item) => (
+        <a
+          href={item.href}
+          class={item.variant === "primary" ? "btn-primary" : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <button
+      id="menu-toggle"
+      class={styles["nav-menu-toggle"]}
+      aria-label="Toggle menu"
+      aria-controls="primary-nav"
+      aria-expanded="false"
+      type="button"
+    >
+      ☰
+    </button>
+  </div>
+</header>
+
+<div
+  id="nav-overlay"
+  class={styles["nav-overlay"]}
+></div>
+
+<script type="module" src="/scripts/nav.js"></script>

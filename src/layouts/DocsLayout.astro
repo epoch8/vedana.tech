@@ -1,5 +1,5 @@
 ---
-import Nav from "../components/products/vedana/header/Nav.astro";
+import Nav from "@/components/blocks/header/Nav.astro";
 import Footer from "@/components/products/vedana/footer/Footer.astro";
 import DocsSidebar from "@/components/products/vedana/DocsSidebar.astro";
 import styles from "./DocsLayout.module.css";
@@ -19,7 +19,6 @@ const { currentSlug, headings, allDocs, title, description } = Astro.props;
 
   <body>
     <div class="page-root">
-      <Nav />
 
       <div class={styles.container}>
         <aside class={styles.sidebar}>

@@ -2,11 +2,15 @@
 import { extendSEO } from "@/lib/seo/extend";
 import type { SEOConfig } from "@/lib/seo/types";
 
+import Nav from "@/components/blocks/header/Nav.astro";
+import { navItems } from "@/content/vedana/navigation/navItems";
+
 interface Props {
   baseSEO: SEOConfig;
   pageSEO?: Partial<SEOConfig>;
   structuredData?: object | object[];
   lang?: string;
+  showNav?: boolean;
 }
 
 const {
@@ -14,6 +18,7 @@ const {
   pageSEO,
   structuredData,
   lang = "en",
+  showNav = true,
 } = Astro.props;
 
 // Deterministic merge
@@ -38,12 +43,10 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
-
     <title>{title}</title>
     <meta name="description" content={description} />
 
     {noindex && <meta name="robots" content="noindex,nofollow" />}
-
     {canonical && <link rel="canonical" href={canonical} />}
 
     {/* Open Graph */}
@@ -89,6 +92,10 @@ const {
   </head>
 
   <body>
-    <slot />
+    {showNav && <Nav items={navItems} />}
+
+    <main>
+      <slot />
+    </main>
   </body>
 </html>

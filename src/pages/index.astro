@@ -3,7 +3,6 @@ import BaseLayout from "@/layouts/baseLayout.astro";
 
 import { SEOBase } from "@content/vedana/seo/seo";
 
-import SiteHeader from "@/components/products/vedana/header/Nav.astro";
 import Hero from "@/components/products/vedana/Hero.astro";
 import Problem from "@/components/products/vedana/Problem.astro";
 import MiniDemo from "@/components/products/vedana/MiniDemo.jsx";
@@ -31,9 +30,6 @@ import "../styles/global.css";
     canonical: "https://vedana.tech/",
   }}
 >
-  <div class="page-root">
-    <SiteHeader client:load />
-
     <Hero />
 
     <ScrollFrames client:load />
@@ -129,5 +125,4 @@ import "../styles/global.css";
     <CTA />
 
     <Footer />
-  </div>
 </BaseLayout>

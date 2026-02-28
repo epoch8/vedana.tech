@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "@/layouts/baseLayout.astro";
-import SiteHeader from "@/components/products/vedana/header/Nav.astro";
 import GraphBreadcrumb from "@/components/blocks/graph-elements/GraphBreadcrumb.astro";
 
 import styles from "./InternalLayout.module.css";
@@ -41,7 +40,6 @@ const baseUrl = import.meta.env.PUBLIC_SITE_URL;
   pageSEO={pageSEO}
   structuredData={structuredData}
 >
-  <SiteHeader />
 
   <div class={styles["header-spine-gap"]} aria-hidden="true"></div>
 

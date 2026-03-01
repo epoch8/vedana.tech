@@ -14,6 +14,8 @@ import EntityCardRichList from "@/components/blocks/entity-card/EntityCardRichLi
 import Chat from "@/components/blocks/chat/Chat.astro";
 import ChatItem from "@/components/blocks/chat/ChatItem.astro";
 
+import ProductDemo from "@/components/products/vedana/product-demo/ProductDemo.jsx";
+
 const bot = {
   name: "Demo Bot",
   bubbleBg: "#eef3ff"
@@ -25,6 +27,12 @@ const user = {
   bubbleColor: "#fff"
 };
 ---
+
+<section class="section">
+  <div class="container">
+    <ProductDemo client:load />
+  </div>
+</section>
 
 <EntityCardRichList columns={3}>
 

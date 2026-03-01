@@ -1,4 +1,6 @@
 ---
+import "@/styles/vedana/extra-tokens.css";
+
 import InternalLayout from "@/layouts/InternalLayout.astro";
 import { SEOBase } from "@content/vedana/seo/seo";
 import type { SEOConfig } from "@/lib/seo/types";
@@ -7,6 +9,8 @@ import Callout from "@/components/blocks/callout/Callout.astro";
 
 import EntityCardList from "@/components/blocks/entity-card/EntityCardList.astro";
 import EntityCard from "@/components/blocks/entity-card/EntityCard.astro";
+import EntityCardRichList from "@/components/blocks/entity-card/EntityCardRichList.astro";
+import EntityCardRich from "@/components/blocks/entity-card/EntityCardRich.astro";
 
 import Timeline from "@/components/blocks/timeline/Timeline.astro";
 import TimelineItem from "@/components/blocks/timeline/TimelineItem.astro";
@@ -92,61 +96,116 @@ const pageSEO: Partial<SEOConfig> = {
                     We extend this model with your internal logic, formats, and documents, so your assistant answers questions in your language – not just industry standards.
                 </p>
             </Callout>
-            
-        <EntityCardList columns={3}>
 
-        <EntityCard
-            title="Brand"
-            attributes={[
-            { key: "region", value: "Berlin, Munich, Hamburg" },
-            { key: "opening_year", value: "2014" },
-            { key: "website", value: "nordic-harbor.de" },
-            { key: "type", value: "casual seafood restaurant" }
-            ]}
-        />
+<EntityCardRichList columns={3}>
 
-        <EntityCard
-            title="Menu Item"
-            attributes={[
-            { key: "category", value: "main course" },
-            { key: "ingredients", value: "Atlantic salmon, lemon, dill, olive oil" },
-            { key: "allergens", value: "fish" },
-            { key: "preparation_time", value: "18 min" },
-            { key: "serving_size", value: "320 g" }
-            ]}
-        />
+  <EntityCardRich
+    title="Brand"
+    entityType="brand"
+    color="var(--entity-brand)"
+    attributes={[
+      { key: "name", value: "Nordic Harbor" },
+      { key: "concept type", value: "Casual seafood restaurant" },
+      { key: "opening year", value: "2014" },
+      { key: "website", value: "nordic-harbor.de", href: "https://nordic-harbor.de", external: true }
+    ]}
+    relations={[
+      {
+        label: "Operates in",
+        targets: [
+          { title: "Berlin", entityType: "location", color: "var(--entity-location)" },
+          { title: "Munich", entityType: "location", color: "var(--entity-location)" },
+          { title: "Hamburg", entityType: "location", color: "var(--entity-location)" }
+        ]
+      },
+      {
+        label: "Holds",
+        targets: [
+          { title: "HACCP Certification 2023–2026", entityType: "certification", color: "var(--entity-compliance)" }
+        ]
+      }
+    ]}
+  />
 
-        <EntityCard
-            title="Ingredient"
-            attributes={[
-            { key: "supplier", value: "NordSea Imports GmbH" },
-            { key: "shelf_life", value: "3 days (fresh)" },
-            { key: "storage_conditions", value: "2–4°C, refrigerated" },
-            { key: "cost", value: "€8.40 / kg" }
-            ]}
-        />
+  <EntityCardRich
+    title="Dish"
+    entityType="dish"
+    color="var(--entity-dish)"
+    attributes={[
+      { key: "name", value: "Grilled Atlantic Salmon" },
+      { key: "category", value: "Main course" },
+      { key: "preparation time", value: "18 min" },
+      { key: "serving size", value: "320 g" }
+    ]}
+    relations={[
+      {
+        label: "Contains",
+        targets: [
+          { title: "Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
+        ]
+      }
+    ]}
+  />
 
-        <EntityCard
-            title="Beverage"
-            attributes={[
-            { key: "type", value: "Pinot Noir (red wine)" },
-            { key: "origin", value: "Burgundy, France" },
-            { key: "serving_temperature", value: "16–18°C" },
-            { key: "pairing_suggestions", value: "grilled salmon, seared duck" }
-            ]}
-        />
+  <EntityCardRich
+    title="Ingredient"
+    entityType="ingredient"
+    color="var(--entity-ingredient)"
+    attributes={[
+      { key: "name", value: "Atlantic Salmon" },
+      { key: "category", value: "Fish" },
+      { key: "is allergen", value: "Yes" },
+      { key: "shelf life", value: "3 days" },
+      { key: "storage", value: "2-4°C refrigerated" },
+      { key: "cost", value: "€8.40 / kg" }
+    ]}
+    relations={[
+      {
+        label: "Supplied by",
+        targets: [
+          { title: "NordSea Imports GmbH", entityType: "supplier", color: "var(--entity-supplier)" }
+        ]
+      }
+    ]}
+  />
 
-        <EntityCard
-            title="Certification"
-            attributes={[
-            { key: "standard_number", value: "HACCP-DE-2023-4581" },
-            { key: "scope", value: "kitchen & cold storage operations" },
-            { key: "issuing_body", value: "German Food Safety Authority" },
-            { key: "valid_until", value: "Dec 2026" }
-            ]}
-        />
+  <EntityCardRich
+    title="Wine"
+    entityType="wine"
+    color="var(--entity-wine)"
+    attributes={[
+      { key: "name", value: "Pinot Noir – Domaine Lefèvre" },
+      { key: "type", value: "Red wine" },
+      { key: "origin", value: "Burgundy, France" },
+      { key: "serving temperature", value: "16–18°C" },
+      { key: "body", value: "Medium" },
+      { key: "acidity", value: "High" }
+    ]}
+    relations={[
+      {
+        label: "Complements",
+        targets: [
+          { title: "Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
+        ]
+      }
+    ]}
+  />
 
-        </EntityCardList>
+  <EntityCardRich
+    title="Certification"
+    entityType="certification"
+    color="var(--entity-compliance)"
+    attributes={[
+      { key: "name", value: "HACCP Certification 2023–2026" },
+      { key: "standard number", value: "HACCP-DE-2023-4581" },
+      { key: "scope", value: "Kitchen & cold storage operations" },
+      { key: "issuing body", value: "German Food Safety Authority" },
+      { key: "valid until", value: "Dec 2026" }
+    ]}
+  />
+
+</EntityCardRichList>
+
         </div>
     </section>
 

@@ -1,10 +1,14 @@
 ---
 import "@/styles/global.css";
+import "@/styles/vedana/extra-tokens.css";
+
 
 import Anchor from "@/components/blocks/graph-elements/Anchor.astro";
 
 import EntityCardList from "@/components/blocks/entity-card/EntityCardList.astro";
 import EntityCard from "@/components/blocks/entity-card/EntityCard.astro";
+import EntityCardRich from "@/components/blocks/entity-card/EntityCardRich.astro";
+import EntityCardRichList from "@/components/blocks/entity-card/EntityCardRichList.astro";
 
 
 import Chat from "@/components/blocks/chat/Chat.astro";
@@ -21,6 +25,118 @@ const user = {
   bubbleColor: "#fff"
 };
 ---
+
+<EntityCardRichList columns={3}>
+
+  <EntityCardRich
+    title="Nordic Harbor"
+    entityType="brand"
+    color="var(--entity-brand)"
+    attributes={[
+      { key: "concept type", value: "Casual seafood restaurant" },
+      { key: "opening year", value: "2014" },
+      { key: "website", value: "nordic-harbor.de", href: "https://nordic-harbor.de", external: true }
+    ]}
+    relations={[
+      {
+        label: "Operates in",
+        targets: [
+          { title: "Berlin", entityType: "location", color: "var(--entity-location)" },
+          { title: "Munich", entityType: "location", color: "var(--entity-location)" },
+          { title: "Hamburg", entityType: "location", color: "var(--entity-location)" }
+        ]
+      },
+      {
+        label: "Holds",
+        targets: [
+          { title: "ComplianceRequirement", entityType: "compliance", color: "var(--entity-compliance)" }
+        ]
+      }
+    ]}
+  />
+
+  <EntityCardRich
+    title="Grilled Atlantic Salmon"
+    entityType="dish"
+    color="var(--entity-dish)"
+    attributes={[
+      { key: "category", value: "Main course" },
+      { key: "preparation time", value: "18 min" },
+      { key: "serving size", value: "320 g" }
+    ]}
+    relations={[
+      {
+        label: "Contains",
+        targets: [
+          { title: "Ingredient", entityType: "ingredient", color: "var(--entity-ingredient)" }
+        ]
+      },
+      {
+        label: "Pairs with",
+        targets: [
+          { title: "Wine", entityType: "wine", color: "var(--entity-wine)" }
+        ]
+      }
+    ]}
+  />
+
+  <EntityCardRich
+    title="Ingredient"
+    entityType="ingredient"
+    color="var(--entity-ingredient)"
+    attributes={[
+      { key: "category", value: "Fish" },
+      { key: "is allergen", value: "Yes" },
+      { key: "shelf life", value: "3 days" },
+      { key: "storage", value: "2–4°C refrigerated" },
+      { key: "cost", value: "€8.40 / kg" }
+    ]}
+    relations={[
+      {
+        label: "Supplied by",
+        targets: [
+          { title: "Supplier", entityType: "supplier", color: "var(--entity-supplier)" }
+        ]
+      }
+    ]}
+  />
+
+  <EntityCardRich
+    title="Wine"
+    entityType="wine"
+    color="var(--entity-wine)"
+    attributes={[
+      { key: "type", value: "Red wine" },
+      { key: "origin", value: "Burgundy, France" },
+      { key: "serving temperature", value: "16–18°C" },
+      { key: "body", value: "Medium" },
+      { key: "acidity", value: "High" }
+    ]}
+    relations={[
+      {
+        label: "Complements",
+        targets: [
+          { title: "Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" },
+          { title: "Chef's Pasta", entityType: "ingredient", color: "var(--entity-ingredient)" }
+
+        ]
+      }
+    ]}
+  />
+
+  <EntityCardRich
+    title="HACCP Certification 2023–2026"
+    entityType="compliance"
+    color="var(--entity-compliance)"
+    attributes={[
+      { key: "standard number", value: "HACCP-DE-2023-4581" },
+      { key: "scope", value: "Kitchen & cold storage operations" },
+      { key: "issuing body", value: "German Food Safety Authority" },
+      { key: "valid until", value: "Dec 2026" }
+    ]}
+  />
+
+</EntityCardRichList>
 
 <Chat
   title="Chat with demo bot"

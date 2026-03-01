@@ -84,19 +84,25 @@ In real-world systems, answers depend on rules:
 Classic RAG does not execute logic.  
 It predicts text. But prediction is not reasoning.
 
-## Why “Increase K” Is Not a Solution
 
-A common suggestion is to simply increase the number of retrieved chunks. 
-This does not solve the underlying problem:
+## The Root Cause: LLMs Have No World Model
 
-- More chunks = more noise
-- LLM context gets overloaded
-- Costs go up
-- There is still no guarantee of completeness
+All four failure modes trace back to one fundamental fact: **modern language models do not build an internal model of a domain.** They process patterns in text, not representations of reality.
 
-Even with 50 chunks, the model is still guessing.
+This shows up in predictable ways:
 
-## Why LLM Should Not Guess
+- Weak generalization when encountering new or edge-case inputs.
+- Self-contradictions in longer reasoning chains.
+- No ability to simulate a system (e.g., a business process or product catalog).
+- Inability to enforce fixed rules and invariants unless they are explicitly encoded in retrieved data.
+
+For domains where strict logic and accuracy are critical — compliance, engineering, medicine, finance — this is a fundamental limitation, not a minor inconvenience.
+
+> **Key insight:** Classic RAG amplifies this problem. It hands the model a few text fragments and asks it to reason about a world it has never formally modeled. The results reflect the limits of both the retrieval mechanism and the model's underlying architecture.
+
+## What These Failures Require
+
+Solving these problems requires more than better embeddings or a larger top-K window. 
 
 LLMs are trained to produce fluent, confident-sounding output. When they don't have a definitive answer, they still try to generate something reasonable and plausible. 
 
@@ -108,37 +114,14 @@ That is dangerous when:
 - Mistakes cost money
 
 Fluency is not correctness.
+The failures are structural. The solution needs to address them at the architecture level:
 
-### Example: a Typical Failure
-
-**Question:**
-
-> How many devices require CE certification?
-
-**Classic RAG:**
-
-Retrieves 6 chunks mentioning CE.  
-LLM answers:
-> “There are several devices that require CE certification, including…”
-No number.
-Or worse:
-> “There are 6 devices…”
-But there are actually 23.
-
-#### What Is Missing?
-
-Classic RAG sees text.
-It does not see:
-
-- Entities
-- Relationships
-- Rules
-- Full datasets
-- Exact counts
-    
-It has no structured understanding of the domain. Which is why it can't give a precise answer.
-
-## Conclusion
+- **Aggregation queries** need a system that can execute `COUNT`, `SUM`, and `GROUP BY` against the full dataset, not sample a few chunks.
+- **Exhaustive queries** need a retrieval mechanism that guarantees completeness — every matching record, not just the most similar ones.
+- **Precision queries** need structured lookups against verified data, not semantic similarity against document text.
+- **Relationship queries** need an explicit domain model with encoded rules and entity links, not inference from overlapping language.
 
 Reliable answers require more than text similarity. They require a structured model of the domain, tools capable of querying that structure, deterministic counting and filtering, and evidence attached to every answer.
 That is why Vedana exists.
+
+

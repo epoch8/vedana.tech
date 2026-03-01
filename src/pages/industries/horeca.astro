@@ -15,7 +15,7 @@ import Chat from "@/components/blocks/chat/Chat.astro";
 import ChatItem from "@/components/blocks/chat/ChatItem.astro";
 
 const bot = {
-  name: "Demo Bot",
+  name: "Vedana AI assistant",
   bubbleBg: "#eef3ff"
 };
 
@@ -53,12 +53,12 @@ const pageSEO: Partial<SEOConfig> = {
     <section class="page-hero">
         <div class="page-hero-inner">
             <h1 class="page-hero-title">
-                <strong>Vedana</strong> knows your business<br />
-                like your best hospitality professional
+                HoReCa runs on expertise.<br />
+                But <strong>expertise is hard to scale</strong>.
             </h1>
 
           <p class="page-hero-lead">
-                Vedana is an open-core AI platform, that <strong>fits HoReCa Industry</strong><br /> that scales expertise across teams, services, and regions
+                Vedana is an open-core AI platform, that encodes your operations logic, certifications, supplier data, service standards into a <strong>structured knowledge graph</strong> — so AI answers are verified. That scales expertise across teams, services, and regions.
           </p>
         </div>
     </section>
@@ -66,7 +66,7 @@ const pageSEO: Partial<SEOConfig> = {
     <section class="section">
         <div class="container flow">
         <h2>
-            Vedana saves expertise in AI-ready knowledge graph
+            Vedana saves your team expertise in <strong>AI-ready knowledge graph</strong>
         </h2>
             <Callout style="--callout-bg: var(--color-neutral-soft);">
                 <svg
@@ -82,7 +82,7 @@ const pageSEO: Partial<SEOConfig> = {
                     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.72 3h16.92a2 2 0 0 0 1.72-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
                 </svg>
                 <h3>
-                    Built-in HoReCa model tailored to your business
+                    Pre-modeled HoReCa ontology – ready to extend
                 </h3>
                 <p></p>
                 <p>
@@ -196,7 +196,7 @@ const pageSEO: Partial<SEOConfig> = {
                 </Timeline>   
                 
                 <Chat
-                    title="Chat with demo bot"
+                    title="Chat with Vedana"
                     showDate={false}
                     dateLabel="Monday, June 9, 2025"
                     reactions={[
@@ -252,45 +252,32 @@ const pageSEO: Partial<SEOConfig> = {
     <section class="section">
         <div class="container flow">
         <h2>
-            <strong>Problem #1:</strong> Most service knowledge lives in expert heads. 
+            <strong>Vedana</strong> reasons like a hospitality professional – with rules, steps, and structure 
         </h2>
-        <h2>
-            Your best hospitality professional leaves – so does everything they know.
-        </h2>
-
-        <p>
-            You re-hire. Re-train. Re-document. Again.<br/>
-            And your customers feel it first.
-        </p>
+        <p></p>
+        <Timeline orientation="horizontal" lines={true}>
+            <TimelineItem index="1" title="Playbook defines the logic">
+                        <p>
+                        A service-specific playbook guides Vedana how to think:<br/>
+                        
+                        “If query includes certification + menu item + ingredient → look for menu compatibility across all three entities.”
+                        <br />
+                        Logic is visible and customizable.
+                        </p>
+                        </TimelineItem> 
+                        <TimelineItem index="2" title="Domain graph defines the structure">
+                        <p>
+                        Vedana explores your knowledge graph:Menu Item → Recipe → Ingredient → Health & Safety Standardto trace dependencies and rules across layers.
+                        </p>
+                        </TimelineItem> 
+                        <TimelineItem index="3" title="Data model feeds the answer">
+                        <p>
+                        Each answer is supported by your data: service specifications, health & safety regulations, menu compatibility logic — not hallucination.Feedback from users is logged and used to improve the Playbook.
+                        </p>
+                </Timeline>  
         </div>
     </section>
     
-    <section class="section">
-        <div class="container flow">
-        <h2>
-            HoReCa runs on expertise. <br /> But that <strong>expertise is hard to scale</strong>.
-        </h2>
-        <h2>
-            So <strong>hedcount grows</strong> just to repeat the same answers –<br/> over and over.
-        </h2>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container flow">
-        <h2>
-            <strong>Problem #1:</strong> Most service knowledge lives in expert heads. 
-        </h2>
-        <h2>
-            Your best hospitality professional leaves – so does everything they know.
-        </h2>
-
-        <p>
-            You re-hire. Re-train. Re-document. Again.<br/>
-            And your customers feel it first.
-        </p>
-        </div>
-    </section>
 
 
 

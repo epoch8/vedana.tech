@@ -111,14 +111,6 @@ const pageSEO: Partial<SEOConfig> = {
     ]}
     relations={[
       {
-        label: "Operates in",
-        targets: [
-          { title: "Berlin", entityType: "location", color: "var(--entity-location)" },
-          { title: "Munich", entityType: "location", color: "var(--entity-location)" },
-          { title: "Hamburg", entityType: "location", color: "var(--entity-location)" }
-        ]
-      },
-      {
         label: "Holds",
         targets: [
           { title: "HACCP Certification 2023–2026", entityType: "certification", color: "var(--entity-compliance)" }
@@ -203,6 +195,27 @@ const pageSEO: Partial<SEOConfig> = {
       { key: "valid until", value: "Dec 2026" }
     ]}
   />
+
+<EntityCardRich
+  title="Supplier"
+  entityType="supplier"
+  color="var(--entity-supplier)"
+  attributes={[
+    { key: "name", value: "NordSea Imports GmbH" },
+    { key: "company type", value: "Seafood distributor" },
+    { key: "headquarters", value: "Hamburg, Germany" },
+    { key: "certified for", value: "EU food import compliance" },
+    { key: "delivery model", value: "Refrigerated daily supply" },
+  ]}
+  relations={[
+    {
+      label: "Supplies",
+      targets: [
+        { title: "Ingredient", entityType: "ingredient", color: "var(--entity-ingredient)" }
+      ]
+    }
+  ]}
+/>
 
 </EntityCardRichList>
 

@@ -9,23 +9,26 @@
 }
 
 .layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  display: flex;
+  gap: var(--space-8);
+  align-items: stretch;
 }
 
-.chat {
-  background: #f9fafc;
-  padding: 24px;
-  border-radius: 16px;
-  min-height: 320px;
+.chatContainer {
+  flex: 1;
+  height: 800px;
+  display: flex;
+}
+
+.chatContainer :global(.chat) {
+  flex: 1;
 }
 
 .reasoning {
+  flex: 1;
   background: #f3f6fb;
   padding: 24px;
   border-radius: 16px;
-  min-height: 320px;
 }
 
 .reasoningLine {
@@ -36,14 +39,4 @@
 
 @keyframes fadeIn {
   to { opacity: 1; }
-}
-
-.userMessage {
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-
-.vedanaMessage {
-  margin-top: 16px;
-  white-space: pre-line;
 }

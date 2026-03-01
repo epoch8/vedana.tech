@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Chat from "@/components/blocks/chat/Chat.jsx";
+import ChatItem from "@/components/blocks/chat/ChatItem.jsx";
 import styles from "./ProductDemo.module.css";
 
 const SCENARIOS = {
@@ -7,10 +9,10 @@ const SCENARIOS = {
     question:
       "Which wine pairs best with the Chef’s special pasta?",
     reasoning: [
-      "Identifying entity types: Dish, Wine",
-      "Applying relationship: Dish_pairs_with_Wine",
-      "Retrieving paired wines",
-      "Comparing structural attributes (body, acidity)",
+      "The user asks for a wine pairing recommendation and a comparison between two wines.",
+      "To recommend a wine for the Chef's special pasta: - We need the Dish entity (Chef’s special pasta).",
+      "To compare Pinot Noir and Merlot: - We need Wine entities filtered by name.",
+      "Relevant entity types: Dish, Wine; Relevant relationships: Dish_pairs_with_Wine; Relevant attributes: wine_type, body, acidity, origin, flavor_profile",
       "Synthesizing verified recommendation"
     ],
     answer: `The Chef’s special pasta pairs best with Pinot Noir due to its medium body and higher acidity.
@@ -36,16 +38,17 @@ export default function ProductDemo() {
     setDisplayedAnswer("");
   };
 
-  // Flow controller
   useEffect(() => {
     if (!scenario) return;
 
     if (state === "USER_QUESTION") {
-      setTimeout(() => setState("THINKING"), 600);
+      const t = setTimeout(() => setState("THINKING"), 600);
+      return () => clearTimeout(t);
     }
 
     if (state === "THINKING") {
-      setTimeout(() => setState("REASONING"), 1000);
+      const t = setTimeout(() => setState("REASONING"), 1000);
+      return () => clearTimeout(t);
     }
 
     if (state === "REASONING") {
@@ -55,13 +58,15 @@ export default function ProductDemo() {
         }, 700);
         return () => clearTimeout(timer);
       } else {
-        setTimeout(() => setState("ANSWER"), 600);
+        const t = setTimeout(() => setState("ANSWER"), 600);
+        return () => clearTimeout(t);
       }
     }
 
     if (state === "ANSWER") {
       let i = 0;
       const text = scenario.answer;
+
       const interval = setInterval(() => {
         setDisplayedAnswer(text.slice(0, i));
         i++;
@@ -90,44 +95,49 @@ export default function ProductDemo() {
       </div>
 
       <div className={styles.layout}>
-        <div className={styles.chat}>
+
+        {/* CHAT SIDE */}
+        <Chat title="Chat with Vedana">
           {scenario && (
             <>
-              <div className={styles.userMessage}>
-                {scenario.question}
-              </div>
+              {/* User message */}
+              <ChatItem
+                participant={2}
+                text={scenario.question}
+              />
 
-              {state === "ANSWER" || state === "DONE" ? (
-                <div className={styles.vedanaMessage}>
-                  {displayedAnswer}
-                </div>
-              ) : null}
+              {/* Bot answer */}
+              {(state === "ANSWER" || state === "DONE") && (
+                <ChatItem participant={1}>
+                  <div style={{ whiteSpace: "pre-line" }}>
+                    {displayedAnswer}
+                  </div>
+                </ChatItem>
+              )}
             </>
           )}
-        </div>
+        </Chat>
 
+        {/* REASONING SIDE */}
         <div className={styles.reasoning}>
-        {scenario && state !== "IDLE" && (
-            <>
-            {/* <ThinkingLogo active={state === "THINKING" || state === "REASONING"} /> */}
-
+          {scenario && state !== "IDLE" && (
             <div className={styles.reasoningSteps}>
-                {scenario.reasoning
+              {scenario.reasoning
                 .slice(
-                    0,
-                    state === "DONE"
+                  0,
+                  state === "DONE"
                     ? scenario.reasoning.length
                     : reasoningIndex
                 )
                 .map((step, i) => (
-                    <div key={i} className={styles.reasoningLine}>
+                  <div key={i} className={styles.reasoningLine}>
                     → {step}
-                    </div>
+                  </div>
                 ))}
             </div>
-            </>
-        )}
+          )}
         </div>
+
       </div>
     </div>
   );

@@ -59,26 +59,12 @@
 }
 
 
-/* =========================================
-   MOBILE — convert to normal breadcrumb
-========================================= */
-
-/* Desktop by default */
-.desktop-only {
-  display: inline-flex;
-}
-
-.mobile-only {
-  display: none;
-}
-
-/* Mobile */
 @media (max-width: 768px) {
-  .desktop-only {
-    display: none;
+  .spine-anchor {
+    transform: scale(0.8);
   }
 
-  .mobile-only {
-    display: inline-flex;
+  .spine-nav {
+    gap: var(--space-3);
   }
 }

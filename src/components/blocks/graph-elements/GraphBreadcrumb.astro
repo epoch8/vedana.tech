@@ -32,32 +32,17 @@ function isCurrent(i: number, c: Crumb) {
     const href = current ? undefined : c.href;
 
     return (
-      <Fragment>
-
-        {/* Desktop graph node */}
-        <Anchor
-          href={href}
-          size="lg"
-          variant="circle"
-          class={`
-            ${styles["spine-anchor"]}
-            ${styles["desktop-only"]}
-            ${current ? styles["spine-anchor--current"] : ""}
-          `}
-        >
-          {c.label}
-        </Anchor>
-
-        {/* Mobile inline breadcrumb */}
-        <Anchor
-          href={href}
-          variant="inline"
-          class={styles["mobile-only"]}
-        >
-          {c.label}
-        </Anchor>
-
-      </Fragment>
+      <Anchor
+        href={href}
+        size="lg"
+        variant="circle"
+        class={`
+          ${styles["spine-anchor"]}
+          ${current ? styles["spine-anchor--current"] : ""}
+        `}
+      >
+        {c.label}
+      </Anchor>
     );
   })}
 </nav>

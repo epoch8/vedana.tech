@@ -20,10 +20,15 @@
 /* Horizontal rhythm utility */
 
 .row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center; /* или flex-start */
+  display: grid;
   gap: var(--space-6);
+
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(320px, max-content)
+  );
+
+  justify-content: center;
 }
 
 /* =========================

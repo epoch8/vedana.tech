@@ -3,6 +3,29 @@ import InternalLayout from "@/layouts/InternalLayout.astro";
 import { SEOBase } from "@content/vedana/seo/seo";
 import type { SEOConfig } from "@/lib/seo/types";
 
+import Callout from "@/components/blocks/callout/Callout.astro";
+
+import EntityCardList from "@/components/blocks/entity-card/EntityCardList.astro";
+import EntityCard from "@/components/blocks/entity-card/EntityCard.astro";
+
+import Timeline from "@/components/blocks/timeline/Timeline.astro";
+import TimelineItem from "@/components/blocks/timeline/TimelineItem.astro";
+
+import Chat from "@/components/blocks/chat/Chat.astro";
+import ChatItem from "@/components/blocks/chat/ChatItem.astro";
+
+const bot = {
+  name: "Demo Bot",
+  bubbleBg: "#eef3ff"
+};
+
+const user = {
+  name: "User",
+  bubbleBg: "#2A5BFF",
+  bubbleColor: "#fff"
+};
+
+
 const crumbs = [
   { label: "Industries", href: "/industries" },
   { label: "Horeca" }
@@ -30,42 +53,246 @@ const pageSEO: Partial<SEOConfig> = {
     <section class="page-hero">
         <div class="page-hero-inner">
             <h1 class="page-hero-title">
-                VEDANA is built for industries<br />
-                where correct answers are critical
+                <strong>Vedana</strong> knows your business<br />
+                like your best hospitality professional
             </h1>
 
           <p class="page-hero-lead">
-                Vedana is an open-core AI platform for teams who can’t afford 
-                <strong>mostly right.</strong>  
-                Built for regulated environments with strict rules,
-                complex catalogs, and audit requirements.
+                Vedana is an open-core AI platform, that <strong>fits HoReCa Industry</strong><br /> that scales expertise across teams, services, and regions
           </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container flow">
+        <h2>
+            Vedana saves expertise in AI-ready knowledge graph
+        </h2>
+            <Callout style="--callout-bg: var(--color-neutral-soft);">
+                <svg
+                    slot="icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.72 3h16.92a2 2 0 0 0 1.72-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                </svg>
+                <h3>
+                    Built-in HoReCa model tailored to your business
+                </h3>
+                <p></p>
+                <p>
+                    VEDANA comes with a rich understanding of the HoReCa domain: brands, menu items, recipes, ingredients, equipment, supplies, beverages, certifications, and service protocols.
+                </p>
+                <p>
+                    We extend this model with your internal logic, formats, and documents, so your assistant answers questions in your language – not just industry standards.
+                </p>
+            </Callout>
+            
+        <EntityCardList columns={3}>
+
+        <EntityCard
+            title="Brand"
+            attributes={[
+            { key: "region", value: "Berlin, Munich, Hamburg" },
+            { key: "opening_year", value: "2014" },
+            { key: "website", value: "nordic-harbor.de" },
+            { key: "type", value: "casual seafood restaurant" }
+            ]}
+        />
+
+        <EntityCard
+            title="Menu Item"
+            attributes={[
+            { key: "category", value: "main course" },
+            { key: "ingredients", value: "Atlantic salmon, lemon, dill, olive oil" },
+            { key: "allergens", value: "fish" },
+            { key: "preparation_time", value: "18 min" },
+            { key: "serving_size", value: "320 g" }
+            ]}
+        />
+
+        <EntityCard
+            title="Ingredient"
+            attributes={[
+            { key: "supplier", value: "NordSea Imports GmbH" },
+            { key: "shelf_life", value: "3 days (fresh)" },
+            { key: "storage_conditions", value: "2–4°C, refrigerated" },
+            { key: "cost", value: "€8.40 / kg" }
+            ]}
+        />
+
+        <EntityCard
+            title="Beverage"
+            attributes={[
+            { key: "type", value: "Pinot Noir (red wine)" },
+            { key: "origin", value: "Burgundy, France" },
+            { key: "serving_temperature", value: "16–18°C" },
+            { key: "pairing_suggestions", value: "grilled salmon, seared duck" }
+            ]}
+        />
+
+        <EntityCard
+            title="Certification"
+            attributes={[
+            { key: "standard_number", value: "HACCP-DE-2023-4581" },
+            { key: "scope", value: "kitchen & cold storage operations" },
+            { key: "issuing_body", value: "German Food Safety Authority" },
+            { key: "valid_until", value: "Dec 2026" }
+            ]}
+        />
+
+        </EntityCardList>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container flow">
+        <h2>
+            VEDANA makes all your knowledge accessible.
+        </h2>
+        <h3>
+            From PDF to service answer – instantly.
+        </h3>
+
+            <Callout style="--callout-bg: var(--color-neutral-soft);">
+                <h4>
+                    👨‍🍳 Hospitality professional asks:
+                </h4>
+                <p></p>
+                <p>
+                    What wines pair well with a seared duck breast with cherry reduction that meet organic certification standards?
+                </p>
+            </Callout>
+            
+            <h3>How Vedana turns documents into answers:</h3>
+            <div class="row">
+
+                <Timeline orientation="vertical" lines={false}>
+                        <TimelineItem index="1" title="Extraction">
+                        <p>
+                        Pull data from messy manuals, PDFs, Excels, and specs
+                        </p>
+                        </TimelineItem> 
+                        <TimelineItem index="2" title="Normalization">
+                        <p>
+                        Clear and unify structure across formats
+                        </p>
+                        </TimelineItem> 
+                        <TimelineItem index="3" title="Knowledge Graph">
+                        <p>
+                        Build connections between entities
+                        </p>
+                        </TimelineItem> 
+                        <TimelineItem index="4" title="Knowledge Graph Search">
+                        <p>
+                        Search by meaning, not just keywords
+                        </p>
+                        </TimelineItem> 
+                </Timeline>   
+                
+                <Chat
+                    title="Chat with demo bot"
+                    showDate={false}
+                    dateLabel="Monday, June 9, 2025"
+                    reactions={[
+                    ]}
+                    >
+
+                    <ChatItem
+                        participant={2}
+                        text="What wines pair well with a seared duck breast with cherry reduction that meet organic certification standards?"
+                        participant1={bot}
+                        participant2={user}
+                    />
+
+                    <ChatItem
+                    participant={1}
+                    participant1={bot}
+                    participant2={user}
+                        >
+                        <p><strong>Understood:</strong></p>
+
+                        <ul>
+                            <li><code>organic certification standards</code> standard</li>
+                            <li><code>seared duck breast with cherry reduction</code> dish type</li>
+                            <li><code>pair_well_with</code> - relation between wine and dish</li>
+                        </ul>
+
+                        <p>Querying graph...</p>
+                    </ChatItem>
+
+                    <ChatItem
+                    participant={1}
+                    participant1={bot}
+                    participant2={user}
+                        >
+                        <p><strong>Answer:</strong></p>
+
+                        <ul>
+                            <li><strong>Pinot Noir from Burgundy</strong></li>
+                            <li><strong>Syrah from Rhône Valley</strong></li>
+                        </ul>
+
+                        <p>
+                            All meet the Restaurant Association's sustainable sourcing guidelines for organic wines.
+                        </p>
+                    </ChatItem>
+
+                    </Chat>
+
+            </div>    
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container flow">
+        <h2>
+            <strong>Problem #1:</strong> Most service knowledge lives in expert heads. 
+        </h2>
+        <h2>
+            Your best hospitality professional leaves – so does everything they know.
+        </h2>
+
+        <p>
+            You re-hire. Re-train. Re-document. Again.<br/>
+            And your customers feel it first.
+        </p>
         </div>
     </section>
     
     <section class="section">
         <div class="container flow">
         <h2>
-            Page header H2
-        </h1>
-
-        <p>
-            Simple page text.
-        </p>
+            HoReCa runs on expertise. <br /> But that <strong>expertise is hard to scale</strong>.
+        </h2>
+        <h2>
+            So <strong>hedcount grows</strong> just to repeat the same answers –<br/> over and over.
+        </h2>
         </div>
     </section>
 
     <section class="section">
         <div class="container flow">
         <h2>
-            Page header H2-2
-        </h1>
+            <strong>Problem #1:</strong> Most service knowledge lives in expert heads. 
+        </h2>
+        <h2>
+            Your best hospitality professional leaves – so does everything they know.
+        </h2>
 
         <p>
-            Simple page text.
+            You re-hire. Re-train. Re-document. Again.<br/>
+            And your customers feel it first.
         </p>
         </div>
     </section>
+
+
 
     <section class="section">
         <div class="container flow">

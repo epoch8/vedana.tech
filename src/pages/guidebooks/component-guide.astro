@@ -1,8 +1,124 @@
 ---
+import "@/styles/global.css";
+
 import Anchor from "@/components/blocks/graph-elements/Anchor.astro";
+
+import EntityCardList from "@/components/blocks/entity-card/EntityCardList.astro";
+import EntityCard from "@/components/blocks/entity-card/EntityCard.astro";
+
+
+import Chat from "@/components/blocks/chat/Chat.astro";
+import ChatItem from "@/components/blocks/chat/ChatItem.astro";
+
+const bot = {
+  name: "Demo Bot",
+  bubbleBg: "#eef3ff"
+};
+
+const user = {
+  name: "User",
+  bubbleBg: "#2A5BFF",
+  bubbleColor: "#fff"
+};
 ---
+
+<Chat
+  title="Chat with demo bot"
+  showDate={true}
+  dateLabel="Monday, June 9, 2025"
+  reactions={[
+    { label: "Great!" },
+    { label: "Can you do something else?" }
+  ]}
+>
+
+  <ChatItem
+    participant={1}
+    text="Hello, this is a demo bot."
+    participant1={bot}
+    participant2={user}
+  />
+
+  <ChatItem
+    participant={2}
+    text="Hello!"
+    participant1={bot}
+    participant2={user}
+  />
+    <ChatItem
+    participant={1}
+    text="Hello, this is a demo bot."
+    participant1={bot}
+    participant2={user}
+  />
+
+  <ChatItem
+    participant={2}
+    text="Hello!"
+    participant1={bot}
+    participant2={user}
+  />
+<ChatItem
+    participant={2}
+    text="Hello!"
+    participant1={bot}
+    participant2={user}
+  />
+
+  <ChatItem
+  participant={1}
+  participant1={bot}
+  participant2={user}
+    >
+    <p><strong>Understood:</strong></p>
+
+    <ul>
+        <li><code>organic certification standards</code> standard</li>
+        <li><code>seared duck breast with cherry reduction</code> dish type</li>
+        <li><code>pair_well_with</code> - relation between wine and dish</li>
+    </ul>
+
+    <p>Querying graph...</p>
+
+    <p><strong>Answer:</strong></p>
+
+    <ul>
+        <li><strong>Pinot Noir from Burgundy</strong></li>
+        <li><strong>Syrah from Rhône Valley</strong></li>
+    </ul>
+
+    <p>
+        All meet the Restaurant Association's sustainable sourcing guidelines for organic wines.
+    </p>
+  </ChatItem>
+
+</Chat>
 
 <Anchor>Industry</Anchor>
 <Anchor size="sm">VEDANA</Anchor>
 <Anchor size={72} maxLines={3}>suits-for</Anchor>
 <Anchor href="/industries/legal" title="Industry: Legal">Legal</Anchor>
+
+<EntityCardList columns={4}>
+
+  <EntityCard
+    title="Brand"
+    attributes={[
+      { key: "region", value: "EU" },
+      { key: "opening_year", value: "2014" },
+      { key: "website", value: "example.com", href: "https://example.com", external: true },
+      { key: "type", value: "restaurant" }
+    ]}
+  />
+
+  <EntityCard
+    title="Menu Item"
+    attributes={[
+      { key: "category", value: "Main course" },
+      { key: "ingredients", value: "Salmon, lemon, herbs" },
+      { key: "allergens", value: "Fish" },
+      { key: "preparation_time", value: "18 min" }
+    ]}
+  />
+
+</EntityCardList>

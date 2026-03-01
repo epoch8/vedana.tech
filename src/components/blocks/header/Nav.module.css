@@ -35,7 +35,7 @@
 .nav-brand {
   position: absolute;
   
-  left: calc(var(--layout-left-offset) - 17px);
+  left: calc(var(--layout-left-offset) - 18px);
 
   display: flex;
   align-items: center;

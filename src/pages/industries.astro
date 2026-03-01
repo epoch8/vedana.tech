@@ -10,8 +10,6 @@ import IconGrid from "@/components/blocks/icon-grid/IconGrid.astro";
 import IconGridItem from "@/components/blocks/icon-grid/IconGridItem.astro";
 
 import Callout from "@/components/blocks/callout/Callout.astro";
-import Anchor from "@/components/blocks/graph-elements/Anchor.astro";
-
 
 import CardGrid from "../components/blocks/card-grid/CardGrid.astro";
 import CardGridItem from "../components/blocks/card-grid/CardGridItem.astro";
@@ -47,7 +45,7 @@ const pageSEO: Partial<SEOConfig> = {
     <section class="page-hero">
         <div class="page-hero-inner">
             <h1 class="page-hero-title">
-                VEDANA is built for industries<br />
+                <strong>Vedana</strong> is built for industries<br />
                 where correct answers are critical
             </h1>
 
@@ -75,6 +73,14 @@ const pageSEO: Partial<SEOConfig> = {
         />
 
         <CardGridItem
+            title="HoReCa"
+            text="Deterministic reasoning over regulations, contracts, and structured legal knowledge."
+            href="/industries/horeca"
+            buttonLabel="Explore HoReCa"
+            position={2}
+        />
+
+        <CardGridItem
             title="Legal"
             text="Deterministic reasoning over regulations, contracts, and structured legal knowledge."
             href="/industries/legal"
@@ -87,8 +93,8 @@ const pageSEO: Partial<SEOConfig> = {
     </section>
 
     <section class="section">
-        <div class="container flow page-structure">
-            <h2>Why VEDANA is different?</h2>
+        <div class="container flow">
+            <h2>Why <strong>Vedana</strong> is different?</h2>
             <CardGrid id="approach">
 
             <CardGridItem

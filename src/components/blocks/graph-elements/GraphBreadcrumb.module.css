@@ -63,6 +63,7 @@
    MOBILE — convert to normal breadcrumb
 ========================================= */
 
+/* Desktop by default */
 .desktop-only {
   display: inline-flex;
 }
@@ -71,3 +72,13 @@
   display: none;
 }
 
+/* Mobile */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: inline-flex;
+  }
+}

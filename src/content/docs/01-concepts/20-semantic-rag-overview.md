@@ -4,7 +4,7 @@ title: "Semantic RAG overview"
 
 ## What Is Semantic RAG?
 
-Vedana is built on an architecture called Semantic RAG — a significant departure from the classic RAG pattern described in the previous chapter. Where classic RAG treats every question as a retrieval problem, Semantic RAG treats it as a reasoning problem: the system first understands what the question is actually asking, then selects the right tool to answer it precisely.
+Vedana is built on an architecture called Semantic RAG. Where classic RAG treats every question as a retrieval problem, Semantic RAG treats it as a reasoning problem: the system first understands what the question is actually asking, then selects the right tool to answer it precisely.
 The result is an assistant that doesn't guess, it computes and gives a precise answer.
 
 ## The Four Components
@@ -19,10 +19,10 @@ All four parts work together to produce precise, verifiable answers to questions
 
 A **Semantic RAG** system consists of:
 
-- Data — the raw material: documents, records, and structured entities.
-- Data Model — a structured representation of the domain and the relationships within it.
-- Tools — capabilities the assistant can invoke: queries, graph traversal, counting, filtering.
-- Assistant — an LLM-powered agent that knows when and how to use the right tool for a given question.
+- Data – the raw material: documents, records, and structured entities.
+- Data Model – a structured representation of the domain and the relationships within it.
+- Tools – capabilities the assistant can invoke: queries, graph traversal, counting, filtering.
+- Assistant – an LLM-powered agent that knows when and how to use the right tool for a given question.
 
 Without structure and tools, the assistant guesses answers.
 With structure and tools, the assistant understands the question fully and gives a precise answer.

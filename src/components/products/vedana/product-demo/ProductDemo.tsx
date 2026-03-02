@@ -1,9 +1,4 @@
-import {
-  useState,
-  useEffect,
-  useMemo,
-  type ReactNode
-} from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import Chat from "@/components/blocks/chat/Chat";
 import ChatItem from "@/components/blocks/chat/ChatItem";
@@ -17,7 +12,7 @@ export type DemoScenario = {
   key: string;
   label: string;
   question: string;
-  reasoning: ReactNode[]; // оставляем как есть
+  reasoning: string[]; // ← теперь строки
   answer: string;
 };
 
@@ -197,10 +192,10 @@ export default function ProductDemo({ scenarios }: Props) {
                   key={`${activeScenario.key}-step-${index}`}
                   className={styles.reasoningLine}
                 >
-                  {/* ВАЖНО: рендерим как children, не как строку */}
-                  <span className={styles.reasoningContent}>
-                    {step}
-                  </span>
+                  <span
+                    className={styles.reasoningContent}
+                    dangerouslySetInnerHTML={{ __html: step }}
+                  />
                 </div>
               ))}
             </div>

@@ -19,5 +19,88 @@ Compared to Merlot:
 - Merlot: fuller body, softer tannins
 
 For creamy sauces Pinot Noir is optimal.`
+  },
+
+  {
+    key: "allergens",
+    label: "Allergen risk check",
+    question: "Does the seafood risotto contain any high-risk allergens?",
+    reasoning: [
+      "The user is asking for allergen risk validation.",
+      "We need the <strong>Dish</strong> entity and its linked <strong>Ingredient</strong> nodes.",
+      "Relevant relationship: <strong>Dish_contains_Ingredient</strong>.",
+      "We check each ingredient for the attribute <strong>allergen_category</strong>.",
+      "Flagging ingredients classified under <strong>EU High-Risk Allergens</strong>.",
+      "Generating structured allergen exposure summary."
+    ],
+    answer: `
+<strong>Allergen Risk Summary:</strong>
+
+<ul>
+  <li><strong>Shellfish</strong> — Present (shrimp stock)</li>
+  <li><strong>Dairy</strong> — Present (parmesan)</li>
+  <li><strong>Gluten</strong> — Not detected</li>
+  <li><strong>Nuts</strong> — Not detected</li>
+</ul>
+
+<table border="1" cellpadding="4">
+  <tr>
+    <th>Ingredient</th>
+    <th>Allergen Category</th>
+    <th>Risk Level</th>
+  </tr>
+  <tr>
+    <td>Shrimp Stock</td>
+    <td>Shellfish</td>
+    <td>High</td>
+  </tr>
+  <tr>
+    <td>Parmesan</td>
+    <td>Dairy</td>
+    <td>Medium</td>
+  </tr>
+</table>
+
+<strong>Conclusion:</strong>
+The dish contains high-risk allergens and must be labeled accordingly.
+`
+  },
+
+  {
+    key: "margin",
+    label: "Menu margin optimization",
+    question: "Which dishes have margins below 60% and should be repriced?",
+    reasoning: [
+      "The user asks for profitability analysis.",
+      "We need the <strong>Dish</strong> entity with attributes <strong>cost_price</strong> and <strong>menu_price</strong>.",
+      "Margin formula applied: <code>(menu_price - cost_price) / menu_price</code>.",
+      "Filtering dishes where computed margin &lt; <strong>0.60</strong>.",
+      "Sorting by lowest margin first.",
+      "Producing repricing recommendations."
+    ],
+    answer: `
+<strong>Margin Analysis Result:</strong>
+
+<ol>
+  <li>
+    <strong>Grilled Salmon</strong><br/>
+    Cost: $14<br/>
+    Price: $22<br/>
+    Margin: <strong>36%</strong>
+  </li>
+  <li>
+    <strong>Truffle Pasta</strong><br/>
+    Cost: $11<br/>
+    Price: $18<br/>
+    Margin: <strong>39%</strong>
+  </li>
+</ol>
+
+<strong>Recommendation:</strong>
+
+Increase pricing by 12–18% or renegotiate supplier contracts.
+
+<em>Target margin:</em> <strong>65%+</strong> for premium positioning.
+`
   }
 ];

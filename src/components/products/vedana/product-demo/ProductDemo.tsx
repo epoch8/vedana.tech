@@ -173,9 +173,10 @@ export default function ProductDemo({ scenarios }: Props) {
 
                 {(phase === "ANSWER" || phase === "DONE") && (
                   <ChatItem participant={1}>
-                    <div style={{ whiteSpace: "pre-line" }}>
-                      {typedAnswer}
-                    </div>
+                  <div
+                    className={styles.answerContent}
+                    dangerouslySetInnerHTML={{ __html: typedAnswer }}
+                  />
                   </ChatItem>
                 )}
               </>

@@ -45,7 +45,7 @@ export default function Chat({
                       {s.label}
                     </span>
                     <span className={styles.scenarioHint}>
-                      Try this example →
+                      Try this example
                     </span>
                   </button>
                 ))}
@@ -62,7 +62,12 @@ export default function Chat({
             {reactions.length > 0 && (
               <div className={styles.reactions}>
                 {reactions.map((r, i) => (
-                  <button key={i} type="button" className={styles.reaction}>
+                  <button
+                    key={i}
+                    type="button"
+                    className={styles.reaction}
+                    onClick={r.onClick}
+                  >
                     {r.label}
                   </button>
                 ))}

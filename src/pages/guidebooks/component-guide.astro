@@ -14,7 +14,9 @@ import EntityCardRichList from "@/components/blocks/entity-card/EntityCardRichLi
 import Chat from "@/components/blocks/chat/Chat.astro";
 import ChatItem from "@/components/blocks/chat/ChatItem.astro";
 
-import ProductDemo from "@/components/products/vedana/product-demo/ProductDemo.jsx";
+import ProductDemo from "@/components/products/vedana/product-demo/ProductDemo.tsx";
+import { scenariosHoreca } from "@/content/vedana/demo/horeca"
+
 
 const bot = {
   name: "Demo Bot",
@@ -30,7 +32,7 @@ const user = {
 
 <section class="section">
   <div class="container">
-    <ProductDemo client:load />
+    <ProductDemo scenarios={scenariosHoreca} client:load />
   </div>
 </section>
 

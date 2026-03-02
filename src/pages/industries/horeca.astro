@@ -73,29 +73,26 @@ const pageSEO: Partial<SEOConfig> = {
             Vedana saves your team expertise in <strong>AI-ready knowledge graph</strong>
         </h2>
             <Callout style="--callout-bg: var(--color-neutral-soft);">
-                <svg
-                    slot="icon"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.72 3h16.92a2 2 0 0 0 1.72-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                </svg>
                 <h3>
                     Pre-modeled HoReCa ontology – ready to extend
                 </h3>
                 <p></p>
                 <p>
-                    VEDANA comes with a rich understanding of the HoReCa domain: brands, menu items, recipes, ingredients, equipment, supplies, beverages, certifications, and service protocols.
+                    VEDANA comes with a rich understanding of the HoReCa domain: brands, menu items, recipes, ingredients, equipment, supplies, beverages, certifications, service protocols and others.
                 </p>
                 <p>
                     We extend this model with your internal logic, formats, and documents, so your assistant answers questions in your language – not just industry standards.
                 </p>
             </Callout>
+<h3>
+    Any Domain = <strong>Anchors, Attributes, Links</strong>
+</h3>
+<p>
+    Vedana represents any business domain as a structured graph of <strong>anchors (entities), their attributes (properties), and explicit links (relationships)</strong>. <br/>
+    In this HoReCa mini-demo, dishes, ingredients, suppliers, and certifications are typed nodes connected by governed business logic. 
+    <br/>
+    <strong>This is the foundation of our methodology: structured modeling first, AI reasoning on top.</strong>
+</p>
 
 <EntityCardRichList columns={3}>
 
@@ -113,7 +110,7 @@ const pageSEO: Partial<SEOConfig> = {
       {
         label: "Holds",
         targets: [
-          { title: "HACCP Certification 2023–2026", entityType: "certification", color: "var(--entity-compliance)" }
+          { title: "certificate: HACCP Certification 2023–2026", entityType: "certification", color: "var(--entity-compliance)" }
         ]
       }
     ]}
@@ -133,7 +130,7 @@ const pageSEO: Partial<SEOConfig> = {
       {
         label: "Contains",
         targets: [
-          { title: "Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
+          { title: "ingredient: Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
         ]
       }
     ]}
@@ -155,7 +152,7 @@ const pageSEO: Partial<SEOConfig> = {
       {
         label: "Supplied by",
         targets: [
-          { title: "NordSea Imports GmbH", entityType: "supplier", color: "var(--entity-supplier)" }
+          { title: "supplier: NordSea Imports GmbH", entityType: "supplier", color: "var(--entity-supplier)" }
         ]
       }
     ]}
@@ -177,7 +174,7 @@ const pageSEO: Partial<SEOConfig> = {
       {
         label: "Complements",
         targets: [
-          { title: "Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
+          { title: "ingredient: Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
         ]
       }
     ]}
@@ -211,7 +208,7 @@ const pageSEO: Partial<SEOConfig> = {
     {
       label: "Supplies",
       targets: [
-        { title: "Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
+        { title: "ingredient: Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
       ]
     }
   ]}

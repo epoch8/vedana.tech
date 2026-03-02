@@ -97,7 +97,17 @@ export default function ProductDemo() {
       <div className={styles.layout}>
 
         {/* CHAT SIDE */}
-        <Chat title="Chat with Vedana">
+    <div className={styles.chatContainer}>
+        <Chat title="Chat with Vedana"
+          isEmpty={!scenario}
+          showInput={false}   // 👈 выключаем инпут в демке
+            emptyScenarios={[
+                { key: "wine", label: "Wine pairing" },
+                { key: "legal", label: "Compliance check" },
+                { key: "inventory", label: "Inventory lookup" }
+            ]}
+            onScenarioClick={startScenario}
+            >
           {scenario && (
             <>
               {/* User message */}
@@ -117,6 +127,7 @@ export default function ProductDemo() {
             </>
           )}
         </Chat>
+        </div>
 
         {/* REASONING SIDE */}
         <div className={styles.reasoning}>

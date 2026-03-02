@@ -90,11 +90,9 @@ The LLM evaluates:
 **Example:**
 
 **Question:** *"What are the opening hours of the Moscow branch?"*
-
 **Correct behavior:** *Use Cypher (structured lookup)*.
     
 **Question:** *"What does the policy say about overtime?"*
-
 **Correct behavior:** *Use vector search (document retrieval).*
 
 For **hybrid retrieval**, a typical flow looks like this:

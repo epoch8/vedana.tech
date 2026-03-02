@@ -186,7 +186,7 @@ A few properties of Vedana's storage layer are worth understanding clearly:
 The practical consequence of these properties is straightforward: if you load only documents without any structured model, Vedana behaves like a basic RAG system — useful, but limited to text retrieval. 
 If you model your domain correctly with anchors, attributes, and links, Vedana becomes a domain knowledge engine capable of precise, verifiable, relationship-driven answers.
 
-## Recommended Strategy (вообще убрала бы)
+## Recommended Strategy 
 
 For most deployments:
 

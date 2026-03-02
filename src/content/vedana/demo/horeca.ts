@@ -2,15 +2,24 @@ export const scenariosHoreca = [
   {
     key: "wine",
     label: "Wine pairing",
-    question: "Which wine pairs best with the Chef’s special pasta?",
+    question: "Which wine pairs best with the Chef’s special pasta? What’s the difference between a Pinot Noir and a Merlot from the menu?",
     reasoning: [
-      "The user asks for a wine pairing recommendation and a comparison between two wines.",
-      "To recommend a wine for the Chef's special pasta we need the <strong>Dish</strong> entity.",
-      "To compare Pinot Noir and Merlot we need <strong>Wine</strong> entities filtered by name.",
-      "Relevant entity types: <strong>Dish</strong>, <strong>Wine</strong>.",
-      "Relevant relationship: <strong>Dish_pairs_with_Wine</strong>.",
-      "Relevant attributes: <strong>wine_type</strong>, <strong>body</strong>, <strong>acidity</strong>, <strong>origin</strong>, <strong>flavor_profile</strong>.",
-      "Synthesizing verified recommendation."
+      "The user asks for a wine pairing recommendation and a comparison between two wines.<br/>",
+      `To recommend a wine for the Chef's special pasta we need:<br/>`,
+      `- <strong>Dish</strong> entity (Chef’s special pasta).<br/>
+      - <strong>Dish → has → Ingredient</strong> relationship.<br/>
+      - <strong>Ingredient → pairs_with → Wine</strong> relationship.<br/>
+      - <strong>Wine</strong> attributes such as <strong>type</strong>, <strong>body</strong>, <strong>acidity</strong>, <strong>origin</strong>.<br/>`,
+      "To compare Pinot Noir and Merlot:",
+      `- We need <strong>Wine</strong> entities filtered by name.<br/>
+      - We need attributes: type, body, acidity, flavor profile.<br/>
+      - We may also use pairing compatibility to contextualize recommendation.`,
+      "Therefore:",
+      `1) Retrieve Chef’s special pasta.<br/>
+      2) Retrieve associated ingredients.<br/>
+      3) Retrieve wines associated with ingredients.<br/>
+      4) Retrieve Pinot Noir and Merlot details.<br/>
+      5) Compare based on structural attributes.`,
     ],
     answer: `The Chef’s special pasta pairs best with Pinot Noir due to its medium body and higher acidity.
 

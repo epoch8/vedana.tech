@@ -1,11 +1,74 @@
 :root {
 
---entity-brand: #0ea5e9;
+--entity-brand: hsl(187 65% 62%);;
 --entity-location: #64748b;
---entity-dish: #3b82f6;
---entity-ingredient: #10b981;
---entity-wine: #8b5cf6;
---entity-compliance: #f59e0b;
---entity-supplier: #6b7280;
+--entity-dish: hsl(79 50% 80%);
+--entity-ingredient: hsl(151 50% 56%);
+--entity-wine: hsl(295 60% 60%);
+--entity-compliance: hsl(259 55% 70%);
+--entity-supplier: hsl(223 60% 72%);
+
+--industry-horeca: hsl(79 60% 68%);
+--industry-automotive: hsl(43 62% 66%);
+--industry-legal: hsl(7 65% 64%);
+--industry-ecom: hsl(115 58% 66%);
+--industry-health: hsl(151 60% 64%);
+--industry-banking: hsl(259 65% 58%);
+
+/* ===============================
+   VEDANA COLOR SYSTEM
+   Core / Soft-Light / Soft-Dark
+================================ */
+
+/* B */
+--b-core: hsl(223 70% 60%);
+--b-light: hsl(223 60% 72%);
+--b-dark: hsl(223 62% 46%);
+
+/* GB */
+--gb-core: hsl(187 65% 62%);
+--gb-light: hsl(187 55% 74%);
+--gb-dark: hsl(187 58% 48%);
+
+/* G */
+--g-core: hsl(151 60% 64%);
+--g-light: hsl(151 50% 76%);
+--g-dark: hsl(151 52% 50%);
+
+/* YG */
+--yg-core: hsl(115 58% 66%);
+--yg-light: hsl(115 48% 78%);
+--yg-dark: hsl(115 50% 52%);
+
+/* Y */
+--y-core: hsl(79 60% 68%);
+--y-light: hsl(79 50% 80%);
+--y-dark: hsl(79 52% 54%);
+
+/* RY */
+--ry-core: hsl(43 62% 66%);
+--ry-light: hsl(43 52% 78%);
+--ry-dark: hsl(43 54% 52%);
+
+/* R */
+--r-core: hsl(7 65% 64%);
+--r-light: hsl(7 55% 76%);
+--r-dark: hsl(7 57% 50%);
+
+/* VR */
+--vr-core: hsl(331 63% 62%);
+--vr-light: hsl(331 53% 74%);
+--vr-dark: hsl(331 55% 48%);
+
+/* V */
+--v-core: hsl(295 60% 60%);
+--v-light: hsl(295 50% 72%);
+--v-dark: hsl(295 52% 46%);
+
+/* BV */
+--bv-core: hsl(259 65% 58%);
+--bv-light: hsl(259 55% 70%);
+--bv-dark: hsl(259 57% 44%);
+
 
 }

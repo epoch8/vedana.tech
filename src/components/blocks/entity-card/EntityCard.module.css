@@ -229,29 +229,56 @@
 ====================================================== */
 
 .entity-card-mini {
-  padding: var(--space-3);
-  gap: var(--space-2);
+  display: flex;
+  flex-direction: column;
+
+  width: 260px;              /* фиксированная ширина */
+  flex: 0 0 260px;           /* запрещаем растягивание */
+
+  padding: var(--space-4);
+  gap: var(--space-3);
+
   background: var(--color-bg-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+
   animation: cardMaterialize 0.25s ease forwards;
   opacity: 0;
   transform: translateY(6px);
+
+  transition:
+    border-color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-standard);
+}
+
+.entity-card-mini:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
 }
 
 .entity-card-mini .entity-card__title {
   font-size: var(--font-size-base);
   font-weight: 700;
+  line-height: var(--line-height-tight);
 }
 
 .entity-card-mini .entity-item {
+  display: grid;
   grid-template-columns: minmax(90px, 1fr) 1fr;
+  gap: var(--space-1);
 }
 
 .entity-card-mini .entity-item__key {
   font-size: 0.75rem;
+  color: var(--color-text-subtle);
 }
 
 .entity-card-mini .entity-item__value {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text);
 }
 
 @keyframes cardMaterialize {
@@ -262,34 +289,23 @@
 }
 
 /* ======================================================
-   MINI RAIL (HORIZONTAL EVIDENCE TRAY)
+   MINI RAIL (EVIDENCE LAYOUT)
 ====================================================== */
 
 .entity-card-mini-rail {
   display: flex;
+  flex-wrap: wrap;            /* перенос на новую строку */
   gap: var(--space-4);
 
-  overflow-x: auto;
-  padding-bottom: var(--space-2);
-
-  scroll-snap-type: x mandatory;
+  align-items: flex-start;
+  padding-top: var(--space-3);
 }
 
-/* убираем ugly scrollbar где возможно */
-.entity-card-mini-rail::-webkit-scrollbar {
-  height: 6px;
-}
 
-.entity-card-mini-rail::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 999px;
-}
+/* ======================================================
+   OPTIONAL: subtle section spacing inside reasoning
+====================================================== */
 
-/* каждая карточка фиксированной ширины */
-.entity-card-mini-rail .entity-card {
-  min-width: 260px;
-  max-width: 280px;
-  flex-shrink: 0;
-
-  scroll-snap-align: start;
+.reasoningBlock + .reasoningBlock {
+  margin-top: var(--space-6);
 }

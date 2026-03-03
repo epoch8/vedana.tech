@@ -1,4 +1,37 @@
+import React from "react";
 import styles from "./Chat.module.css";
+
+export type EmptyScenario = {
+  key: string;
+  label: string;
+};
+
+export type ChatReaction = {
+  label: string;
+  onClick: () => void;
+};
+
+export type ChatProps = {
+  title?: string;
+
+  showDate?: boolean;
+  dateLabel?: string;
+
+  reactions?: ChatReaction[];
+
+  inputPlaceholder?: string;
+  inputValue?: string;
+
+  showSendButton?: boolean;
+  showInput?: boolean;
+
+  isEmpty?: boolean;
+
+  emptyScenarios?: EmptyScenario[];
+  onScenarioClick?: (key: string) => void;
+
+  children?: React.ReactNode;
+};
 
 export default function Chat({
   title,
@@ -8,12 +41,15 @@ export default function Chat({
   inputPlaceholder = "Type a message",
   inputValue = "",
   showSendButton = true,
-  showInput = true,              // 👈 новый флаг
+  showInput = true,
   isEmpty = false,
-  emptyScenarios = [],
+
+  // 👇 ключевой фикс: не даём TS вывести never[]
+  emptyScenarios = [] as EmptyScenario[],
+
   onScenarioClick,
   children
-}) {
+}: ChatProps) {
   return (
     <div className={styles.chat}>
       {title && (
@@ -37,7 +73,8 @@ export default function Chat({
               <div className={styles.emptyActions}>
                 {emptyScenarios.map((s, i) => (
                   <button
-                    key={i}
+                    key={s.key ?? i}
+                    type="button"
                     className={styles.scenarioCard}
                     onClick={() => onScenarioClick?.(s.key)}
                   >
@@ -57,6 +94,7 @@ export default function Chat({
             {showDate && dateLabel && (
               <div className={styles.date}>{dateLabel}</div>
             )}
+
             {children}
 
             {reactions.length > 0 && (
@@ -77,7 +115,6 @@ export default function Chat({
         )}
       </div>
 
-      {/* 👇 теперь поле ввода рендерится условно */}
       {showInput && (
         <div className={styles.inputArea}>
           <div className={styles.inputWrapper}>

@@ -1,12 +1,22 @@
+import React from "react";
 import styles from "./Chat.module.css";
 
+type Participant = {
+  name: string;
+};
+
+type Props = {
+  participant: 1 | 2;          // 1 = bot, 2 = user (как у тебя)
+  text?: string;               // опционально
+  children?: React.ReactNode;  // опционально
+
+  participant1?: Participant;  // опционально
+  participant2?: Participant;  // опционально
+};
+
 const DEFAULTS = {
-  bot: {
-    name: "Vedana"
-  },
-  user: {
-    name: "You"
-  }
+  bot: { name: "Vedana" },
+  user: { name: "You" }
 };
 
 export default function ChatItem({
@@ -15,17 +25,13 @@ export default function ChatItem({
   children,
   participant1,
   participant2
-}) {
-  let p;
-
-  if (participant1 && participant2) {
-    const isLeft = participant === 1;
-    p = isLeft ? participant1 : participant2;
-  } else {
-    p = participant === 1 ? DEFAULTS.bot : DEFAULTS.user;
-  }
-
+}: Props) {
   const isLeft = participant === 1;
+
+  const p =
+    participant1 && participant2
+      ? (isLeft ? participant1 : participant2)
+      : (isLeft ? DEFAULTS.bot : DEFAULTS.user);
 
   return (
     <div
@@ -33,21 +39,25 @@ export default function ChatItem({
         isLeft ? styles.left : styles.right
       }`}
     >
-      {isLeft && <div className={styles.avatar}>
-        <div className={styles.avatarPlaceholder}></div>
-      </div>}
+      {isLeft && (
+        <div className={styles.avatar}>
+          <div className={styles.avatarPlaceholder} />
+        </div>
+      )}
 
       <div className={styles.messageBlock}>
         <div className={styles.name}>{p.name}</div>
 
         <div className={styles.bubble}>
-          {children ? children : text}
+          {children ?? text}
         </div>
       </div>
 
-      {!isLeft && <div className={styles.avatar}>
-        <div className={styles.avatarPlaceholder}></div>
-      </div>}
+      {!isLeft && (
+        <div className={styles.avatar}>
+          <div className={styles.avatarPlaceholder} />
+        </div>
+      )}
     </div>
   );
 }

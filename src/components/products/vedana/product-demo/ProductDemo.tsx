@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
-import Chat from "@/components/blocks/chat/Chat";
-import ChatItem from "@/components/blocks/chat/ChatItem";
+import Chat from "@/components/blocks/chat/Chat.tsx";
+import ChatItem from "@/components/blocks/chat/ChatItem.tsx";
 
 import EntityCardMini from "@/components/blocks/entity-card/EntityCardMini";
 import EntityCardMiniList from "@/components/blocks/entity-card/EntityCardMiniList";

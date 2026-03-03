@@ -15,7 +15,8 @@ import Chat from "@/components/blocks/chat/Chat.astro";
 import ChatItem from "@/components/blocks/chat/ChatItem.astro";
 
 import ProductDemo from "@/components/products/vedana/product-demo/ProductDemo.tsx";
-import { scenariosHoreca } from "@/content/vedana/demo/horeca"
+import { scenarios } from "@/content/vedana/demo/horeca"
+import { cardRegistry } from "@/content/vedana/demo/horeca"
 
 
 const bot = {
@@ -32,7 +33,11 @@ const user = {
 
 <section class="section">
   <div class="container">
-    <ProductDemo scenarios={scenariosHoreca} client:load />
+    <ProductDemo
+      scenarios={scenarios}
+      cardRegistry={cardRegistry}
+      client:load
+    />
   </div>
 </section>
 

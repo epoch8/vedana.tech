@@ -1,18 +1,29 @@
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Chat from "@/components/blocks/chat/Chat";
 import ChatItem from "@/components/blocks/chat/ChatItem";
+
+import EntityCardMini from "@/components/blocks/entity-card/EntityCardMini";
+import EntityCardMiniList from "@/components/blocks/entity-card/EntityCardMiniList";
+
 import styles from "./ProductDemo.module.css";
 
-/* ---------------------------------- */
-/* Types */
-/* ---------------------------------- */
+/* =====================================================
+   TYPES
+===================================================== */
 
-export type DemoScenario = {
+export type ReasoningBlock<CardId extends string> = {
+  title?: string;
+  narration?: string;
+  cards?: readonly CardId[];
+  logic?: readonly string[];
+};
+
+export type Scenario<CardId extends string> = {
   key: string;
   label: string;
   question: string;
-  reasoning: string[]; // ← теперь строки
+  reasoning: readonly ReasoningBlock<CardId>[];
   answer: string;
 };
 
@@ -24,44 +35,53 @@ type Phase =
   | "ANSWER"
   | "DONE";
 
-type Props = {
-  scenarios: DemoScenario[];
+type CardBase = { entity: string; name: string } & Record<string, any>;
+
+type Props<TRegistry extends Record<string, CardBase>> = {
+  cardRegistry: TRegistry;
+  scenarios: readonly Scenario<keyof TRegistry & string>[];
 };
 
-/* ---------------------------------- */
-/* Component */
-/* ---------------------------------- */
+/* =====================================================
+   COMPONENT
+===================================================== */
 
-export default function ProductDemo({ scenarios }: Props) {
+export default function ProductDemo<
+  TRegistry extends Record<string, CardBase>
+>({ cardRegistry, scenarios }: Props<TRegistry>) {
+
+  type CardId = keyof TRegistry & string;
+  type Block = ReasoningBlock<CardId>;
+
   const [phase, setPhase] = useState<Phase>("IDLE");
   const [activeKey, setActiveKey] = useState<string | null>(null);
-  const [reasoningStep, setReasoningStep] = useState(0);
-  const [typedAnswer, setTypedAnswer] = useState("");
+  const [blockIndex, setBlockIndex] = useState<number>(0);
+  const [typedAnswer, setTypedAnswer] = useState<string>("");
 
-  /* ---------------------------------- */
-  /* Active scenario */
-  /* ---------------------------------- */
+  /* =====================================================
+     ACTIVE SCENARIO
+  ===================================================== */
 
   const activeScenario = useMemo(() => {
     return scenarios.find((s) => s.key === activeKey) ?? null;
   }, [scenarios, activeKey]);
 
-  /* ---------------------------------- */
-  /* Start scenario */
-  /* ---------------------------------- */
+  /* =====================================================
+     START SCENARIO
+  ===================================================== */
 
   const runScenario = (key: string) => {
     setActiveKey(key);
     setPhase("QUESTION");
-    setReasoningStep(0);
+    setBlockIndex(0);
     setTypedAnswer("");
   };
 
-  /* ---------------------------------- */
-  /* Empty buttons */
-  /* ---------------------------------- */
+  /* =====================================================
+     EMPTY + REACTIONS
+  ===================================================== */
 
-  const emptyButtons = useMemo(
+  const emptyScenarios = useMemo(
     () =>
       scenarios.map((s) => ({
         key: s.key,
@@ -69,10 +89,6 @@ export default function ProductDemo({ scenarios }: Props) {
       })),
     [scenarios]
   );
-
-  /* ---------------------------------- */
-  /* Reaction buttons */
-  /* ---------------------------------- */
 
   const reactionButtons = useMemo(() => {
     if (phase !== "DONE" || !activeScenario) return [];
@@ -85,82 +101,97 @@ export default function ProductDemo({ scenarios }: Props) {
       }));
   }, [phase, activeScenario, scenarios]);
 
-  /* ---------------------------------- */
-  /* Phase machine */
-  /* ---------------------------------- */
+  /* =====================================================
+     PHASE MACHINE
+  ===================================================== */
 
   useEffect(() => {
     if (!activeScenario) return;
 
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
+
     if (phase === "QUESTION") {
-      const t = setTimeout(() => setPhase("THINKING"), 600);
-      return () => clearTimeout(t);
+      timeout = setTimeout(() => setPhase("THINKING"), 600);
     }
 
-    if (phase === "THINKING") {
-      const t = setTimeout(() => setPhase("REASONING"), 800);
-      return () => clearTimeout(t);
+    else if (phase === "THINKING") {
+      timeout = setTimeout(() => setPhase("REASONING"), 800);
     }
 
-    if (phase === "REASONING") {
-      if (reasoningStep < activeScenario.reasoning.length) {
-        const t = setTimeout(
-          () => setReasoningStep((prev) => prev + 1),
-          600
+    else if (phase === "REASONING") {
+      if (blockIndex < activeScenario.reasoning.length) {
+        timeout = setTimeout(
+          () => setBlockIndex((prev: number) => prev + 1),
+          700
         );
-        return () => clearTimeout(t);
+      } else {
+        timeout = setTimeout(() => setPhase("ANSWER"), 400);
       }
-
-      const t = setTimeout(() => setPhase("ANSWER"), 400);
-      return () => clearTimeout(t);
     }
 
-    if (phase === "ANSWER") {
+    else if (phase === "ANSWER") {
       let i = 0;
       const text = activeScenario.answer;
 
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setTypedAnswer(text.slice(0, i));
         i++;
 
         if (i > text.length) {
-          clearInterval(interval);
+          if (interval) clearInterval(interval);
           setPhase("DONE");
         }
       }, 15);
-
-      return () => clearInterval(interval);
     }
-  }, [phase, activeScenario, reasoningStep]);
 
-  /* ---------------------------------- */
-  /* Visible reasoning */
-  /* ---------------------------------- */
+    return () => {
+      if (timeout) clearTimeout(timeout);
+      if (interval) clearInterval(interval);
+    };
 
-  const visibleReasoning = useMemo(() => {
+  }, [phase, activeScenario, blockIndex]);
+
+  /* =====================================================
+     VISIBLE BLOCKS
+  ===================================================== */
+
+  const visibleBlocks: readonly Block[] = useMemo(() => {
     if (!activeScenario) return [];
+    if (phase === "DONE") return activeScenario.reasoning;
+    return activeScenario.reasoning.slice(0, blockIndex);
+  }, [phase, activeScenario, blockIndex]);
 
-    if (phase === "DONE") {
-      return activeScenario.reasoning;
-    }
+  /* =====================================================
+     HELPERS
+  ===================================================== */
 
-    return activeScenario.reasoning.slice(0, reasoningStep);
-  }, [phase, activeScenario, reasoningStep]);
+  const cardToAttributes = (card: TRegistry[CardId]) => {
+    return Object.entries(card)
+      .filter(([key]) => !["entity", "name"].includes(key))
+      .map(([key, value]) => ({
+        key,
+        value: Array.isArray(value)
+          ? value.join(", ")
+          : String(value)
+      }));
+  };
 
-  /* ---------------------------------- */
-  /* Render */
-  /* ---------------------------------- */
+  /* =====================================================
+     RENDER
+  ===================================================== */
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.layout}>
-        {/* CHAT SIDE */}
+
+        {/* ================= CHAT ================= */}
         <div className={styles.chatContainer}>
           <Chat
             title="Chat with Vedana"
             isEmpty={!activeScenario}
             showInput={false}
-            emptyScenarios={emptyButtons}
+            emptyScenarios={emptyScenarios}
             onScenarioClick={runScenario}
             reactions={reactionButtons}
           >
@@ -173,10 +204,10 @@ export default function ProductDemo({ scenarios }: Props) {
 
                 {(phase === "ANSWER" || phase === "DONE") && (
                   <ChatItem participant={1}>
-                  <div
-                    className={styles.answerContent}
-                    dangerouslySetInnerHTML={{ __html: typedAnswer }}
-                  />
+                    <div
+                      className={styles.answerContent}
+                      dangerouslySetInnerHTML={{ __html: typedAnswer }}
+                    />
                   </ChatItem>
                 )}
               </>
@@ -184,24 +215,58 @@ export default function ProductDemo({ scenarios }: Props) {
           </Chat>
         </div>
 
-        {/* REASONING SIDE */}
+        {/* ================= REASONING ================= */}
         <div className={styles.reasoning}>
-          {activeScenario && phase !== "IDLE" && (
-            <div className={styles.reasoningSteps}>
-              {visibleReasoning.map((step, index) => (
-                <div
-                  key={`${activeScenario.key}-step-${index}`}
-                  className={styles.reasoningLine}
-                >
-                  <span
-                    className={styles.reasoningContent}
-                    dangerouslySetInnerHTML={{ __html: step }}
-                  />
-                </div>
-              ))}
-            </div>
+          {visibleBlocks.map(
+            (block: Block, index: number) => (
+              <div key={index} className={styles.reasoningBlock}>
+
+                {block.narration && (
+                  <div className={styles.reasoningNarration}>
+                    {block.narration}
+                  </div>
+                )}
+
+                {block.title && (
+                  <div className={styles.reasoningTitle}>
+                    {block.title}
+                  </div>
+                )}
+
+                {block.cards && block.cards.length > 0 && (
+                  <EntityCardMiniList>
+                    {block.cards.map((cardId: CardId) => {
+                      const card = cardRegistry[cardId];
+
+                      return (
+                        <EntityCardMini
+                          key={cardId}
+                          title={card.name}
+                          entityType={card.entity}
+                          attributes={cardToAttributes(card)}
+                        />
+                      );
+                    })}
+                  </EntityCardMiniList>
+                )}
+
+                {block.logic && block.logic.length > 0 && (
+                  <div className={styles.logicBlock}>
+                    {block.logic.map(
+                      (line: string, i: number) => (
+                        <div key={i} className={styles.logicLine}>
+                          {line}
+                        </div>
+                      )
+                    )}
+                  </div>
+                )}
+
+              </div>
+            )
           )}
         </div>
+
       </div>
     </div>
   );

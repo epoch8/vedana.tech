@@ -10,7 +10,6 @@ export const cardRegistry = {
     name: "Chef’s Special Pasta",
     category: "Main Course",
     prep_style: "Pan-seared + reduction",
-    sauce_base: "Cream",
     contains: [
       { id: "ingredient_atlantic_salmon", amount: "100g" },
       { id: "ingredient_cream", amount: "50g" },

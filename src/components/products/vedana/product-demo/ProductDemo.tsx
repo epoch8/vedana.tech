@@ -207,16 +207,43 @@ export default function ProductDemo<
      HELPERS
   ===================================================== */
 
-  const cardToAttributes = (card: TRegistry[CardId]) => {
-    return Object.entries(card)
-      .filter(([key]) => !["entity", "name"].includes(key))
-      .map(([key, value]) => ({
+ const cardToAttributes = (card: TRegistry[CardId]) => {
+  return Object.entries(card)
+    .filter(([key]) => !["entity", "name"].includes(key))
+    .map(([key, value]) => {
+
+      // 🔹 LINK ARRAY
+      if (Array.isArray(value) && value.length > 0 && typeof value[0] === "object") {
+        const rendered = value.map((item: any) => {
+          const linked = cardRegistry[item.id as CardId];
+          if (!linked) return item.id;
+
+          return item.amount
+            ? `${linked.name} (${item.amount})`
+            : linked.name;
+        });
+
+        return {
+          key,
+          value: rendered.join(", ")
+        };
+      }
+
+      // 🔹 SIMPLE ARRAY
+      if (Array.isArray(value)) {
+        return {
+          key,
+          value: value.join(", ")
+        };
+      }
+
+      // 🔹 PRIMITIVE
+      return {
         key,
-        value: Array.isArray(value)
-          ? value.join(", ")
-          : String(value)
-      }));
-  };
+        value: String(value)
+      };
+    });
+};
 
   /* =====================================================
      RENDER

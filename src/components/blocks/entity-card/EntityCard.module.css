@@ -226,21 +226,21 @@
 
 /* ======================================================
    MINI VARIANT (FOR REASONING EVIDENCE)
+   Compact / Dense / Machine-like
 ====================================================== */
 
 .entity-card-mini {
   display: flex;
   flex-direction: column;
+  width: 100%;
 
-  width: 100%;           
-
-
-  padding: 8px 10px;         /* было var(--space-4) */
-  gap: 6px;                  /* было var(--space-3) */
+  padding: 6px 8px;
+  gap: 4px;
+    margin-bottom: 8px;   /* или 6px если хочешь плотнее */
 
   background: var(--color-bg-muted);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 6px;
 
   animation: cardMaterialize 0.2s ease forwards;
   opacity: 0;
@@ -249,37 +249,41 @@
   transition:
     border-color var(--dur-fast) var(--ease-standard),
     box-shadow var(--dur-fast) var(--ease-standard),
-    transform var(--dur-fast) var(--ease-standard),
     transform 250ms cubic-bezier(0.2, 0.8, 0.2, 1),
     opacity 200ms ease;
-
-  transform-origin: center;
 }
+
+/* Title */
 
 .entity-card-mini .entity-card__title {
-  font-size: 0.9rem;      /* меньше */
-  font-weight: 600;       /* было 700 */
-  line-height: 1.2;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0;
 }
+
+/* Attribute rows */
 
 .entity-card-mini .entity-item {
   display: grid;
-  grid-template-columns: 70px 1fr;  /* было minmax(90px, 1fr) */
-  gap: 4px;
+  grid-template-columns: 60px 1fr;
+  gap: 2px;
 }
 
 .entity-card-mini .entity-item__key {
-  font-size: 0.65rem;     /* было 0.75 */
+  font-size: 0.6rem;
   color: var(--color-text-subtle);
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .entity-card-mini .entity-item__value {
-  font-size: 0.75rem;     /* было 0.85 */
+  font-size: 0.7rem;
   font-weight: 500;
   color: var(--color-text);
-  line-height: 1.2;
+  line-height: 1.1;
 }
+
+/* Hover */
 
 .entity-card-mini:hover {
   border-color: var(--color-primary);
@@ -287,28 +291,7 @@
   transform: translateY(-2px);
 }
 
-.entity-card-mini .entity-card__title {
-  font-size: var(--font-size-base);
-  font-weight: 700;
-  line-height: var(--line-height-tight);
-}
-
-.entity-card-mini .entity-item {
-  display: grid;
-  grid-template-columns: minmax(90px, 1fr) 1fr;
-  gap: var(--space-1);
-}
-
-.entity-card-mini .entity-item__key {
-  font-size: 0.75rem;
-  color: var(--color-text-subtle);
-}
-
-.entity-card-mini .entity-item__value {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-text);
-}
+/* Animation */
 
 @keyframes cardMaterialize {
   to {
@@ -323,21 +306,17 @@
 
 .entity-card-mini-rail {
   display: grid;
-
-grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 6px;
 
   width: 100%;
-  max-width: 100%;
-
-  padding-top: 8px;
+  padding-top: 6px;
 }
-
 
 /* ======================================================
    OPTIONAL: subtle section spacing inside reasoning
 ====================================================== */
 
 .reasoningBlock + .reasoningBlock {
-  margin-top: var(--space-6);
+  margin-top: var(--space-5);
 }

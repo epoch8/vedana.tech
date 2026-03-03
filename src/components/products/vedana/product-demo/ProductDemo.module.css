@@ -65,3 +65,21 @@
     box-shadow: none;
   }
 }
+
+.reasoningBlock {
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.reasoningBlockHidden {
+  opacity: 0;
+  transform: scale(0.985);
+}
+
+.cardRailWrapper {
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.cardRailHidden {
+  opacity: 0;
+  transform: scale(0.98);
+}

@@ -249,7 +249,11 @@
   transition:
     border-color var(--dur-fast) var(--ease-standard),
     box-shadow var(--dur-fast) var(--ease-standard),
-    transform var(--dur-fast) var(--ease-standard);
+    transform var(--dur-fast) var(--ease-standard),
+    transform 250ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 200ms ease;
+
+  transform-origin: center;
 }
 
 .entity-card-mini .entity-card__title {

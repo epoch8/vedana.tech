@@ -58,9 +58,13 @@ export default function ProductDemo<
   const [blockIndex, setBlockIndex] = useState<number>(0);
 
   const [visibleCardCount, setVisibleCardCount] = useState<number>(0);
-  const [cardsVisible, setCardsVisible] = useState<boolean>(true);
+  const [highlightedCard, setHighlightedCard] = useState<number | null>(null);
 
   const [typedAnswer, setTypedAnswer] = useState<string>("");
+
+  /* =====================================================
+     UTILS
+  ===================================================== */
 
   const sleep = (ms: number) =>
     new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -82,7 +86,7 @@ export default function ProductDemo<
     setPhase("QUESTION");
     setBlockIndex(0);
     setVisibleCardCount(0);
-    setCardsVisible(true);
+    setHighlightedCard(null);
     setTypedAnswer("");
   };
 
@@ -94,7 +98,7 @@ export default function ProductDemo<
     if (!activeScenario) return;
 
     if (phase === "QUESTION") {
-      const t = setTimeout(() => setPhase("THINKING"), 700);
+      const t = setTimeout(() => setPhase("THINKING"), 600);
       return () => clearTimeout(t);
     }
 
@@ -102,14 +106,14 @@ export default function ProductDemo<
       const t = setTimeout(() => {
         setPhase("REASONING");
         setBlockIndex(1);
-      }, 1000);
+      }, 800);
       return () => clearTimeout(t);
     }
 
   }, [phase, activeScenario]);
 
   /* =====================================================
-     BLOCK FLOW — ANIMATE ONLY CARDS
+     BLOCK FLOW (SEQUENTIAL, NO OVERLAP)
   ===================================================== */
 
   useEffect(() => {
@@ -119,7 +123,7 @@ export default function ProductDemo<
     const block = activeScenario.reasoning[blockIndex - 1];
 
     if (!block) {
-      const t = setTimeout(() => setPhase("ANSWER"), 600);
+      const t = setTimeout(() => setPhase("ANSWER"), 400);
       return () => clearTimeout(t);
     }
 
@@ -128,10 +132,11 @@ export default function ProductDemo<
     const runBlock = async () => {
 
       setVisibleCardCount(0);
-      setCardsVisible(true);
+      setHighlightedCard(null);
 
+      // если нет карточек — просто пауза
       if (!block.cards || block.cards.length === 0) {
-        await sleep(800);
+        await sleep(600);
         if (!cancelled) {
           setBlockIndex((prev) => prev + 1);
         }
@@ -141,20 +146,18 @@ export default function ProductDemo<
       for (let i = 0; i < block.cards.length; i++) {
         if (cancelled) return;
 
-        // fade out ONLY cards
-        setCardsVisible(false);
-        await sleep(220);
+        setVisibleCardCount((prev) => prev + 1);
+        setHighlightedCard(i);
+
+        await sleep(400); // highlight
         if (cancelled) return;
 
-        // update count
-        setVisibleCardCount(i + 1);
+        setHighlightedCard(null);
 
-        // fade in
-        setCardsVisible(true);
-        await sleep(420); // intentionally slower
+        await sleep(200); // micro pause
       }
 
-      await sleep(600);
+      await sleep(300); // pause before next block
 
       if (!cancelled) {
         setBlockIndex((prev) => prev + 1);
@@ -281,32 +284,29 @@ export default function ProductDemo<
                 )}
 
                 {block.cards && block.cards.length > 0 && (
-                  <div
-                    className={`${styles.cardRailWrapper} ${
-                      isActiveBlock && !cardsVisible
-                        ? styles.cardRailHidden
-                        : ""
-                    }`}
-                  >
-                    <EntityCardMiniList>
-                      {(isActiveBlock
-                        ? block.cards.slice(0, visibleCardCount)
-                        : block.cards
-                      ).map((cardId: CardId) => {
+                  <EntityCardMiniList>
+                    {(isActiveBlock
+                      ? block.cards.slice(0, visibleCardCount)
+                      : block.cards
+                    ).map((cardId: CardId, i: number) => {
 
-                        const card = cardRegistry[cardId];
+                      const card = cardRegistry[cardId];
 
-                        return (
-                          <EntityCardMini
-                            key={cardId}
-                            title={card.name}
-                            entityType={card.entity}
-                            attributes={cardToAttributes(card)}
-                          />
-                        );
-                      })}
-                    </EntityCardMiniList>
-                  </div>
+                      return (
+                        <EntityCardMini
+                          key={cardId}
+                          className={
+                            isActiveBlock && i === highlightedCard
+                              ? styles.highlightCard
+                              : undefined
+                          }
+                          title={card.name}
+                          entityType={card.entity}
+                          attributes={cardToAttributes(card)}
+                        />
+                      );
+                    })}
+                  </EntityCardMiniList>
                 )}
 
                 {block.logic && block.logic.length > 0 && (

@@ -89,14 +89,14 @@ export const scenarios = [
       },
 
       {
-        title: "Step 1 — Retrieve dish entity",
+        title: "Step 1 - Retrieve dish entity",
         cards: [
           "dish_chefs_special_pasta"
         ]
       },
 
       {
-        title: "Step 2 — Retrieve ingredients via Dish → has → Ingredient",
+        title: "Step 2 - Retrieve ingredients via Dish - has - Ingredient",
         cards: [
           "ingredient_atlantic_salmon",
           "ingredient_cream",
@@ -105,7 +105,7 @@ export const scenarios = [
       },
 
       {
-        title: "Step 3 — Retrieve candidate wines",
+        title: "Step 3 - Retrieve candidate wines",
         cards: [
           "wine_pinot_noir",
           "wine_merlot"

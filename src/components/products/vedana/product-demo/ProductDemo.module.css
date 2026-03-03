@@ -57,7 +57,7 @@
     box-shadow: 0 0 0 0 rgba(42, 91, 255, 0.5);
   }
   50% {
-    transform: scale(1.02);
+    transform: scale(1.03);
     box-shadow: 0 0 0 6px rgba(42, 91, 255, 0.15);
   }
   100% {

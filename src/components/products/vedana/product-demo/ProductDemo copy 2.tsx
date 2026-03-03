@@ -56,18 +56,7 @@ export default function ProductDemo<
   const [phase, setPhase] = useState<Phase>("IDLE");
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const [blockIndex, setBlockIndex] = useState<number>(0);
-
-  const [visibleCardCount, setVisibleCardCount] = useState<number>(0);
-  const [highlightedCard, setHighlightedCard] = useState<number | null>(null);
-
   const [typedAnswer, setTypedAnswer] = useState<string>("");
-
-  /* =====================================================
-     UTILS
-  ===================================================== */
-
-  const sleep = (ms: number) =>
-    new Promise<void>((resolve) => setTimeout(resolve, ms));
 
   /* =====================================================
      ACTIVE SCENARIO
@@ -85,10 +74,32 @@ export default function ProductDemo<
     setActiveKey(key);
     setPhase("QUESTION");
     setBlockIndex(0);
-    setVisibleCardCount(0);
-    setHighlightedCard(null);
     setTypedAnswer("");
   };
+
+  /* =====================================================
+     EMPTY + REACTIONS
+  ===================================================== */
+
+  const emptyScenarios = useMemo(
+    () =>
+      scenarios.map((s) => ({
+        key: s.key,
+        label: s.label
+      })),
+    [scenarios]
+  );
+
+  const reactionButtons = useMemo(() => {
+    if (phase !== "DONE" || !activeScenario) return [];
+
+    return scenarios
+      .filter((s) => s.key !== activeScenario.key)
+      .map((s) => ({
+        label: s.label,
+        onClick: () => runScenario(s.key)
+      }));
+  }, [phase, activeScenario, scenarios]);
 
   /* =====================================================
      PHASE MACHINE
@@ -97,105 +108,49 @@ export default function ProductDemo<
   useEffect(() => {
     if (!activeScenario) return;
 
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
+
     if (phase === "QUESTION") {
-      const t = setTimeout(() => setPhase("THINKING"), 600);
-      return () => clearTimeout(t);
+      timeout = setTimeout(() => setPhase("THINKING"), 600);
     }
 
-    if (phase === "THINKING") {
-      const t = setTimeout(() => {
-        setPhase("REASONING");
-        setBlockIndex(1);
-      }, 800);
-      return () => clearTimeout(t);
+    else if (phase === "THINKING") {
+      timeout = setTimeout(() => setPhase("REASONING"), 800);
     }
 
-  }, [phase, activeScenario]);
-
-  /* =====================================================
-     BLOCK FLOW (SEQUENTIAL, NO OVERLAP)
-  ===================================================== */
-
-  useEffect(() => {
-    if (!activeScenario) return;
-    if (phase !== "REASONING") return;
-
-    const block = activeScenario.reasoning[blockIndex - 1];
-
-    if (!block) {
-      const t = setTimeout(() => setPhase("ANSWER"), 400);
-      return () => clearTimeout(t);
+    else if (phase === "REASONING") {
+      if (blockIndex < activeScenario.reasoning.length) {
+        timeout = setTimeout(
+          () => setBlockIndex((prev: number) => prev + 1),
+          700
+        );
+      } else {
+        timeout = setTimeout(() => setPhase("ANSWER"), 400);
+      }
     }
 
-    let cancelled = false;
+    else if (phase === "ANSWER") {
+      let i = 0;
+      const text = activeScenario.answer;
 
-    const runBlock = async () => {
+      interval = setInterval(() => {
+        setTypedAnswer(text.slice(0, i));
+        i++;
 
-      setVisibleCardCount(0);
-      setHighlightedCard(null);
-
-      // если нет карточек — просто пауза
-      if (!block.cards || block.cards.length === 0) {
-        await sleep(600);
-        if (!cancelled) {
-          setBlockIndex((prev) => prev + 1);
+        if (i > text.length) {
+          if (interval) clearInterval(interval);
+          setPhase("DONE");
         }
-        return;
-      }
-
-      for (let i = 0; i < block.cards.length; i++) {
-        if (cancelled) return;
-
-        setVisibleCardCount((prev) => prev + 1);
-        setHighlightedCard(i);
-
-        await sleep(400); // highlight
-        if (cancelled) return;
-
-        setHighlightedCard(null);
-
-        await sleep(200); // micro pause
-      }
-
-      await sleep(300); // pause before next block
-
-      if (!cancelled) {
-        setBlockIndex((prev) => prev + 1);
-      }
-    };
-
-    runBlock();
+      }, 15);
+    }
 
     return () => {
-      cancelled = true;
+      if (timeout) clearTimeout(timeout);
+      if (interval) clearInterval(interval);
     };
 
-  }, [blockIndex, phase, activeScenario]);
-
-  /* =====================================================
-     ANSWER TYPING
-  ===================================================== */
-
-  useEffect(() => {
-    if (!activeScenario) return;
-    if (phase !== "ANSWER") return;
-
-    let i = 0;
-    const text = activeScenario.answer;
-
-    const interval = setInterval(() => {
-      setTypedAnswer(text.slice(0, i));
-      i++;
-
-      if (i > text.length) {
-        clearInterval(interval);
-        setPhase("DONE");
-      }
-    }, 15);
-
-    return () => clearInterval(interval);
-
-  }, [phase, activeScenario]);
+  }, [phase, activeScenario, blockIndex]);
 
   /* =====================================================
      VISIBLE BLOCKS
@@ -203,8 +158,9 @@ export default function ProductDemo<
 
   const visibleBlocks: readonly Block[] = useMemo(() => {
     if (!activeScenario) return [];
+    if (phase === "DONE") return activeScenario.reasoning;
     return activeScenario.reasoning.slice(0, blockIndex);
-  }, [activeScenario, blockIndex]);
+  }, [phase, activeScenario, blockIndex]);
 
   /* =====================================================
      HELPERS
@@ -235,12 +191,9 @@ export default function ProductDemo<
             title="Chat with Vedana"
             isEmpty={!activeScenario}
             showInput={false}
-            emptyScenarios={scenarios.map(s => ({
-              key: s.key,
-              label: s.label
-            }))}
+            emptyScenarios={emptyScenarios}
             onScenarioClick={runScenario}
-            reactions={[]}
+            reactions={reactionButtons}
           >
             {activeScenario && (
               <>
@@ -264,12 +217,9 @@ export default function ProductDemo<
 
         {/* ================= REASONING ================= */}
         <div className={styles.reasoning}>
-          {visibleBlocks.map((block: Block, blockIdx: number) => {
-
-            const isActiveBlock = blockIdx === blockIndex - 1;
-
-            return (
-              <div key={blockIdx} className={styles.reasoningBlock}>
+          {visibleBlocks.map(
+            (block: Block, index: number) => (
+              <div key={index} className={styles.reasoningBlock}>
 
                 {block.narration && (
                   <div className={styles.reasoningNarration}>
@@ -285,21 +235,12 @@ export default function ProductDemo<
 
                 {block.cards && block.cards.length > 0 && (
                   <EntityCardMiniList>
-                    {(isActiveBlock
-                      ? block.cards.slice(0, visibleCardCount)
-                      : block.cards
-                    ).map((cardId: CardId, i: number) => {
-
+                    {block.cards.map((cardId: CardId) => {
                       const card = cardRegistry[cardId];
 
                       return (
                         <EntityCardMini
                           key={cardId}
-                          className={
-                            isActiveBlock && i === highlightedCard
-                              ? styles.highlightCard
-                              : undefined
-                          }
                           title={card.name}
                           entityType={card.entity}
                           attributes={cardToAttributes(card)}
@@ -311,17 +252,19 @@ export default function ProductDemo<
 
                 {block.logic && block.logic.length > 0 && (
                   <div className={styles.logicBlock}>
-                    {block.logic.map((line: string, i: number) => (
-                      <div key={i} className={styles.logicLine}>
-                        {line}
-                      </div>
-                    ))}
+                    {block.logic.map(
+                      (line: string, i: number) => (
+                        <div key={i} className={styles.logicLine}>
+                          {line}
+                        </div>
+                      )
+                    )}
                   </div>
                 )}
 
               </div>
-            );
-          })}
+            )
+          )}
         </div>
 
       </div>

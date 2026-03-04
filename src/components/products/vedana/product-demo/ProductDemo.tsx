@@ -297,7 +297,12 @@ export default function ProductDemo<
             const isActiveBlock = blockIdx === blockIndex - 1;
 
             return (
-              <div key={blockIdx} className={styles.reasoningBlock}>
+              <div
+                key={blockIdx}
+                className={`${styles.reasoningBlock} ${
+                  isActiveBlock ? styles.reasoningBlockActive : ""
+                }`}
+              >
 
                 {block.narration && (
                   <div className={styles.reasoningNarration}>

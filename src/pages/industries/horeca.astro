@@ -18,6 +18,10 @@ import TimelineItem from "@/components/blocks/timeline/TimelineItem.astro";
 import Chat from "@/components/blocks/chat/Chat.astro";
 import ChatItem from "@/components/blocks/chat/ChatItem.astro";
 
+import ProductDemo from "@/components/products/vedana/product-demo/ProductDemo.tsx";
+import { scenarios } from "@/content/vedana/demo/horeca"
+import { cardRegistry } from "@/content/vedana/demo/horeca"
+
 const bot = {
   name: "Vedana AI assistant",
   bubbleBg: "#eef3ff"
@@ -228,118 +232,36 @@ const pageSEO: Partial<SEOConfig> = {
             From PDF to service answer – instantly.
         </h3>
 
-            <Callout style="--callout-bg: var(--color-neutral-soft);">
-                <h4>
-                    👨‍🍳 Hospitality professional asks:
-                </h4>
-                <p></p>
-                <p>
-                    What wines pair well with a seared duck breast with cherry reduction that meet organic certification standards?
-                </p>
-            </Callout>
-            
-            <h3>How Vedana turns documents into answers:</h3>
-            <div class="row">
-
-                <Timeline orientation="vertical" lines={false}>
-                        <TimelineItem index="1" title="Extraction">
-                        <p>
-                        Pull data from messy manuals, PDFs, Excels, and specs
-                        </p>
-                        </TimelineItem> 
-                        <TimelineItem index="2" title="Normalization">
-                        <p>
-                        Clear and unify structure across formats
-                        </p>
-                        </TimelineItem> 
-                        <TimelineItem index="3" title="Knowledge Graph">
-                        <p>
-                        Build connections between entities
-                        </p>
-                        </TimelineItem> 
-                        <TimelineItem index="4" title="Knowledge Graph Search">
-                        <p>
-                        Search by meaning, not just keywords
-                        </p>
-                        </TimelineItem> 
-                </Timeline>   
-                
-                <Chat
-                    title="Chat with Vedana"
-                    showDate={false}
-                    dateLabel="Monday, June 9, 2025"
-                    reactions={[
-                    ]}
-                    >
-
-                    <ChatItem
-                        participant={2}
-                        text="What wines pair well with a seared duck breast with cherry reduction that meet organic certification standards?"
-                        participant1={bot}
-                        participant2={user}
-                    />
-
-                    <ChatItem
-                    participant={1}
-                    participant1={bot}
-                    participant2={user}
-                        >
-                        <p><strong>Understood:</strong></p>
-
-                        <ul>
-                            <li><code>organic certification standards</code> standard</li>
-                            <li><code>seared duck breast with cherry reduction</code> dish type</li>
-                            <li><code>pair_well_with</code> - relation between wine and dish</li>
-                        </ul>
-
-                        <p>Querying graph...</p>
-                    </ChatItem>
-
-                    <ChatItem
-                    participant={1}
-                    participant1={bot}
-                    participant2={user}
-                        >
-                        <p><strong>Answer:</strong></p>
-
-                        <ul>
-                            <li><strong>Pinot Noir from Burgundy</strong></li>
-                            <li><strong>Syrah from Rhône Valley</strong></li>
-                        </ul>
-
-                        <p>
-                            All meet the Restaurant Association's sustainable sourcing guidelines for organic wines.
-                        </p>
-                    </ChatItem>
-
-                    </Chat>
-
-            </div>    
-        </div>
-    </section>
+          <div class="container">
+            <ProductDemo
+              scenarios={scenarios}
+              cardRegistry={cardRegistry}
+              client:load
+            />
+          </div>
 
     <section class="section">
         <div class="container flow">
         <h2>
-            <strong>Vedana</strong> reasons like a hospitality professional – with rules, steps, and structure 
+            How Vedana turns documents into answers 
         </h2>
         <p></p>
         <Timeline orientation="horizontal" lines={true}>
-            <TimelineItem index="1" title="Playbook defines the logic">
+            <TimelineItem index="1" title="Normalize data">
                         <p>
-                        A service-specific playbook guides Vedana how to think:<br/>
+                        Pull data from messy pdfs, make data-model. A service-specific playbook guides Vedana how to think:<br/>
                         
                         “If query includes certification + menu item + ingredient → look for menu compatibility across all three entities.”
                         <br />
                         Logic is visible and customizable.
                         </p>
                         </TimelineItem> 
-                        <TimelineItem index="2" title="Domain graph defines the structure">
+                        <TimelineItem index="2" title="Make a playbook">
                         <p>
                         Vedana explores your knowledge graph:Menu Item → Recipe → Ingredient → Health & Safety Standardto trace dependencies and rules across layers.
                         </p>
                         </TimelineItem> 
-                        <TimelineItem index="3" title="Data model feeds the answer">
+                        <TimelineItem index="3" title="Reason using the playbook">
                         <p>
                         Each answer is supported by your data: service specifications, health & safety regulations, menu compatibility logic — not hallucination.Feedback from users is logged and used to improve the Playbook.
                         </p>

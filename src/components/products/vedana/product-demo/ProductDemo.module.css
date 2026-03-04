@@ -185,3 +185,46 @@
   margin-bottom: 20px;
 }
 
+/* ================================
+   REASONING HINT
+================================ */
+
+.reasoningLogo {
+  display: flex;
+  justify-content: center;
+}
+
+/* уменьшаем иконку */
+.reasoningLogo :global(.brand-icon) {
+  width: 42px;
+  height: 42px;
+
+  color: var(--color-primary);
+}
+
+/* убираем слово Vedana */
+.reasoningLogo :global(span) {
+  display: none;
+}
+
+.reasoningFloatingLogo {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%) scale(1);
+
+  transition:
+    top 600ms cubic-bezier(.22,.61,.36,1),
+    transform 600ms cubic-bezier(.22,.61,.36,1),
+    opacity 400ms ease;
+
+  pointer-events: none;
+}
+
+.reasoningIdle .reasoningFloatingLogo {
+  top: 24px;
+
+  transform: translate(-50%, 0) scale(0.7);
+}

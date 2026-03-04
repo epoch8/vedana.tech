@@ -6,6 +6,8 @@ import ChatItem from "@/components/blocks/chat/ChatItem.tsx";
 import EntityCardMini from "@/components/blocks/entity-card/EntityCardMini";
 import EntityCardMiniList from "@/components/blocks/entity-card/EntityCardMiniList";
 
+import BrandLogo from "@/components/products/vedana/logo/BrandLogo.tsx";
+
 import styles from "./ProductDemo.module.css";
 
 /* =====================================================
@@ -295,14 +297,23 @@ export default function ProductDemo<
           {!activeScenario && (
           <div className={styles.reasoningHint}>
             <div className={styles.reasoningHintInner}>
+
+              <div className={styles.reasoningLogo}>
+                  <BrandLogo />
+                </div>
+
               <div className={styles.reasoningHintTitle}>
                 See Vedana reasoning in action
               </div>
 
               <div className={styles.reasoningHintText}>
-                Ask a question in the chat to generate a reasoning trace.<br/><br/>
+                Ask a question in the chat to generate a reasoning trace.
+                <br />
+                <br />
                 ← start here
+                
               </div>
+
             </div>
           </div>
         )}

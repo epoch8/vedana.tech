@@ -300,6 +300,23 @@
   }
 }
 
+/* MINI variant accent stripe */
+
+.entity-card-mini {
+  position: relative;
+}
+
+.entity-card-mini::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--entity-accent, transparent);
+  border-radius: 6px 0 0 6px;
+}
+
 /* ======================================================
    MINI RAIL — ADAPTIVE GRID
 ====================================================== */

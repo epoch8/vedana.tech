@@ -7,6 +7,7 @@
 export const cardRegistry = {
   dish_chefs_special_pasta: {
     entity: "Dish",
+    color: "var(--entity-dish)",
     name: "Chef’s Special Pasta",
     category: "Main Course",
     prep_style: "Pan-seared + reduction",
@@ -19,6 +20,7 @@ export const cardRegistry = {
 
   ingredient_atlantic_salmon: {
     entity: "Ingredient",
+    color: "var(--entity-ingredient)",
     name: "Atlantic Salmon",
     protein: 20,
     fat: 13,
@@ -27,6 +29,7 @@ export const cardRegistry = {
 
   ingredient_cream: {
     entity: "Ingredient",
+    color: "var(--entity-ingredient)",
     name: "Cream",
     protein: 2,
     fat: 35,
@@ -35,6 +38,7 @@ export const cardRegistry = {
 
   ingredient_pasta: {
     entity: "Ingredient",
+    color: "var(--entity-ingredient)",
     name: "Pasta",
     protein: 5,
     fat: 1,
@@ -43,6 +47,7 @@ export const cardRegistry = {
 
   wine_pinot_noir: {
     entity: "Wine",
+    color: "var(--entity-wine)",
     name: "Pinot Noir",
     type: "Red",
     body: "Medium",
@@ -53,6 +58,7 @@ export const cardRegistry = {
 
   wine_merlot: {
     entity: "Wine",
+    color: "var(--entity-wine)",
     name: "Merlot",
     type: "Red",
     body: "Medium-Full",

@@ -35,7 +35,11 @@ type Phase =
   | "ANSWER"
   | "DONE";
 
-type CardBase = { entity: string; name: string } & Record<string, any>;
+type CardBase = {
+  entity: string;
+  name: string;
+  color?: string;
+} & Record<string, any>;
 
 type Props<TRegistry extends Record<string, CardBase>> = {
   cardRegistry: TRegistry;
@@ -209,7 +213,7 @@ export default function ProductDemo<
 
  const cardToAttributes = (card: TRegistry[CardId]) => {
   return Object.entries(card)
-    .filter(([key]) => !["entity", "name"].includes(key))
+    .filter(([key]) => !["entity", "name",  "color"].includes(key))
     .map(([key, value]) => {
 
       // 🔹 LINK ARRAY
@@ -328,6 +332,7 @@ export default function ProductDemo<
                             key={cardId}
                             title={card.name}
                             entityType={card.entity}
+                            color={card.color}
                             attributes={cardToAttributes(card)}
                           />
                         );

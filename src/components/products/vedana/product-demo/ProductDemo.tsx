@@ -92,6 +92,19 @@ export default function ProductDemo<
     setTypedAnswer("");
   };
 
+  const reactions = useMemo(() => {
+
+  if (!activeScenario) return [];
+
+  return scenarios
+    .filter((s) => s.key !== activeScenario.key)
+    .map((s) => ({
+      label: s.label,
+      onClick: () => runScenario(s.key)
+    }));
+
+}, [scenarios, activeScenario]);
+
   /* =====================================================
      PHASE MACHINE
   ===================================================== */
@@ -270,7 +283,7 @@ export default function ProductDemo<
               label: s.label
             }))}
             onScenarioClick={runScenario}
-            reactions={[]}
+            reactions={reactions}
           >
             {activeScenario && (
               <>

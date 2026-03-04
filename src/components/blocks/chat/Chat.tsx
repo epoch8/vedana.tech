@@ -44,7 +44,6 @@ export default function Chat({
   showInput = true,
   isEmpty = false,
 
-  // 👇 ключевой фикс: не даём TS вывести never[]
   emptyScenarios = [] as EmptyScenario[],
 
   onScenarioClick,
@@ -57,6 +56,10 @@ export default function Chat({
           <h3 className={styles.title}>{title}</h3>
         </div>
       )}
+
+      {/* ==============================
+          MESSAGES
+      ============================== */}
 
       <div className={styles.messages}>
         {isEmpty ? (
@@ -96,24 +99,32 @@ export default function Chat({
             )}
 
             {children}
-
-            {reactions.length > 0 && (
-              <div className={styles.reactions}>
-                {reactions.map((r, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    className={styles.reaction}
-                    onClick={r.onClick}
-                  >
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-            )}
           </>
         )}
       </div>
+
+      {/* ==============================
+          REACTIONS (always visible)
+      ============================== */}
+
+      {reactions.length > 0 && (
+        <div className={styles.reactions}>
+          {reactions.map((r, i) => (
+            <button
+              key={i}
+              type="button"
+              className={styles.reaction}
+              onClick={r.onClick}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* ==============================
+          INPUT AREA (optional)
+      ============================== */}
 
       {showInput && (
         <div className={styles.inputArea}>

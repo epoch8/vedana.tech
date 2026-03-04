@@ -18,6 +18,24 @@ export const cardRegistry = {
     ]
   },
 
+  dish_grilled_salmon: {
+    entity: "Dish",
+    color: "var(--entity-dish)",
+    name: "Grilled Salmon",
+    category: "Main Course",
+    cost_price: 14,
+    menu_price: 22
+  },
+
+  dish_truffle_pasta: {
+    entity: "Dish",
+    color: "var(--entity-dish)",
+    name: "Truffle Pasta",
+    category: "Main Course",
+    cost_price: 11,
+    menu_price: 18
+  },
+
   ingredient_atlantic_salmon: {
     entity: "Ingredient",
     color: "var(--entity-ingredient)",
@@ -140,5 +158,89 @@ The Chef’s special pasta pairs best with <strong>Pinot Noir</strong> due to it
 <br/>
 For creamy sauces, higher acidity provides better structural balance.
 `
-  }
+  },
+{
+  key: "margin",
+  label: "Menu margin optimization",
+
+  question:
+    "Which dishes on the menu have margins below 60% and should be repriced?",
+
+  reasoning: [
+    {
+      narration:
+        "User asks for profitability analysis across the full menu."
+    },
+
+    {
+      title: "Step 1 - Retrieve full menu",
+      logic: [
+        "Query all Dish entities with attribute menu_price."
+      ]
+    },
+
+    {
+      title: "Step 2 - Retrieve recipe structure",
+      logic: [
+        "Traverse relation Dish - contains - Ingredient.",
+        "Each Ingredient provides attributes amount and supplier_price."
+      ]
+    },
+
+    {
+      title: "Step 3 - Compute dish cost",
+      logic: [
+        "Dish cost is computed dynamically:",
+        "cost_price = Σ(amount × supplier_price)"
+      ]
+    },
+
+    {
+      title: "Step 4 - Compute margin",
+      logic: [
+        "Margin formula:",
+        "(menu_price - cost_price) / menu_price"
+      ]
+    },
+
+    {
+      title: "Step 5 - Filter by margin threshold",
+      logic: [
+        "Target margin threshold = 60%.",
+        "Filter dishes where margin < 0.60."
+      ]
+    },
+
+    {
+      title: "Step 6 - Return lowest-margin dishes",
+      cards: [
+        "dish_grilled_salmon",
+        "dish_truffle_pasta"
+      ]
+    }
+  ],
+
+  answer: `
+<strong>Margin Analysis Result:</strong>
+<br/><br/>
+
+<strong>Grilled Salmon</strong><br/>
+Cost: $14<br/>
+Price: $22<br/>
+Margin: <strong>36%</strong>
+<br/><br/>
+
+<strong>Truffle Pasta</strong><br/>
+Cost: $11<br/>
+Price: $18<br/>
+Margin: <strong>39%</strong>
+<br/><br/>
+
+<strong>Recommendation:</strong><br/>
+Increase menu prices by <strong>12–18%</strong> or renegotiate supplier contracts.
+<br/><br/>
+
+<em>Target margin:</em> <strong>65%+</strong> for premium positioning.
+`
+}
 ] as const;

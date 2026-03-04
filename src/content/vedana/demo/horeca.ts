@@ -130,15 +130,14 @@ export const scenarios = [
     ],
 
     answer: `
-<strong>Recommendation:</strong>
-
+<strong>Recommendation:</strong><br/>
+<br/>
 The Chef’s special pasta pairs best with <strong>Pinot Noir</strong> due to its medium body and higher acidity, which balances the richness of cream and salmon.
-
-<strong>Comparison:</strong>
-
-• Pinot Noir — medium body, high acidity, bright red fruit profile  
-• Merlot — medium-full body, softer tannins, lower acidity  
-
+<br/><br/>
+<strong>Comparison:</strong><br/>
+• Pinot Noir – medium body, high acidity, bright red fruit profile  <br/>
+• Merlot – medium-full body, softer tannins, lower acidity  <br/>
+<br/>
 For creamy sauces, higher acidity provides better structural balance.
 `
   }

@@ -292,6 +292,22 @@ export default function ProductDemo<
 
         {/* ================= REASONING ================= */}
         <div className={styles.reasoning}>
+          {!activeScenario && (
+          <div className={styles.reasoningHint}>
+            <div className={styles.reasoningHintInner}>
+              <div className={styles.reasoningHintTitle}>
+                See Vedana reasoning in action
+              </div>
+
+              <div className={styles.reasoningHintText}>
+                Ask a question in the chat to generate a reasoning trace.<br/><br/>
+                ← start here
+              </div>
+            </div>
+          </div>
+        )}
+
+
           {visibleBlocks.map((block: Block, blockIdx: number) => {
 
             const isActiveBlock = blockIdx === blockIndex - 1;

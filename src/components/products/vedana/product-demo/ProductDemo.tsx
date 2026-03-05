@@ -237,8 +237,13 @@ export default function ProductDemo<
           const linked = cardRegistry[item.id as CardId];
           if (!linked) return item.id;
 
-          return item.amount
-            ? `${linked.name} (${item.amount})`
+          const attrs = Object.entries(item)
+            .filter(([k]) => k !== "id")
+            .map(([k, v]) => `${k}: ${v}`)
+            .join(", ");
+
+          return attrs
+            ? `${linked.name} (${attrs})`
             : linked.name;
         });
 

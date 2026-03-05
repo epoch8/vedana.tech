@@ -19,8 +19,7 @@ import Chat from "@/components/blocks/chat/Chat.astro";
 import ChatItem from "@/components/blocks/chat/ChatItem.astro";
 
 import ProductDemo from "@/components/products/vedana/product-demo/ProductDemo.tsx";
-import { scenarios } from "@/content/vedana/demo/horeca"
-import { cardRegistry } from "@/content/vedana/demo/horeca"
+import { scenarios, cardRegistry } from "@/content/vedana/demo/development"
 
 const bot = {
   name: "Vedana AI assistant",
@@ -36,18 +35,18 @@ const user = {
 
 const crumbs = [
   { label: "Industries", href: "/industries" },
-  { label: "Horeca" }
+  { label: "Development" }
 ];
 
 const pageSEO: Partial<SEOConfig> = {
-  title: "Vedana for Horeca",
+  title: "Vedana for Development",
   description:
-    "Structured AI platform for restaurants and hospitality.",
-  canonical: "https://vedana.tech/industries/horeca",
+    "Structured AI platform for Development industry.",
+  canonical: "https://vedana.tech/industries/development",
   og: {
     type: "website",
-    image: "https://vedana.tech/og-horeca.png",
-    imageAlt: "Vedana for Horeca"
+    image: "https://vedana.tech/og-development.png",
+    imageAlt: "Vedana for Development"
   }
 };
 ---
@@ -61,7 +60,7 @@ const pageSEO: Partial<SEOConfig> = {
     <section class="page-hero">
         <div class="page-hero-inner">
             <h1 class="page-hero-title">
-                HoReCa runs on expertise.<br />
+                Development industry runs on expertise.<br />
                 But <strong>expertise is hard to scale</strong>.
             </h1>
 
@@ -76,13 +75,13 @@ const pageSEO: Partial<SEOConfig> = {
         <h2>
             Vedana saves your team expertise in <strong>AI-ready knowledge graph</strong>
         </h2>
-            <Callout style="--callout-bg: hsl(75 30% 94%);">
+            <Callout style="--callout-bg: hsl(43 20% 88%);">
                 <h3>
-                    Pre-modeled HoReCa ontology – ready to extend
+                    Pre-modeled Development ontology – ready to extend
                 </h3>
                 <p></p>
                 <p>
-                    VEDANA comes with a rich understanding of the HoReCa domain: brands, menu items, recipes, ingredients, equipment, supplies, beverages, certifications, service protocols and others.
+                    VEDANA comes with a rich understanding of the Development domain: brands, menu items, recipes, ingredients, equipment, supplies, beverages, certifications, service protocols and others.
                 </p>
                 <p>
                     We extend this model with your internal logic, formats, and documents, so your assistant answers questions in your language – not just industry standards.
@@ -98,127 +97,155 @@ const pageSEO: Partial<SEOConfig> = {
     <strong>This is the foundation of our methodology: structured modeling first, AI reasoning on top.</strong>
 </p>
 
+
 <EntityCardRichList columns={3}>
 
   <EntityCardRich
-    title="Brand"
-    entityType="brand"
-    color="var(--entity-brand)"
+    title="Project"
+    entityType="project"
+    color="var(--entity-project)"
     attributes={[
-      { key: "name", value: "Nordic Harbor" },
-      { key: "concept type", value: "Casual seafood restaurant" },
-      { key: "opening year", value: "2014" },
-      { key: "website", value: "nordic-harbor.de", href: "https://nordic-harbor.de", external: true }
+      { key: "name", value: "Riverside Residential Complex" },
+      { key: "location", value: "Hamburg, Germany" },
+      { key: "project type", value: "Mixed‑use residential development" },
+      { key: "client", value: "UrbanCore Development GmbH" },
+      { key: "planned floors", value: "12" }
     ]}
     relations={[
       {
-        label: "Holds",
+        label: "Requires",
         targets: [
-          { title: "certificate: HACCP Certification 2023–2026", entityType: "certification", color: "var(--entity-compliance)" }
+          { title: "investigation: Geotechnical Survey", entityType: "investigation", color: "var(--entity-investigation)" }
+        ]
+      },
+      {
+        label: "Governed by",
+        targets: [
+          { title: "regulation: Eurocode 7 – Geotechnical Design", entityType: "regulation", color: "var(--entity-regulation)" }
         ]
       }
     ]}
   />
 
   <EntityCardRich
-    title="Dish"
-    entityType="dish"
-    color="var(--entity-dish)"
+    title="Technical Assignment"
+    entityType="assignment"
+    color="var(--entity-assignment)"
     attributes={[
-      { key: "name", value: "Grilled Atlantic Salmon" },
-      { key: "category", value: "Main course" },
-      { key: "preparation time", value: "18 min" },
-      { key: "serving size", value: "320 g" }
+      { key: "document type", value: "Engineering Investigation Scope" },
+      { key: "issued by", value: "UrbanCore Development GmbH" },
+      { key: "project phase", value: "Pre‑design investigation" },
+      { key: "site area", value: "1.8 ha" },
+      { key: "document id", value: "TA‑2025‑0142" }
     ]}
     relations={[
       {
-        label: "Contains",
+        label: "Defines",
         targets: [
-          { title: "ingredient: Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
+          { title: "investigation: Geotechnical Survey", entityType: "investigation", color: "var(--entity-investigation)" }
+        ]
+      },
+      {
+        label: "References",
+        targets: [
+          { title: "regulation: Eurocode 7 – Geotechnical Design", entityType: "regulation", color: "var(--entity-regulation)" }
         ]
       }
     ]}
   />
 
   <EntityCardRich
-    title="Ingredient"
-    entityType="ingredient"
-    color="var(--entity-ingredient)"
+    title="Regulation"
+    entityType="regulation"
+    color="var(--entity-regulation)"
     attributes={[
-      { key: "name", value: "Atlantic Salmon" },
-      { key: "category", value: "Fish" },
-      { key: "is allergen", value: "Yes" },
-      { key: "shelf life", value: "3 days" },
-      { key: "storage", value: "2-4°C refrigerated" },
-      { key: "cost", value: "€8.40 / kg" }
+      { key: "name", value: "Eurocode 7 – Geotechnical Design" },
+      { key: "standard code", value: "EN 1997‑1:2004" },
+      { key: "domain", value: "Geotechnical engineering" },
+      { key: "issuing body", value: "European Committee for Standardization" },
+      { key: "applies to", value: "Foundations and soil investigation" }
     ]}
     relations={[
       {
-        label: "Supplied by",
+        label: "Defines",
         targets: [
-          { title: "supplier: NordSea Imports GmbH", entityType: "supplier", color: "var(--entity-supplier)" }
+          { title: "investigation: Soil Drilling", entityType: "investigation", color: "var(--entity-investigation)" }
         ]
       }
     ]}
   />
 
   <EntityCardRich
-    title="Wine"
-    entityType="wine"
-    color="var(--entity-wine)"
+    title="Investigation"
+    entityType="investigation"
+    color="var(--entity-investigation)"
     attributes={[
-      { key: "name", value: "Pinot Noir – Domaine Lefèvre" },
-      { key: "type", value: "Red wine" },
-      { key: "origin", value: "Burgundy, France" },
-      { key: "serving temperature", value: "16–18°C" },
-      { key: "body", value: "Medium" },
-      { key: "acidity", value: "High" }
+      { key: "name", value: "Geotechnical Survey" },
+      { key: "category", value: "Subsurface investigation" },
+      { key: "typical methods", value: "Drilling, sampling, lab testing" },
+      { key: "required depth", value: "Up to 25 m" },
+      { key: "output", value: "Engineering Geological Report" }
     ]}
     relations={[
       {
-        label: "Complements",
+        label: "Priced by",
         targets: [
-          { title: "ingredient: Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
+          { title: "cost rule: Borehole Drilling Pricing", entityType: "costrule", color: "var(--entity-cost)" }
         ]
       }
     ]}
   />
 
   <EntityCardRich
-    title="Certification"
-    entityType="certification"
-    color="var(--entity-compliance)"
+    title="Cost Rule"
+    entityType="costrule"
+    color="var(--entity-cost)"
     attributes={[
-      { key: "name", value: "HACCP Certification 2023–2026" },
-      { key: "standard number", value: "HACCP-DE-2023-4581" },
-      { key: "scope", value: "Kitchen & cold storage operations" },
-      { key: "issuing body", value: "German Food Safety Authority" },
-      { key: "valid until", value: "Dec 2026" }
+      { key: "name", value: "Borehole Drilling Pricing" },
+      { key: "price unit", value: "€/meter" },
+      { key: "complexity category", value: "Category II soil conditions" },
+      { key: "base rate", value: "€120 / m" },
+      { key: "source", value: "National Construction Price Book" }
+    ]}
+    relations={[
+      {
+        label: "Applies to",
+        targets: [
+          { title: "investigation: Soil Drilling", entityType: "investigation", color: "var(--entity-investigation)" }
+        ]
+      }
     ]}
   />
 
-<EntityCardRich
-  title="Supplier"
-  entityType="supplier"
-  color="var(--entity-supplier)"
-  attributes={[
-    { key: "name", value: "NordSea Imports GmbH" },
-    { key: "company type", value: "Seafood distributor" },
-    { key: "headquarters", value: "Hamburg, Germany" },
-    { key: "certified for", value: "EU food import compliance" },
-    { key: "delivery model", value: "Refrigerated daily supply" },
-  ]}
-  relations={[
-    {
-      label: "Supplies",
-      targets: [
-        { title: "ingredient: Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
-      ]
-    }
-  ]}
-/>
+  <EntityCardRich
+    title="Work Program"
+    entityType="program"
+    color="var(--entity-program)"
+    attributes={[
+      { key: "name", value: "Geotechnical Investigation Program" },
+      { key: "prepared for", value: "Riverside Residential Complex" },
+      { key: "document type", value: "Engineering investigation plan" },
+      { key: "estimated duration", value: "18 days" },
+      { key: "report format", value: "EN‑compliant engineering report" }
+    ]}
+    relations={[
+      {
+        label: "Includes",
+        targets: [
+          { title: "investigation: Geotechnical Survey", entityType: "investigation", color: "var(--entity-investigation)" }
+        ]
+      },
+      {
+        label: "Complies with",
+        targets: [
+          { title: "regulation: Eurocode 7 – Geotechnical Design", entityType: "regulation", color: "var(--entity-regulation)" }
+        ]
+      }
+    ]}
+  />
 
 </EntityCardRichList>
+
 
         </div>
     </section>
@@ -229,7 +256,7 @@ const pageSEO: Partial<SEOConfig> = {
             VEDANA makes all your knowledge accessible.
         </h2>
         <h3>
-            See how Vedana helps in HoReCa scenarios
+            See how Vedana helps in Development scenarios
         </h3>
 
           <div class="container">

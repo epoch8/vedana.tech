@@ -74,4 +74,20 @@
 --bv-dark: hsl(259 57% 44%);
 
 
+/* ======================================
+   Development domain entities — tuned
+====================================== */
+
+--entity-project: hsl(223 55% 54%);
+
+--entity-investigation: hsl(187 45% 56%);
+
+--entity-regulation: hsl(7 50% 56%);
+
+--entity-assignment: hsl(79 45% 60%);
+
+--entity-cost: hsl(43 48% 58%);
+
+--entity-program: hsl(259 55% 52%);
+
 }

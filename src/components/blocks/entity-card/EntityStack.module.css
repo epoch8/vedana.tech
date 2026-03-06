@@ -39,6 +39,10 @@
   cursor: pointer;
 }
 
+.stack__btn:hover {
+  background: var(--color-bg);
+}
+
 
 /* ========================================
    BODY
@@ -56,9 +60,11 @@
 .stack__shadow {
   position: absolute;
   inset: 0;
+
   border-radius: var(--radius-md);
   background: var(--color-bg-muted);
   border: 1px solid var(--color-border);
+
   pointer-events: none;
   z-index: 1;
 }
@@ -81,11 +87,7 @@
 .stack__front,
 .stack__back {
   position: relative;
-  z-index: 3;
-}
-
-.stack__front {
-  display: block;
+  z-index: 2;
 }
 
 .stack__back {
@@ -98,7 +100,9 @@
 }
 
 
-/* flip state */
+/* ========================================
+   FLIP STATE
+======================================== */
 
 .stack[data-flipped="true"] .stack__front {
   display: none;
@@ -121,15 +125,50 @@
 
 
 /* ========================================
-   ENTITY CARDS VISIBILITY
+   CARD STACK
 ======================================== */
 
-[data-entity-id] {
-  display: none;
+.stack__front {
+  position: relative;
 }
 
-[data-entity-id][data-active="true"] {
-  display: block;
+.stack__front > [data-entity-id] {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+  transform: translateY(0);
+
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+
+  pointer-events: none;
+}
+
+
+/* active card */
+
+.stack__front > [data-entity-id][data-active="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  position: relative;
+  z-index: 3;
+}
+
+
+/* ========================================
+   GRAPH FOCUS MODE
+======================================== */
+
+.stack[data-focus-mode="true"] [data-entity-id][data-focus="dim"] {
+  opacity: 0.35;
+}
+
+.stack[data-focus-mode="true"] [data-entity-id][data-focus="target"] {
+  opacity: 1;
+  transform: translateY(-2px);
+  z-index: 4;
 }
 
 

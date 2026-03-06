@@ -19,6 +19,7 @@ const {
 <section
   class={`${styles["stack"]} ${className ?? ""}`.trim()}
   data-entity-stack
+  data-entity-type={entityType}
   data-flipped="false"
   style={color ? `--entity-accent:${color}` : undefined}
 >
@@ -79,11 +80,23 @@ const {
 
 <script is:inline>
 (() => {
+
   const root = document.currentScript?.previousElementSibling;
   if (!(root instanceof HTMLElement)) return;
   if (root.dataset.stackInitialized === "true") return;
 
   root.dataset.stackInitialized = "true";
+
+  /* ========================================
+     REGISTER STACK
+  ======================================== */
+
+  window.__VEDANA_STACKS ??= {};
+  window.__VEDANA_STACKS[root.dataset.entityType] = root;
+
+  /* ========================================
+     STACK INIT
+  ======================================== */
 
   const front = root.querySelector("[data-stack-front]");
   if (!(front instanceof HTMLElement)) return;
@@ -96,38 +109,116 @@ const {
   let index = 0;
 
   function render() {
+
     cards.forEach((card, i) => {
+
       if (i === index) {
         card.setAttribute("data-active", "true");
       } else {
         card.removeAttribute("data-active");
       }
+
+      card.removeAttribute("data-focus");
+
     });
+
+    root.removeAttribute("data-focus-mode");
   }
 
   render();
+
+  /* ========================================
+     NAVIGATION
+  ======================================== */
 
   const prev = root.querySelector("[data-stack-prev]");
   const next = root.querySelector("[data-stack-next]");
   const flip = root.querySelector("[data-stack-flip]");
 
   if (cards.length > 1) {
+
     prev?.addEventListener("click", () => {
+
       index = (index - 1 + cards.length) % cards.length;
+
       root.dataset.flipped = "false";
       render();
+
     });
 
     next?.addEventListener("click", () => {
+
       index = (index + 1) % cards.length;
+
       root.dataset.flipped = "false";
       render();
+
     });
+
   }
 
   flip?.addEventListener("click", () => {
+
     root.dataset.flipped =
       root.dataset.flipped === "true" ? "false" : "true";
+
   });
+
 })();
+
+/* ========================================
+   GRAPH LINK HOVER
+======================================== */
+
+
+document.addEventListener("mouseover", (e) => {
+
+  const link = e.target.closest("[data-target-id]");
+  if (!link) return;
+
+  const targetType = link.dataset.targetType;
+  const targetId = link.dataset.targetId;
+
+  const stack = window.__VEDANA_STACKS?.[targetType];
+  if (!stack) return;
+
+  const cards = [...stack.querySelectorAll("[data-entity-id]")];
+
+  const targetIndex = cards.findIndex(
+    c => c.dataset.entityId === targetId
+  );
+
+  if (targetIndex === -1) return;
+
+  stack.dataset.focusMode = "true";
+
+  cards.forEach((card, i) => {
+
+    if (i === targetIndex) {
+      card.setAttribute("data-active", "true");
+      card.dataset.focus = "target";
+    } else {
+      card.dataset.focus = "dim";
+    }
+
+  });
+
+});
+
+document.addEventListener("mouseout", (e) => {
+
+  const link = e.target.closest("[data-target-id]");
+  if (!link) return;
+
+  const targetType = link.dataset.targetType;
+  const stack = window.__VEDANA_STACKS?.[targetType];
+  if (!stack) return;
+
+  stack.removeAttribute("data-focus-mode");
+
+  stack.querySelectorAll("[data-entity-id]").forEach(card => {
+    card.removeAttribute("data-focus");
+  });
+
+});
 </script>

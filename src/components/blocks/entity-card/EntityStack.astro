@@ -1,0 +1,133 @@
+---
+import styles from "./EntityStack.module.css";
+
+export interface Props {
+  entityType: string;
+  color?: string;
+  description?: string;
+  class?: string;
+}
+
+const {
+  entityType,
+  color,
+  description,
+  class: className
+} = Astro.props;
+---
+
+<section
+  class={`${styles["stack"]} ${className ?? ""}`.trim()}
+  data-entity-stack
+  data-flipped="false"
+  style={color ? `--entity-accent:${color}` : undefined}
+>
+  <header class={styles["stack__header"]}>
+    <div class={styles["stack__type"]}>
+      {entityType}
+    </div>
+
+    <div class={styles["stack__controls"]}>
+      <button
+        class={styles["stack__btn"]}
+        data-stack-prev
+        aria-label="Previous"
+        type="button"
+      >
+        ‹
+      </button>
+
+      <button
+        class={styles["stack__btn"]}
+        data-stack-next
+        aria-label="Next"
+        type="button"
+      >
+        ›
+      </button>
+
+      {description && (
+        <button
+          class={styles["stack__btn"]}
+          data-stack-flip
+          aria-label="Info"
+          type="button"
+        >
+          i
+        </button>
+      )}
+    </div>
+  </header>
+
+  <div class={styles["stack__body"]}>
+    <div class={styles["stack__shadow"]}></div>
+    <div class={styles["stack__shadow"]}></div>
+
+    <div class={styles["stack__front"]} data-stack-front>
+      <slot />
+    </div>
+
+    {description && (
+      <div class={styles["stack__back"]}>
+        <div class={styles["stack__description"]}>
+          {description}
+        </div>
+      </div>
+    )}
+  </div>
+</section>
+
+<script is:inline>
+(() => {
+  const root = document.currentScript?.previousElementSibling;
+  if (!(root instanceof HTMLElement)) return;
+  if (root.dataset.stackInitialized === "true") return;
+
+  root.dataset.stackInitialized = "true";
+
+  const front = root.querySelector("[data-stack-front]");
+  if (!(front instanceof HTMLElement)) return;
+
+  const cards = [...front.querySelectorAll("[data-entity-id]")];
+  if (!cards.length) return;
+
+  root.dataset.hasStack = cards.length > 1 ? "true" : "false";
+
+  let index = 0;
+
+  function render() {
+    cards.forEach((card, i) => {
+      if (i === index) {
+        card.setAttribute("data-active", "true");
+      } else {
+        card.removeAttribute("data-active");
+      }
+    });
+  }
+
+  render();
+
+  const prev = root.querySelector("[data-stack-prev]");
+  const next = root.querySelector("[data-stack-next]");
+  const flip = root.querySelector("[data-stack-flip]");
+
+  if (cards.length > 1) {
+    prev?.addEventListener("click", () => {
+      index = (index - 1 + cards.length) % cards.length;
+      root.dataset.flipped = "false";
+      render();
+    });
+
+    next?.addEventListener("click", () => {
+      index = (index + 1) % cards.length;
+      root.dataset.flipped = "false";
+      render();
+    });
+  }
+
+  flip?.addEventListener("click", () => {
+    root.dataset.flipped =
+      root.dataset.flipped === "true" ? "false" : "true";
+  });
+})();
+</script>

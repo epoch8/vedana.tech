@@ -1,0 +1,227 @@
+---
+import BaseLayout from "@/layouts/baseLayout.astro";
+import { SEOBase } from "@content/vedana/seo/seo";
+
+import "@/styles/global.css";
+import "@/styles/vedana/extra-tokens.css";
+
+import EntityBoard from "@/components/blocks/entity-card/EntityBoard.astro";
+import EntityStackCard from "@/components/blocks/entity-card/EntityStackCard.astro";
+import EntityStack from "@/components/blocks/entity-card/EntityStack.astro";
+---
+<BaseLayout
+  baseSEO={SEOBase}
+  pageSEO={{
+    title: "Vedana — Style guidebook",
+    description:
+      "Vedana builds structured knowledge graphs so AI answers follow business rules, not similarity guesses.",
+    canonical: "https://vedana.tech/guidebooks/style",
+  }}
+>
+
+<EntityBoard columns={3}>
+
+  <!-- BRAND -->
+
+  <EntityStack
+    entityType="brand"
+    color="var(--entity-brand)"
+    description="Restaurant brands operating within the hospitality network."
+  >
+
+    <EntityStackCard
+      id="brand_nordic_harbor"
+      title="Nordic Harbor"
+      entityType="brand"
+      color="var(--entity-brand)"
+      attributes={[
+        { key: "concept type", value: "Casual seafood restaurant" },
+        { key: "opening year", value: "2014" },
+        { key: "website", value: "nordic-harbor.de", href: "https://nordic-harbor.de", external: true }
+      ]}
+      relations={[
+        {
+          label: "Operates in",
+          targets: [
+            { id: "loc_berlin", title: "Berlin", entityType: "location", color: "var(--entity-location)" },
+            { id: "loc_munich", title: "Munich", entityType: "location", color: "var(--entity-location)" },
+            { id: "loc_hamburg", title: "Hamburg", entityType: "location", color: "var(--entity-location)" }
+          ]
+        },
+        {
+          label: "Holds",
+          targets: [
+            { id: "comp_haccp", title: "HACCP Certification", entityType: "compliance", color: "var(--entity-compliance)" }
+          ]
+        }
+      ]}
+    />
+
+  </EntityStack>
+
+
+  <!-- LOCATIONS -->
+
+  <EntityStack
+    entityType="location"
+    color="var(--entity-location)"
+    description="Cities where the restaurant chain operates."
+  >
+
+    <EntityStackCard
+      id="loc_berlin"
+      title="Berlin"
+      entityType="location"
+      attributes={[
+        { key: "country", value: "Germany" },
+        { key: "population", value: "3.6M" }
+      ]}
+    />
+
+    <EntityStackCard
+      id="loc_munich"
+      title="Munich"
+      entityType="location"
+      attributes={[
+        { key: "country", value: "Germany" },
+        { key: "population", value: "1.5M" }
+      ]}
+    />
+
+    <EntityStackCard
+      id="loc_hamburg"
+      title="Hamburg"
+      entityType="location"
+      attributes={[
+        { key: "country", value: "Germany" },
+        { key: "population", value: "1.9M" }
+      ]}
+    />
+
+  </EntityStack>
+
+
+  <!-- DISH -->
+
+  <EntityStack
+    entityType="dish"
+    color="var(--entity-dish)"
+    description="Menu items served by the restaurant."
+  >
+
+    <EntityStackCard
+      id="dish_salmon"
+      title="Grilled Atlantic Salmon"
+      entityType="dish"
+      attributes={[
+        { key: "category", value: "Main course" },
+        { key: "preparation time", value: "18 min" },
+        { key: "serving size", value: "320 g" }
+      ]}
+      relations={[
+        {
+          label: "Contains",
+          targets: [
+            { id: "ingredient_salmon", title: "Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
+          ]
+        },
+        {
+          label: "Pairs with",
+          targets: [
+            { id: "wine_pinot", title: "Pinot Noir", entityType: "wine", color: "var(--entity-wine)" }
+          ]
+        }
+      ]}
+    />
+
+  </EntityStack>
+
+
+  <!-- INGREDIENT -->
+
+  <EntityStack
+    entityType="ingredient"
+    color="var(--entity-ingredient)"
+    description="Ingredients used across menu items."
+  >
+
+    <EntityStackCard
+      id="ingredient_salmon"
+      title="Atlantic Salmon"
+      entityType="ingredient"
+      attributes={[
+        { key: "category", value: "Fish" },
+        { key: "is allergen", value: "Yes" },
+        { key: "shelf life", value: "3 days" },
+        { key: "storage", value: "2–4°C refrigerated" },
+        { key: "cost", value: "€8.40 / kg" }
+      ]}
+      relations={[
+        {
+          label: "Supplied by",
+          targets: [
+            { id: "supplier_nordic", title: "Nordic Seafood Supplier", entityType: "supplier", color: "var(--entity-supplier)" }
+          ]
+        }
+      ]}
+    />
+
+  </EntityStack>
+
+
+  <!-- WINE -->
+
+  <EntityStack
+    entityType="wine"
+    color="var(--entity-wine)"
+    description="Wines recommended for menu pairings."
+  >
+
+    <EntityStackCard
+      id="wine_pinot"
+      title="Pinot Noir"
+      entityType="wine"
+      attributes={[
+        { key: "type", value: "Red wine" },
+        { key: "origin", value: "Burgundy, France" },
+        { key: "serving temperature", value: "16–18°C" },
+        { key: "body", value: "Medium" },
+        { key: "acidity", value: "High" }
+      ]}
+      relations={[
+        {
+          label: "Complements",
+          targets: [
+            { id: "ingredient_salmon", title: "Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
+          ]
+        }
+      ]}
+    />
+
+  </EntityStack>
+
+
+  <!-- COMPLIANCE -->
+
+  <EntityStack
+    entityType="compliance"
+    color="var(--entity-compliance)"
+    description="Food safety and regulatory certifications."
+  >
+
+    <EntityStackCard
+      id="comp_haccp"
+      title="HACCP Certification 2023–2026"
+      entityType="compliance"
+      attributes={[
+        { key: "standard number", value: "HACCP-DE-2023-4581" },
+        { key: "scope", value: "Kitchen & cold storage operations" },
+        { key: "issuing body", value: "German Food Safety Authority" },
+        { key: "valid until", value: "Dec 2026" }
+      ]}
+    />
+
+  </EntityStack>
+
+</EntityBoard>
+</BaseLayout>

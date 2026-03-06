@@ -1,0 +1,147 @@
+/* ========================================
+   STACK ROOT
+======================================== */
+
+.stack {
+  position: relative;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.stack__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.stack__type {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: capitalize;
+}
+
+.stack__controls {
+  display: flex;
+  gap: 4px;
+}
+
+.stack__btn {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-muted);
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
+/* ========================================
+   BODY
+======================================== */
+
+.stack__body {
+  position: relative;
+}
+
+
+/* ========================================
+   STACK SHADOWS
+======================================== */
+
+.stack__shadow {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-muted);
+  border: 1px solid var(--color-border);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.stack__shadow:nth-child(1) {
+  transform: translateY(6px) scale(0.995);
+  opacity: 0.55;
+}
+
+.stack__shadow:nth-child(2) {
+  transform: translateY(12px) scale(0.99);
+  opacity: 0.28;
+}
+
+
+/* ========================================
+   FRONT / BACK
+======================================== */
+
+.stack__front,
+.stack__back {
+  position: relative;
+  z-index: 3;
+}
+
+.stack__front {
+  display: block;
+}
+
+.stack__back {
+  display: none;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  padding: 16px;
+}
+
+
+/* flip state */
+
+.stack[data-flipped="true"] .stack__front {
+  display: none;
+}
+
+.stack[data-flipped="true"] .stack__back {
+  display: block;
+}
+
+
+/* ========================================
+   DESCRIPTION
+======================================== */
+
+.stack__description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+
+/* ========================================
+   ENTITY CARDS VISIBILITY
+======================================== */
+
+[data-entity-id] {
+  display: none;
+}
+
+[data-entity-id][data-active="true"] {
+  display: block;
+}
+
+
+/* ========================================
+   SINGLE CARD MODE
+======================================== */
+
+.stack[data-has-stack="false"] .stack__shadow {
+  display: none;
+}
+
+.stack[data-has-stack="false"] [data-stack-prev],
+.stack[data-has-stack="false"] [data-stack-next] {
+  display: none;
+}

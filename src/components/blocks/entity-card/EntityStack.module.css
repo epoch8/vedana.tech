@@ -52,6 +52,7 @@
 
 .stack__body {
   position: relative;
+  width: 100%;
 }
 
 
@@ -68,7 +69,6 @@
   border: 1px solid var(--color-border);
 
   pointer-events: none;
-
   z-index: 1;
 }
 
@@ -84,13 +84,14 @@
 
 
 /* ========================================
-   FRONT / BACK PANELS
+   PANELS
 ======================================== */
 
 .stack__front,
 .stack__back {
   position: relative;
   z-index: 2;
+  height: 100%;
 }
 
 .stack__back {
@@ -101,6 +102,7 @@
   background: var(--color-bg);
 
   padding: 16px;
+  box-sizing: border-box;
 }
 
 
@@ -129,50 +131,26 @@
 
 
 /* ========================================
-   CARD STACK CONTAINER
+   CARD STACK
 ======================================== */
 
 .stack__front {
   position: relative;
   width: 100%;
-  display: block;
 }
 
 
-/* ========================================
-   BASE CARD STATE
-======================================== */
+/* BASE CARD */
 
 .stack__front > [data-entity-id] {
-
-  position: absolute;
-  inset: 0;
-
-  opacity: 0;
-  transform: translateY(0);
-
-  pointer-events: none;
-
-  transition:
-    opacity 180ms ease,
-    transform 180ms ease;
-
-  z-index: 1;
+  display: none;
 }
 
 
-/* ========================================
-   ACTIVE CARD
-======================================== */
+/* ACTIVE CARD */
 
 .stack__front > [data-entity-id][data-active="true"] {
-
-  position: relative;
-
-  opacity: 1;
-  pointer-events: auto;
-
-  z-index: 2;
+  display: block;
 }
 
 
@@ -181,7 +159,6 @@
 ======================================== */
 
 [data-entity-id][data-graph-active] {
-
   transform: translateY(-1px);
 
   box-shadow:
@@ -195,23 +172,15 @@
       color-mix(in srgb, var(--entity-accent) 6%, transparent)
     ),
     var(--color-bg);
-
-  transition:
-    box-shadow 140ms ease,
-    transform 140ms ease;
 }
+
 
 /* ========================================
    GRAPH LINKS
 ======================================== */
 
 [data-target-id] {
-
   cursor: pointer;
-
-  transition:
-    transform 120ms ease,
-    box-shadow 120ms ease;
 }
 
 [data-target-id]:active {

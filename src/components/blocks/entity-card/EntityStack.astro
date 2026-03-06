@@ -66,7 +66,7 @@ const {
 </header>
 
 
-<div class={styles["stack__body"]}>
+<div class={styles["stack__body"]} data-stack-body>
 
   <div class={styles["stack__shadow"]}></div>
   <div class={styles["stack__shadow"]}></div>
@@ -76,7 +76,7 @@ const {
   </div>
 
   {description && (
-    <div class={styles["stack__back"]}>
+    <div class={styles["stack__back"]} data-stack-back>
       <div class={styles["stack__description"]}>
         {description}
       </div>
@@ -114,13 +114,18 @@ const {
 
 
   /* =====================================================
-     STACK INIT
+     STACK ELEMENTS
   ===================================================== */
 
+  const body = root.querySelector("[data-stack-body]");
   const front = root.querySelector("[data-stack-front]");
+  const back = root.querySelector("[data-stack-back]");
+
   if (!(front instanceof HTMLElement)) return;
 
+
   const cards = [...front.querySelectorAll("[data-entity-id]")];
+
   if (!cards.length) return;
 
   root.dataset.hasStack = cards.length > 1 ? "true" : "false";
@@ -129,12 +134,14 @@ const {
 
 
   /* =====================================================
-     FIX HEIGHT
+     FIX HEIGHT (FRONT + BACK)
   ===================================================== */
 
   function fixHeight() {
 
     let max = 0;
+
+    /* measure all cards */
 
     cards.forEach(card => {
 
@@ -150,7 +157,27 @@ const {
 
     });
 
-    front.style.minHeight = max + "px";
+
+    /* measure back panel */
+
+    if (back instanceof HTMLElement) {
+
+      const prev = root.dataset.flipped;
+
+      root.dataset.flipped = "true";
+
+      const h = back.offsetHeight;
+
+      if (h > max) max = h;
+
+      root.dataset.flipped = prev;
+
+    }
+
+
+    if (body instanceof HTMLElement) {
+      body.style.height = max + "px";
+    }
 
   }
 
@@ -221,7 +248,6 @@ const {
 </script>
 
 
-
 <script is:inline>
 /* =====================================================
    GRAPH CLICK NAVIGATION
@@ -251,10 +277,6 @@ document.addEventListener("click", (e) => {
   if (targetIndex === -1) return;
 
 
-  /* =====================================================
-     ACTIVATE CARD
-  ===================================================== */
-
   cards.forEach((card,i) => {
 
     if (i === targetIndex) {
@@ -268,33 +290,17 @@ document.addEventListener("click", (e) => {
   stack.dataset.flipped = "false";
 
 
-  /* =====================================================
-     CLEAR OLD GRAPH PATH
-  ===================================================== */
-
   document
     .querySelectorAll("[data-graph-active]")
     .forEach(el => el.removeAttribute("data-graph-active"));
 
 
-  /* =====================================================
-     HIGHLIGHT LINK
-  ===================================================== */
-
   link.setAttribute("data-graph-active","true");
 
-
-  /* =====================================================
-     HIGHLIGHT CARD
-  ===================================================== */
 
   const targetCard = cards[targetIndex];
   targetCard.setAttribute("data-graph-active","true");
 
-
-  /* =====================================================
-     OPTIONAL SCROLL
-  ===================================================== */
 
   stack.scrollIntoView({
     block: "nearest",

@@ -99,10 +99,17 @@
 
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background: var(--color-bg);
 
   padding: 16px;
   box-sizing: border-box;
+
+    background:
+    linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--entity-accent) 4%, transparent),
+      color-mix(in srgb, var(--entity-accent) 4%, transparent)
+    ),
+    var(--color-bg);
 }
 
 
@@ -125,10 +132,12 @@
 
 .stack__description {
   font-size: 14px;
-  line-height: 1.5;
-  color: var(--color-text-muted);
-}
+  line-height: 1.55;
 
+  color: var(--color-text-muted);
+
+  max-width: 40ch;
+}
 
 /* ========================================
    CARD STACK
@@ -199,4 +208,52 @@
 .stack[data-has-stack="false"] [data-stack-prev],
 .stack[data-has-stack="false"] [data-stack-next] {
   display: none;
+}
+
+.entity-chip[data-target-id] {
+  cursor: pointer;
+}
+
+.entity-chip[data-target-id]:hover {
+  background: color-mix(in srgb, var(--chip-color) 18%, transparent);
+  border-color: var(--chip-color);
+  transform: translateY(-1px);
+}
+
+.entity-chip[data-graph-active] {
+  background: color-mix(in srgb, var(--chip-color) 22%, transparent);
+  font-weight: 600;
+}
+
+.entity-chip[data-target-id]:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.entity-chip[data-target-id]::after {
+  content: "↗";
+  font-size: 0.75em;
+  margin-left: 4px;
+  opacity: 0.4;
+}
+
+[data-entity-id][data-graph-active] {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--entity-accent) 45%, transparent),
+    0 8px 18px rgba(0,0,0,0.08);
+
+  transform: translateY(-2px);
+}
+
+[data-entity-id][data-graph-source] {
+  opacity: 0.65;
+  filter: saturate(0.8);
+}
+
+.entity-chip[data-graph-active] {
+  background: var(--chip-color);
+  color: white;
+
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--chip-color) 30%, transparent);
 }

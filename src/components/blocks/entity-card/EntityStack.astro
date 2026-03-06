@@ -308,4 +308,11 @@ document.addEventListener("click", (e) => {
   });
 
 });
+
+document
+  .querySelectorAll("[data-graph-source]")
+  .forEach(el => el.removeAttribute("data-graph-source"));
+
+const sourceCard = link.closest("[data-entity-id]");
+sourceCard?.setAttribute("data-graph-source","true");
 </script>

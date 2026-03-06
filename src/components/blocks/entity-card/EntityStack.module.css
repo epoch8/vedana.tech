@@ -4,6 +4,7 @@
 
 .stack {
   position: relative;
+  width: 100%;
 }
 
 
@@ -54,7 +55,7 @@
 
 
 /* ========================================
-   STACK SHADOWS
+   STACK SHADOW LAYERS
 ======================================== */
 
 .stack__shadow {
@@ -66,6 +67,7 @@
   border: 1px solid var(--color-border);
 
   pointer-events: none;
+
   z-index: 1;
 }
 
@@ -81,7 +83,7 @@
 
 
 /* ========================================
-   FRONT / BACK
+   FRONT / BACK PANELS
 ======================================== */
 
 .stack__front,
@@ -96,6 +98,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-bg);
+
   padding: 16px;
 }
 
@@ -125,49 +128,76 @@
 
 
 /* ========================================
-   CARD STACK
+   CARD STACK CONTAINER
 ======================================== */
 
 .stack__front {
   position: relative;
-}
-
-.stack__front > [data-entity-id] {
-  position: absolute;
-  inset: 0;
-
-  opacity: 0;
-  transform: translateY(0);
-
-  transition:
-    opacity 0.18s ease,
-    transform 0.18s ease;
-
-  pointer-events: none;
-}
-
-
-/* active card */
-
-.stack__front > [data-entity-id][data-active="true"] {
-  opacity: 1;
-  pointer-events: auto;
-  position: relative;
-  z-index: 3;
+  width: 100%;
+  display: block;
 }
 
 
 /* ========================================
-   GRAPH FOCUS MODE
+   BASE CARD STATE
 ======================================== */
 
-.stack[data-focus-mode="true"] [data-entity-id][data-focus="dim"] {
-  opacity: 0.35;
+.stack__front > [data-entity-id] {
+
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+
+  transform: translateY(0);
+
+  pointer-events: none;
+
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+
+  z-index: 1;
 }
 
-.stack[data-focus-mode="true"] [data-entity-id][data-focus="target"] {
+
+/* ========================================
+   ACTIVE CARD
+======================================== */
+
+.stack__front > [data-entity-id][data-active="true"] {
+
+  position: relative;
+
   opacity: 1;
+  pointer-events: auto;
+
+  z-index: 2;
+}
+
+
+/* ========================================
+   GRAPH HOVER MODE
+======================================== */
+
+.stack[data-focus-mode="true"]
+.stack__front > [data-entity-id][data-focus="dim"] {
+
+  opacity: 0.25;
+
+  z-index: 0;
+}
+
+
+.stack[data-focus-mode="true"]
+.stack__front > [data-entity-id][data-focus="target"] {
+
+  opacity: 1;
+
+  pointer-events: auto;
+
   transform: translateY(-2px);
+
   z-index: 4;
 }
 

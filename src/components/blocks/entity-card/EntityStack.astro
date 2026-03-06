@@ -23,80 +23,99 @@ const {
   data-flipped="false"
   style={color ? `--entity-accent:${color}` : undefined}
 >
-  <header class={styles["stack__header"]}>
-    <div class={styles["stack__type"]}>
-      {entityType}
-    </div>
 
-    <div class={styles["stack__controls"]}>
-      <button
-        class={styles["stack__btn"]}
-        data-stack-prev
-        aria-label="Previous"
-        type="button"
-      >
-        ‹
-      </button>
+<header class={styles["stack__header"]}>
 
-      <button
-        class={styles["stack__btn"]}
-        data-stack-next
-        aria-label="Next"
-        type="button"
-      >
-        ›
-      </button>
+  <div class={styles["stack__type"]}>
+    {entityType}
+  </div>
 
-      {description && (
-        <button
-          class={styles["stack__btn"]}
-          data-stack-flip
-          aria-label="Info"
-          type="button"
-        >
-          i
-        </button>
-      )}
-    </div>
-  </header>
+  <div class={styles["stack__controls"]}>
 
-  <div class={styles["stack__body"]}>
-    <div class={styles["stack__shadow"]}></div>
-    <div class={styles["stack__shadow"]}></div>
+    <button
+      class={styles["stack__btn"]}
+      data-stack-prev
+      aria-label="Previous"
+      type="button"
+    >
+      ‹
+    </button>
 
-    <div class={styles["stack__front"]} data-stack-front>
-      <slot />
-    </div>
+    <button
+      class={styles["stack__btn"]}
+      data-stack-next
+      aria-label="Next"
+      type="button"
+    >
+      ›
+    </button>
 
     {description && (
-      <div class={styles["stack__back"]}>
-        <div class={styles["stack__description"]}>
-          {description}
-        </div>
-      </div>
+      <button
+        class={styles["stack__btn"]}
+        data-stack-flip
+        aria-label="Info"
+        type="button"
+      >
+        i
+      </button>
     )}
+
   </div>
+
+</header>
+
+
+<div class={styles["stack__body"]}>
+
+  <div class={styles["stack__shadow"]}></div>
+  <div class={styles["stack__shadow"]}></div>
+
+  <div class={styles["stack__front"]} data-stack-front>
+    <slot />
+  </div>
+
+  {description && (
+    <div class={styles["stack__back"]}>
+      <div class={styles["stack__description"]}>
+        {description}
+      </div>
+    </div>
+  )}
+
+</div>
+
 </section>
+
 
 <script is:inline>
 (() => {
 
   const root = document.currentScript?.previousElementSibling;
   if (!(root instanceof HTMLElement)) return;
-  if (root.dataset.stackInitialized === "true") return;
 
+  if (root.dataset.stackInitialized === "true") return;
   root.dataset.stackInitialized = "true";
 
-  /* ========================================
-     REGISTER STACK
-  ======================================== */
+
+  /* =====================================================
+     GLOBAL REGISTRY
+  ===================================================== */
 
   window.__VEDANA_STACKS ??= {};
-  window.__VEDANA_STACKS[root.dataset.entityType] = root;
 
-  /* ========================================
+
+  /* =====================================================
+     REGISTER STACK
+  ===================================================== */
+
+  const entityType = root.dataset.entityType;
+  window.__VEDANA_STACKS[entityType] = root;
+
+
+  /* =====================================================
      STACK INIT
-  ======================================== */
+  ===================================================== */
 
   const front = root.querySelector("[data-stack-front]");
   if (!(front instanceof HTMLElement)) return;
@@ -108,28 +127,60 @@ const {
 
   let index = 0;
 
+
+  /* =====================================================
+     FIX HEIGHT
+  ===================================================== */
+
+  function fixHeight() {
+
+    let max = 0;
+
+    cards.forEach(card => {
+
+      const prev = card.hasAttribute("data-active");
+
+      card.setAttribute("data-active","true");
+
+      const h = card.offsetHeight;
+
+      if (h > max) max = h;
+
+      if (!prev) card.removeAttribute("data-active");
+
+    });
+
+    front.style.minHeight = max + "px";
+
+  }
+
+
+  /* =====================================================
+     RENDER
+  ===================================================== */
+
   function render() {
 
-    cards.forEach((card, i) => {
+    cards.forEach((card,i) => {
 
       if (i === index) {
-        card.setAttribute("data-active", "true");
+        card.setAttribute("data-active","true");
       } else {
         card.removeAttribute("data-active");
       }
 
-      card.removeAttribute("data-focus");
-
     });
 
-    root.removeAttribute("data-focus-mode");
   }
 
   render();
 
-  /* ========================================
+  requestAnimationFrame(() => fixHeight());
+
+
+  /* =====================================================
      NAVIGATION
-  ======================================== */
+  ===================================================== */
 
   const prev = root.querySelector("[data-stack-prev]");
   const next = root.querySelector("[data-stack-next]");
@@ -160,27 +211,36 @@ const {
   flip?.addEventListener("click", () => {
 
     root.dataset.flipped =
-      root.dataset.flipped === "true" ? "false" : "true";
+      root.dataset.flipped === "true"
+        ? "false"
+        : "true";
 
   });
 
 })();
-
-/* ========================================
-   GRAPH LINK HOVER
-======================================== */
+</script>
 
 
-document.addEventListener("mouseover", (e) => {
+
+<script is:inline>
+/* =====================================================
+   GRAPH CLICK NAVIGATION
+===================================================== */
+
+document.addEventListener("click", (e) => {
 
   const link = e.target.closest("[data-target-id]");
   if (!link) return;
+
+  e.preventDefault();
+
 
   const targetType = link.dataset.targetType;
   const targetId = link.dataset.targetId;
 
   const stack = window.__VEDANA_STACKS?.[targetType];
   if (!stack) return;
+
 
   const cards = [...stack.querySelectorAll("[data-entity-id]")];
 
@@ -190,34 +250,55 @@ document.addEventListener("mouseover", (e) => {
 
   if (targetIndex === -1) return;
 
-  stack.dataset.focusMode = "true";
 
-  cards.forEach((card, i) => {
+  /* =====================================================
+     ACTIVATE CARD
+  ===================================================== */
+
+  cards.forEach((card,i) => {
 
     if (i === targetIndex) {
-      card.setAttribute("data-active", "true");
-      card.dataset.focus = "target";
+      card.setAttribute("data-active","true");
     } else {
-      card.dataset.focus = "dim";
+      card.removeAttribute("data-active");
     }
 
   });
 
-});
+  stack.dataset.flipped = "false";
 
-document.addEventListener("mouseout", (e) => {
 
-  const link = e.target.closest("[data-target-id]");
-  if (!link) return;
+  /* =====================================================
+     CLEAR OLD GRAPH PATH
+  ===================================================== */
 
-  const targetType = link.dataset.targetType;
-  const stack = window.__VEDANA_STACKS?.[targetType];
-  if (!stack) return;
+  document
+    .querySelectorAll("[data-graph-active]")
+    .forEach(el => el.removeAttribute("data-graph-active"));
 
-  stack.removeAttribute("data-focus-mode");
 
-  stack.querySelectorAll("[data-entity-id]").forEach(card => {
-    card.removeAttribute("data-focus");
+  /* =====================================================
+     HIGHLIGHT LINK
+  ===================================================== */
+
+  link.setAttribute("data-graph-active","true");
+
+
+  /* =====================================================
+     HIGHLIGHT CARD
+  ===================================================== */
+
+  const targetCard = cards[targetIndex];
+  targetCard.setAttribute("data-graph-active","true");
+
+
+  /* =====================================================
+     OPTIONAL SCROLL
+  ===================================================== */
+
+  stack.scrollIntoView({
+    block: "nearest",
+    behavior: "smooth"
   });
 
 });

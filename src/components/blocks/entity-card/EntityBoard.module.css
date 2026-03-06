@@ -1,3 +1,7 @@
+/* ========================================
+   BOARD ROOT
+======================================== */
+
 .board {
   display: flex;
   flex-direction: column;
@@ -5,7 +9,9 @@
 }
 
 
-/* toolbar */
+/* ========================================
+   TOOLBAR
+======================================== */
 
 .board__toolbar {
   display: flex;
@@ -13,7 +19,9 @@
 }
 
 
-/* tabs */
+/* ========================================
+   TABS
+======================================== */
 
 .board__tabs {
   display: flex;
@@ -31,7 +39,10 @@
   cursor: pointer;
 
   opacity: 0.7;
-  transition: opacity 0.15s ease, background 0.15s ease;
+
+  transition:
+    opacity 0.15s ease,
+    background 0.15s ease;
 }
 
 .tab.is-active {
@@ -40,14 +51,18 @@
 }
 
 
-/* viewport */
+/* ========================================
+   VIEWPORT
+======================================== */
 
 .board__viewport {
   position: relative;
 }
 
 
-/* layers */
+/* ========================================
+   LAYERS
+======================================== */
 
 .board__layer {
   display: none;
@@ -58,45 +73,62 @@
 }
 
 
-/* =========================
-   CARD GRID
-========================= */
+/* ========================================
+   CARD MASONRY LAYOUT
+======================================== */
 
 .board__layer[data-view="cards"] {
-  display: grid;
-  gap: 20px;
+
+  column-gap: 20px;
+
 }
 
 
-/* columns */
+/* column count */
 
 .board--1 .board__layer[data-view="cards"] {
-  grid-template-columns: repeat(1, 1fr);
+  column-count: 1;
 }
 
 .board--2 .board__layer[data-view="cards"] {
-  grid-template-columns: repeat(2, 1fr);
+  column-count: 2;
 }
 
 .board--3 .board__layer[data-view="cards"] {
-  grid-template-columns: repeat(3, 1fr);
+  column-count: 3;
 }
 
 .board--4 .board__layer[data-view="cards"] {
-  grid-template-columns: repeat(4, 1fr);
+  column-count: 4;
 }
 
 
-/* graph placeholder */
+/* card items */
+
+.board__layer[data-view="cards"] > * {
+
+  break-inside: avoid;
+
+  width: 100%;
+
+  margin-bottom: 20px;
+
+}
+
+
+/* ========================================
+   GRAPH PLACEHOLDER
+======================================== */
 
 .board__graph-placeholder {
+
   padding: 40px;
+
   text-align: center;
+
   color: var(--color-text-muted);
+
   border: 1px dashed var(--color-border);
   border-radius: 12px;
-}
 
-.board__layer[data-view="cards"] {
-  align-items: start;
 }

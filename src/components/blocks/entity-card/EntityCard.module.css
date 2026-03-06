@@ -337,3 +337,21 @@
 .reasoningBlock + .reasoningBlock {
   margin-top: var(--space-5);
 }
+
+/* ======================================
+   STACK COMPATIBILITY FIX
+====================================== */
+
+.stack .entity-card,
+.stack .entity-card-mini {
+  break-inside: auto;
+  -webkit-column-break-inside: auto;
+}
+
+.stack .entity-card-mini:hover {
+  transform: none;
+}
+
+.stack .entity-card-mini {
+  transform: none;
+}

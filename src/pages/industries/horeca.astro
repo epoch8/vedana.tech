@@ -7,16 +7,16 @@ import type { SEOConfig } from "@/lib/seo/types";
 
 import Callout from "@/components/blocks/callout/Callout.astro";
 
-import EntityCardList from "@/components/blocks/entity-card/EntityCardList.astro";
-import EntityCard from "@/components/blocks/entity-card/EntityCard.astro";
-import EntityCardRichList from "@/components/blocks/entity-card/EntityCardRichList.astro";
-import EntityCardRich from "@/components/blocks/entity-card/EntityCardRich.astro";
+import EntityBoard from "@/components/blocks/entity-card/EntityBoard.astro";
+import EntityStackCard from "@/components/blocks/entity-card/EntityStackCard.astro";
+import EntityStack from "@/components/blocks/entity-card/EntityStack.astro";
+import { EntityList } from "@/content/vedana/entity-registry/horeca.ts";
+import { groupEntitiesByType } from "@/lib/vedana/groupEntitiesByType";
+const entitiesByType = groupEntitiesByType(EntityList);
+
 
 import Timeline from "@/components/blocks/timeline/Timeline.astro";
 import TimelineItem from "@/components/blocks/timeline/TimelineItem.astro";
-
-import Chat from "@/components/blocks/chat/Chat.astro";
-import ChatItem from "@/components/blocks/chat/ChatItem.astro";
 
 import ProductDemo from "@/components/products/vedana/product-demo/ProductDemo.tsx";
 import { scenarios } from "@/content/vedana/demo/horeca"
@@ -98,127 +98,31 @@ const pageSEO: Partial<SEOConfig> = {
     <strong>This is the foundation of our methodology: structured modeling first, AI reasoning on top.</strong>
 </p>
 
-<EntityCardRichList columns={3}>
+<EntityBoard columns={3}>
 
-  <EntityCardRich
-    title="Brand"
-    entityType="brand"
-    color="var(--entity-brand)"
-    attributes={[
-      { key: "name", value: "Nordic Harbor" },
-      { key: "concept type", value: "Casual seafood restaurant" },
-      { key: "opening year", value: "2014" },
-      { key: "website", value: "nordic-harbor.de", href: "https://nordic-harbor.de", external: true }
-    ]}
-    relations={[
-      {
-        label: "Holds",
-        targets: [
-          { title: "certificate: HACCP Certification 2023–2026", entityType: "certification", color: "var(--entity-compliance)" }
-        ]
-      }
-    ]}
-  />
+  {Object.entries(entitiesByType).map(([entityType, entities]) => (
 
-  <EntityCardRich
-    title="Dish"
-    entityType="dish"
-    color="var(--entity-dish)"
-    attributes={[
-      { key: "name", value: "Grilled Atlantic Salmon" },
-      { key: "category", value: "Main course" },
-      { key: "preparation time", value: "18 min" },
-      { key: "serving size", value: "320 g" }
-    ]}
-    relations={[
-      {
-        label: "Contains",
-        targets: [
-          { title: "ingredient: Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
-        ]
-      }
-    ]}
-  />
+    <EntityStack
+      entityType={entityType}
+      color={`var(--entity-${entityType})`}
+    >
 
-  <EntityCardRich
-    title="Ingredient"
-    entityType="ingredient"
-    color="var(--entity-ingredient)"
-    attributes={[
-      { key: "name", value: "Atlantic Salmon" },
-      { key: "category", value: "Fish" },
-      { key: "is allergen", value: "Yes" },
-      { key: "shelf life", value: "3 days" },
-      { key: "storage", value: "2-4°C refrigerated" },
-      { key: "cost", value: "€8.40 / kg" }
-    ]}
-    relations={[
-      {
-        label: "Supplied by",
-        targets: [
-          { title: "supplier: NordSea Imports GmbH", entityType: "supplier", color: "var(--entity-supplier)" }
-        ]
-      }
-    ]}
-  />
+      {entities.map(entity => (
+        <EntityStackCard
+          id={entity.id}
+          title={entity.title}
+          entityType={entity.entityType}
+          color={entity.color}
+          attributes={entity.attributes ?? []}
+          relations={entity.relations ?? []}
+        />
+      ))}
 
-  <EntityCardRich
-    title="Wine"
-    entityType="wine"
-    color="var(--entity-wine)"
-    attributes={[
-      { key: "name", value: "Pinot Noir – Domaine Lefèvre" },
-      { key: "type", value: "Red wine" },
-      { key: "origin", value: "Burgundy, France" },
-      { key: "serving temperature", value: "16–18°C" },
-      { key: "body", value: "Medium" },
-      { key: "acidity", value: "High" }
-    ]}
-    relations={[
-      {
-        label: "Complements",
-        targets: [
-          { title: "ingredient: Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
-        ]
-      }
-    ]}
-  />
+    </EntityStack>
 
-  <EntityCardRich
-    title="Certification"
-    entityType="certification"
-    color="var(--entity-compliance)"
-    attributes={[
-      { key: "name", value: "HACCP Certification 2023–2026" },
-      { key: "standard number", value: "HACCP-DE-2023-4581" },
-      { key: "scope", value: "Kitchen & cold storage operations" },
-      { key: "issuing body", value: "German Food Safety Authority" },
-      { key: "valid until", value: "Dec 2026" }
-    ]}
-  />
+  ))}
 
-<EntityCardRich
-  title="Supplier"
-  entityType="supplier"
-  color="var(--entity-supplier)"
-  attributes={[
-    { key: "name", value: "NordSea Imports GmbH" },
-    { key: "company type", value: "Seafood distributor" },
-    { key: "headquarters", value: "Hamburg, Germany" },
-    { key: "certified for", value: "EU food import compliance" },
-    { key: "delivery model", value: "Refrigerated daily supply" },
-  ]}
-  relations={[
-    {
-      label: "Supplies",
-      targets: [
-        { title: "ingredient: Atlantic Salmon", entityType: "ingredient", color: "var(--entity-ingredient)" }
-      ]
-    }
-  ]}
-/>
-
-</EntityCardRichList>
+</EntityBoard>
 
         </div>
     </section>

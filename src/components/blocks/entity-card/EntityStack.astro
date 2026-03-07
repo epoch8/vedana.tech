@@ -20,83 +20,58 @@ const {
   class={`${styles["stack"]} ${className ?? ""}`.trim()}
   data-entity-stack
   data-entity-type={entityType}
-  data-flipped="false"
   style={color ? `--entity-accent:${color}` : undefined}
 >
+  <header class={styles["stack__header"]}>
+    <div class={styles["stack__type"]}>
+      {entityType}
+    </div>
 
-<header class={styles["stack__header"]}>
-
-  <div class={styles["stack__type"]}>
-    {entityType}
-  </div>
-
-  <div class={styles["stack__controls"]}>
-
-    <button
-      class={styles["stack__btn"]}
-      data-stack-prev
-      aria-label="Previous"
-      type="button"
-    >
-      ‹
-    </button>
-
-    <button
-      class={styles["stack__btn"]}
-      data-stack-next
-      aria-label="Next"
-      type="button"
-    >
-      ›
-    </button>
-
-    {description && (
+    <div class={styles["stack__controls"]}>
       <button
         class={styles["stack__btn"]}
-        data-stack-flip
-        aria-label="Info"
+        data-stack-prev
+        aria-label="Previous"
         type="button"
       >
-        i
+        ‹
       </button>
-    )}
 
-  </div>
+      <button
+        class={styles["stack__btn"]}
+        data-stack-next
+        aria-label="Next"
+        type="button"
+      >
+        ›
+      </button>
+    </div>
+  </header>
 
-</header>
+  <div class={styles["stack__body"]} data-stack-body>
+    <div class={styles["stack__shadow"]}></div>
+    <div class={styles["stack__shadow"]}></div>
 
-
-<div class={styles["stack__body"]} data-stack-body>
-
-  <div class={styles["stack__shadow"]}></div>
-  <div class={styles["stack__shadow"]}></div>
-
-  <div class={styles["stack__front"]} data-stack-front>
-    <slot />
+    <div class={styles["stack__front"]} data-stack-front>
+      <slot />
+    </div>
   </div>
 
   {description && (
-    <div class={styles["stack__back"]} data-stack-back>
-      <div class={styles["stack__description"]}>
-        {description}
-      </div>
+    <div class={styles["stack__description"]}>
+      {description}
     </div>
   )}
-
-</div>
-
 </section>
 
 
 <script is:inline>
 (() => {
-
   const root = document.currentScript?.previousElementSibling;
   if (!(root instanceof HTMLElement)) return;
 
   if (root.dataset.stackInitialized === "true") return;
   root.dataset.stackInitialized = "true";
-
 
   /* =====================================================
      GLOBAL REGISTRY
@@ -104,106 +79,64 @@ const {
 
   window.__VEDANA_STACKS ??= {};
 
-
   /* =====================================================
      REGISTER STACK
   ===================================================== */
 
   const entityType = root.dataset.entityType;
-  window.__VEDANA_STACKS[entityType] = root;
-
+  if (entityType) {
+    window.__VEDANA_STACKS[entityType] = root;
+  }
 
   /* =====================================================
      STACK ELEMENTS
   ===================================================== */
 
-  const body = root.querySelector("[data-stack-body]");
   const front = root.querySelector("[data-stack-front]");
-  const back = root.querySelector("[data-stack-back]");
-
   if (!(front instanceof HTMLElement)) return;
 
-
   const cards = [...front.querySelectorAll("[data-entity-id]")];
-
   if (!cards.length) return;
 
   root.dataset.hasStack = cards.length > 1 ? "true" : "false";
 
   let index = 0;
 
-
-  /* =====================================================
-     FIX HEIGHT (FRONT + BACK)
-  ===================================================== */
-
-  function fixHeight() {
-
-    let max = 0;
-
-    /* measure all cards */
-
-    cards.forEach(card => {
-
-      const prev = card.hasAttribute("data-active");
-
-      card.setAttribute("data-active","true");
-
-      const h = card.offsetHeight;
-
-      if (h > max) max = h;
-
-      if (!prev) card.removeAttribute("data-active");
-
-    });
-
-
-    /* measure back panel */
-
-    if (back instanceof HTMLElement) {
-
-      const prev = root.dataset.flipped;
-
-      root.dataset.flipped = "true";
-
-      const h = back.offsetHeight;
-
-      if (h > max) max = h;
-
-      root.dataset.flipped = prev;
-
-    }
-
-
-    if (body instanceof HTMLElement) {
-      body.style.height = max + "px";
-    }
-
-  }
-
-
   /* =====================================================
      RENDER
   ===================================================== */
 
   function render() {
-
-    cards.forEach((card,i) => {
-
+    cards.forEach((card, i) => {
       if (i === index) {
-        card.setAttribute("data-active","true");
+        card.setAttribute("data-active", "true");
       } else {
         card.removeAttribute("data-active");
       }
-
     });
-
   }
 
+  /* expose safe API for external graph navigation */
+  root.__setActiveCardById = (targetId) => {
+    const targetIndex = cards.findIndex(
+      (card) => card.dataset.entityId === targetId
+    );
+
+    if (targetIndex === -1) return false;
+
+    index = targetIndex;
+    render();
+    return true;
+  };
+
+  root.__setActiveCardByIndex = (targetIndex) => {
+    if (targetIndex < 0 || targetIndex >= cards.length) return false;
+    index = targetIndex;
+    render();
+    return true;
+  };
+
   render();
-
-  requestAnimationFrame(() => fixHeight());
-
 
   /* =====================================================
      NAVIGATION
@@ -211,108 +144,74 @@ const {
 
   const prev = root.querySelector("[data-stack-prev]");
   const next = root.querySelector("[data-stack-next]");
-  const flip = root.querySelector("[data-stack-flip]");
 
   if (cards.length > 1) {
-
     prev?.addEventListener("click", () => {
-
       index = (index - 1 + cards.length) % cards.length;
-
-      root.dataset.flipped = "false";
       render();
-
     });
 
     next?.addEventListener("click", () => {
-
       index = (index + 1) % cards.length;
-
-      root.dataset.flipped = "false";
       render();
-
     });
-
   }
-
-  flip?.addEventListener("click", () => {
-
-    root.dataset.flipped =
-      root.dataset.flipped === "true"
-        ? "false"
-        : "true";
-
-  });
-
 })();
 </script>
 
 
 <script is:inline>
-/* =====================================================
-   GRAPH CLICK NAVIGATION
-===================================================== */
+(() => {
+  if (window.__VEDANA_GRAPH_NAV_INITIALIZED === true) return;
+  window.__VEDANA_GRAPH_NAV_INITIALIZED = true;
 
-document.addEventListener("click", (e) => {
+  /* =====================================================
+     GRAPH CLICK NAVIGATION
+  ===================================================== */
 
-  const link = e.target.closest("[data-target-id]");
-  if (!link) return;
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("[data-target-id]");
+    if (!(link instanceof HTMLElement)) return;
 
-  e.preventDefault();
+    e.preventDefault();
 
+    const targetType = link.dataset.targetType;
+    const targetId = link.dataset.targetId;
 
-  const targetType = link.dataset.targetType;
-  const targetId = link.dataset.targetId;
+    if (!targetType || !targetId) return;
 
-  const stack = window.__VEDANA_STACKS?.[targetType];
-  if (!stack) return;
+    const stack = window.__VEDANA_STACKS?.[targetType];
+    if (!(stack instanceof HTMLElement)) return;
 
+    const changed = stack.__setActiveCardById?.(targetId);
+    if (!changed) return;
 
-  const cards = [...stack.querySelectorAll("[data-entity-id]")];
+    /* clear previous graph states */
+    document
+      .querySelectorAll("[data-graph-active]")
+      .forEach((el) => el.removeAttribute("data-graph-active"));
 
-  const targetIndex = cards.findIndex(
-    c => c.dataset.entityId === targetId
-  );
+    document
+      .querySelectorAll("[data-graph-source]")
+      .forEach((el) => el.removeAttribute("data-graph-source"));
 
-  if (targetIndex === -1) return;
+    /* highlight clicked relation */
+    link.setAttribute("data-graph-active", "true");
 
+    /* highlight target card */
+    const targetCard = stack.querySelector(
+      `[data-entity-id="${CSS.escape(targetId)}"]`
+    );
+    targetCard?.setAttribute("data-graph-active", "true");
 
-  cards.forEach((card,i) => {
+    /* highlight source card */
+    const sourceCard = link.closest("[data-entity-id]");
+    sourceCard?.setAttribute("data-graph-source", "true");
 
-    if (i === targetIndex) {
-      card.setAttribute("data-active","true");
-    } else {
-      card.removeAttribute("data-active");
-    }
-
+    stack.scrollIntoView({
+      block: "nearest",
+      behavior: "smooth"
+    });
   });
-
-  stack.dataset.flipped = "false";
-
-
-  document
-    .querySelectorAll("[data-graph-active]")
-    .forEach(el => el.removeAttribute("data-graph-active"));
-
-
-  link.setAttribute("data-graph-active","true");
-
-
-  const targetCard = cards[targetIndex];
-  targetCard.setAttribute("data-graph-active","true");
-
-
-  stack.scrollIntoView({
-    block: "nearest",
-    behavior: "smooth"
-  });
-
-});
-
-document
-  .querySelectorAll("[data-graph-source]")
-  .forEach(el => el.removeAttribute("data-graph-source"));
-
-const sourceCard = link.closest("[data-entity-id]");
-sourceCard?.setAttribute("data-graph-source","true");
+})();
 </script>

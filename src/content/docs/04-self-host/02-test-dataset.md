@@ -1,5 +1,5 @@
 ---
-Title: "Example Dataset"
+title: "Example Dataset"
 ---
 
 ## Testing Vedana with the Example Dataset

@@ -9,8 +9,7 @@ import EntityBoard from "@/components/blocks/entity-card/EntityBoard.astro";
 import EntityStackCard from "@/components/blocks/entity-card/EntityStackCard.astro";
 import EntityStack from "@/components/blocks/entity-card/EntityStack.astro";
 
-import { EntityList } from "@/content/vedana/entity-registry/horeca.ts";
-
+import { EntityList } from "@/content/vedana/entity-registry/vedana.ts";
 
 import { groupEntitiesByType } from "@/lib/vedana/groupEntitiesByType";
 
@@ -25,6 +24,7 @@ const entitiesByType = groupEntitiesByType(EntityList);
     canonical: "https://vedana.tech/guidebooks/entity-stack-2",
   }}
 >
+<h3>Vedana knowledge graph</h3>
 
 <EntityBoard columns={3}>
 

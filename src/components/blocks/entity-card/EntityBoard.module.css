@@ -132,3 +132,70 @@
   border-radius: 12px;
 
 }
+
+/* ========================================
+   TABLET ADAPTATION
+======================================== */
+
+@media (max-width: 1024px) {
+
+  .board--4 .board__layer[data-view="cards"] {
+    column-count: 3;
+  }
+
+  .board--3 .board__layer[data-view="cards"] {
+    column-count: 2;
+  }
+
+}
+
+
+/* ========================================
+   MOBILE ADAPTATION
+======================================== */
+
+@media (max-width: 640px) {
+
+  .board {
+    gap: 16px;
+  }
+
+
+  /* toolbar */
+
+  .board__toolbar {
+    justify-content: space-between;
+  }
+
+
+  /* tabs become scrollable if they appear later */
+
+  .board__tabs {
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+
+  /* force single column */
+
+  .board__layer[data-view="cards"] {
+    column-count: 1 !important;
+    column-gap: 0;
+  }
+
+
+  /* card spacing */
+
+  .board__layer[data-view="cards"] > * {
+    margin-bottom: 16px;
+  }
+
+
+  /* graph placeholder spacing */
+
+  .board__graph-placeholder {
+    padding: 28px;
+    font-size: 14px;
+  }
+
+}

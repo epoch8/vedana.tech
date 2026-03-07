@@ -100,4 +100,29 @@
 --entity-wine: hsl(295 60% 60%);
 --entity-compliance: hsl(259 55% 70%);
 --entity-supplier: hsl(223 60% 72%);
+
+
+/* ======================================
+   Vedana domain entities — tuned
+====================================== */
+--entity-platform: hsl(195 85% 55%);
+/* Vedana platform — core system */
+
+--entity-company: hsl(215 18% 48%);
+/* organization / company */
+
+--entity-industry: hsl(38 85% 58%);
+/* industries served */
+
+--entity-concept: hsl(268 60% 60%);
+/* methodologies */
+
+--entity-component: hsl(160 60% 48%);
+/* infrastructure / tools */
+
+--entity-capability: hsl(145 65% 46%);
+/* platform capabilities */
+
+--entity-technology: hsl(210 70% 62%);
+/* underlying tech stack */
 }

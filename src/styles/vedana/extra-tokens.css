@@ -1,12 +1,5 @@
 :root {
 
---entity-brand: hsl(187 65% 62%);;
---entity-location: #64748b;
---entity-dish: hsl(79 50% 80%);
---entity-ingredient: hsl(151 50% 56%);
---entity-wine: hsl(295 60% 60%);
---entity-compliance: hsl(259 55% 70%);
---entity-supplier: hsl(223 60% 72%);
 
 --industry-horeca: hsl(79 60% 68%);
 --industry-automotive: hsl(43 62% 66%);
@@ -91,4 +84,20 @@
 --entity-program: hsl(259 55% 52%);
 --entity-requirement: hsl(140 40% 55%);
 --entity-workitem: hsl(32 55% 56%);
+
+/* ======================================
+   HoReCa domain entities — tuned
+====================================== */
+--entity-brand: hsl(187 65% 62%);
+--entity-location: hsl(215 16% 47%);
+
+--entity-menu: hsl(35 85% 60%);        /* warm menu accent */
+
+--entity-dish: hsl(82 65% 55%);
+
+--entity-ingredient: hsl(150 65% 46%); /* deeper green */
+
+--entity-wine: hsl(295 60% 60%);
+--entity-compliance: hsl(259 55% 70%);
+--entity-supplier: hsl(223 60% 72%);
 }

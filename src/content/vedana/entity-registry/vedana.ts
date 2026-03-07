@@ -141,41 +141,104 @@ export const Entities: Record<string, Entity> = {
      INDUSTRIES
   ===================================================== */
 
-  industry_automotive: {
-    id: "industry_automotive",
-    title: "Automotive",
-    entityType: "industry",
-    color: "var(--entity-industry)",
+industry_automotive: {
+  id: "industry_automotive",
+  title: "Automotive",
+  entityType: "industry",
+  color: "var(--entity-industry)",
 
-    attributes: [
-      { key: "focus", value: "Compliance and homologation data" },
-      { key: "documents", value: "Technical specifications, regulations" }
-    ]
-  },
+  attributes: [
 
-  industry_legal: {
-    id: "industry_legal",
-    title: "Legal",
-    entityType: "industry",
-    color: "var(--entity-industry)",
+    {
+      key: "where Vedana helps",
+      value: "Product homologation, regulatory compliance, and supplier documentation validation"
+    },
 
-    attributes: [
-      { key: "focus", value: "Regulatory document analysis" },
-      { key: "documents", value: "Legal acts, contracts, compliance rules" }
-    ]
-  },
+    {
+      key: "typical question",
+      value: "Does this product documentation comply with regulatory requirements for a specific market?"
+    },
 
-  industry_horeca: {
-    id: "industry_horeca",
-    title: "HoReCa",
-    entityType: "industry",
-    color: "var(--entity-industry)",
+    {
+      key: "source data",
+      value: "Technical specifications, regulatory standards, supplier documents"
+    },
 
-    attributes: [
-      { key: "focus", value: "Operational knowledge graphs" },
-      { key: "documents", value: "Menus, recipes, supplier contracts" }
-    ]
-  },
+    {
+      key: "industry page",
+      value: "vedana.tech/industries/automotive",
+      href: "https://vedana.tech/industries/automotive",
+      external: true
+    }
+
+  ]
+},
+
+industry_legal: {
+  id: "industry_legal",
+  title: "Legal",
+  entityType: "industry",
+  color: "var(--entity-industry)",
+
+  attributes: [
+
+    {
+      key: "where Vedana helps",
+      value: "Legal research, regulatory compliance checks, and contract analysis"
+    },
+
+    {
+      key: "typical question",
+      value: "Which regulations apply to this case and what documents define the requirements?"
+    },
+
+    {
+      key: "source data",
+      value: "Legal acts, contracts, regulatory documents, internal policies"
+    },
+
+    {
+      key: "industry page",
+      value: "vedana.tech/industries/legal",
+      href: "https://vedana.tech/industries/legal",
+      external: true
+    }
+
+  ]
+},
+
+industry_horeca: {
+  id: "industry_horeca",
+  title: "HoReCa",
+  entityType: "industry",
+  color: "var(--entity-industry)",
+
+  attributes: [
+
+    {
+      key: "where Vedana helps",
+      value: "Operational decision support across menus, suppliers, and compliance requirements"
+    },
+
+    {
+      key: "typical question",
+      value: "Which dishes have low margins based on ingredient costs and menu prices?"
+    },
+
+    {
+      key: "source data",
+      value: "Menus, recipes, supplier contracts, pricing data"
+    },
+
+    {
+      key: "industry page",
+      value: "vedana.tech/industries/horeca",
+      href: "https://vedana.tech/industries/horeca",
+      external: true
+    }
+
+  ]
+},
 
   /* =====================================================
      CONCEPTS

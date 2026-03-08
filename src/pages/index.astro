@@ -5,13 +5,12 @@ import { SEOBase } from "@content/vedana/seo/seo";
 
 import RotatingStatement from "@/components/blocks/rotating-statement/RotatingStatement.astro";
 
-import Hero from "@/components/products/vedana/Hero.astro";
 import Problem from "@/components/products/vedana/Problem.astro";
 import MiniDemo from "@/components/products/vedana/MiniDemo.jsx";
 import Methodology from "@/components/products/vedana/Methodology.astro";
 import CTA from "@/components/products/vedana/CTA.astro";
 import Footer from "@/components/products/vedana/footer/Footer.astro";
-import ScrollFrames from "@/components/products/vedana/scroll-frame/ScrollFrames.js";
+import ScrollFrames from "@/components/products/vedana/scroll-frame/ScrollFrames";
 
 import FAQ from "@/components/blocks/faq/FAQ.astro";
 import FAQItem from "@/components/blocks/faq/FAQItem.astro";
@@ -29,6 +28,7 @@ const entitiesByType = groupEntitiesByType(EntityList);
 
 import "../styles/global.css";
 import "@/styles/vedana/extra-tokens.css";
+import "@/styles/vedana/problem.css";
 
 ---
 
@@ -83,7 +83,47 @@ import "@/styles/vedana/extra-tokens.css";
   </div>  
 </section>
 
-    <ScrollFrames />
+<section class="problem-section">
+
+  <div class="problem-inner container">
+
+    <div class="problem-copy frame-copy">
+      <h2 class="frame-title">
+        Your company knowledge<br />
+        lives in many places at once.
+      </h2>
+
+      <p class="frame-lead">
+        PDFs. Specs. Excel sheets. Shared drives. Emails. Wikis. ERP exports.
+      </p>
+
+      <p class="frame-text">
+        AI can read text. But your knowledge isn’t text — it’s a fragmented system.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="problem-docs">
+
+    <!-- LEFT SIDE -->
+
+    <div class="doc doc-pdf" style="top:10%; left:-8%; transform:rotate(-18deg)">PDF</div>
+    <div class="doc doc-docx" style="top:32%; left:-2%; transform:rotate(12deg)">DOCX</div>
+    <div class="doc doc-xlsx" style="top:54%; left:-10%; transform:rotate(-10deg)">XLSX</div>
+    <div class="doc doc-pdf" style="top:76%; left:-4%; transform:rotate(8deg)">PDF</div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="doc doc-docx" style="top:16%; right:-6%; transform:rotate(16deg)">DOCX</div>
+    <div class="doc doc-pdf" style="top:38%; right:-12%; transform:rotate(-14deg)">PDF</div>
+    <div class="doc doc-xlsx" style="top:60%; right:-6%; transform:rotate(10deg)">XLSX</div>
+    <div class="doc doc-pdf" style="top:82%; right:-10%; transform:rotate(-8deg)">PDF</div>
+
+  </div>
+
+</section>
+
 
     <section class="section">
         <div class="container flow">

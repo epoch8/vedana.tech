@@ -1,0 +1,148 @@
+/* =========================
+   PROBLEM SECTION
+========================= */
+
+.problem-section {
+  position: relative;
+  padding: 160px 0;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f8fafc 100%
+  );
+}
+
+
+.problem-inner {
+  position: relative;
+  z-index: 2;
+
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+/* =========================
+   DOCUMENT LAYER
+========================= */
+
+.problem-docs {
+  position: absolute;
+  inset: 0;
+
+  max-width: 1200px;
+  margin: 0 auto;
+
+  pointer-events: none;
+}
+
+
+/* =========================
+   DOCUMENT CARD
+========================= */
+
+.doc {
+  position: absolute;
+
+  width: 170px;
+  height: 210px;
+
+  border-radius: 22px;
+  padding: 18px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: flex-start;
+
+  border: 1px solid rgba(15, 23, 42, 0.05);
+
+  box-shadow:
+    0 40px 80px rgba(15, 23, 42, 0.08),
+    0 8px 18px rgba(15, 23, 42, 0.04);
+
+  overflow: hidden;
+
+  /* 👇 ключевые изменения */
+
+  opacity: 0.55;
+  filter: saturate(0.65);
+
+  animation: docFloat 10s ease-in-out infinite;
+}
+
+
+/* =========================
+   LIGHT HIGHLIGHT
+========================= */
+
+.doc::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.5) 0%,
+    rgba(255,255,255,0.15) 35%,
+    rgba(255,255,255,0) 60%
+  );
+
+  pointer-events: none;
+}
+
+
+/* =========================
+   COLORS
+========================= */
+
+.doc-pdf {
+  background: #fee2e2;
+}
+
+.doc-docx {
+  background: #dbeafe;
+}
+
+.doc-xlsx {
+  background: #dcfce7;
+}
+
+
+/* =========================
+   FLOAT ANIMATION
+========================= */
+
+@keyframes docFloat {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+  100% { transform: translateY(0px); }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 900px) {
+
+  .problem-docs {
+    display: none;
+  }
+
+  .problem-section {
+    padding: 100px 0;
+  }
+
+}
+
+.problem-docs .doc:nth-child(1),
+.problem-docs .doc:nth-child(4),
+.problem-docs .doc:nth-child(5),
+.problem-docs .doc:nth-child(8) {
+  filter: blur(2px) saturate(0.5);
+  opacity: 0.35;
+}

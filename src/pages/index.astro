@@ -3,6 +3,8 @@ import BaseLayout from "@/layouts/baseLayout.astro";
 
 import { SEOBase } from "@content/vedana/seo/seo";
 
+import RotatingStatement from "@/components/blocks/rotating-statement/RotatingStatement.astro";
+
 import Hero from "@/components/products/vedana/Hero.astro";
 import Problem from "@/components/products/vedana/Problem.astro";
 import MiniDemo from "@/components/products/vedana/MiniDemo.jsx";
@@ -17,8 +19,17 @@ import FAQItem from "@/components/blocks/faq/FAQItem.astro";
 import Timeline from "@/components/blocks/timeline/Timeline.astro";
 import TimelineItem from "@/components/blocks/timeline/TimelineItem.astro";
 
+import EntityBoard from "@/components/blocks/entity-card/EntityBoard.astro";
+import EntityStackCard from "@/components/blocks/entity-card/EntityStackCard.astro";
+import EntityStack from "@/components/blocks/entity-card/EntityStack.astro";
+import { EntityList } from "@/content/vedana/entity-registry/vedana.ts";
+import { groupEntitiesByType } from "@/lib/vedana/groupEntitiesByType";
+const entitiesByType = groupEntitiesByType(EntityList);
+
 
 import "../styles/global.css";
+import "@/styles/vedana/extra-tokens.css";
+
 ---
 
 <BaseLayout
@@ -30,9 +41,78 @@ import "../styles/global.css";
     canonical: "https://vedana.tech/",
   }}
 >
-    <Hero />
 
-    <ScrollFrames client:load />
+<section class="hero-section">
+  <div class="hero-inner container">
+    <h1 class="hero-title">
+      Structure-first AI<br /> that reasons over your knowledge
+    </h1>
+
+  <RotatingStatement
+    items={[
+      "Knows your business like your best engineer",
+      "Knows your numbers like your CFO",
+      "Knows your protocols like your clinician",
+      "Knows your compliance like your regulator",
+      "Knows your inventory like your operations lead",
+      "Knows your customers like your account manager"
+    ]}
+  />
+
+    <p class="hero-lead">
+      Vedana turns your documents into <strong>structured data</strong><br/>
+      and lets AI <strong>explore it with tools</strong>
+    </p>
+
+    <div class="hero-ctas">
+      <a href="https://calendly.com/olga_t/60min" class="btn btn--primary">
+        Book a call
+      </a>
+
+      <a href="/demo" class="btn btn--link">
+        See the demo <span>→</span>
+      </a>
+    </div>
+
+    <!-- Feature strip -->
+    <div class="hero-features">
+      <span>Open-core engine</span>
+      <span>Managed cloud</span>
+      <span>Enterprise support</span>
+    </div>
+  </div>  
+</section>
+
+    <ScrollFrames />
+
+    <section class="section">
+        <div class="container flow">
+
+<h2>Vedana knowledge graph </h2>
+
+  <EntityBoard columns={3}>
+    {Object.entries(entitiesByType).map(([entityType, entities]) => (
+      <EntityStack
+          entityType={entityType}
+          color={`var(--entity-${entityType})`}
+        >
+
+          {entities.map(entity => (
+            <EntityStackCard
+              id={entity.id}
+              title={entity.title}
+              entityType={entity.entityType}
+              color={entity.color}
+              attributes={entity.attributes ?? []}
+              relations={entity.relations ?? []}
+            />
+          ))}
+
+        </EntityStack>
+      ))}
+  </EntityBoard>
+          </div>
+    </section>
 
     <Problem />
 

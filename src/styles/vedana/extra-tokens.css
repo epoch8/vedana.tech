@@ -125,4 +125,52 @@
 
 --entity-technology: hsl(210 70% 62%);
 /* underlying tech stack */
+
+/* ======================================
+   LEGAL DOMAIN ENTITIES
+====================================== */
+
+/* --------------------------------------
+   CASE GRAPH
+-------------------------------------- */
+
+--entity-case: hsl(221 68% 58%);
+/* court case */
+
+--entity-party: hsl(201 62% 60%);
+/* claimant / respondent */
+
+--entity-judge: hsl(213 55% 50%);
+/* judge */
+
+--entity-judgment: hsl(32 72% 60%);
+/* final ruling */
+
+
+/* --------------------------------------
+   LAW GRAPH
+-------------------------------------- */
+
+--entity-law: hsl(257 60% 58%);
+/* law */
+
+--entity-article: hsl(174 55% 52%);
+/* article */
+
+--entity-schedule: hsl(162 48% 54%);
+/* law schedules */
+
+--entity-regulation: hsl(188 60% 56%);
+/* regulations */
+
+
+/* --------------------------------------
+   AUTHORITIES
+-------------------------------------- */
+
+--entity-authority: hsl(218 22% 56%);
+/* regulator / registrar */
+
+--entity-court: hsl(226 30% 48%);
+/* court entity */
 }

@@ -3,6 +3,8 @@
 ========================= */
 
 .hero-section {
+  padding-top: 110px;
+  padding-bottom: 90px;
   position: relative;
   overflow: hidden;
 
@@ -24,6 +26,12 @@
   position: relative;
   max-width: var(--hero-max-width);
   margin: 0 auto;
+
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Title — inherits h1 scale */
@@ -31,9 +39,12 @@
 .hero-title {
   margin: 0;
   color: var(--color-text-strong);
+  font-weight: 650;
+  letter-spacing: -0.02em;
 }
 
-/* Rotating block */
+
+/* Rotating block 
 
 .dynamic-viewport {
   margin-top: var(--space-8);
@@ -55,29 +66,32 @@
   padding: 0 var(--space-4);
 }
 
+*/
 /* Lead */
 
 .hero-lead {
-  margin-top: var(--space-7);
+  margin-top: var(--space-6);
 
   font-size: var(--font-size-lg);
-  line-height: 1.6;
+  line-height: 1.65;
 
   color: var(--color-text-muted);
 
-  max-width: var(--hero-lead-max-width);
+  max-width: 560px;
   margin-left: auto;
   margin-right: auto;
 }
 
+
 .hero-lead strong {
   color: var(--color-text-strong);
+  font-weight: 600;
 }
 
 /* CTAs */
 
 .hero-ctas {
-  margin-top: var(--space-9);
+  margin-top: var(--space-8);
 
   display: flex;
   justify-content: center;
@@ -90,28 +104,79 @@
 /* Feature strip */
 
 .hero-features {
-  margin-top: var(--space-6);
+  margin-top: var(--space-7);
 
   display: flex;
   justify-content: center;
-  gap: var(--hero-features-gap);
+  align-items: center;
+  gap: 28px;
 
   font-size: var(--font-size-sm);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 
   color: var(--color-text-subtle);
 }
 
-.hero-features span + span::before {
-  content: "·";
-  margin:
-    0 var(--hero-features-dot-gap-right)
-    0 var(--hero-features-dot-gap-left);
+/* feature item */
 
-  color: var(--color-divider);
+.hero-features span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+/* indicator */
+
+.hero-features span::before {
+  content: "";
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: var(--color-primary);
+
+  opacity: 0.45;
+
+  margin-right: 10px;
+}
+
+.btn--link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;   /* убираем underline */
+}
+
+.btn--link:hover {
+  color: var(--color-primary-hover);
+  text-decoration: none;  
+}
+
+.btn--link span {
+  transition: transform .2s ease;
+}
+
+.btn--link:hover span {
+  transform: translateX(3px);
+}
+
+.hero-cta-note {
+  margin-top: 10px;
+
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+
+  color: var(--color-text-muted);
+
+  text-align: center;
+
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* =========================
    FRAME COPY (component)

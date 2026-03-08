@@ -16,7 +16,7 @@ It contains only the 46 documents relevant to the queries, which is sufficient t
 The original LIMIT benchmark follows the MTEB format and consists of three files – a corpus of documents, a set of 1000 queries, and a relevance mapping (`qrels`) linking each query to its correct document. 
 Our team has transformed these into three Grist files:
 
-- **Data** – the 46 corpus documents (limit-small), pre-loaded as a document_chunks table and ready for ETL.
+- **Data** – the 46 corpus documents (limit-small), pre-loaded as tables and ready for ETL.
 - **Data Model** – a pre-configured data model declaring the anchors, attributes, and links required to ingest the corpus into Memgraph.
 - **Golden Dataset** – the queries and qrels combined into a question/expected-answer table, ready to use as the evaluation benchmark.
 

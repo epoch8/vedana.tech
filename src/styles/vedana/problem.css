@@ -4,15 +4,15 @@
 
 .problem-section {
   position: relative;
-  padding: 160px 0;
+  padding: 110px 0 90px;
   overflow: hidden;
+
   background: linear-gradient(
     180deg,
-    #ffffff 0%,
-    #f8fafc 100%
+    #f8fafc 0%,
+    #ffffff 60%
   );
 }
-
 
 .problem-inner {
   position: relative;
@@ -21,6 +21,8 @@
   max-width: 720px;
   margin: 0 auto;
   text-align: center;
+
+  transform: translateY(-10px);
 }
 
 
@@ -66,10 +68,8 @@
 
   overflow: hidden;
 
-  /* 👇 ключевые изменения */
-
-  opacity: 0.55;
-  filter: saturate(0.65);
+  opacity: 0.45;
+  filter: saturate(0.55);
 
   animation: docFloat 10s ease-in-out infinite;
 }
@@ -114,12 +114,34 @@
 
 /* =========================
    FLOAT ANIMATION
+   (НЕ ломает rotate)
 ========================= */
 
 @keyframes docFloat {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-14px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px) rotate(var(--r, 0deg));
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(var(--r, 0deg));
+  }
+
+  100% {
+    transform: translateY(0px) rotate(var(--r, 0deg));
+  }
+}
+
+
+/* =========================
+   DEPTH LAYER
+========================= */
+
+.problem-docs .doc:nth-child(1),
+.problem-docs .doc:nth-child(4),
+.problem-docs .doc:nth-child(5),
+.problem-docs .doc:nth-child(8) {
+  filter: blur(2px) saturate(0.5);
+  opacity: 0.35;
 }
 
 
@@ -134,15 +156,7 @@
   }
 
   .problem-section {
-    padding: 100px 0;
+    padding: 80px 0;
   }
 
-}
-
-.problem-docs .doc:nth-child(1),
-.problem-docs .doc:nth-child(4),
-.problem-docs .doc:nth-child(5),
-.problem-docs .doc:nth-child(8) {
-  filter: blur(2px) saturate(0.5);
-  opacity: 0.35;
 }

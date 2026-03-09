@@ -100,14 +100,9 @@ You can also open:
 
 ### 5. Configure Grist
 
-Open Grist at http://localhost:8484 and set up the following before running ETL:
-
-1. **Add your data** — upload your domain data (structured tables, documents, or both).
-2. **Define your data model** — declare anchors, attributes, and links in the Data Model section.
-3. **Add your golden dataset** — upload evaluation question/answer pairs for retrieval testing.
-
-Once Grist is configured, locate API key and ID for API use for each document:
-1. Go to **Profile > Settings** and copy API key.
+Open Grist at http://localhost:8484. There you will have three files: Data, Data Model, and Golden Dataset.
+Now you need to locate the **API key** and **ID for API use** for each document:
+1. Go to **Profile > Settings** and copy API key. Update the `GRIST_API_KEY="xxxxxxxxxxxxxxxxxxxxxxxxxx"` value in .env file.
 2. Open a document.
 3. Navigate to **Settings** and copy the ID for API. 
 4. Update the `GRIST_*` values in `apps/vedana/.env`.

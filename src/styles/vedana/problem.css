@@ -1,162 +1,337 @@
-/* =========================
-   PROBLEM SECTION
-========================= */
+/* ======================================
+   KNOWLEDGE SCENE
+   chaos → structure → reasoning
+====================================== */
 
-.problem-section {
-  position: relative;
-  padding: 110px 0 90px;
-  overflow: hidden;
+.knowledge-scene{
 
-  background: linear-gradient(
-    180deg,
-    #f8fafc 0%,
-    #ffffff 60%
-  );
-}
+  position:relative;
+  overflow:hidden;
 
-.problem-inner {
-  position: relative;
-  z-index: 2;
+  padding-top:140px;
+  padding-bottom:220px;
 
-  max-width: 720px;
-  margin: 0 auto;
-  text-align: center;
+  background:
 
-  transform: translateY(-10px);
-}
+    radial-gradient(
+      1000px 520px at 50% -140px,
+      rgba(148,163,184,0.20),
+      rgba(148,163,184,0.10) 35%,
+      rgba(148,163,184,0.04) 55%,
+      transparent 75%
+    ),
 
-
-/* =========================
-   DOCUMENT LAYER
-========================= */
-
-.problem-docs {
-  position: absolute;
-  inset: 0;
-
-  max-width: 1200px;
-  margin: 0 auto;
-
-  pointer-events: none;
+    linear-gradient(
+      180deg,
+      #dfe6ee 0%,
+      #e8edf4 25%,
+      #eef2f7 45%,
+      #f6f9fc 65%,
+      #ffffff 100%
+    );
 }
 
 
-/* =========================
+/* ======================================
+   TOP COPY
+====================================== */
+
+.scene-top{
+
+  position:relative;
+  z-index:3;
+
+  max-width:720px;
+  margin:0 auto;
+
+  text-align:center;
+}
+
+
+/* ======================================
+   DOCUMENT CHAOS
+====================================== */
+
+.scene-docs{
+
+  position:absolute;
+  top:0;
+
+  left:50%;
+  transform:translateX(-50%);
+
+  width:100vw;      /* ключевое */
+  max-width:none;
+
+  height:520px;
+
+  pointer-events:none;
+
+}
+
+
+/* ======================================
    DOCUMENT CARD
-========================= */
+====================================== */
 
-.doc {
-  position: absolute;
+.doc{
 
-  width: 170px;
-  height: 210px;
+  position:absolute;
 
-  border-radius: 22px;
-  padding: 18px;
+  width:170px;
+  height:210px;
 
-  font-size: 14px;
-  font-weight: 600;
+  border-radius:22px;
+  padding:18px;
 
-  display: flex;
-  align-items: flex-start;
+  font-size:14px;
+  font-weight:600;
 
-  border: 1px solid rgba(15, 23, 42, 0.05);
+  display:flex;
+  align-items:flex-start;
+
+  border:1px solid rgba(255,255,255,0.18);
 
   box-shadow:
-    0 40px 80px rgba(15, 23, 42, 0.08),
-    0 8px 18px rgba(15, 23, 42, 0.04);
+    0 40px 80px rgba(15,23,42,0.20),
+    0 10px 24px rgba(15,23,42,0.15);
 
-  overflow: hidden;
+  opacity:0.75;
 
-  opacity: 0.45;
-  filter: saturate(0.55);
-
-  animation: docFloat 10s ease-in-out infinite;
+  animation:docFloat 10s ease-in-out infinite;
 }
 
 
-/* =========================
-   LIGHT HIGHLIGHT
-========================= */
+/* colors */
 
-.doc::after {
-  content: "";
-  position: absolute;
-  inset: 0;
+.doc-pdf{
+  background:#fee2e2;
+}
 
-  background: linear-gradient(
+.doc-docx{
+  background:#dbeafe;
+}
+
+.doc-xlsx{
+  background:#dcfce7;
+}
+
+
+/* highlight */
+
+.doc::after{
+
+  content:"";
+  position:absolute;
+  inset:0;
+
+  border-radius:22px;
+
+  background:linear-gradient(
     180deg,
-    rgba(255,255,255,0.5) 0%,
-    rgba(255,255,255,0.15) 35%,
-    rgba(255,255,255,0) 60%
+    rgba(255,255,255,0.55) 0%,
+    rgba(255,255,255,0.18) 35%,
+    rgba(255,255,255,0) 65%
   );
 
-  pointer-events: none;
 }
 
 
-/* =========================
-   COLORS
-========================= */
+/* floating */
 
-.doc-pdf {
-  background: #fee2e2;
-}
+@keyframes docFloat{
 
-.doc-docx {
-  background: #dbeafe;
-}
-
-.doc-xlsx {
-  background: #dcfce7;
-}
-
-
-/* =========================
-   FLOAT ANIMATION
-   (НЕ ломает rotate)
-========================= */
-
-@keyframes docFloat {
-  0% {
-    transform: translateY(0px) rotate(var(--r, 0deg));
+  0%{
+    transform:translateY(0px) rotate(var(--r,0deg));
   }
 
-  50% {
-    transform: translateY(-14px) rotate(var(--r, 0deg));
+  50%{
+    transform:translateY(-16px) rotate(var(--r,0deg));
   }
 
-  100% {
-    transform: translateY(0px) rotate(var(--r, 0deg));
+  100%{
+    transform:translateY(0px) rotate(var(--r,0deg));
   }
+
 }
 
 
-/* =========================
-   DEPTH LAYER
-========================= */
+/* depth */
 
-.problem-docs .doc:nth-child(1),
-.problem-docs .doc:nth-child(4),
-.problem-docs .doc:nth-child(5),
-.problem-docs .doc:nth-child(8) {
-  filter: blur(2px) saturate(0.5);
-  opacity: 0.35;
+.scene-docs .doc:nth-child(1),
+.scene-docs .doc:nth-child(4),
+.scene-docs .doc:nth-child(5),
+.scene-docs .doc:nth-child(8){
+
+  filter:blur(2px) saturate(0.7);
+  opacity:0.45;
+
 }
 
 
-/* =========================
+/* ======================================
+   STRUCTURE ZONE
+====================================== */
+
+.scene-bottom{
+
+  position:relative;
+  z-index:2;
+
+  margin-top:200px;
+
+  text-align:center;
+}
+
+
+/* grid emerging */
+
+.scene-bottom::before{
+
+  content:"";
+  position:absolute;
+
+  inset:-120px 0 0 0;
+
+  background-image:
+
+    linear-gradient(
+      rgba(15,23,42,0.04) 1px,
+      transparent 1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(15,23,42,0.04) 1px,
+      transparent 1px
+    );
+
+  background-size:64px 64px;
+
+  opacity:.45;
+
+  pointer-events:none;
+}
+
+
+/* light emerging around diagram */
+
+.scene-bottom::after{
+
+  content:"";
+  position:absolute;
+
+  left:50%;
+  top:40px;
+
+  width:900px;
+  height:500px;
+
+  transform:translateX(-50%);
+
+  background:radial-gradient(
+    ellipse at center,
+    rgba(59,130,246,0.16),
+    rgba(59,130,246,0.08) 35%,
+    rgba(59,130,246,0.03) 55%,
+    transparent 75%
+  );
+
+  filter:blur(80px);
+
+  pointer-events:none;
+
+}
+
+
+/* ======================================
+   FRAME
+====================================== */
+
+.frame{
+
+  max-width:760px;
+  margin:0 auto;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  gap:48px;
+
+  text-align:center;
+}
+
+
+/* titles */
+
+.frame-title{
+
+  font-size:44px;
+  line-height:1.15;
+  font-weight:700;
+
+  letter-spacing:-0.02em;
+
+  color:#0f172a;
+
+  max-width:760px;
+}
+
+
+/* diagram */
+
+.frame {
+
+  width: 100%;
+  max-width: 1400px;   /* ограничение чтобы не расползалось */
+  margin: 0 auto;
+
+  padding-left: 40px;
+  padding-right: 40px;
+
+}
+
+.frame :global(.diagram){
+
+  width: 100%;
+  height: auto;
+
+  transform: scale(1.03);
+
+  filter: drop-shadow(
+    0 30px 60px rgba(15,23,42,0.15)
+  );
+
+  transition:
+    transform .4s ease,
+    filter .4s ease;
+
+}
+
+.frame :global(.diagram):hover{
+
+  transform: scale(1.06);
+
+  filter: drop-shadow(
+    0 40px 80px rgba(15,23,42,0.22)
+  );
+
+}
+
+
+/* ======================================
    MOBILE
-========================= */
+====================================== */
 
-@media (max-width: 900px) {
+@media (max-width:900px){
 
-  .problem-docs {
-    display: none;
+  .scene-docs{
+    display:none;
   }
 
-  .problem-section {
-    padding: 80px 0;
+  .knowledge-scene{
+    padding:80px 0;
   }
 
 }

@@ -11,6 +11,7 @@ import Methodology from "@/components/products/vedana/Methodology.astro";
 import CTA from "@/components/products/vedana/CTA.astro";
 import Footer from "@/components/products/vedana/footer/Footer.astro";
 import ScrollFrames from "@/components/products/vedana/scroll-frame/ScrollFrames";
+import DomainModelDiagram from "@/components/products/vedana/DomainModelDiagram.astro";
 
 import FAQ from "@/components/blocks/faq/FAQ.astro";
 import FAQItem from "@/components/blocks/faq/FAQItem.astro";
@@ -132,11 +133,14 @@ import "@/styles/vedana/problem.css";
   </div>  
 </section>
 
-<section class="problem-section">
+<section class="knowledge-scene">
 
-  <div class="problem-inner container">
+  <!-- COPY -->
+
+  <div class="scene-top container">
 
     <div class="problem-copy frame-copy">
+
       <h2 class="frame-title">
         Your company knowledge<br />
         lives in many places at once.
@@ -149,25 +153,58 @@ import "@/styles/vedana/problem.css";
       <p class="frame-text">
         AI can read text. But your knowledge isn’t text — it’s a fragmented system.
       </p>
+
     </div>
 
   </div>
 
-  <div class="problem-docs">
 
-    <!-- LEFT SIDE -->
+  <!-- FLOATING DOCUMENT CHAOS -->
 
-    <div class="doc doc-pdf" style="top:10%; left:-8%; --r:-18deg">PDF</div>
-    <div class="doc doc-docx" style="top:32%; left:-2%; --r:12deg">DOCX</div>
-    <div class="doc doc-xlsx" style="top:54%; left:-10%; --r:-10deg">XLSX</div>
-    <div class="doc doc-pdf" style="top:76%; left:-4%; --r:8deg">PDF</div>
+  <div class="scene-docs">
 
-    <!-- RIGHT SIDE -->
+    <!-- LEFT -->
 
-    <div class="doc doc-docx" style="top:16%; right:-6%; --r:16deg">DOCX</div>
-    <div class="doc doc-pdf" style="top:38%; right:-12%; --r:-14deg">PDF</div>
-    <div class="doc doc-xlsx" style="top:60%; right:-6%; --r:10deg">XLSX</div>
-    <div class="doc doc-pdf" style="top:82%; right:-10%; --r:-8deg">PDF</div>
+    <div class="doc doc-pdf" style="top:6%; left:-8%; --r:-18deg">PDF</div>
+    <div class="doc doc-docx" style="top:18%; left:-2%; --r:12deg">DOCX</div>
+    <div class="doc doc-xlsx" style="top:30%; left:-10%; --r:-10deg">XLSX</div>
+    <div class="doc doc-pdf" style="top:42%; left:-4%; --r:8deg">PDF</div>
+
+    <!-- RIGHT -->
+
+    <div class="doc doc-docx" style="top:8%; right:-6%; --r:16deg">DOCX</div>
+    <div class="doc doc-pdf" style="top:20%; right:-12%; --r:-14deg">PDF</div>
+    <div class="doc doc-xlsx" style="top:34%; right:-6%; --r:10deg">XLSX</div>
+    <div class="doc doc-pdf" style="top:46%; right:-10%; --r:-8deg">PDF</div>
+
+  </div>
+
+
+  <!-- MODEL PART -->
+
+  <div class="scene-bottom">
+
+    <div class="frame">
+
+      <h2 class="frame-title">
+        Vedana builds a data model of your domain
+      </h2>
+      <p>
+        It turns scattered documents into structured knowledge:<br/>
+        Anchors (entities), Attributes (facts), Links (relations). <br/>
+        AI gets a model of how your world works.
+      </p>
+
+      <DomainModelDiagram />
+
+      <h2 class="frame-title">
+        AI explores your structured knowledge with tools.
+      </h2>
+      <p>
+        It queries the model, compares options, and applies constraints step by step.<br/>
+        So answers follow your rules and you can trace how they were reached. <br/>
+      </p>
+    </div>
 
   </div>
 

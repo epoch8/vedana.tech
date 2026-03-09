@@ -17,7 +17,7 @@ The system has four parts that work together: the **data** itself, a **data mode
 }
 
 .image-wrapper img {
-  max-width: 800px;
+  max-width: 600px;
   width: 100%;
   height: auto;
 }

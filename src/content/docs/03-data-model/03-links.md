@@ -107,6 +107,7 @@ Product → belongs_to → Category
 Category → regulated_by → LegalDocument
 
 With this structure, Vedana can answer: **"Which legal documents regulate products in category X?"**
+
 It's a question that requires traversing two relationships in sequence. 
 Vector search cannot reliably perform this. Graph traversal can.
 

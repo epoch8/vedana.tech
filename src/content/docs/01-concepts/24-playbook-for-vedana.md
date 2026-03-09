@@ -104,7 +104,7 @@ To add a new instruction for the assistant:
    - **Step-by-step logic** – The reasoning steps the assistant should follow.
    - **Output format** – How the final response should be structured.
 
-![img](https://github.com/epoch8/content/blob/master/images/Vedana/Playbook.png)
+<img src="/images/Playbook.png" alt="Hero" width="800" class="center-image" />
 
 In the `query_name` column, specify the type of user question.
 In the `query_example` column, write the assistant instruction (prompt) that explains how to answer that type of query.

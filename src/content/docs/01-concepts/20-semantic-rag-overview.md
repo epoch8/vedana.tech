@@ -15,6 +15,11 @@ Semantic RAG is not simply "search + LLM." It is a system built from four interd
 
 All four parts work together to produce precise, verifiable answers to questions.
 
+<img
+  src={`${import.meta.env.BASE_URL}https://github.com/epoch8/content/blob/master/images/Vedana/Screenshot%202026-02-19%20at%2016.42.33.png`}
+  alt="Hero"
+/>
+
 ![img](https://github.com/epoch8/content/blob/master/images/Vedana/Screenshot%202026-02-19%20at%2016.42.33.png)
 
 A **Semantic RAG** system consists of:

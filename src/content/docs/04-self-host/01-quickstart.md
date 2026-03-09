@@ -59,7 +59,7 @@ OPENROUTER_API_KEY="your_api_key_here"
 ```
 or if you want to run Google/VertexAI models:
 ```
-# GOOGLE_APPLICATION_CREDENTIALS="path-to-creds.json"
+GOOGLE_APPLICATION_CREDENTIALS="path-to-creds.json"
 ```
 
 Leave the `GRIST_*` variables as-is for now. You will return to these after configuring Grist in the next steps.

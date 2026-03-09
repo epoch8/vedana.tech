@@ -28,7 +28,7 @@ Because retrieval is not limited to vector search, you can:
 - Filter by structured attributes.
 - Combine structure + vector search.
 
-<img src="/images/Screenshot%202026-02-19%20at%2008.10.03.png" alt="Hero" width="600" />
+<img src="/images/Screenshot%202026-02-19%20at%2008.10.03.png" alt="Hero" width="800" class="center-image" />
 
 Vedana is graph-first, not embedding-first. 
 Embeddings are supported and used where they are the right tool. But the foundation is structure. Without a properly defined data model, Vedana behaves like an advanced RAG system. With one, it becomes a domain knowledge engine capable of reasoning over your data the way a structured query language reasons over a database: precisely, transparently, and on demand.
@@ -119,7 +119,7 @@ Depending on what you are adding, follow one of the two paths below.
 2. Fill in the required attributes.
 3. Link them to existing data as needed.
 
-<img src="/images/Screenshot%202025-10-26%20at%2023.14.15.png" alt="Hero" width="600" />
+<img src="/images/Screenshot%202025-10-26%20at%2023.14.15.png" alt="Hero" width="800" class="center-image" />
 
 4. Update the Data Model.
    
@@ -167,7 +167,7 @@ Cypher queries are used when the question requires:
 - Attribute filtering
 - Deterministic domain queries
 
-<img src="/images/Memgraph.png" alt="Hero" width="600" />
+<img src="/images/Memgraph.png" alt="Hero" width="800" class="center-image" />
     
 Example use cases:
 

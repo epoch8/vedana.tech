@@ -45,7 +45,8 @@ In addition to these, the model can include optional extension tables that enhan
 Vedana ships with a minimal working data model that supports RAG-style behavior out of the box. It includes three anchor types (documents, document_chunks, and faq) and is fully configured and operational from the start.
 
 With this default model, Vedana can retrieve relevant document chunks, perform vector search, answer from FAQ entries, and return grounded responses with sources. This is sufficient for basic document Q&A.
-![img](https://github.com/epoch8/content/blob/master/images/Vedana/data-model-for-vedana.png)
+
+<img src="/images/data-model-for-vedana.png" alt="Hero" width="800" class="center-image" />
 
 ## What Must Be Defined in a Data Model
 
@@ -122,7 +123,7 @@ Examples:
 - Product → belongs_to → Category
 - Department → owns → Service
 
-![img](https://github.com/epoch8/content/blob/master/images/Vedana/Links-Vedana.png)
+<img src="/images/Links-Vedana.png" alt="Hero" width="800" class="center-image" />
     
 Each row in the Links table contains:
 

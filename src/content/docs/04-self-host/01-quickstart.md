@@ -55,6 +55,7 @@ Open `apps/vedana/.env` and set your LLM API key:
 
 ```env
 OPENAI_API_KEY="your_api_key_here"
+OPENROUTER_API_KEY="your_api_key_here"
 ```
 
 Leave the `GRIST_*` variables as-is for now. You will return to these after configuring Grist in the next steps.

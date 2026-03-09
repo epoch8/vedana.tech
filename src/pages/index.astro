@@ -12,6 +12,8 @@ import CTA from "@/components/products/vedana/CTA.astro";
 import Footer from "@/components/products/vedana/footer/Footer.astro";
 import ScrollFrames from "@/components/products/vedana/scroll-frame/ScrollFrames";
 import DomainModelDiagram from "@/components/products/vedana/DomainModelDiagram.astro";
+import ReasoningTraceDiagram from "@/components/products/vedana/ReasoningTraceDiagram.astro";
+
 
 import FAQ from "@/components/blocks/faq/FAQ.astro";
 import FAQItem from "@/components/blocks/faq/FAQItem.astro";
@@ -204,6 +206,8 @@ import "@/styles/vedana/problem.css";
         It queries the model, compares options, and applies constraints step by step.<br/>
         So answers follow your rules and you can trace how they were reached. <br/>
       </p>
+
+      <ReasoningTraceDiagram />
     </div>
 
   </div>
@@ -211,34 +215,7 @@ import "@/styles/vedana/problem.css";
 </section>
 
 
-    <section class="section">
-        <div class="container flow">
 
-<h2>Vedana knowledge graph </h2>
-
-  <EntityBoard columns={3}>
-    {Object.entries(entitiesByType).map(([entityType, entities]) => (
-      <EntityStack
-          entityType={entityType}
-          color={`var(--entity-${entityType})`}
-        >
-
-          {entities.map(entity => (
-            <EntityStackCard
-              id={entity.id}
-              title={entity.title}
-              entityType={entity.entityType}
-              color={entity.color}
-              attributes={entity.attributes ?? []}
-              relations={entity.relations ?? []}
-            />
-          ))}
-
-        </EntityStack>
-      ))}
-  </EntityBoard>
-          </div>
-    </section>
 
     <Problem />
 

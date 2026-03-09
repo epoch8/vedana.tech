@@ -78,10 +78,10 @@ docker compose -f apps/vedana/docker-compose.yml up --build -d
 ```
 
 This will:
-- start databases
-- run Alembic migrations
-- start API
-- start Backoffice
+- Start databases
+- Run Alembic migrations
+- Start API
+- Start Backoffice
 
 ### 4. Verify system health
 
@@ -103,6 +103,8 @@ You can also open:
 - Grist → http://localhost:8484
 
 ### 5. Configure Grist
+
+To make getting started easier, we prepared an example dataset for Vedana — including sample data, a pre-configured data model, and a golden dataset for evaluation. You can read more about it [here](https://vedana.tech/docs/self-host/test-dataset/).
 
 Open Grist at http://localhost:8484. There you will have three files: Data, Data Model, and Golden Dataset.
 Now you need to locate the **API key** and **ID for API use** for each document:

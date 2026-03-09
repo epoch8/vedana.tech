@@ -10,7 +10,7 @@ Vedana works differently. It stores your domain knowledge as a structured graph 
 
 The system has four parts that work together: the **data** itself, a **data model** that describes what exists and how things relate, **tools** that query the graph, and an **assistant** that knows which tool to use for which question. 
 
-![img](https://github.com/epoch8/content/blob/master/images/Vedana/vedana_arch.png)
+<img src="/images/vedana_arch.png" alt="Hero" width="600" />
 
 All domain data in Vedana lives in Memgraph not as a flat collection of text chunks used for vector search, but as a structured knowledge graph. 
 
@@ -28,7 +28,7 @@ Because retrieval is not limited to vector search, you can:
 - Filter by structured attributes.
 - Combine structure + vector search.
 
-![img](https://github.com/epoch8/content/blob/master/images/Vedana/Screenshot%202026-02-19%20at%2008.10.03.png)
+<img src="/images/Screenshot%202026-02-19%20at%2008.10.03.png" alt="Hero" width="600" />
 
 Vedana is graph-first, not embedding-first. 
 Embeddings are supported and used where they are the right tool. But the foundation is structure. Without a properly defined data model, Vedana behaves like an advanced RAG system. With one, it becomes a domain knowledge engine capable of reasoning over your data the way a structured query language reasons over a database: precisely, transparently, and on demand.
@@ -118,7 +118,9 @@ Depending on what you are adding, follow one of the two paths below.
 1. Add new rows to the table.
 2. Fill in the required attributes.
 3. Link them to existing data as needed.
-![Screenshot 2025-10-26 at 23.14.15.png](https://github.com/epoch8/content/blob/master/images/Vedana/Screenshot%202025-10-26%20at%2023.14.15.png)
+
+<img src="/images/Screenshot%202025-10-26%20at%2023.14.15.png" alt="Hero" width="600" />
+
 4. Update the Data Model.
    
 **Creating a new table:**
@@ -165,7 +167,7 @@ Cypher queries are used when the question requires:
 - Attribute filtering
 - Deterministic domain queries
 
-![img](https://github.com/epoch8/content/blob/master/images/Vedana/Memgraph.png)
+<img src="/images/Memgraph.png" alt="Hero" width="600" />
     
 Example use cases:
 

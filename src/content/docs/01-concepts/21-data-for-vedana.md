@@ -10,7 +10,17 @@ Vedana works differently. It stores your domain knowledge as a structured graph 
 
 The system has four parts that work together: the **data** itself, a **data model** that describes what exists and how things relate, **tools** that query the graph, and an **assistant** that knows which tool to use for which question. 
 
-<img src="/images/vedana_arch.png" alt="Hero" width="600" />
+<img src="/images/vedana_arch.png" alt="Hero" />
+
+.image-wrapper {
+  text-align: center;
+}
+
+.image-wrapper img {
+  max-width: 800px;
+  width: 100%;
+  height: auto;
+}
 
 All domain data in Vedana lives in Memgraph not as a flat collection of text chunks used for vector search, but as a structured knowledge graph. 
 

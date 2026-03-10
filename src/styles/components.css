@@ -90,14 +90,11 @@
    DOCUMENT BACKGROUND
 ========================= */
 
-/* =========================
-   DOCUMENT BACKGROUND
-========================= */
-
 .hero-docs {
   position: absolute;
   inset: 0;
 
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
 
@@ -105,6 +102,10 @@
   z-index: 0;
 }
 
+
+/* =========================
+   DOCUMENT CARD
+========================= */
 
 /* =========================
    DOCUMENT CARD
@@ -118,13 +119,7 @@
 
   border-radius: 22px;
 
-  opacity: 0.55;
-
-  filter:
-    blur(0.6px)
-    saturate(0.95);
-
-  transform: rotate(var(--r));
+  opacity: 0.5;
 
   border: 1px solid rgba(15,23,42,0.05);
 
@@ -133,20 +128,34 @@
     0 12px 24px rgba(15,23,42,0.05);
 
   overflow: hidden;
+
+  transform:
+    rotate(var(--r))
+    scale(var(--s,1));
+
+  filter:
+    blur(var(--b,0.6px))
+    saturate(0.95);
+
+  /* бумажная текстура */
+
+  background-image:
+    radial-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+
+  background-size: 4px 4px;
 }
 
-
 /* =========================
-   PAPER HIGHLIGHT
+   PAPER LIGHT
 ========================= */
 
 .hero-docs .doc::before {
-  content: "";
+  content:"";
 
-  position: absolute;
-  inset: 0;
+  position:absolute;
+  inset:0;
 
-  background: linear-gradient(
+  background:linear-gradient(
     180deg,
     rgba(255,255,255,0.65) 0%,
     rgba(255,255,255,0.25) 35%,
@@ -156,12 +165,36 @@
 
 
 /* =========================
-   DOCUMENT TEXT LINES
+   PAPER TEXTURE
 ========================= */
 
 .hero-docs .doc::after {
-  content: "";
+  content:"";
 
+  position:absolute;
+
+  left:16px;
+  right:40px;
+  top:22px;
+
+  height:3px;
+
+  border-radius:2px;
+
+  background:rgba(15,23,42,0.12);
+
+  box-shadow:
+    0 10px 0 rgba(15,23,42,0.10),
+    0 20px 0 rgba(15,23,42,0.08),
+    0 30px 0 rgba(15,23,42,0.06);
+}
+
+
+/* =========================
+   DOCUMENT TEXT LINES
+========================= */
+
+.hero-docs .doc span {
   position: absolute;
 
   left: 16px;
@@ -185,38 +218,19 @@
 ========================= */
 
 .hero-docs .doc:nth-child(3n) {
-  transform: scale(1.18) rotate(var(--r));
+  --s: 1.12;
   opacity: 0.62;
 }
 
 .hero-docs .doc:nth-child(4n) {
-  transform: scale(0.82) rotate(var(--r));
-  opacity: 0.28;
-  filter: blur(1.8px) saturate(0.8);
+  --s: 0.82;
+  --b: 1.8px;
+  opacity: 0.32;
 }
-
-.hero-docs .doc::before {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-
-  background-image:
-    radial-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
-
-  background-size: 4px 4px;
-
-  opacity: 0.4;
-}
-
-
-/* =========================
-   EDGE DOCUMENTS
-========================= */
 
 .hero-docs .doc:nth-child(7n) {
+  --b: 2.2px;
   opacity: 0.25;
-  filter: blur(2px) saturate(0.7);
 }
 
 /* =========================

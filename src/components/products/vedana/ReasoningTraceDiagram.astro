@@ -9,7 +9,7 @@
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="45 90 1280 320"
+  viewBox="45 90 1320 320"
   fill="none"
   role="img"
   aria-label="AI reasoning over Vedana structured knowledge"
@@ -43,10 +43,10 @@
   <g id="connectors">
 
 <path id="flowQuery" class="line" d="M420 240 H520"></path>
-<circle cx="520" cy="240" r="5" fill="#9CA3AF"></circle>
+<circle cx="520" cy="240" r="4" fill="#9CA3AF"></circle>
 
 <path id="flowAnswer" class="line" d="M880 240 H980"></path>
-<circle cx="880" cy="240" r="5" fill="#9CA3AF"></circle>
+<circle cx="880" cy="240" r="4" fill="#9CA3AF"></circle>
 
 </g>
 
@@ -70,10 +70,10 @@
 <!-- LEFT COLUMN : USER QUERY -->
 
 <g filter="url(#shadowCard)">
-<rect x="60" y="160" width="360" height="170" rx="26" fill="#FFFFFF" stroke="#D9E0EA" stroke-width="2"></rect>
+<rect x="60" y="150" width="360" height="200" rx="26" fill="#FFFFFF" stroke="#D9E0EA" stroke-width="2"></rect>
 </g>
 
-<text x="90" y="200" class="title">User query</text>
+<text x="90" y="190" class="title">User query</text>
 
 <text x="90" y="245" class="query">
 Which suppliers provide
@@ -95,7 +95,7 @@ for the EU market?
 <rect x="520" y="110" width="360" height="260" rx="30" fill="#F1F6FF" stroke="#BFD3F8" stroke-width="2"></rect>
 </g>
 
-<text x="700" y="150" text-anchor="middle" class="title">
+<text x="693" y="148" text-anchor="middle" class="title">
 AI reasoning
 </text>
 
@@ -103,13 +103,13 @@ AI reasoning
 <!-- STEP 1 -->
 
 <g filter="url(#shadowCard)">
-<rect x="560" y="170" width="280" height="48" rx="18" fill="#FFFFFF" stroke="#D9E0EA" stroke-width="2"></rect>
+<rect x="540" y="170" width="320" height="48" rx="18" fill="#FFFFFF" stroke="#D9E0EA" stroke-width="2"></rect>
 </g>
 
 <!-- entity color -->
-<circle cx="584" cy="194" r="9" fill="#DDEAFE" stroke="#6A99F0" stroke-width="2"></circle>
+<circle cx="564" cy="194" r="9" fill="#DDEAFE" stroke="#6A99F0" stroke-width="2"></circle>
 
-<text x="606" y="200" class="step">
+<text x="586" y="200" class="step">
 1. Query Product entities
 </text>
 
@@ -117,12 +117,12 @@ AI reasoning
 <!-- STEP 2 -->
 
 <g filter="url(#shadowCard)">
-<rect x="560" y="228" width="280" height="48" rx="18" fill="#FFFFFF" stroke="#D9E0EA" stroke-width="2"></rect>
+<rect x="540" y="228" width="320" height="48" rx="18" fill="#FFFFFF" stroke="#D9E0EA" stroke-width="2"></rect>
 </g>
 
-<circle cx="584" cy="252" r="9" fill="#F9E1EE" stroke="#EC6FB1" stroke-width="2"></circle>
+<circle cx="564" cy="252" r="9" fill="#F9E1EE" stroke="#EC6FB1" stroke-width="2"></circle>
 
-<text x="606" y="258" class="step">
+<text x="586" y="258" class="step">
 2. Filter EU certificates
 </text>
 
@@ -130,21 +130,23 @@ AI reasoning
 <!-- STEP 3 -->
 
 <g filter="url(#shadowCard)">
-<rect x="560" y="286" width="280" height="48" rx="18" fill="#FFFFFF" stroke="#D9E0EA" stroke-width="2"></rect>
+<rect x="540" y="286" width="320" height="48" rx="18" fill="#FFFFFF" stroke="#D9E0EA" stroke-width="2"></rect>
 </g>
 
-<circle cx="584" cy="310" r="9" fill="#DDF4E6" stroke="#59C97E" stroke-width="2"></circle>
+<circle cx="564" cy="310" r="9" fill="#DDF4E6" stroke="#59C97E" stroke-width="2"></circle>
 
-<text x="606" y="316" class="step">
+<text x="586" y="316" class="step">
 3. Match suppliers
 </text>
+
+<!-- STEP ANIMATION -->
 
 
 
 <!-- RIGHT COLUMN : ANSWER -->
 
 <g filter="url(#shadowCard)">
-<rect x="980" y="150" width="300" height="200" rx="26" fill="#FFFFFF" stroke="#D9E0EA" stroke-width="2"></rect>
+<rect x="980" y="150" width="360" height="200" rx="26" fill="#FFFFFF" stroke="#D9E0EA" stroke-width="2"></rect>
 </g>
 
 <text x="1010" y="190" class="title">
@@ -155,18 +157,18 @@ Structured answer
 3 compliant EU suppliers:
 </text>
 
-<circle cx="1004" cy="270" r="4" fill="#22C55E"></circle>
-<text x="1014" y="275" class="supplier">
+<circle cx="1015" cy="270" r="4" fill="#22C55E"></circle>
+<text x="1025" y="275" class="supplier">
 ACME Power Ltd
 </text>
 
-<circle cx="1004" cy="295" r="4" fill="#22C55E"></circle>
-<text x="1014" y="300" class="supplier">
+<circle cx="1015" cy="295" r="4" fill="#22C55E"></circle>
+<text x="1025" y="300" class="supplier">
 EuroBattery GmbH
 </text>
 
-<circle cx="1004" cy="320" r="4" fill="#22C55E"></circle>
-<text x="1014" y="325" class="supplier">
+<circle cx="1015" cy="320" r="4" fill="#22C55E"></circle>
+<text x="1025" y="325" class="supplier">
 GreenVolt
 </text>
 

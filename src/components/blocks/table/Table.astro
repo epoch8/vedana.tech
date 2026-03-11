@@ -1,0 +1,67 @@
+---
+const { table } = Astro.props
+const { columns, rows } = table
+---
+
+<div class="table">
+
+  <div class="table-header">
+    {columns.map(col => (
+      <div class={`header-${col.key}`}>
+        {col.title}
+        {col.badge && (
+          <span class="badge">{col.badge}</span>
+        )}
+      </div>
+    ))}
+  </div>
+
+  <div class="table-body">
+
+    {rows.map(row => (
+
+      <div class="table-row">
+
+        {columns.map(col => {
+
+          const cell = row[col.key]
+
+          return (
+
+            <div class={`cell cell-${col.key}`}>
+
+              {cell?.title && (
+                <div class="cell-title">{cell.title}</div>
+              )}
+
+              {cell?.example && (
+                <div class="cell-example">{cell.example}</div>
+              )}
+
+              {cell?.icon && (
+                <span class={`icon icon-${cell.icon}`}>
+                  {cell.icon === "good" ? "✓" : "✕"}
+                </span>
+              )}
+
+              {cell?.text && (
+                <div class="text">{cell.text}</div>
+              )}
+
+              {cell?.html && (
+                <div class="text" set:html={cell.html}/>
+              )}
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+    ))}
+
+  </div>
+
+</div>

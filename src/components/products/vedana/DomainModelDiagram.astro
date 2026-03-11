@@ -73,6 +73,27 @@
         stroke-linecap: round;
         stroke-linejoin: round;
       }
+      .line-product{
+        stroke:#6A99F0;
+        stroke-width:3;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+        opacity:.55;
+      }
+      .line-cert{
+        stroke:#EC6FB1;
+        stroke-width:3;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+        opacity:.55;
+        }
+    .line-supplier{
+        stroke:#59C97E;
+        stroke-width:3;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+        opacity:.55;
+        }
       .ghost {
         opacity: 0.75;
       }
@@ -113,7 +134,7 @@
   <!-- extracted entities -->
 
   <g id="entities">
-    <text x="400" y="42" class="model-title">Extracted entities</text>
+    <text x="400" y="50" class="model-title">Extracted entities</text>
 
     <!-- product -->
     <g filter="url(#shadowCard)">
@@ -140,15 +161,15 @@
   <!-- connectors: docs -> entities -->
 
   <g id="connectors-left" class="ghost">
-    <path class="line" d="M321 123 H357 Q372 123 372 138 V140 H390"></path>
+    <path id="flow1" class="line-product" d="M321 123 H357 Q372 123 372 138 V140 H390"></path>
     <circle cx="321" cy="123" r="4" fill="#A3A3A3"></circle>
     <circle cx="390" cy="140" r="4" fill="#A3A3A3"></circle>
 
-    <path class="line" d="M326 304 H357 Q372 304 372 289 V282 H390"></path>
+    <path id="flow2" class="line-cert" d="M326 304 H357 Q372 304 372 289 V282 H390"></path>
     <circle cx="326" cy="304" r="4" fill="#A3A3A3"></circle>
     <circle cx="390" cy="282" r="4" fill="#A3A3A3"></circle>
 
-    <path class="line" d="M321 485 H357 Q372 485 372 454 V424 H390"></path>
+    <path id="flow3" class="line-supplier" d="M321 485 H357 Q372 485 372 454 V424 H390"></path>
     <circle cx="321" cy="485" r="4" fill="#A3A3A3"></circle>
     <circle cx="390" cy="424" r="4" fill="#A3A3A3"></circle>
   </g>
@@ -156,25 +177,69 @@
   <!-- connectors: entities -> model -->
 
   <g id="connectors-right" class="ghost">
-    <path class="line" d="M640 140 H702 Q720 140 720 158 V178 H780"></path>
+    <path id="flow4" class="line-product" d="M640 140 H702 Q720 140 720 158 V178 H780"></path>
     <circle cx="640" cy="140" r="4" fill="#A3A3A3"></circle>
     <circle cx="780" cy="178" r="4" fill="#A3A3A3"></circle>
 
-    <path class="line" d="M640 282 H780"></path>
+    <path id="flow5" class="line-cert" d="M640 282 H780"></path>
     <circle cx="640" cy="282" r="4" fill="#A3A3A3"></circle>
     <circle cx="780" cy="282" r="4" fill="#A3A3A3"></circle>
 
-    <path class="line" d="M640 424 H702 Q720 424 720 406 V386 H780"></path>
+    <path id="flow6" class="line-supplier" d="M640 424 H702 Q720 424 720 406 V386 H780"></path>
     <circle cx="640" cy="424" r="4" fill="#A3A3A3"></circle>
     <circle cx="780" cy="386" r="4" fill="#A3A3A3"></circle>
   </g>
+
+  <g id="flow-dots">
+
+  <circle r="4" fill="#6A99F0">
+    <animateMotion dur="5s" repeatCount="indefinite">
+      <mpath href="#flow1"/>
+    </animateMotion>
+  </circle>
+
+  <circle r="4" fill="#EC6FB1">
+    <animateMotion dur="5s" begin="1s" repeatCount="indefinite">
+      <mpath href="#flow2"/>
+    </animateMotion>
+  </circle>
+
+  <circle r="4" fill="#59C97E">
+    <animateMotion dur="5s" begin="2s" repeatCount="indefinite">
+      <mpath href="#flow3"/>
+    </animateMotion>
+  </circle>
+
+  <circle r="4" fill="#6A99F0">
+  <animateMotion dur="5s" begin="2s" repeatCount="indefinite">
+    <mpath href="#flow4"/>
+  </animateMotion>
+</circle>
+
+  <circle r="4" fill="#EC6FB1">
+    <animateMotion dur="5s" begin="3s" repeatCount="indefinite">
+      <mpath href="#flow5"/>
+    </animateMotion>
+  </circle>
+
+  <circle r="4" fill="#59C97E">
+    <animateMotion dur="5s" begin="4s" repeatCount="indefinite">
+      <mpath href="#flow6"/>
+    </animateMotion>
+  </circle>
+
+  </g>
+
+  <!-- domain model -->
+
+</g>
 
 <g id="data-model">
 
   <!-- container (расширен вправо) -->
   <rect
     x="780"
-    y="48"
+    y="65"
     width="560"
     height="475"
     rx="24"
@@ -185,7 +250,7 @@
 
   <text
     x="1040"
-    y="92"
+    y="50"
     text-anchor="middle"
     class="model-title"
   >

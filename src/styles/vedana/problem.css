@@ -219,34 +219,6 @@
 }
 
 
-/* soft glow */
-
-.scene-bottom::after{
-
-  content:"";
-  position:absolute;
-
-  left:50%;
-  top:30px;
-
-  width:680px;
-  height:340px;
-
-  transform:translateX(-50%);
-
-  background:radial-gradient(
-    ellipse at center,
-    rgba(59,130,246,0.12),
-    rgba(59,130,246,0.05) 40%,
-    rgba(59,130,246,0.02) 60%,
-    transparent 80%
-  );
-
-  filter:blur(60px);
-
-  pointer-events:none;
-
-}
 
 
 /* ======================================

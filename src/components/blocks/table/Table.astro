@@ -1,26 +1,35 @@
 ---
+import styles from "./Table.module.css"
+
 const { table } = Astro.props
 const { columns, rows } = table
 ---
 
-<div class="table">
+<div class={styles.table}>
 
-  <div class="table-header">
+  <div class={styles.header}>
+
     {columns.map(col => (
-      <div class={`header-${col.key}`}>
+      <div class={styles.headerCell}>
+
         {col.title}
+
         {col.badge && (
-          <span class="badge">{col.badge}</span>
+          <span class={`${styles.badge} ${col.variant === "semantic" ? styles.badgePrimary : ""}`}>
+            {col.badge}
+          </span>
         )}
+
       </div>
     ))}
+
   </div>
 
-  <div class="table-body">
+  <div class={styles.body}>
 
     {rows.map(row => (
 
-      <div class="table-row">
+      <div class={styles.row}>
 
         {columns.map(col => {
 
@@ -28,29 +37,48 @@ const { columns, rows } = table
 
           return (
 
-            <div class={`cell cell-${col.key}`}>
-
-              {cell?.title && (
-                <div class="cell-title">{cell.title}</div>
-              )}
-
-              {cell?.example && (
-                <div class="cell-example">{cell.example}</div>
-              )}
+            <div class={styles.cell}>
 
               {cell?.icon && (
-                <span class={`icon icon-${cell.icon}`}>
+                <span
+                  class={`${styles.icon} ${
+                    cell.icon === "good"
+                      ? styles.iconGood
+                      : styles.iconBad
+                  }`}
+                >
                   {cell.icon === "good" ? "✓" : "✕"}
                 </span>
               )}
 
-              {cell?.text && (
-                <div class="text">{cell.text}</div>
-              )}
+              <div>
 
-              {cell?.html && (
-                <div class="text" set:html={cell.html}/>
-              )}
+                {cell?.title && (
+                  <div class={styles.cellTitle}>
+                    {cell.title}
+                  </div>
+                )}
+
+                {cell?.example && (
+                  <div class={styles.cellExample}>
+                    {cell.example}
+                  </div>
+                )}
+
+                {cell?.text && (
+                  <div class={styles.text}>
+                    {cell.text}
+                  </div>
+                )}
+
+                {cell?.html && (
+                  <div
+                    class={styles.text}
+                    set:html={cell.html}
+                  />
+                )}
+
+              </div>
 
             </div>
 

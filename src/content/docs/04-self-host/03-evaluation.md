@@ -59,7 +59,7 @@ The pipeline will iterate over each question in the golden dataset, send it to t
 Once ETL is complete and the chat endpoint is responding, run the evaluation pipeline from the Backoffice. Navigate to the Evaluation (**Eval**) section and trigger a metrics run:
 
 1. In Golden QA Dataset window select questions.
-2. Check **Judge Configuration** and **Pipeline COnfiguration**.
+2. Check **Judge Configuration** and **Pipeline Configuration**.
 3. Refresh Data Model.
 4. Start metrics run by clicking **'Run Selected'**. 
 

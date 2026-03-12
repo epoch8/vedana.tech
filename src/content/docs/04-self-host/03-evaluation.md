@@ -6,7 +6,7 @@ title: "Evaluation"
 
 ### What Is a Golden Dataset?
 
-A golden dataset is a curated set of question-and-answer pairs that represents the queries your system should be able to answer correctly. It serves as the ground truth for evaluating retrieval quality — the benchmark against which Vedana's responses are measured. You can use the golden dataset we prepared at: [LINK] 
+A golden dataset is a curated set of question-and-answer pairs that represents the queries your system should be able to answer correctly. It serves as the ground truth for evaluating retrieval quality — the benchmark against which Vedana's responses are measured. You can use the golden dataset we prepared at: [Grist](https://vedana-limit.getgrist.com/dqK3DygTqK8x/Golden-Dataset)
 
 Or you can prepare a golden dataset of your own.
 

@@ -67,7 +67,10 @@ Each row consists of the following fields:
 | **ID example**  | Example of a real ID                     |
 | **Query**       | Graph query used to fetch the data       |
 
-Example entities: product, branch, pricelist, department, service.
+**noun** — the name of the entity type, written in singular form (e.g. person, product, contract). This becomes the node label in the graph. The assistant uses it to understand what kinds of things it can look up.
+**description** — a plain-language explanation of what this entity represents. This is included in the LLM context, so writing a clear description directly helps the assistant understand when to query this entity and what it means.
+**id_example** — a sample primary key value for this entity type (e.g. person:1). This shows the assistant what a valid identifier looks like, which helps it construct correct Cypher queries at runtime.
+**query** — a Cypher query that retrieves nodes of this type from the graph. This is one of the most important fields: without a valid query here, the assistant cannot reliably fetch this entity from the graph and will fall back to less precise retrieval.
     
 Each anchor type must:
 - Have a unique primary key
@@ -106,6 +109,24 @@ The Attributes table defines:
 - How the model should retrieve attributes from the knowledge base.
 - Which fields are shown to the user in the final response.
 - How Anchors are correctly linked to document content and FAQs.
+
+In Grist, attributes are declared across two tables depending on what they describe. Anchor_attributes covers properties that belong directly to an entity node. Link_attributes covers properties that belong to the relationship between two nodes. Both tables share the same column structure — the distinction is only in what they are attached to.
+
+#### Anchor_attributes
+
+The Anchor_attributes table defines what you know about each entity — its properties. Each column controls a specific aspect of how that property behaves:
+
+- **attribute_name** — the name of the property as it is stored in the graph (e.g. person_name, interest_id). Must match the actual field name in the data.
+- **anchor** — links this attribute to its parent entity type. This tells the system which node the attribute belongs to.
+- **description** — explains what this attribute represents. Like the anchor description, this is included in the LLM context and helps the assistant understand what the field contains and when it is relevant.
+- **data_example** — a sample value for this attribute (e.g. Geneva Durben). Helps the assistant understand the format and scale of the data, which improves query generation accuracy.
+- **query** — a Cypher query that retrieves this specific attribute. Required for any attribute that should be directly queryable. Missing queries here are a common cause of the assistant failing to return specific field values.
+- **dtype** — the data type of the attribute value: str, int, float, bool, url, file, etc. Must match the actual data stored in the graph. Type mismatches cause ETL failures or unpredictable query results.
+- **embeddable** — a flag indicating whether the value of this attribute should be vectorized for semantic search. Set this to true for human-readable text fields where a user might search by meaning rather than exact match (e.g. names, descriptions, labels). Leave it false for identifiers, numeric values, and structured codes.
+- **embed_threshold** — the minimum similarity score required for a vector search result to be returned, expressed as a float between 0 and 1. Only applies to embeddable fields. Setting it too low returns loosely related results; setting it too high may miss valid matches. Tune this per field based on how precise the expected queries are.
+
+#### Link_attributes
+Follows the same structure as Anchor_attributes, but applies to properties on the relationship itself rather than on a node. Use this when the edge between two entities carries its own data — for example, a start_date on a person → assigned_to → project relationship.
   
 ### 3. Links
 
@@ -138,8 +159,32 @@ Each row in the Links table contains:
 | **anchor2_link_column_name**   | Link column name on the Anchor2 side                   |
 | **has_direction** *(optional)* | Relationship direction (if applicable)                 |
 
+The Links table defines how entities connect to each other. Each column describes one aspect of the relationship:
+
+- **anchor1/anchor2** — the two entity types being connected. The relationship runs from anchor1 to anchor2.
+- **sentence** — the edge label as it appears in the graph (e.g. PERSON_has_INTEREST). This is the relationship type used in Cypher queries.
+- **description** — a plain-language explanation of what the relationship means (e.g. "person has an interest"). Included in the LLM context so the assistant understands when to traverse this edge.
+- **query** — the Cypher query used to traverse this relationship. This is critical: without it, the assistant cannot perform multi-hop reasoning across connected entities.
+- **anchor1_link_column_name/anchor2_link_column_name** — optional fields that specify which column on each anchor table holds the foreign key reference. Used when the link needs to be resolved through a specific column rather than inferred from the node ID.
+- **has_direction** — specifies whether the relationship is directional. When set, traversal only follows the edge in the declared direction.
+
 Links are directional and typed.
 Without links, the graph has no structure.
+
+### 4. Queries
+The Queries table defines named retrieval strategies for specific question types the assistant is expected to handle:
+- **query_name** — a description of the question pattern this strategy covers (e.g. Who likes <interest>?). The assistant uses this to match incoming user questions to the right retrieval plan.
+- **query_example** — step-by-step instructions for how to answer this type of question: which tool to call first, what parameters to use, and what to do with the result. These instructions must be concrete and sequential — abstract descriptions of the desired outcome are not sufficient. The more precise the steps, the more reliably the assistant will follow them.
+
+### 5. ConversationLifecycle
+Defines system-level messages triggered at specific points in a conversation:
+- **event** — the name of the lifecycle event (e.g. conversation start, session end).
+- **text** — the message or instruction to inject at that point. Useful for greeting messages, session summaries, or fallback responses.
+
+### 6. Prompts
+Stores named prompt templates that the system uses for specific tasks:
+- **name** — a unique identifier for the prompt (e.g. eval_judge_prompt, system_prompt).
+- **text** — the full prompt text. The system prompt controls the assistant's overall tone, behavior, and constraints. The eval judge prompt controls how evaluation results are scored. Both can and should be customized for your specific domain and use case.
 
 ## Extending the Data Model
 

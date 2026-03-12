@@ -1,5 +1,5 @@
 ---
-Title: Common Mistakes and FAQ
+title: Common Mistakes and FAQ
 ---
 
 ## Common Mistakes and FAQ

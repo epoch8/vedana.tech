@@ -45,11 +45,14 @@ Upload your golden dataset table to Grist during the initial setup step (see ste
 The golden dataset is loaded into the evaluation pipeline during ETL. 
 1. Navigate to the ETL section > **main** tab, and run the pipeline by clicking **'Run Selected'**.
 2. Ensure ETL has completed successfully before running a test, including data model load, data load, and embedding generation.
+<img src="/images/eval 1.png" alt="Hero" width="800" class="center-image" />
 
 ### 4. Trigger an evaluation run
 
 Open the Backoffice at http://localhost:8000, navigate to the ETL section, and trigger a metrics run. Open **eval** tab in ETL section and start evaluation pipeline by clicking **'Run Selected'**.
 The pipeline will iterate over each question in the golden dataset, send it to the chat endpoint, and record the response alongside the expected answer.
+
+<img src="/images/eval 2.png" alt="Hero" width="800" class="center-image" />
 
 ## How to Evaluate Metrics
 
@@ -60,11 +63,13 @@ Once ETL is complete and the chat endpoint is responding, run the evaluation pip
 3. Refresh Data Model.
 4. Start metrics run by clicking **'Run Selected'**. 
 
+<img src="/images/eval 3.png" alt="Hero" width="800" class="center-image" />
+
 The pipeline will:
-- iterate over each question in the golden dataset
-- send it to the chat endpoint
-- compare the response against the expected answer
-- compute retrieval metrics
+- Iterate over each question in the golden dataset
+- Send it to the chat endpoint
+- Compare the response against the expected answer
+- Compute retrieval metrics
 
 ### Hit Rate
 

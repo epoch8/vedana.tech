@@ -67,10 +67,10 @@ Each row consists of the following fields:
 | **ID example**  | Example of a real ID                     |
 | **Query**       | Graph query used to fetch the data       |
 
-**noun** — the name of the entity type, written in singular form (e.g. person, product, contract). This becomes the node label in the graph. The assistant uses it to understand what kinds of things it can look up.
-**description** — a plain-language explanation of what this entity represents. This is included in the LLM context, so writing a clear description directly helps the assistant understand when to query this entity and what it means.
-**id_example** — a sample primary key value for this entity type (e.g. person:1). This shows the assistant what a valid identifier looks like, which helps it construct correct Cypher queries at runtime.
-**query** — a Cypher query that retrieves nodes of this type from the graph. This is one of the most important fields: without a valid query here, the assistant cannot reliably fetch this entity from the graph and will fall back to less precise retrieval.
+- **noun** — the name of the entity type, written in singular form (e.g. person, product, contract). This becomes the node label in the graph. The assistant uses it to understand what kinds of things it can look up.
+- **description** — a plain-language explanation of what this entity represents. This is included in the LLM context, so writing a clear description directly helps the assistant understand when to query this entity and what it means.
+- **id_example** — a sample primary key value for this entity type (e.g. person:1). This shows the assistant what a valid identifier looks like, which helps it construct correct Cypher queries at runtime.
+- **query** — a Cypher query that retrieves nodes of this type from the graph. This is one of the most important fields: without a valid query here, the assistant cannot reliably fetch this entity from the graph and will fall back to less precise retrieval.
     
 Each anchor type must:
 - Have a unique primary key

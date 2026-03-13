@@ -34,7 +34,7 @@ export const ragComparisonTable = {
 
       semantic: {
         icon: "good",
-        html: "Checks all required conditions before answering.<br/><strong>Returns the full validated list.</strong>"
+        html: "<strong>Returns the full validated list.</strong><br/>Checks all required conditions before answering."
       }
     },
 
@@ -48,13 +48,70 @@ export const ragComparisonTable = {
 
       classic: {
         icon: "bad",
-        text: "May surface similar-looking codes because they appear in related documents."
+        text: "May surface similar-looking codes (e.g., B49-8) because they appear in related documents."
       },
 
       semantic: {
         icon: "good",
-        html: "<strong>Exact identifier match.</strong><br/>Only the requested SKU is returned."
+        html: "<strong>Exact identifier match.</strong><br/>Only the requested SKU is evaluated and returned."
+      }
+    },
+
+    {
+      id: "rules",
+
+      scenario: {
+        title: "Business rules & constraints",
+        example: "Can this battery be shipped by air?"
+      },
+
+      classic: {
+        icon: "bad",
+        text: "Finds documents mentioning air shipment, but does not verify weight or hazard class."
+      },
+
+      semantic: {
+        icon: "good",
+        html: "<strong>Clear Yes/No answer.</strong><br/>Shipment rules are verified before answering."
+      }
+    },
+
+    {
+      id: "compatibility",
+
+      scenario: {
+        title: "Compatibility logic",
+        example: "Which chargers work with Model X?"
+      },
+
+      classic: {
+        icon: "bad",
+        text: "Returns documents where both are mentioned. May include incompatible options."
+      },
+
+      semantic: {
+        icon: "good",
+        html: "<strong>Only compatible options are returned.</strong><br/>Technical compatibility is checked first."
+      }
+    },
+
+    {
+      id: "compliance",
+
+      scenario: {
+        title: "Regulatory compliance",
+        example: "Is this device compliant in Germany?"
+      },
+
+      classic: {
+        icon: "bad",
+        text: "Finds documents mentioning compliance, but does not confirm certificate validity."
+      },
+
+      semantic: {
+        icon: "good",
+        html: "<strong>Compliance is verified.</strong><br/>Certification status is checked before answering."
       }
     }
   ]
-}
+};

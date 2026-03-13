@@ -39,6 +39,14 @@ const { columns, rows } = table
 
             <div class={styles.cell}>
 
+              {/* MOBILE COLUMN LABEL */}
+
+              {col.key !== "scenario" && (
+                <div class={styles.mobileLabel}>
+                  {col.title}
+                </div>
+              )}
+
               {cell?.icon && (
                 <span
                   class={`${styles.icon} ${

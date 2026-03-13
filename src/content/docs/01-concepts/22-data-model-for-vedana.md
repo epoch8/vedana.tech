@@ -240,9 +240,10 @@ the tools cannot reliably query it.
 The data model defines the search space.
 
 The tool library can be extended with:
-– API queries
-– Web search
-– External reasoning tools.
+
+- API queries
+- Web search
+- External reasoning tools
 
 ## Minimal vs Advanced Usage
 

@@ -28,12 +28,12 @@ export const ragComparisonTable = {
       },
 
       classic: {
-        icon: "bad",
+        icon: "✕",
         text: "Returns a few similar products. May miss others that also qualify."
       },
 
       semantic: {
-        icon: "good",
+        icon: "✓",
         html: "<strong>Returns the full validated list.</strong><br/>Checks all required conditions before answering."
       }
     },
@@ -47,12 +47,12 @@ export const ragComparisonTable = {
       },
 
       classic: {
-        icon: "bad",
+        icon: "✕",
         text: "May surface similar-looking codes (e.g., B49-8) because they appear in related documents."
       },
 
       semantic: {
-        icon: "good",
+        icon: "✓",
         html: "<strong>Exact identifier match.</strong><br/>Only the requested SKU is evaluated and returned."
       }
     },
@@ -66,12 +66,12 @@ export const ragComparisonTable = {
       },
 
       classic: {
-        icon: "bad",
+        icon: "✕",
         text: "Finds documents mentioning air shipment, but does not verify weight or hazard class."
       },
 
       semantic: {
-        icon: "good",
+        icon: "✓",
         html: "<strong>Clear Yes/No answer.</strong><br/>Shipment rules are verified before answering."
       }
     },
@@ -85,12 +85,12 @@ export const ragComparisonTable = {
       },
 
       classic: {
-        icon: "bad",
+        icon: "✕",
         text: "Returns documents where both are mentioned. May include incompatible options."
       },
 
       semantic: {
-        icon: "good",
+        icon: "✓",
         html: "<strong>Only compatible options are returned.</strong><br/>Technical compatibility is checked first."
       }
     },
@@ -104,12 +104,12 @@ export const ragComparisonTable = {
       },
 
       classic: {
-        icon: "bad",
+        icon: "✕",
         text: "Finds documents mentioning compliance, but does not confirm certificate validity."
       },
 
       semantic: {
-        icon: "good",
+        icon: "✓",
         html: "<strong>Compliance is verified.</strong><br/>Certification status is checked before answering."
       }
     }

@@ -1,21 +1,58 @@
 ---
 import styles from "./Table.module.css"
 
-const { table } = Astro.props
+interface TableColumn {
+  key: string
+  title: string
+  badge?: string
+  variant?: string
+}
+
+interface TableCell {
+  icon?: string
+  iconHtml?: string
+  title?: string
+  example?: string
+  text?: string
+  html?: string
+}
+
+interface TableRow {
+  id?: string
+  [key: string]: TableCell | string | undefined
+}
+
+interface TableData {
+  columns: TableColumn[]
+  rows: TableRow[]
+}
+
+const { table } = Astro.props as { table: TableData }
+
 const { columns, rows } = table
+
+function isCell(value: unknown): value is TableCell {
+  return typeof value === "object" && value !== null
+}
 ---
 
 <div class={styles.table}>
 
   <div class={styles.header}>
 
-    {columns.map(col => (
+    {columns.map((col: TableColumn) => (
       <div class={styles.headerCell}>
 
         {col.title}
 
         {col.badge && (
-          <span class={`${styles.badge} ${col.variant === "semantic" ? styles.badgePrimary : ""}`}>
+          <span
+            class={`${styles.badge} ${
+              col.variant === "semantic"
+                ? styles.badgePrimary
+                : ""
+            }`}
+          >
             {col.badge}
           </span>
         )}
@@ -27,13 +64,23 @@ const { columns, rows } = table
 
   <div class={styles.body}>
 
-    {rows.map(row => (
+    {rows.map((row: TableRow) => (
 
       <div class={styles.row}>
 
-        {columns.map(col => {
+        {columns.map((col: TableColumn) => {
 
-          const cell = row[col.key]
+          const raw = row[col.key]
+
+          if (!isCell(raw)) {
+            return (
+              <div class={styles.cell}>
+                {typeof raw === "string" ? raw : null}
+              </div>
+            )
+          }
+
+          const cell = raw
 
           return (
 
@@ -47,39 +94,42 @@ const { columns, rows } = table
                 </div>
               )}
 
-              {cell?.icon && (
-                <span
-                  class={`${styles.icon} ${
-                    cell.icon === "good"
-                      ? styles.iconGood
-                      : styles.iconBad
-                  }`}
-                >
-                  {cell.icon === "good" ? "✓" : "✕"}
+              {/* ICON */}
+
+              {cell.icon && (
+                <span class={styles.icon}>
+                  {cell.icon}
                 </span>
+              )}
+
+              {cell.iconHtml && (
+                <span
+                  class={styles.icon}
+                  set:html={cell.iconHtml}
+                />
               )}
 
               <div>
 
-                {cell?.title && (
+                {cell.title && (
                   <div class={styles.cellTitle}>
                     {cell.title}
                   </div>
                 )}
 
-                {cell?.example && (
+                {cell.example && (
                   <div class={styles.cellExample}>
                     {cell.example}
                   </div>
                 )}
 
-                {cell?.text && (
+                {cell.text && (
                   <div class={styles.text}>
                     {cell.text}
                   </div>
                 )}
 
-                {cell?.html && (
+                {cell.html && (
                   <div
                     class={styles.text}
                     set:html={cell.html}

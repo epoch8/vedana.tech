@@ -8,6 +8,7 @@
   box-shadow:var(--shadow-sm);
 }
 
+
 /* HEADER */
 
 .header{
@@ -31,10 +32,12 @@
   gap:var(--space-2);
 }
 
+
 /* BADGES */
 
 .badge{
   display:inline-block;
+
   padding:2px 8px;
 
   font-size:0.7rem;
@@ -53,6 +56,7 @@
   color:#fff;
   border:none;
 }
+
 
 /* BODY */
 
@@ -80,26 +84,29 @@
   background:var(--color-bg-muted);
 }
 
-/* DEFAULT CELL */
+
+/* CELL LAYOUT */
 
 .cell{
-  display:block;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  column-gap:8px;
+  align-items:start;
 }
 
-/* CLASSIC / VEDANA CELLS */
+/* scenario column */
 
-.row > :nth-child(2) .cell,
-.row > :nth-child(3) .cell{
-  display:flex;
-  align-items:flex-start;
-  gap:10px;
+.row > :first-child.cell{
+  grid-template-columns:1fr;
 }
 
-/* SCENARIO */
+
+/* CONTENT */
 
 .cellTitle{
   font-weight:var(--font-weight-semibold);
   color:var(--color-text-strong);
+
   margin-bottom:var(--space-2);
 }
 
@@ -107,6 +114,7 @@
   font-size:var(--font-size-sm);
   color:var(--color-text-subtle);
 }
+
 
 /* TEXT */
 
@@ -120,37 +128,26 @@
   font-weight:var(--font-weight-semibold);
 }
 
-/* ICONS */
+
+/* ICON */
 
 .icon{
   width:18px;
   height:18px;
 
-  font-size:12px;
-
-  display:inline-flex;
+  display:flex;
   align-items:center;
   justify-content:center;
 
+  font-size:12px;
+
   border-radius:50%;
-  margin-top:2px;
 
-  flex-shrink:0;
+  margin-top:3px;
 }
 
-.iconGood{
-  background:rgba(22,163,74,0.08);
-  border:1px solid rgba(22,163,74,0.2);
-  color:var(--color-success);
-}
 
-.iconBad{
-  background:rgba(220,38,38,0.08);
-  border:1px solid rgba(220,38,38,0.2);
-  color:var(--color-danger);
-}
-
-/* COLUMN SEPARATORS */
+/* COLUMN SEPARATORS (DESKTOP) */
 
 .row > :nth-child(2),
 .header > :nth-child(2){
@@ -162,6 +159,7 @@
 .header > :nth-child(3){
   padding-left:var(--space-6);
 }
+
 
 /* MOBILE LABEL */
 
@@ -177,6 +175,7 @@
   color:var(--color-text-subtle);
 }
 
+
 /* MOBILE */
 
 @media (max-width:900px){
@@ -187,13 +186,37 @@
 
   .row{
     grid-template-columns:1fr;
+
     gap:22px;
     padding:20px;
+  }
+
+  /* убираем desktop-разделители */
+
+  .row > :nth-child(2),
+  .header > :nth-child(2){
+    border-right:none;
+    padding-right:0;
+  }
+
+  .row > :nth-child(3),
+  .header > :nth-child(3){
+    padding-left:0;
   }
 
   .row > *{
     padding:0;
     border:none;
+  }
+
+  /* убираем колонку иконки */
+
+  .cell{
+    grid-template-columns:1fr;
+  }
+
+  .icon{
+    display:none;
   }
 
   .mobileLabel{

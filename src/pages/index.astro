@@ -10,7 +10,6 @@ import MiniDemo from "@/components/products/vedana/MiniDemo.jsx";
 import Methodology from "@/components/products/vedana/Methodology.astro";
 import CTA from "@/components/products/vedana/CTA.astro";
 import Footer from "@/components/products/vedana/footer/Footer.astro";
-import ScrollFrames from "@/components/products/vedana/scroll-frame/ScrollFrames";
 import DomainModelDiagram from "@/components/products/vedana/DomainModelDiagram.astro";
 import ReasoningTraceDiagram from "@/components/products/vedana/ReasoningTraceDiagram.astro";
 
@@ -21,12 +20,12 @@ import FAQItem from "@/components/blocks/faq/FAQItem.astro";
 import Timeline from "@/components/blocks/timeline/Timeline.astro";
 import TimelineItem from "@/components/blocks/timeline/TimelineItem.astro";
 
-import EntityBoard from "@/components/blocks/entity-card/EntityBoard.astro";
-import EntityStackCard from "@/components/blocks/entity-card/EntityStackCard.astro";
-import EntityStack from "@/components/blocks/entity-card/EntityStack.astro";
 import { EntityList } from "@/content/vedana/entity-registry/vedana.ts";
 import { groupEntitiesByType } from "@/lib/vedana/groupEntitiesByType";
 const entitiesByType = groupEntitiesByType(EntityList);
+
+import Table from "@/components/blocks/table/Table.astro"
+import { ragComparisonTable } from "@/content/vedana/tables/ragComparisonTable"
 
 
 import "../styles/global.css";
@@ -219,13 +218,10 @@ import "@/styles/vedana/problem.css";
 <section class="section">
     <div class="container flow">
       <h2>Why similarity-based RAG fails for business questions</h2>
+      <Table table={ragComparisonTable}/>
     </div>
 </section>
 
-
-
-
-    <Problem />
 
     <MiniDemo client:visible />
 

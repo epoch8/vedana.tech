@@ -7,6 +7,15 @@
 --industry-ecom: hsl(115 58% 66%);
 --industry-health: hsl(151 60% 64%);
 --industry-banking: hsl(259 65% 58%);
+--industry-development: hsl(215 72% 60%);
+
+--industry-automotive-bg: hsl(43 30% 95%);
+--industry-development-bg: hsl(215 30% 95%);
+--industry-horeca-bg: hsl(79 28% 95%);
+--industry-legal-bg: hsl(7 30% 95%);
+--industry-ecom-bg: hsl(115 28% 95%);
+--industry-health-bg: hsl(151 28% 95%);
+--industry-banking-bg: hsl(259 30% 95%);
 
 
 --color-engine-surface: #f4f7ff;

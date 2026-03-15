@@ -1,20 +1,41 @@
 /* ======================================================
    CALLOUT
-   (layout-agnostic: no max-width, no outer spacing)
 ====================================================== */
 
 .callout {
-  /* Design tokens (override-safe) */
+
+  /* ----------------------------------
+     THEME TOKENS (override-safe)
+  ---------------------------------- */
+
   --callout-bg: var(--color-bg-muted);
+  --callout-gradient: none;
+
+  --callout-border-color: var(--color-border);
+  --callout-border-width: 1px;
+
   --callout-ink: var(--color-text);
   --callout-icon-color: var(--color-primary);
 
-  background: var(--callout-bg);
+
+  /* ----------------------------------
+     LAYOUT
+  ---------------------------------- */
+
+  position: relative;
+
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+
   color: var(--callout-ink);
 
-  padding: var(--space-6); /* internal padding — allowed */
-  border-radius: var(--radius-md);
+  border: var(--callout-border-width) solid var(--callout-border-color);
+
+  background:
+    var(--callout-gradient),
+    var(--callout-bg);
 }
+
 
 /* ======================================================
    INNER LAYOUT
@@ -26,12 +47,14 @@
   gap: var(--space-4);
 }
 
+
 /* ======================================================
    ICON
 ====================================================== */
 
 .callout__icon {
   flex: 0 0 auto;
+
   color: var(--callout-icon-color);
 
   display: flex;
@@ -44,6 +67,7 @@
   height: var(--space-6);
   stroke: currentColor;
 }
+
 
 /* ======================================================
    CONTENT

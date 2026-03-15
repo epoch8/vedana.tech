@@ -29,7 +29,7 @@ const entitiesByType = groupEntitiesByType(EntityList);
 import Table from "@/components/blocks/table/Table.astro"
 import { ragComparisonTable } from "@/content/vedana/tables/ragComparisonTable"
 
-
+import Callout from "@/components/blocks/callout/Callout.astro";
 
 import "../styles/global.css";
 import "@/styles/vedana/extra-tokens.css";
@@ -282,7 +282,81 @@ import "@/styles/vedana/problem.css";
     </div>
 </section>
 
-    <Methodology />
+  <section class="section">
+    <div class="container flow">
+
+    <Callout
+      style={`
+        --callout-bg: hsl(228 60% 98%);
+        --callout-border-color: hsl(232 70% 90%);
+
+        --callout-gradient:
+          linear-gradient(
+            180deg,
+            transparent 0%,
+            hsla(238, 100%, 75%, 0.03) 50%,
+            hsla(242, 100%, 78%, 0.05) 80%,
+            hsla(245, 100%, 80%, 0.04) 100%
+          );
+
+        --callout-icon-color: hsl(238 90% 62%);
+      `}
+    >
+
+    <p style="font-size:12px; font-weight:600; letter-spacing:0.08em; color:hsl(223 70% 55%); text-transform:uppercase;">
+    MODELING FOUNDATION
+    </p>
+
+    <h3 style="margin-top:6px;">
+    Vedana is built on Minimal Modeling
+    </h3>
+    <p></p>
+    <p>
+    <a href="#">Minimal Modeling</a> is a data modeling discipline created by
+    Alexey Makhotkin, author of the
+    <a href="#">Database Design Book</a>.
+    </p>
+
+    <p>
+    Instead of treating knowledge as raw text, Minimal Modeling represents it as a
+    structured system of <strong>anchors, attributes, and links</strong>.
+    </p>
+
+    <ul>
+    <li>
+    <strong>Anchors</strong> represent entities — products, suppliers, regulations,
+    ingredients.
+    </li>
+
+    <li>
+    <strong>Attributes</strong> describe properties of those entities.
+    </li>
+
+    <li>
+    <strong>Links</strong> define relationships between them.
+    </li>
+    </ul>
+
+    <p>
+    This structure turns documents into a <strong>navigable knowledge graph</strong>
+    that an AI assistant can reason over.
+    </p>
+
+    <p>
+    If the assistant struggles with certain questions, you don’t rewrite prompts.
+    You simply <strong>lift that concept into the data model</strong> — as a new
+    anchor, attribute, or relationship.
+    </p>
+
+    <p>
+    <strong>Vedana doesn’t rely on prompts alone.</strong>
+    It reasons on top of an explicit data structure.
+    </p>
+
+    </Callout>
+
+    </div>
+  </section>
 
   <section class="section timeline-section">
     <div class="container flow">

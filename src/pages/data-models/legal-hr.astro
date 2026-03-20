@@ -24,32 +24,38 @@ const entitiesByType = groupEntitiesByType(EntityList);
     canonical: "https://vedana.tech/guidebooks/entity-stack-2",
   }}
 >
-<h3>Vedana knowledge graph legal</h3>
 
-<EntityBoard columns={3}>
+<section class="section">
+    <div class="container flow">
+      <h2>Vedana knowledge graph example for legal</h2>
+      <p></p>
 
-  {Object.entries(entitiesByType).map(([entityType, entities]) => (
+      <EntityBoard columns={3}>
 
-    <EntityStack
-      entityType={entityType}
-      color={`var(--entity-${entityType})`}
-    >
+        {Object.entries(entitiesByType).map(([entityType, entities]) => (
 
-      {entities.map(entity => (
-        <EntityStackCard
-          id={entity.id}
-          title={entity.title}
-          entityType={entity.entityType}
-          color={entity.color}
-          attributes={entity.attributes ?? []}
-          relations={entity.relations ?? []}
-        />
-      ))}
+          <EntityStack
+            entityType={entityType}
+            color={`var(--entity-${entityType})`}
+          >
 
-    </EntityStack>
+            {entities.map(entity => (
+              <EntityStackCard
+                id={entity.id}
+                title={entity.title}
+                entityType={entity.entityType}
+                color={entity.color}
+                attributes={entity.attributes ?? []}
+                relations={entity.relations ?? []}
+              />
+            ))}
 
-  ))}
+          </EntityStack>
 
-</EntityBoard>
+        ))}
+
+      </EntityBoard>
+</div>
+</section>
 
 </BaseLayout>

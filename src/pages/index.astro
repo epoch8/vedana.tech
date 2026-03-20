@@ -6,8 +6,6 @@ import { SEOBase } from "@content/vedana/seo/seo";
 import RotatingStatement from "@/components/blocks/rotating-statement/RotatingStatement.astro";
 
 import MiniDemo from "@/components/products/vedana/MiniDemo.jsx";
-import Methodology from "@/components/products/vedana/Methodology.astro";
-import CTA from "@/components/products/vedana/CTA.astro";
 import Footer from "@/components/products/vedana/footer/Footer.astro";
 import DomainModelDiagram from "@/components/products/vedana/DomainModelDiagram.astro";
 import ReasoningTraceDiagram from "@/components/products/vedana/ReasoningTraceDiagram.astro";
@@ -30,6 +28,7 @@ import Table from "@/components/blocks/table/Table.astro"
 import { ragComparisonTable } from "@/content/vedana/tables/ragComparisonTable"
 
 import Callout from "@/components/blocks/callout/Callout.astro";
+import Button from "@/components/blocks/button/Button.astro";
 
 import "../styles/global.css";
 import "@/styles/vedana/extra-tokens.css";
@@ -440,7 +439,50 @@ import "@/styles/vedana/problem.css";
     </div>
   </section>
 
-    <CTA />
+    <section class="section">
+        <div class="container flow">
+
+          <Callout
+            style={`
+
+            --callout-bg:
+            linear-gradient(
+              180deg,
+              hsl(210 100% 98%),
+              hsl(220 90% 96%)
+            );
+
+          --callout-gradient:
+            radial-gradient(
+              600px 200px at 20% -20%,
+              rgba(42, 91, 255, 0.08),
+              transparent 70%
+            );
+
+          --callout-border-color: var(--color-primary-border);
+          --callout-ink: var(--color-text);
+            `}
+          >
+            <div>
+              <h3>Try Vedana your way</h3>
+              <p></p>
+              <p>Start with the open-core docs, or work with us to design your data model and deployment.</p>
+            </div>
+
+            <div slot="actions">
+              <Button href="https://calendly.com/olga_t/60min" variant="primary">
+                Book a call
+              </Button>
+
+              <Button href="/docs" variant="secondary">
+                Read the docs <span>→</span>
+              </Button>
+            </div>
+          </Callout>
+
+        </div>
+    </section>
+
 
     <Footer />
 </BaseLayout>

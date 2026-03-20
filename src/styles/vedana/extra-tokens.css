@@ -110,6 +110,77 @@
 --entity-compliance: hsl(259 55% 70%);
 --entity-supplier: hsl(223 60% 72%);
 
+/* =====================================================
+   LEGAL DOMAIN ENTITY COLORS
+===================================================== */
+
+/* ---------------------------------
+   JURISDICTION
+---------------------------------- */
+
+--entity-country: hsl(220 45% 60%);
+/* countries / jurisdictions */
+
+
+/* ---------------------------------
+   STRUCTURE
+---------------------------------- */
+
+--entity-legal-area: hsl(210 35% 52%);
+/* labour law / immigration law */
+
+--entity-topic: hsl(200 40% 58%);
+/* conceptual legal topics */
+
+
+/* ---------------------------------
+   LAW CONTENT
+---------------------------------- */
+
+--entity-rule: hsl(12 60% 58%);
+/* statutory legal rule */
+
+--entity-procedure: hsl(32 55% 56%);
+/* procedural workflow */
+
+--entity-contract-type: hsl(26 52% 54%);
+/* special employment contract types */
+
+
+/* ---------------------------------
+   IMMIGRATION
+---------------------------------- */
+
+--entity-permit: hsl(280 50% 58%);
+/* visas / residence permits */
+
+
+/* ---------------------------------
+   HR / EMPLOYER OBLIGATIONS
+---------------------------------- */
+
+--entity-obligation: hsl(150 40% 55%);
+/* employer duties */
+
+--entity-benefit: hsl(135 38% 60%);
+/* employee benefits */
+
+
+/* ---------------------------------
+   INSTITUTIONS
+---------------------------------- */
+
+--entity-authority: hsl(260 45% 60%);
+/* government authorities */
+
+
+/* ---------------------------------
+   DOCUMENTS
+---------------------------------- */
+
+--entity-template: hsl(210 25% 70%);
+/* templates / legal documents */
+
 
 /* ======================================
    Vedana domain entities — tuned

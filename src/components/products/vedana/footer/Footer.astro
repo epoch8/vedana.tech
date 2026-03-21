@@ -1,13 +1,9 @@
 ---
 import BrandLogoStatic from "../logo/BrandLogoStatic.astro";
-import styles from "./Footer.module.css";
 
-const cols = [
-  { title: "Product", items: ["Docs","Changelog","Status"] },
-  { title: "Use cases", items: ["E-commerce","SaaS","Creators","Support"] },
-  { title: "Resources", items: ["Blog","Templates","Community"] },
-  { title: "Company", items: ["About","Careers","Contact","Legal"] },
-];
+import { footerNav, footerMeta } from "@/content/navigation/navigation";
+
+import styles from "./Footer.module.css";
 
 const year = new Date().getFullYear();
 ---
@@ -15,34 +11,48 @@ const year = new Date().getFullYear();
 <footer class={styles.footer}>
   <div class={styles.container}>
     <div class={styles.grid}>
+
+      <!-- BRAND -->
       <div class={styles.brand}>
         <BrandLogoStatic />
-        <p class={styles.tagline}>
-          Omni-channel chat for growth and support. Replace this text with your brand line.
-        </p>
 
-        <div class={styles.socials}>
-          <div class={styles.social}></div>
-          <div class={styles.social}></div>
-          <div class={styles.social}></div>
-        </div>
+        {footerMeta.tagline && (
+          <p class={styles.tagline}>
+            {footerMeta.tagline}
+          </p>
+        )}
       </div>
 
-      {cols.map((c) => (
-        <div class={styles.column}>
-          <h4 class={styles.colTitle}>{c.title}</h4>
-          <ul class={styles.links}>
-            {c.items.map((item) => (
-              <li><a href="#">{item}</a></li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      <!-- NAV -->
+      {footerNav
+        .filter((section) => section.enabled !== false)
+        .map((section) => (
+          <div class={styles.column}>
+            <h4 class={styles.colTitle}>{section.title}</h4>
+
+            <ul class={styles.links}>
+              {section.items
+                .filter((item) => item.enabled !== false)
+                .map((item) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      target={item.external ? "_blank" : undefined}
+                      rel={item.external ? "noopener noreferrer" : undefined}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        ))}
+
     </div>
   </div>
 
+  <!-- BOTTOM -->
   <div class={styles.bottom}>
-    © {year} Epoch8 LLC
+    © {year} {footerMeta.company}
   </div>
-
 </footer>

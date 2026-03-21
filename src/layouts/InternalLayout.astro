@@ -2,9 +2,12 @@
 import BaseLayout from "@/layouts/baseLayout.astro";
 import GraphBreadcrumb from "@/components/blocks/graph-elements/GraphBreadcrumb.astro";
 
+import {
+  buildBreadcrumbSchema,
+} from "@/lib/seo/breadcrumbSchema";
+
 import styles from "./InternalLayout.module.css";
 import "../styles/global.css";
-
 
 import type { SEOConfig } from "@/lib/seo/types";
 
@@ -32,13 +35,39 @@ const {
   class: extraClass = ""
 } = Astro.props;
 
+/* ======================================================
+   BASE URL (единый источник)
+====================================================== */
+
 const baseUrl = import.meta.env.PUBLIC_SITE_URL;
+
+/* ======================================================
+   BREADCRUMB SCHEMA (генерация здесь, не в компоненте)
+====================================================== */
+
+const breadcrumbSchema =
+  crumbs.length > 0
+    ? buildBreadcrumbSchema(baseUrl, crumbs)
+    : null;
+
+/* ======================================================
+   MERGE STRUCTURED DATA
+====================================================== */
+
+const mergedStructuredData = [
+  ...(breadcrumbSchema ? [breadcrumbSchema] : []),
+  ...(structuredData
+    ? Array.isArray(structuredData)
+      ? structuredData
+      : [structuredData]
+    : []),
+];
 ---
 
 <BaseLayout
   baseSEO={baseSEO}
   pageSEO={pageSEO}
-  structuredData={structuredData}
+  structuredData={mergedStructuredData}
 >
 
   <div class={styles["header-spine-gap"]} aria-hidden="true"></div>
@@ -49,7 +78,6 @@ const baseUrl = import.meta.env.PUBLIC_SITE_URL;
       <GraphBreadcrumb
         crumbs={crumbs}
         baseUrl={baseUrl}
-        schema={true}
       />
     </aside>
 

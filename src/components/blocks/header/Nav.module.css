@@ -135,6 +135,10 @@
 
 @media (max-width: 768px) {
 
+    .nav-brand {
+    left: var(--container-padding-x);
+  }
+
   .nav-menu-toggle {
     display: block;
     position: absolute;

@@ -2,34 +2,48 @@
 import styles from "./Nav.module.css";
 import BrandLogo from "../../products/vedana/logo/BrandLogo.astro";
 
+import { mainNav } from "@/content/navigation/navigation";
+
 /* ================================
-   Types
+   ICONS MAP (без хардкода в JSX)
 ================================ */
 
-export type NavItemKind = "cta";
+import GithubIcon from "@/components/icons/GithubIcon.astro";
 
-export interface NavItem {
-  label: string;
-  href: string;
-  kind?: NavItemKind;
-}
+const ICONS = {
+  github: GithubIcon,
+};
 
-interface Props {
-  items: NavItem[];
-  siteUrl?: string;
-}
+/* ================================
+   PREPARE NAV
+================================ */
 
-const { items = [], siteUrl = "" } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const navItems = mainNav
+  .filter((item) => item.enabled !== false)
+  .map((item) => {
+    const isActive =
+      currentPath === item.href ||
+      currentPath.startsWith(item.href + "/");
+
+    return {
+      ...item,
+      isActive,
+    };
+  });
 
 /* ================================
    Structured Data
 ================================ */
 
+const siteUrl = Astro.site ?? "";
+
 const navigationSchema = {
   "@context": "https://schema.org",
   "@type": "SiteNavigationElement",
-  name: items.map((item) => item.label),
-  url: items.map((item) =>
+  name: navItems.map((item) => item.label),
+  url: navItems.map((item) =>
     siteUrl && item.href.startsWith("/")
       ? `${siteUrl}${item.href}`
       : item.href
@@ -43,10 +57,13 @@ const navigationSchema = {
   data-open="false"
 >
   <div class={styles["nav-inner"]}>
+
+    <!-- BRAND -->
     <div class={styles["nav-brand"]}>
       <BrandLogo href="/#home" />
     </div>
 
+    <!-- NAV -->
     <nav
       id="primary-nav"
       class={styles["nav-links"]}
@@ -54,21 +71,42 @@ const navigationSchema = {
       itemscope
       itemtype="https://schema.org/SiteNavigationElement"
     >
-      {items.map((item) => (
-        <a
-          href={item.href}
-          class={
-            item.kind === "cta"
-              ? `${styles["nav-link"]} ${styles["nav-cta"]}`
-              : styles["nav-link"]
-          }
-          itemprop="url"
-        >
-          <span itemprop="name">{item.label}</span>
-        </a>
-      ))}
+      {navItems.map((item) => {
+        const Icon = item.icon ? ICONS[item.icon] : null;
+
+        return (
+          <a
+            href={item.href}
+            class={[
+              styles["nav-link"],
+              item.variant === "cta" && styles["nav-cta"],
+              item.variant === "icon" && styles["nav-icon"],
+              item.isActive && styles["nav-link--active"],
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            target={item.external ? "_blank" : undefined}
+            rel={item.external ? "noopener noreferrer" : undefined}
+            itemprop="url"
+            title={item.description}
+          >
+            {/* ICON */}
+            {item.variant === "icon" && Icon && (
+              <span class={styles["nav-icon-inner"]}>
+                <Icon />
+              </span>
+            )}
+
+            {/* LABEL (не показываем для чистых иконок, если захочешь) */}
+            {item.variant !== "icon" && (
+              <span itemprop="name">{item.label}</span>
+            )}
+          </a>
+        );
+      })}
     </nav>
 
+    <!-- MOBILE -->
     <button
       id="menu-toggle"
       class={styles["nav-menu-toggle"]}
@@ -79,16 +117,16 @@ const navigationSchema = {
     >
       ☰
     </button>
+
   </div>
 </header>
 
-<div
-  id="nav-overlay"
-  class={styles["nav-overlay"]}
-></div>
+<div id="nav-overlay" class={styles["nav-overlay"]}></div>
 
 <script type="application/ld+json">
   {JSON.stringify(navigationSchema)}
 </script>
 
-<script type="module" src="/scripts/nav.js"></script>
+<script>
+  import "./nav.js";
+</script>

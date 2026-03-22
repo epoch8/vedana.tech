@@ -9,8 +9,11 @@ export type NavItem = {
   href: string;
   description?: string;
 
-  external?: boolean; // ссылка наружу
-  enabled?: boolean;  // можно выключать без удаления
+  external?: boolean;
+  enabled?: boolean;
+
+  variant?: "link" | "cta" | "icon"; // 👈 ключевая штука
+  icon?: "github";                  // 👈 пока достаточно строки
 };
 
 export type NavSection = {
@@ -42,28 +45,27 @@ export const footerMeta: FooterMeta = {
 
 export const mainNav: NavItem[] = [
   {
-    label: "Product",
-    href: "/product",
-    description: "Platform overview and capabilities",
-    enabled: true,
-  },
-  {
     label: "Industries",
     href: "/industries",
     description: "Solutions by domain",
+    variant: "link",
     enabled: true,
   },
+
   {
-    label: "Resources",
-    href: "/resources",
-    description: "Docs, concepts, and guides",
+    label: "GitHub",
+    href: "https://github.com/epoch8/vedana",
+    external: true,
+    variant: "icon",
+    icon: "github",
     enabled: true,
   },
+
   {
-    label: "Company",
-    href: "/company",
-    description: "About Vedana and team",
-    enabled: false,
+    label: "Book a demo",
+    href: "/contact",
+    variant: "cta",
+    enabled: true,
   },
 ];
 

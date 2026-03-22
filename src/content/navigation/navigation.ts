@@ -52,6 +52,14 @@ export const mainNav: NavItem[] = [
     enabled: true,
   },
 
+    {
+    label: "Docs",
+    href: "/docs",
+    description: "Project documentation",
+    variant: "link",
+    enabled: true,
+  },
+
   {
     label: "GitHub",
     href: "https://github.com/epoch8/vedana",
@@ -63,7 +71,7 @@ export const mainNav: NavItem[] = [
 
   {
     label: "Book a demo",
-    href: "/contact",
+    href: "https://calendly.com/olga_t/60min",
     variant: "cta",
     enabled: true,
   },

@@ -1,6 +1,6 @@
 // lib/seo/navigationSchema.ts
 
-import type { NavItem, NavSection } from "@/content/navigation/navigation";
+import type { NavItem, NavSection } from "@/content/vedana/navigation/navigation";
 
 /* ======================================================
    TYPES

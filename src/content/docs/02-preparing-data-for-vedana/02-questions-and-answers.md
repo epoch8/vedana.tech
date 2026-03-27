@@ -75,4 +75,4 @@ FAQ is a lookup table, not a reasoning layer. It does not synthesize answers fro
 
 It also does not scale well as the primary answer mechanism for a large domain. As the FAQ table grows, entries with overlapping intent can compete with each other, producing inconsistent matching. FAQ works best as a small, curated set of high-confidence entries — not as a substitute for a properly modeled domain.
 
-**Next step:** [How to Add FAQ Entries] — a practical guide to writing effective questions and answers in Grist.
+**Next step:** [How to Add FAQ Entries](https://vedana.tech/docs/guides/adding-faq-entries/) — a practical guide to writing effective questions and answers in Grist.

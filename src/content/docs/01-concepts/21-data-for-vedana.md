@@ -7,6 +7,8 @@ Most question-answering systems work by finding text that looks similar to a que
 
 This distinction matters because the kind of questions real users ask rarely fit neatly into "find me text that looks like this." They ask for specific values, exact counts, complete lists, and answers that depend on how entities relate to each other. A system built on text similarity can approximate those answers. A system built on a structured graph can compute them.
 
+<img src="/images/Screenshot%202026-02-19%20at%2008.10.03.png" alt="Hero" width="800" class="center-image" />
+
 The quality of answers Vedana produces is determined first by the quality of the data in the graph, and only then by the model and tools that query it. A well-designed data model with incomplete, outdated, or poorly structured data will still produce wrong answers. Data coverage, accuracy, and freshness matter as much as the architecture that surrounds them.
 
 This is why the quality of data is crucial.

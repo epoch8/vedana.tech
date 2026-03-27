@@ -90,4 +90,4 @@ With a properly modeled structured layer, Vedana can:
 
 None of this is possible with document chunks alone. Chunks are the right tool for finding meaning in text. Structured anchors are the right tool for reasoning over a domain.
 
-**Next step:** [How to Add Structured Data] — how to prepare your tables, map them to the data model, and ingest them via Grist.
+**Next step:** [How to Add Structured Data](https://vedana.tech/docs/preparing-data-for-vedana/structured-data/) — how to prepare your tables, map them to the data model, and ingest them via Grist.

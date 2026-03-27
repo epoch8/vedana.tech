@@ -84,4 +84,6 @@ Data → Grist → ETL → Memgraph
 
 The data model, a the schema that defines what anchors, attributes, and links exist, – is covered in the [Data Model] section. Understanding it is a prerequisite for ingesting any structured data correctly.
 
+To understand the principles of data ingestion, read [Documents and chunks](https://vedana.tech/docs/preparing-data-for-vedana/documents-and-document-chunks/).  
+
 For step-by-step ingestion instructions, see the [Guides] section, starting with [Setting Up Your Data Model].

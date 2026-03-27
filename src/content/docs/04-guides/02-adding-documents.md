@@ -11,7 +11,8 @@ Make sure your source files are in a supported format (PDF, DOCX, TXT, Markdown,
 If your documents contain tables, price lists, or other structured content that users might query with specific values or filters, consider extracting that content as structured data alongside the document chunks. 
 See [Adding Structured Data] for guidance on when and how to do this.
 
-## Step 1 — Register Your Documents
+## Document Ingestion Process
+### Step 1 — Register Your Documents
 
 Open **Grist → Data → anchor_document** and create one row per file.
 
@@ -27,7 +28,7 @@ Each row requires the following fields:
 
 You can add any domain-specific metadata that will be useful for filtering or attribution later — for example, an `owner` field, a `department` field, or an `effective_date`. These are optional but recommended if users are likely to ask questions that reference these properties.
 
-## Step 2 — Create the Chunks
+### Step 2 — Create the Chunks
 
 Open **Grist → Data → anchor_document_chunks** and add one row for each chunk of text.
 
@@ -47,13 +48,13 @@ Aim for 300–800 tokens per chunk. If you are working with long, continuous doc
 
 Avoid splitting mid-sentence or at arbitrary character counts. Split at natural boundaries: paragraph breaks, section headings, or numbered list items. The goal is for each chunk to be independently meaningful when read in isolation.
 
-## Step 3 – Update the Data Model
+### Step 3 – Update the Data Model
 
 Go to **Grist → Data Model** and confirm that the `document` and `document_chunk` anchor types are declared. If you are working with the default Vedana setup, these are pre-configured and no changes are needed. If you have added custom metadata fields to your anchor_documents or document_chunks tables, add the corresponding attribute definitions before running ETL.
 
 Click **Update Data Model**  to apply any changes.
 
-## Step 4 – Configure Retrieval Behavior
+### Step 4 – Configure Retrieval Behavior
 
 Open **Grist → Data Model → Queries** and confirm there is a query entry covering document-related questions. This entry tells the assistant which tool to use, how many chunks to retrieve, how to format the response, and whether to include source citations.
 
@@ -66,7 +67,7 @@ A minimal query entry for document retrieval looks like this:
 
 If this entry is missing or incomplete, the assistant will not reliably route document questions to vector search. See [Configuring the Playbook] for full guidance on query entries.
 
-## Step 5 — Run ETL
+### Step 5 — Run ETL
 
 Open the Backoffice at `http://localhost:8000`, navigate to the ETL section, and run the pipeline. Confirm that the following steps complete successfully:
 
@@ -76,8 +77,6 @@ Open the Backoffice at `http://localhost:8000`, navigate to the ETL section, and
 
 After ETL completes, each document chunk exists as a node in Memgraph with an embedding attached. The assistant can now retrieve and use them.
 
----
-
 ## Scaling Beyond Manual Entry
 
 For large document volumes, adding chunks row by row in Grist is not practical. In that case, use an automated chunking pipeline to process files in bulk and either batch-upload the results to Grist or write directly to Memgraph via custom ETL.
@@ -85,8 +84,6 @@ For large document volumes, adding chunks row by row in Grist is not practical. 
 If writing directly to Memgraph, the pipeline must: create a document anchor node for each file, create a chunk anchor node for each chunk, generate and attach embeddings, and link each chunk back to its parent document. The data model must be defined in Grist before the pipeline runs — direct writes to Memgraph do not bypass schema validation.
 
 For implementation guidance, see [Custom ETL for Vedana].
-
----
 
 ## Google Drive and Google Docs
 

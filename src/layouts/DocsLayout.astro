@@ -1,36 +1,95 @@
 ---
-import Nav from "@/components/blocks/header/Nav.astro";
-import Footer from "@/components/products/vedana/footer/Footer.astro";
+import BaseLayout from "@/layouts/baseLayout.astro";
 import DocsSidebar from "@/components/products/vedana/DocsSidebar.astro";
+import Footer from "@/components/products/vedana/footer/Footer.astro";
+
 import styles from "./DocsLayout.module.css";
 import "../styles/global.css";
 
-const { currentSlug, headings, allDocs, title, description } = Astro.props;
+import type { SEOConfig } from "@/lib/seo/types";
+
+interface Props {
+  baseSEO?: SEOConfig; // 👈 теперь опциональный
+  pageSEO?: Partial<SEOConfig>;
+  structuredData?: object | object[];
+
+  currentSlug: string;
+  headings: any;
+  allDocs: any;
+
+  title?: string;
+  description?: string;
+}
+
+const {
+  baseSEO,
+  pageSEO,
+  structuredData,
+
+  currentSlug,
+  headings,
+  allDocs,
+
+  title,
+  description,
+} = Astro.props;
+
+/* ======================================================
+   SAFE SEO BASE (ОБЯЗАТЕЛЬНО)
+====================================================== */
+
+const safeBaseSEO: SEOConfig = baseSEO ?? {
+  title: "Vedana Docs",
+  description:
+    "Documentation for Vedana — graph-first AI for enterprise decisions.",
+  canonical: "https://vedana.tech/docs",
+
+  og: {
+    type: "website",
+    image: "/og/vedana-docs.png",
+    imageAlt: "Vedana Docs",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    image: "/og/vedana-docs.png",
+  },
+};
+
+/* ======================================================
+   PAGE SEO (из props)
+====================================================== */
+
+const safePageSEO: Partial<SEOConfig> = {
+  ...(pageSEO ?? {}),
+  ...(title && { title }),
+  ...(description && { description }),
+};
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title ? `${title} - Vedana Docs` : "Vedana Docs"}</title>
-    {description && <meta name="description" content={description} />}
-  </head>
+<BaseLayout
+  baseSEO={safeBaseSEO}
+  pageSEO={safePageSEO}
+  structuredData={structuredData}
+>
+  <div class="page-root">
 
-  <body>
-    <div class="page-root">
+    <div class={styles.container}>
+      
+      <aside class={styles.sidebar}>
+        <DocsSidebar
+          allDocs={allDocs}
+          currentSlug={currentSlug}
+        />
+      </aside>
 
-      <div class={styles.container}>
-        <aside class={styles.sidebar}>
-          <DocsSidebar allDocs={allDocs} currentSlug={currentSlug} />
-        </aside>
+      <main class={styles.content}>
+        <slot />
+      </main>
 
-        <main class={styles.content}>
-          <slot />
-        </main>
-      </div>
-
-      <Footer />
     </div>
-  </body>
-</html>
+
+    <Footer />
+
+  </div>
+</BaseLayout>

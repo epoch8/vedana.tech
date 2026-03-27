@@ -14,7 +14,7 @@ FAQ entries are stored in a dedicated table in Grist and retrieved directly at r
 
 FAQ is a dedicated table in Grist that stores predefined question-and-answer pairs. When a user asks a question that closely matches a FAQ entry, the stored answer is returned directly – without querying the graph, searching documents, or involving any retrieval logic beyond similarity matching.
 
-This makes FAQ the simplest and most controlled ingestion method in Vedana. The answer is fixed. It does not vary between users, sessions, or phrasings that cross the match threshold. If consistent wording matters — for support responses, policy statements, operational answers — FAQ is the most reliable way to achieve it.
+This makes FAQ the simplest and most controlled ingestion method in Vedana. The answer is fixed. It does not vary between users, sessions, or phrasings that cross the match threshold. If consistent wording matters (for support responses, policy statements, operational answers) FAQ is the most reliable way to achieve it.
 
 ## FAQ Table Structure
 

@@ -2,7 +2,7 @@
 title: "Documents and Document Chunks"
 ---
 
-## What Document Ingestion Does`
+## What Document Ingestion Does
 
 Vedana can make any text-based document searchable and usable in responses. The mechanism is straightforward: a document is split into smaller pieces called chunks, each chunk is stored as a node in the knowledge graph, and each node receives an embedding that allows it to be retrieved by meaning rather than exact keyword.
 
@@ -10,7 +10,7 @@ When a user asks a question, Vedana searches the chunk embeddings for content th
 
 This approach works well for explanatory content: policies, manuals, contracts, knowledge base articles, or any material where the answer is somewhere in the text and needs to be found by meaning. It is not the right tool when the answer requires precise filtering, counting, or traversal — those cases call for structured data instead. If you are unsure which approach fits your content, see [Adding Structured Data].
 
-## What Files Can Be Ingested`
+## What Files Can Be Ingested
 
 Any file that can be reliably converted to plain text can be ingested. Supported source formats include PDF, DOCX, TXT, Markdown, HTML, exported Google Docs, and CSV files treated as text documents.
 
@@ -18,7 +18,7 @@ Raw binary formats such as images, audio, and video cannot be ingested directly.
 
 The format matters less than the quality of the conversion. Poorly extracted text — garbled characters, broken sentences, merged columns — produces poor chunks. And poor chunks produce poor answers. Before uploading, review the extracted text before uploading to confirm it is clean and readable.
 
-## How Chunking Works`
+## How Chunking Works
 
 A chunk is a contiguous excerpt of a document's text, stored as its own node in the graph. Each chunk is linked back to its parent document, so the assistant can always identify which document a retrieved passage came from.
 
@@ -26,7 +26,7 @@ Chunk size affects retrieval quality in both directions. Chunks that are too sma
 
 For documents where meaning depends heavily on continuity across paragraphs — long policy documents, multi-section contracts — adding overlap between adjacent chunks helps preserve that context at retrieval time. Overlapping chunks share some text with their neighbors, so a retrieved chunk carries enough surrounding context to be understood on its own.
 
-## How the Assistant Uses Chunks at Runtime`
+## How the Assistant Uses Chunks at Runtime
 
 When a user asks a document-related question, the sequence is:
 

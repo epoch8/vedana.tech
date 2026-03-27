@@ -12,13 +12,11 @@ This is a complete framework for building conversational AI systems. Key feature
 - **Semantic RAG** using [Memgraph](https://github.com/memgraph/memgraph) (knowledge graph) + [pgvector](https://github.com/pgvector/pgvector) (vector search)
 - **Business-defined data model** managed through [Grist](https://github.com/gristlabs/grist-core) spreadsheets
 - **Multiple interfaces**: Telegram bot, Terminal UI, Web backoffice
-- **Incremental ETL** built with 
 
 ## Prerequisites
 
 ### Required
 - Docker
-- Docker Compose
 - LLM API key (OpenAI, OpenRouter)
 
 ### Optional (for local development without Docker)
@@ -42,7 +40,7 @@ Using Docker Compose (`apps/vedana/docker-compose.yml`), the following services 
 
 ```bash
 git clone https://github.com/epoch8/vedana
-cd vedana-master
+cd vedana
 ```
 
 ### 2. Create environment file

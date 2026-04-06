@@ -88,7 +88,7 @@ Embeddable is appropriate for human-readable text fields where users might searc
 
 The **embed_threshold** controls how similar a query must be to a stored value before the result is returned. Setting it too low returns loosely related results. Setting it too high misses valid matches. The right threshold depends on how precise the expected queries are for that field — start at 0.7 and adjust based on evaluation results.
 
-Attribute vs Link
+## Attribute vs Link
 
 Not every value that references another entity should be an attribute. This is one of the most consequential modeling decisions you will make.
 

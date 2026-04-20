@@ -2,90 +2,76 @@
 title: "Anchors"
 ---
 
-## What Is an Anchor
+_For step-by-step instructions on defining anchors in Grist, see [How to Define Anchors]._
 
-An **anchor** is a core entity type in the Vedana data model. It represents a real-world or logical object in your domain, the things your system knows about and can reason over.
+## What an Anchor Is
 
-Examples:
+An **anchor** is a core entity type in the Vedana data model. It represents a real-world or logical object in your domain, the things your system knows about and can reason over. Every class of thing your assistant can look up, filter, count, or traverse is defined as an anchor type.
 
-- Product
-- Branch
-- Contract
-- Department
-- PriceList 
-- Service
-    
-In Memgraph, each anchor type corresponds to a class of nodes. When you define a Product anchor and run ETL, every row in your products table becomes a typed node in the graph. Anchors define what exists in your system. Without them, there is no structure for the assistant to navigate.
+Examples from common domains:
 
-## Where Anchors Are Defined
+- Product, Category, PriceList
+- Branch, Region, Warehouse
+- Contract, Counterparty, Requirement
+- Department, Employee, Service
 
-Anchors are defined in Grist inside the data model document, in the Anchors table: **Grist > Data Model > Anchors**. 
-This table does not contain actual data. It contains **schema definitions**. 
+In Memgraph, each anchor type corresponds to a class of nodes. When you define a `Product` anchor and run ETL, every row in your products table in Grist becomes a typed `Product` node in the graph, with its columns stored as properties on that node.
 
-Each row describes one type of entity that the assistant can recognize and retrieve from the knowledge graph.
+Anchors are schema definitions, not data. The Anchors table in Grist describes _what kinds of things exist_, not the things themselves. The actual entity data lives in your domain tables and is written to Memgraph during ETL.
 
-During ETL:
-1. Anchor definitions are loaded.
-2. Schema rules are validated.
-3. Data rows are mapped to anchor types.
-4. Nodes are created in Memgraph.
+## What an Anchor Produces in the Graph
 
-## How to Describe an Anchor
+To make this concrete: a single row in the Anchors table, combined with the corresponding rows in your data table, produces this structure in Memgraph after ETL runs:
 
-Each anchor definition typically includes:
+```mermaid
+flowchart LR
+    subgraph Grist
+        AT["Anchors table noun: Product description: A sellable product... id_example: product_id: p-001"]
+        DT["Data table p-001 | Laptop | 999.00 p-002 | Monitor | 349.00"]
+    end
 
-- anchor_name (unique identifier of the type)
-- primary_key_field (which attribute uniquely identifies it)
-- description (human-readable explanation)
-- optional flags (searchable, embeddable, etc.)
-    
-The primary key must be unique per entity, stable over time, and independent of row order. 
-If primary keys are inconsistent or change between ingestion runs, the graph will produce duplicate or orphaned nodes.
+    subgraph Memgraph
+        N1["(Product) product_id: p-001 name: Laptop price: 999.00"]
+        N2["(Product) product_id: p-002 name: Monitor price: 349.00"]
+    end
 
-### Required Fields of Anchor Definition
-
-Each row in the Anchors table describes one anchor type using the following fields:
-
-|Field|What it contains|
-|---|---|
-|**Noun**|The entity name in English, singular, and unique across the data model (e.g. `Product`, `Branch`, `Contract`)|
-|**Description**|A plain-language explanation of what this entity represents. This is included in the LLM context — the clearer and more specific it is, the better the assistant will understand when and how to use this anchor|
-|**ID example**|A real example of a primary key value from your data (e.g. `product_id: "123"`). This helps the ETL process and the LLM understand what a valid identifier looks like for this entity type|
-|**Query**|The Cypher query used to retrieve nodes of this type from Memgraph|
-
-All four fields are required. An anchor definition with missing or vague entries will either fail during ETL or produce unreliable behavior at query time. Pay particular attention to the Description field – it is the primary way the assistant learns what an anchor represents and when to query it.
-
-**Example:**
-
-- Product anchor:
-
-Noun: Product
-Description: Represents a sellable product with a price and category.
-ID example: product_id: "123"
-Query: (Cypher query to retrieve Product nodes)
-
-After ETL, each row in the products table in Grist becomes a node in Memgraph:
-
+    AT -- ETL --> N1
+    DT -- ETL --> N1
+    AT -- ETL --> N2
+    DT -- ETL --> N2
 ```
-(:Product { product_id: "123", name: "Laptop", price: 999.0 })
-```    
 
-## What Anchors Are NOT
+Each node carries a label (`Product`) that comes from the anchor definition, and properties that come from the data rows. The label is what allows Cypher queries to find and filter nodes of that type specifically.
 
-Anchors are stable schema definitions, not data. They are not free text, not prompt instructions, and not temporary runtime objects. Document chunks are a specific kind of anchor, but most anchors represent structured domain entities that exist independently of any document.
+## How to Define an Anchor
+Every anchor definition needs four fields. All are required — incomplete definitions will either fail during ETL or produce unreliable behavior at query time.
 
-## How Anchors Affect LLM Behavior
+| Field           | What it contains                                                                                                                                                                                                                                                                  |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Noun**        | The entity name: singular, English, unique across the data model. This becomes the node label in Memgraph. Use `Product`, not `Products` or `product_catalog`.                                                                                                                    |
+| **Description** | A plain-language explanation of what this entity represents. This is included in the LLM context — the assistant uses it to decide when to query this anchor type. the clearer and more specific it is, the better the assistant will understand when and how to use this anchor. |
+| **ID example**  | A real example of a primary key value from your data (e.g. `product_id: "123"`). This helps the ETL process and the LLM understand what a valid identifier looks like for this entity type.                                                                                       |
+| **Query**       | The Cypher query used to retrieve nodes of this type from Memgraph. Without a valid query here, the assistant cannot reliably fetch this entity from the graph.                                                                                                                   |
 
-Anchor definitions are included directly in the LLM context. The assistant sees which entity types exist, how they are named, and what they represent. This is what allows it to generate correct Cypher queries, select the right tools, and understand the vocabulary of your domain.
+All four fields are required. An anchor definition with missing or vague entries will either fail during ETL or produce unreliable behavior at query time. The Description field deserves particular care. It is the primary mechanism through which the assistant learns what an anchor represents and when to use it. A description like _"Represents a product"_ tells the assistant almost nothing. A description like _"A sellable product in the catalog, with a price, availability status, and category. Use this anchor to answer questions about specific products, prices, and stock levels"_ gives it enough context to make correct decisions.
 
-If anchors are poorly defined (vague descriptions, inconsistent naming, missing primary keys) the assistant cannot reason correctly about the domain. The quality of anchor definitions directly affects the quality of answers.
+The Query field is the other common gap. An anchor without a valid Cypher query cannot be retrieved deterministically. The assistant will fall back to less precise methods. See [How to Define Anchors] for query examples.
 
-## Best Practices
+## How Anchors Affect the Assistant
 
-- Use singular nouns – Product, not Products
-- Keep names clear and aligned with your domain's own terminology
-- Write descriptions that are specific enough for the LLM to understand the entity's role
-- Ensure primary keys are clean, consistent, and stable across data updates
-- Avoid over-modeling early – start with the entities you actually need and extend as requirements grow
+Anchor definitions are included directly in the LLM context at query time. The assistant sees the full list of anchor types, their names, and their descriptions before it processes any user question. This is what allows it to:
 
-Anchors are the foundation of deterministic reasoning in Vedana. Define them carefully.
+- Recognize which entity type a question is about
+- Generate correct Cypher queries using the right node labels
+- Select the appropriate retrieval tool
+- Understand the vocabulary of your domain rather than guessing
+
+If anchors are poorly defined (vague descriptions, inconsistent naming, missing primary keys), the assistant cannot reason correctly. It may query the wrong entity type, generate invalid Cypher, or fall back to text similarity when a structured query would give a better answer. The quality of anchor definitions is one of the highest-leverage things you can control in Vedana.
+
+## What Anchors Are Not
+
+Anchors are not rows of data. They are not prompt instructions. They are not temporary or session-specific objects. They are stable schema definitions that describe the structure of your domain — analogous to a table definition in a relational database, not to the rows inside it.
+
+Document chunks are a specific built-in anchor type, pre-configured in the default data model. Most anchors you define will be structured domain entities: products, contracts, branches, employees, or whatever your domain requires.
+
+**Next step:** [How to Define Anchors] — how to fill in the Anchors table in Grist correctly, with examples and common mistakes.

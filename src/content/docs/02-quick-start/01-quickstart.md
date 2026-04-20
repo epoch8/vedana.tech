@@ -83,20 +83,8 @@ This will:
 
 ### 4. Verify system health
 
-Check API health:
-
-```bash
-curl http://localhost:8080/health
-```
-
-Expected response:
-
-```json
-{"status":"ok"}
-```
-
-You can also open:
-- Backoffice → http://localhost:8000 (http://localhost:9000)
+Now you can open:
+- Backoffice → http://localhost:9000
 - Memgraph Lab → http://localhost:3000
 - Grist → http://localhost:8484
 

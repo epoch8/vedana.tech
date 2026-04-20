@@ -31,13 +31,9 @@ For documents where meaning depends heavily on continuity across paragraphs — 
 When a user asks a document-related question, the sequence is:
 
 1. The assistant detects that the question is document-related and selects the vector search tool.
-
 2. The query is embedded and matched against stored chunk embeddings.
-
 3. The top-N most relevant chunks are retrieved.
-
 4. The chunks are passed to the LLM, which synthesizes a response from their contents.
-
 5. If citations are configured, the source chunk IDs or document names are included in the response.
 
 The assistant does not read entire documents. It reads the chunks that were retrieved. This means the quality of chunking and the relevance of retrieval directly determine the quality of the answer.`

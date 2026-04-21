@@ -29,7 +29,7 @@
 /* ---------- TYPOGRAPHY ---------- */
 
 .content h1 {
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-xl);
   font-weight: 700;
   margin-bottom: 1.5rem;
   color: var(--color-text);

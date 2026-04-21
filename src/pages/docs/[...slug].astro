@@ -3,47 +3,39 @@ import { getCollection, render, type CollectionEntry } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import DocsLayout from "../../layouts/DocsLayout.astro";
 
-export function cleanSlug(id: string): string {
-  const normalized = id
-    .split("/")
-    .map((part) => part.replace(/^\d+-/, ""))
-    .join("/");
-  return normalized;
-}
+type Doc = CollectionEntry<"docs">;
 
 export const getStaticPaths = (async () => {
-  const docsEntries = await getCollection("docs");
-  const paths = docsEntries.map((entry) => ({
-    params: { slug: cleanSlug(entry.id) as string | undefined },
-    props: { entry },
-  }));
+  const docsEntries: Doc[] = await getCollection("docs");
 
-  const hasRootPath = paths.some((path) => path.params.slug === "");
-  if (!hasRootPath && docsEntries.length > 0) {
-    const [landingEntry] = [...docsEntries].sort((a, b) =>
-      a.id.localeCompare(b.id),
-    );
-    paths.push({
-      params: { slug: undefined },
-      props: { entry: landingEntry },
-    });
-  }
+  return docsEntries.map((entry) => {
+    const slug = entry.data.slug ?? entry.id;
 
-  return paths;
+    return {
+      params: { slug },
+      props: { entry },
+    };
+  });
 }) satisfies GetStaticPaths;
 
 interface Props {
-  entry: CollectionEntry<"docs">;
+  entry: Doc;
 }
 
 const { entry } = Astro.props;
+
+// текущий slug
+const currentSlug = entry.data.slug ?? entry.id;
+
+// контент
 const { Content, headings } = await render(entry);
 
-const allDocs = await getCollection("docs");
+// все доки (для sidebar / flow)
+const allDocs: Doc[] = await getCollection("docs");
 ---
 
 <DocsLayout
-  currentSlug={cleanSlug(entry.id)}
+  currentSlug={currentSlug}
   headings={headings}
   allDocs={allDocs}
   title={entry.data.title}

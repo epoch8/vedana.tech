@@ -1,0 +1,298 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import DocsLayout from "../../layouts/DocsLayout.astro";
+
+type Doc = CollectionEntry<"docs">;
+
+interface SectionGroup {
+  title: string;
+  pages: Doc[];
+}
+
+const allDocs: Doc[] = await getCollection("docs");
+
+// flow
+const flowDocs: Doc[] = [...allDocs].sort(
+  (a, b) => (a.data.order ?? 0) - (b.data.order ?? 0)
+);
+
+const first = flowDocs[0];
+
+const SECTION_ORDER = [
+  "Concepts",
+  "Quick Start",
+  "Preparing Data For Vedana",
+  "Data Model",
+  "Guides"
+];
+
+// sections
+const sectionsMap = allDocs.reduce<Record<string, SectionGroup>>(
+  (acc, doc) => {
+    const section = doc.data.section ?? "Other";
+
+    if (!acc[section]) {
+      acc[section] = {
+        title: section,
+        pages: [],
+      };
+    }
+
+    acc[section].pages.push(doc);
+
+    return acc;
+  },
+  {}
+);
+
+const sections = Object.values(sectionsMap)
+  .map((section) => ({
+    ...section,
+    pages: [...section.pages].sort(
+      (a, b) => (a.data.order ?? 0) - (b.data.order ?? 0)
+    ),
+  }))
+  .sort((a, b) => {
+    const ia = SECTION_ORDER.indexOf(a.title);
+    const ib = SECTION_ORDER.indexOf(b.title);
+
+    // неизвестные секции — в конец
+    if (ia === -1 && ib === -1) return a.title.localeCompare(b.title);
+    if (ia === -1) return 1;
+    if (ib === -1) return -1;
+
+    return ia - ib;
+  });
+
+const getSlug = (doc: Doc) => doc.data.slug ?? doc.id;
+---
+
+<DocsLayout
+  currentSlug={null}
+  headings={[]}
+  allDocs={allDocs}
+  title="Vedana Docs"
+>
+  <div class="docs-home">
+
+    <section class="hero">
+      <h1>Vedana</h1>
+
+      <p class="lead">
+        Vedana is a configurable Semantic RAG system that answers questions over structured business knowledge 
+        by combining data-model-aware reasoning, graph queries, and semantic vector search.
+      </p>
+    </section>
+
+    <section class="sections">
+      {sections.map((section) => (
+        <div class="section">
+          <h3>{section.title}</h3>
+
+          <ul>
+            {section.pages.map((p) => (
+              <li>
+                <a href={`/docs/${getSlug(p)}`}>
+                  {p.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+
+  </div>
+</DocsLayout>
+
+<style>
+/* =========================
+   LAYOUT
+========================= */
+
+.docs-home {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 16px 80px;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.lead {
+  font-size: 18px;
+  line-height: 1.6;
+  opacity: 0.75;
+  max-width: 640px;
+}
+
+
+/* =========================
+   FLOW (если вернёшь)
+========================= */
+
+.flow {
+  margin-top: 48px;
+}
+
+.flow-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  font-size: 13px;
+  line-height: 1.4;
+  opacity: 0.6;
+}
+
+.flow-item {
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  opacity: 0.35;
+}
+
+
+/* =========================
+   CTA
+========================= */
+
+.start-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 16px;
+
+  font-size: 14px;
+  text-decoration: none;
+
+  border: 1px solid #000;
+  border-radius: 8px;
+
+  transition: all 0.15s ease;
+}
+
+.start-button:hover {
+  background: #000;
+  color: #fff;
+}
+
+
+/* =========================
+   SECTIONS GRID
+========================= */
+
+.sections {
+  margin-top: 64px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 28px 32px;
+}
+
+
+/* =========================
+   SECTION CARD
+========================= */
+
+.section {
+  padding: 16px 18px;
+
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+
+  background: rgba(0, 0, 0, 0.02);
+
+  transition: all 0.15s ease;
+}
+
+.section:hover {
+  background: rgba(0, 0, 0, 0.035);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================
+   SECTION HEADER
+========================= */
+
+.section h3 {
+  font-size: 13px;
+  font-weight: 500;
+
+  margin-bottom: 10px;
+
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+
+/* =========================
+   LIST
+========================= */
+
+.section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.section li {
+  margin-bottom: 6px;
+}
+
+
+/* =========================
+   LINKS
+========================= */
+
+.section a {
+  display: inline-block;
+
+  text-decoration: none;
+  color: inherit;
+
+  font-size: 14px;
+  line-height: 1.4;
+
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+
+.section a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+
+/* =========================
+   MOBILE TWEAKS
+========================= */
+
+@media (max-width: 480px) {
+  .docs-home {
+    padding: 32px 12px 64px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .lead {
+    font-size: 16px;
+  }
+
+  .sections {
+    gap: 20px;
+  }
+}
+</style>

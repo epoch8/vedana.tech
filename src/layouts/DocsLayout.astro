@@ -7,15 +7,19 @@ import styles from "./DocsLayout.module.css";
 import "../styles/global.css";
 
 import type { SEOConfig } from "@/lib/seo/types";
+import type { CollectionEntry } from "astro:content";
+
+type Doc = CollectionEntry<"docs">;
 
 interface Props {
-  baseSEO?: SEOConfig; // 👈 теперь опциональный
+  baseSEO?: SEOConfig;
   pageSEO?: Partial<SEOConfig>;
   structuredData?: object | object[];
 
-  currentSlug: string;
-  headings: any;
-  allDocs: any;
+  currentSlug?: string; // ← фикс (не ломаемся на index)
+  headings?: any;
+
+  allDocs: Doc[];
 
   title?: string;
   description?: string;
@@ -35,7 +39,7 @@ const {
 } = Astro.props;
 
 /* ======================================================
-   SAFE SEO BASE (ОБЯЗАТЕЛЬНО)
+   SEO BASE
 ====================================================== */
 
 const safeBaseSEO: SEOConfig = baseSEO ?? {
@@ -57,7 +61,7 @@ const safeBaseSEO: SEOConfig = baseSEO ?? {
 };
 
 /* ======================================================
-   PAGE SEO (из props)
+   PAGE SEO
 ====================================================== */
 
 const safePageSEO: Partial<SEOConfig> = {
@@ -79,7 +83,7 @@ const safePageSEO: Partial<SEOConfig> = {
       <aside class={styles.sidebar}>
         <DocsSidebar
           allDocs={allDocs}
-          currentSlug={currentSlug}
+          currentSlug={currentSlug ?? ""}  
         />
       </aside>
 

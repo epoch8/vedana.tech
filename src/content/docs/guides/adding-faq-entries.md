@@ -1,5 +1,7 @@
 ---
 title: How to Add FAQ Entries
+section: "Guides"
+
 ---
 
 _This guide assumes you understand what FAQ is and when to use it. If not, read [FAQ Entries](https://vedana.tech/docs/preparing-data-for-vedana/questions-and-answers/) first._

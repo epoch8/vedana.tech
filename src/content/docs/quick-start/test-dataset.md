@@ -1,5 +1,7 @@
 ---
 title: "Example Dataset"
+section: "Quick Start"
+order: 4
 ---
 
 ## Testing Vedana with the Example Dataset

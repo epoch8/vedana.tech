@@ -1,5 +1,7 @@
 ---
 title: "Adding Structured Data"
+section: "Preparing data for Vedana"
+
 ---
 
 ## Why Structured Data Matters

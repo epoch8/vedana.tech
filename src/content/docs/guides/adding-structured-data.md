@@ -1,5 +1,7 @@
 ---
 title: How to Add Structured Data
+section: "Guides"
+
 ---
 
 

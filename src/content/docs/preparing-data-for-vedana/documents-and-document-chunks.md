@@ -1,5 +1,7 @@
 ---
 title: "Documents and Document Chunks"
+section: "Preparing data for Vedana"
+
 ---
 
 ## What Document Ingestion Does

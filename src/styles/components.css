@@ -419,3 +419,17 @@
 
   color: var(--color-text-muted);
 }
+
+
+.center-image {
+  display: block;
+  margin: 32px auto;
+
+  padding: 12px; /* ← вот это ты хотела */
+
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+
+  background: #fff; /* чтобы padding выглядел как карточка */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}

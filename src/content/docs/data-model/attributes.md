@@ -1,5 +1,7 @@
 ---
 title: "Attributes"
+section: "Data model"
+
 ---
 
 ## What Is an Attribute

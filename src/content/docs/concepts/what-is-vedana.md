@@ -1,5 +1,6 @@
 ---
 title: "What is Vedana"
+section: "Concepts"
 ---
 
 **Vedana is a system that makes AI outputs reliable and verifiable by grounding them in structured knowledge.**
@@ -15,4 +16,4 @@ This allows companies to:
 - verify every step of reasoning
 - and reduce hallucinations.
 
-Vedana is designed for domains where correctness matters — such as legal, e-commerce, and internal knowledge systems.
+Vedana is designed for domains where correctness matters - such as legal, e-commerce, and internal knowledge systems.

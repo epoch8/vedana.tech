@@ -1,5 +1,7 @@
 ---
 title: How to Ingest Documents
+section: "Guides"
+
 ---
 
 _This guide assumes you understand what document chunks are and how Vedana uses them. If not, read [Documents and Document Chunks](https://vedana.tech/docs/preparing-data-for-vedana/documents-and-document-chunks/) first._

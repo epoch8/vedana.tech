@@ -1,5 +1,7 @@
 ---
 title: "Evaluation"
+section: "Quick Start"
+order: 2
 ---
 
 ## Golden Dataset

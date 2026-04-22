@@ -1,5 +1,6 @@
 ---
 title: "Data Model for Vedana"
+section: "Concepts"
 ---
 
 ## What is a Data Model and why it exists

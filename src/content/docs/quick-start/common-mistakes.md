@@ -1,5 +1,7 @@
 ---
 title: Common Mistakes and FAQ
+section: "Quick Start"
+order: 3
 ---
 
 ## Common Mistakes and FAQ

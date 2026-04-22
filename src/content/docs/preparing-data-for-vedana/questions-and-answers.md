@@ -1,5 +1,7 @@
 ---
 title: "FAQ Entries"
+section: "Preparing data for Vedana"
+
 ---
 
 _This page assumes you have read [Data for Vedana](https://vedana.tech/docs/concepts/data-for-vedana/) and understand the three types of domain data Vedana supports._

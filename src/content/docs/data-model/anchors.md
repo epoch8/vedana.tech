@@ -1,5 +1,7 @@
 ---
 title: "Anchors"
+section: "Data model"
+
 ---
 
 _For step-by-step instructions on defining anchors in Grist, see [How to Define Anchors]._

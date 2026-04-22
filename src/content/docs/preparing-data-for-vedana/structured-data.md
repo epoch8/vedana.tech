@@ -1,5 +1,7 @@
 ---
 title: "Structured Data"
+section: "Preparing data for Vedana"
+
 ---
 
 _Part of [Data for Vedana](https://vedana.tech/docs/concepts/data-for-vedana/). For step-by-step ingestion instructions, see [How to Add Structured Data]._

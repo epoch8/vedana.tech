@@ -2,6 +2,7 @@
 title: "Quick Start"
 section: "Quick Start"
 order: 1
+next: first-data-model
 ---
 
 In this guide, you will:

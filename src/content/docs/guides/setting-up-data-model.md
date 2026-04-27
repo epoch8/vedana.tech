@@ -32,13 +32,7 @@ Go to **Grist → Data Model → Anchors**. Each row defines one entity type. Fi
 
 **ID example** — a real primary key value from your data, formatted exactly as it appears in the source table. For example: `product_id: "p-001"` or `branch_id: "branch-vilnius-01"`. The assistant uses this to construct correct Cypher queries at runtime.
 
-**Query** — the Cypher query used to retrieve nodes of this type from Memgraph. A minimal example:
-
-```cypher
-MATCH (p:Product)
-WHERE p.product_id = $id
-RETURN p
-```
+**Query** — the Cypher query used to retrieve nodes of this type from Memgraph. 
 
 Verify the query works in Memgraph Lab before moving on. An anchor without a valid query cannot be retrieved deterministically.
 
@@ -109,15 +103,6 @@ Use link attributes when the same value could differ depending on which specific
 |**link**|The link this attribute belongs to. Must already exist in the Links table.|
 |**data_example**, **embeddable**, **embed_threshold**, **query**, **dtype**|Same rules as Anchor_attributes.|
 
-The Cypher query for a link attribute must access the edge property using the relationship variable, not the node variable:
-
-```cypher
-MATCH (p:Person)-[r:PERSON_assigned_to_PROJECT]->(proj:Project)
-WHERE p.person_id = $id
-RETURN proj.project_name, r.role, r.start_date
-```
-
-Note `r.role` — the `r` variable is the relationship, not `p` or `proj`.
 
 ## 5. Queries
 

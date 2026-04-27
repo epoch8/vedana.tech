@@ -26,7 +26,7 @@ After completing all tables, go to Backoffice, click **Reload Data Model** and t
 
 Go to **Grist → Data Model → Anchors**. Each row defines one entity type. Fill in four fields per row.
 
-**Noun** — the entity name: singular, English, PascalCase. This becomes the node label in Memgraph. Use `Product`, not `Products` or `product`.
+**Noun** — the entity name: singular, English. This becomes the node label in Memgraph. Use `Product`, not `Products` or `product`.
 
 **Description** — a plain-language explanation of what this entity represents, written for the assistant. Include what data the entity contains and when the assistant should query it. This field is included in the LLM context and directly affects whether the assistant selects the right entity type for a given question.
 

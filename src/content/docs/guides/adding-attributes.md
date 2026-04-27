@@ -114,7 +114,7 @@ You will also need a corresponding row in the **Links** table defining the relat
 
 Do not leave a foreign key column as a plain `str` attribute if the referenced entity is modeled as an anchor. The graph will store the ID as a string property on the node instead of creating an edge, and traversal queries will not work.
 
-Step 8 — Define Link Attributes
+## Step 8 — Define Link Attributes
 
 Some relationships carry their own data — not just the fact that two nodes are connected, but properties of the connection itself. A `PERSON_assigned_to_PROJECT` edge might carry a `role` (string) and a `start_date` (date). A `DOCUMENT_covers_REGULATION` edge might carry a `coverage_level` (enum) or a `verified` flag (bool). 
 

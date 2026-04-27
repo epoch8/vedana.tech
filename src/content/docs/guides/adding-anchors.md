@@ -90,7 +90,7 @@ Write the query before running ETL and verify it works by running it manually in
 
 ### Step 6 — Update the Data Model
 
-After adding or editing anchor definitions, open the Backoffice at `http://localhost:8000` and click **Update Data Model**. This step is required before ETL will pick up your changes. If you skip it, the new anchor definitions will not be applied.
+After adding or editing anchor definitions, open the Backoffice at `http://localhost:8000` and click **Reload Data Model**. This step is required before ETL will pick up your changes. If you skip it, the new anchor definitions will not be applied.
 
 ### Step 7 — Run ETL and Verify
 

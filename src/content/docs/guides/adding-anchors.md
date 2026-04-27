@@ -105,14 +105,3 @@ RETURN p
 
 Confirm that all expected properties are present and their values look correct.
 
-## Common Mistakes
-
-**Using a vague or generic description.** Descriptions like "Represents a product" or "A contract entity" give the assistant almost no usable information. Write descriptions that specify what data the anchor contains and when to query it.
-
-**Using unstable primary keys.** If your primary keys change between ingestion runs — sequential row numbers, auto-generated IDs that regenerate — the graph will accumulate duplicate or orphaned nodes over time. Use identifiers that are stable and meaningful: SKUs, contract numbers, branch codes.
-
-**Defining anchors you don't yet need.** It is tempting to model the full domain upfront. Start with the anchors that are directly required to answer the questions your users will actually ask. Add more as the need becomes clear.
-
-**Leaving the Query field empty.** An anchor without a Cypher query is defined but not queryable. The assistant will know the entity type exists but will not be able to retrieve it from the graph reliably. Always write and verify the query before running ETL.
-
-**Plural or formatted nouns.** The Noun field must be singular and use PascalCase or a simple English word. Node labels in Memgraph are case-sensitive, and the assistant uses the noun exactly as written when generating queries.

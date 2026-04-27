@@ -14,6 +14,8 @@ Also decide upfront which attributes should be embeddable (available for semanti
 
 Go to **Grist → Data Model → Anchor_attributes**. Each row defines one property on one anchor type. You will fill in a row for each column you want to make queryable.
 
+<img src="/images/attributes-1.png" alt="Hero" width="800" class="center-image" />
+
 ## Step 2 — Set the Attribute Name
 
 Write the attribute name in lowercase with no spaces, matching the column name in your Grist data table exactly.
@@ -110,7 +112,54 @@ You will also need a corresponding row in the **Links** table defining the relat
 
 Do not leave a foreign key column as a plain `str` attribute if the referenced entity is modeled as an anchor. The graph will store the ID as a string property on the node instead of creating an edge, and traversal queries will not work.
 
-## Step 8 — Update the Data Model and Run ETL
+Step 8 — Define Link Attributes
+
+Some relationships carry their own data — not just the fact that two nodes are connected, but properties of the connection itself. A `PERSON_assigned_to_PROJECT` edge might carry a `role` (string) and a `start_date` (date). A `DOCUMENT_covers_REGULATION` edge might carry a `coverage_level` (enum) or a `verified` flag (bool). 
+
+These are link attributes, and they live in a separate table: **Grist → Data Model → Link_attributes**.
+
+<img src="/images/attributes-2.png" alt="Hero" width="800" class="center-image" />
+
+**When to use link attributes.** Use them when the data belongs to the relationship itself, not to either of the connected nodes. If the same value could equally belong to the source or target node, it should be a node attribute instead.
+
+Examples of data that belongs on the edge:
+
+|Link|Attribute|dtype|Why it's on the edge|
+|---|---|---|---|
+|`PERSON_assigned_to_PROJECT`|`role`|str|The same person can have different roles on different projects|
+|`DOCUMENT_covers_REGULATION`|`coverage_level`|enum|Describes the relationship, not the document or regulation individually|
+|`PRODUCT_valid_in_REGION`|`valid_from`|date|The validity date is a property of which region, not of the product alone|
+
+**How to fill in the table.** Create one row per property you want to store on the edge:
+
+1. **attribute_name** — lowercase, no spaces, matching the column name in your link data table.
+2. **description** — plain-language explanation of what this property represents, written for the assistant.
+3. **link** — select the link this attribute belongs to (e.g. `DOCUMENT_covers_REGULATION`). The link must already be defined in the Links table.
+4. **dtype**, **embeddable**, **embed_threshold**, **query** — fill in exactly as you would for an anchor attribute.
+
+**Cypher query for a link attribute.** The query must traverse the relationship and return the edge property. For a `coverage_level` attribute on `DOCUMENT_covers_REGULATION`:
+
+cypher
+
+```cypher
+MATCH (d:Document)-[r:DOCUMENT_covers_REGULATION]->(reg:Regulation)
+WHERE d.document_id = $id
+RETURN reg.regulation_id, reg.name, r.coverage_level
+```
+
+Note that edge properties are accessed with `r.property_name` where `r` is the relationship variable, not `d` or `reg`.
+
+After filling in Link_attributes rows, click **Update Data Model** and re-run ETL. Verify the edge property in Memgraph Lab:
+
+cypher
+
+```cypher
+MATCH (d:Document)-[r:DOCUMENT_covers_REGULATION]->(reg:Regulation)
+RETURN d.title, reg.name, r.coverage_level
+LIMIT 10
+```
+
+## Step 9 – Update the Data Model and Run ETL
 
 After filling in all attribute rows for a given anchor type, click **Update Data Model** and run ETL in Backoffice. After ETL completes, verify that properties were written correctly by inspecting a node in Memgraph Lab:
 
@@ -120,7 +169,6 @@ RETURN p
 ```
 
 Confirm that all declared attributes appear as properties on the node and that their values look correct. If a property is missing, check whether the column name in the Attributes table matches the column header in your Grist data table exactly.
-
 ## Common Mistakes
 
 **Type mismatch between dtype and actual data.** Declaring `price` as `float` when Grist stores it as `"999.00"` (a string) will cause ETL to fail or write the value incorrectly. Always check your actual data before setting dtype.

@@ -65,11 +65,11 @@ Open **Grist → Data Model** and declare the structure you decided in Step 1.
 
 **In the Links table**, add one row per column that is a link. Specify the source anchor, the target anchor, the edge label (e.g. `belongs_to`), and the Cypher query for traversal. See [Links](https://vedana.tech/docs/data-model/links/) for full field definitions.
 
-Click **Update Data Model** when done. ETL will validate the data against this schema. If the schema is missing or incomplete, ingestion will fail.
+Open the Backoffice at `http://localhost:8000` (or `http://localhost:9000`), click **Reload Data Model** when done. ETL will validate the data against this schema. If the schema is missing or incomplete, ingestion will fail.
 
 ## Step 5 — Run ETL
 
-Open the Backoffice at `http://localhost:8000` (or `http://localhost:9000`), navigate to the ETL section, and run the pipeline. Confirm that the following steps complete successfully:
+In Backoffice, navigate to the ETL section, and run the pipeline. Confirm that the following steps complete successfully:
 
 - Data model load
 - Data load

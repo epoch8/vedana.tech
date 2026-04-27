@@ -26,6 +26,8 @@ After completing all tables, go to Backoffice, click **Reload Data Model** and t
 
 Go to **Grist → Data Model → Anchors**. Each row defines one entity type. Fill in four fields per row.
 
+<img src="/images/anchors-1.png" alt="Hero" width="800" class="center-image" />
+
 **Noun** — the entity name: singular, English. This becomes the node label in Memgraph. Use `Product`, not `Products` or `product`.
 
 **Description** — a plain-language explanation of what this entity represents, written for the assistant. Include what data the entity contains and when the assistant should query it. This field is included in the LLM context and directly affects whether the assistant selects the right entity type for a given question.
@@ -38,9 +40,13 @@ Verify the query works in Memgraph Lab before moving on. An anchor without a val
 
 For detailed guidance and common mistakes: [How to Define Anchors].
 
-## 2. Anchor_attributes
+## 2. Attributes
+
+### Anchor_attributes
 
 Go to **Grist → Data Model → Anchor_attributes**. Each row defines one property on one anchor type. Go through each anchor's source data table in Grist and add a row for every column users might ask about.
+
+<img src="/images/attributes-1.png" alt="Hero" width="800" class="center-image" />
 
 |Field|What to enter|
 |---|---|
@@ -59,9 +65,27 @@ The dtype and query fields are the most common source of errors. Check your actu
 
 For detailed guidance: [How to Define Attributes].
 
+### Link_attributes
+
+Go to **Grist → Data Model → Link_attributes**. Use this table when a relationship itself carries data — not just the fact that two nodes are connected, but properties of the connection. The columns are identical to Anchor_attributes, with one difference: the **link** field references a relationship from the Links table rather than an anchor.
+
+Skip this table entirely if your relationships carry no properties. Most simple models do not need it.
+
+Use link attributes when the same value could differ depending on which specific relationship is being described. For example, a `role` on a `PERSON_assigned_to_PROJECT` edge — the same person can have different roles on different projects, so the role belongs to the edge, not to either node.
+
+|Field|What to enter|
+|---|---|
+|**attribute_name**|Lowercase, no spaces. Matches the column name in the relationship data table.|
+|**description**|What this property represents, written for the assistant.|
+|**link**|The link this attribute belongs to. Must already exist in the Links table.|
+|**data_example**, **embeddable**, **embed_threshold**, **query**, **dtype**|Same rules as Anchor_attributes.|
+
+
 ## 3. Links
 
 Go to **Grist → Data Model → Links**. Each row defines one relationship type between two anchor types. Both anchor types must already be defined in the Anchors table.
+
+<img src="/images/links-1.png" alt="Hero" width="800" class="center-image" />
 
 |Field|What to enter|
 |---|---|
@@ -88,23 +112,7 @@ Avoid generic edge labels like `related_to` or `has`. The assistant uses the edg
 
 For detailed guidance: [How to Define Links].
 
-## 4. Link_attributes
-
-Go to **Grist → Data Model → Link_attributes**. Use this table when a relationship itself carries data — not just the fact that two nodes are connected, but properties of the connection. The columns are identical to Anchor_attributes, with one difference: the **link** field references a relationship from the Links table rather than an anchor.
-
-Skip this table entirely if your relationships carry no properties. Most simple models do not need it.
-
-Use link attributes when the same value could differ depending on which specific relationship is being described. For example, a `role` on a `PERSON_assigned_to_PROJECT` edge — the same person can have different roles on different projects, so the role belongs to the edge, not to either node.
-
-|Field|What to enter|
-|---|---|
-|**attribute_name**|Lowercase, no spaces. Matches the column name in the relationship data table.|
-|**description**|What this property represents, written for the assistant.|
-|**link**|The link this attribute belongs to. Must already exist in the Links table.|
-|**data_example**, **embeddable**, **embed_threshold**, **query**, **dtype**|Same rules as Anchor_attributes.|
-
-
-## 5. Queries
+## 4. Queries
 
 Go to **Grist → Data Model → Queries**. This table is the playbook — it defines the retrieval strategies the assistant follows for specific types of user questions. Each row is one intent: a question type and the step-by-step instructions for how to answer it.
 
@@ -176,7 +184,7 @@ The assistant follows these instructions literally. The more precise the steps, 
 
 Start with one row per major question type your users will ask. Add more as you identify gaps during evaluation.
 
-## 6. ConversationLifecycle
+## 5. ConversationLifecycle
 
 Go to **Grist → Data Model → ConversationLifecycle**. The table has two columns:
 
@@ -199,7 +207,7 @@ Good fallback: _"I couldn't find a specific answer to that in the knowledge base
 
 ConversationLifecycle rows are optional. If a table row for a given event is missing, no message is injected at that event. For a first deployment, at minimum add a `conversation_start` greeting and a `fallback` response.
 
-## 7. Prompts
+## 6. Prompts
 
 Go to **Grist → Data Model → Prompts**. It has two columns: **name** (a unique identifier) and **text** (the full prompt content).
 

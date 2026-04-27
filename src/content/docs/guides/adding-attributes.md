@@ -27,6 +27,7 @@ Write the attribute name in lowercase with no spaces, matching the column name i
 |`start_date`|`startDate` (camelCase)|
 |`in_stock`|`inStock`|
 
+
 The name must match the actual column header in your data table. If they differ, ETL will not find the column and the attribute will not be written to the graph.
 
 ## Step 3 — Write the Description
@@ -54,6 +55,7 @@ Set `dtype` to match what is actually stored in your Grist data table. Supported
 |`enum`|A fixed set of known values — status, category_type, region|
 |`url`|A web address — product_page, document_link|
 |`file`|A file path or reference — attachment, image_path|
+
 
 **Check your actual data before setting the type.** Open your Grist data table and look at a sample of values in the column. If numbers are stored with surrounding quotes, they are strings in Grist, not floats. If dates are stored as `"2024-01-15"` strings rather than Grist date fields, declare them as `str` and note the format in the description — or convert them to proper date fields before upload.
 
@@ -129,6 +131,7 @@ Examples of data that belongs on the edge:
 |`PERSON_assigned_to_PROJECT`|`role`|str|The same person can have different roles on different projects|
 |`DOCUMENT_covers_REGULATION`|`coverage_level`|enum|Describes the relationship, not the document or regulation individually|
 |`PRODUCT_valid_in_REGION`|`valid_from`|date|The validity date is a property of which region, not of the product alone|
+
 
 **How to fill in the table.** Create one row per property you want to store on the edge:
 

@@ -178,7 +178,7 @@ Start with one row per major question type your users will ask. Add more as you 
 
 ## 6. ConversationLifecycle
 
-Go to **Grist → Data Model → ConversationLifecycle**. This table starts empty — there are no pre-filled rows. Add one row per event you want to handle. It has two columns:
+Go to **Grist → Data Model → ConversationLifecycle**. The table has two columns:
 
 **event** — the name of the lifecycle event. Common events:
 
@@ -201,7 +201,7 @@ ConversationLifecycle rows are optional. If a table row for a given event is mis
 
 ## 7. Prompts
 
-Go to **Grist → Data Model → Prompts**. This table also starts empty. Add one row per named prompt template your system needs. It has two columns: **name** (a unique identifier) and **text** (the full prompt content).
+Go to **Grist → Data Model → Prompts**. It has two columns: **name** (a unique identifier) and **text** (the full prompt content).
 
 Two prompts are used by the system and must be added manually:
 

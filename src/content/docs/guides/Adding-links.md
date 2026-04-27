@@ -112,7 +112,7 @@ When direction is set, Cypher traversal queries must follow the declared directi
 
 ## Step 8 — Update the Data Model and Run ETL
 
-In the Backoffice click **Update Data Model**, then run ETL. After ETL completes, verify that edges were created in Memgraph Lab by traversing the relationship:
+In the Backoffice click **Reload Data Model**, then run ETL. After ETL completes, verify that edges were created in Memgraph Lab by traversing the relationship:
 
 ```cypher
 MATCH (p:Product)-[:belongs_to]->(c:Category)

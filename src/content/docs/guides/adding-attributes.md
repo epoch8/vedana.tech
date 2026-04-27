@@ -164,7 +164,7 @@ LIMIT 10
 
 ## Step 9 – Update the Data Model and Run ETL
 
-After filling in all attribute rows for a given anchor type, click **Update Data Model** and run ETL in Backoffice. After ETL completes, verify that properties were written correctly by inspecting a node in Memgraph Lab:
+After filling in all attribute rows for a given anchor type, click **Reload Data Model** and run ETL in Backoffice. After ETL completes, verify that properties were written correctly by inspecting a node in Memgraph Lab:
 
 ```cypher
 MATCH (p:Product {product_id: "p-001"})

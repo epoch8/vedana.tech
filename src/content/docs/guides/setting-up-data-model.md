@@ -20,7 +20,7 @@ Work through the tables in this order:
 6. **ConversationLifecycle** — system messages at lifecycle events
 7. **Prompts** — the system prompt and other templates
 
-After completing all tables, go to Backoffice, click **Update Data Model** and run ETL. Verification steps are at the end of this guide.
+After completing all tables, go to Backoffice, click **Reload Data Model** and then run ETL. Verification steps are at the end of this guide.
 
 ## 1. Anchors
 

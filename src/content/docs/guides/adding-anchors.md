@@ -25,13 +25,6 @@ Go to **Grist → Data Model → Anchors**. Each row in this table defines one a
 
 Write the entity name in singular English. This becomes the node label in Memgraph and the term the assistant uses to identify this entity type.
 
-|Do|Don't|
-|---|---|
-|`Product`|`Products` (plural)|
-|`Branch`|`branch_location` (snake_case)|
-|`Contract`|`ContractDocument` (redundant qualifier)|
-|`LegalRequirement`|`Requirement2` (numbered variants)|
-
 The noun must be unique across the entire data model. If your domain has both `SalesContract` and `SupplierContract`, model them as separate anchor types with distinct nouns — not as a single `Contract` anchor with a `type` attribute, unless the modeling decision is deliberate and documented.
 
 ### Step 3 — Write the Description

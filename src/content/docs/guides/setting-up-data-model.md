@@ -277,7 +277,7 @@ Do not modify the output structure unless you have also modified the evaluation 
 
 Once all tables are filled in:
 
-1. Open the Backoffice at `http://localhost:8000`, click **Update Data Model** in Grist. This loads the current state of all seven tables into the system. **Skipping this step means none of your changes will be applied during ETL.**
+1. Open the Backoffice at `http://localhost:8000`, click **Reload Data Model** in Grist. This loads the current state of all seven tables into the system. **Skipping this step means none of your changes will be applied during ETL.**
 2. Navigate to the ETL section, and run the pipeline.
 3. Wait for all ETL steps to complete: data model load, data load, and embedding generation.
 

@@ -54,7 +54,7 @@ Avoid splitting mid-sentence or at arbitrary character counts. Split at natural 
 
 Go to **Grist → Data Model** and confirm that the `document` and `document_chunk` anchor types are declared. If you are working with the default Vedana setup, these are pre-configured and no changes are needed. If you have added custom metadata fields to your anchor_documents or document_chunks tables, add the corresponding attribute definitions before running ETL.
 
-Click **Update Data Model**  to apply any changes.
+Click **Reload Data Model**  to apply any changes.
 
 ### Step 4 – Configure Retrieval Behavior
 

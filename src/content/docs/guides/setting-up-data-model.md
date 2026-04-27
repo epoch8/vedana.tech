@@ -112,12 +112,6 @@ The table has two columns.
 
 **query_name** — identifies the question type this strategy covers. You can write it as a natural language description or a short identifier — both work. What matters is that it is specific enough to be unambiguous.
 
-|Style|Example|
-|---|---|
-|Natural language|`If the user asks about legislation`|
-|Short identifier|`law_vs_practice`|
-|Question pattern|`Which compliance documents are required for a product?`|
-
 **query_example** — the instructions the assistant follows when this intent is matched. This is the most consequential field in the data model. Write it as numbered steps, each specifying exactly which tool to call, with what parameters, and what to do with the result.
 
 ### Tool syntax

@@ -30,9 +30,6 @@ Go to **Grist → Data Model → Anchors**. Each row defines one entity type. Fi
 
 **Description** — a plain-language explanation of what this entity represents, written for the assistant. Include what data the entity contains and when the assistant should query it. This field is included in the LLM context and directly affects whether the assistant selects the right entity type for a given question.
 
-Weak: _"Represents a product."_ 
-Better: _"A product available for sale in the catalog. Contains name, price, currency, and availability status. Use this anchor to answer questions about specific products, prices, or stock levels."_
-
 **ID example** — a real primary key value from your data, formatted exactly as it appears in the source table. For example: `product_id: "p-001"` or `branch_id: "branch-vilnius-01"`. The assistant uses this to construct correct Cypher queries at runtime.
 
 **Query** — the Cypher query used to retrieve nodes of this type from Memgraph. A minimal example:

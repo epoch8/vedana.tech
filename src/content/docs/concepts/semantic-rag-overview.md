@@ -1,6 +1,7 @@
 ---
 title: "Semantic RAG overview"
 section: "Concepts"
+order: 5
 ---
 
 A Semantic RAG system consists of four parts:

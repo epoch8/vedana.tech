@@ -1,6 +1,7 @@
 ---
 title: "Playbook for Vedana"
 section: "Concepts"
+order: 4
 ---
 
 ## What Is a Playbook

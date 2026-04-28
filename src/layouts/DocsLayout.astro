@@ -6,20 +6,17 @@ import Footer from "@/components/products/vedana/footer/Footer.astro";
 import styles from "./DocsLayout.module.css";
 import "../styles/global.css";
 
-import type { SEOConfig } from "@/lib/seo/types";
-import type { CollectionEntry } from "astro:content";
+import { getDocsNavigation } from "@/lib/docs/navigation";
 
-type Doc = CollectionEntry<"docs">;
+import type { SEOConfig } from "@/lib/seo/types";
 
 interface Props {
   baseSEO?: SEOConfig;
   pageSEO?: Partial<SEOConfig>;
   structuredData?: object | object[];
 
-  currentSlug?: string; // ← фикс (не ломаемся на index)
+  currentSlug?: string;
   headings?: any;
-
-  allDocs: Doc[];
 
   title?: string;
   description?: string;
@@ -32,11 +29,16 @@ const {
 
   currentSlug,
   headings,
-  allDocs,
 
   title,
   description,
 } = Astro.props;
+
+/* ======================================================
+   NAVIGATION (SOURCE OF TRUTH)
+====================================================== */
+
+const sections = await getDocsNavigation();
 
 /* ======================================================
    SEO BASE
@@ -69,7 +71,6 @@ const safePageSEO: Partial<SEOConfig> = {
   ...(title && { title }),
   ...(description && { description }),
 };
-
 ---
 
 <BaseLayout
@@ -83,8 +84,8 @@ const safePageSEO: Partial<SEOConfig> = {
       
       <aside class={styles.sidebar}>
         <DocsSidebar
-          allDocs={allDocs}
-          currentSlug={currentSlug ?? ""}  
+          sections={sections}
+          currentSlug={currentSlug ?? ""}
         />
       </aside>
 

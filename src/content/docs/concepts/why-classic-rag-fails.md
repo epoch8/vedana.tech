@@ -1,6 +1,7 @@
 ---
 title: "Why Classic RAG fails"
 section: "Concepts"
+order: 7
 ---
 
 Before diving into Vedana’s architecture, it’s important to understand where classic RAG breaks down.

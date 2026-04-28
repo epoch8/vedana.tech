@@ -1,6 +1,7 @@
 ---
 title: "Tools for Vedana"
 section: "Concepts"
+order: 6
 ---
 
 ## Why Tools Exist

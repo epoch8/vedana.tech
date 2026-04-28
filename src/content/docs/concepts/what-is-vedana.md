@@ -1,6 +1,7 @@
 ---
 title: "What is Vedana"
 section: "Concepts"
+order: 1
 ---
 
 **Vedana is a system that makes AI outputs reliable and verifiable by grounding them in structured knowledge.**

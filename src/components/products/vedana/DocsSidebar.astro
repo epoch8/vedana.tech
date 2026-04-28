@@ -1,242 +1,183 @@
 ---
-// DocsSidebar.astro
-function normalizeDocSlug(slug: string) {
-  return slug
-    .split("/")
-    .map((part) => part.replace(/^\d+-/, ""))
-    .join("/");
+interface DocItem {
+  title: string;
+  slug: string;
+  href: string;
+  order: number;
 }
 
-const { allDocs, currentSlug } = Astro.props;
+interface DocSection {
+  id: string;
+  title: string;
+  order: number;
+  items: DocItem[];
+}
 
-// Process and sort allDocs exactly as in the React component
-const sectionsMap: Record<string, { items: any[]; order: number }> = {};
-const rootItems: any[] = [];
+interface Props {
+  sections: DocSection[];
+  currentSlug: string;
+}
 
-allDocs.forEach((doc: any) => {
-  const { id: slug, data } = doc;
-  const { title, section, order = 0 } = data;
+const { sections, currentSlug } = Astro.props;
 
-  const slugParts = slug.split("/");
-  let explicitSectionOrder = 0;
-  let explicitPageOrder = 0;
+/* ========================================
+   HELPERS
+======================================== */
 
-  if (slugParts.length > 1) {
-    const sm = slugParts[0].match(/^(\d+)/);
-    if (sm) explicitSectionOrder = parseInt(sm[1], 10);
-  }
-
-  const lastPart = slugParts[slugParts.length - 1];
-  const pm = lastPart.match(/^(\d+)-(.*)/);
-  let cleanPageSlug = lastPart;
-  if (pm) {
-    explicitPageOrder = parseInt(pm[1], 10);
-    cleanPageSlug = pm[2];
-  }
-
-  const cleanTotalSlug = normalizeDocSlug(slug);
-  const finalOrder = order !== 0 ? order : explicitPageOrder;
-  const finalSectionOrder = explicitSectionOrder;
-  const finalTitle =
-    title ||
-    cleanPageSlug
-      .split("-")
-      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-
-  const item = {
-    key: cleanTotalSlug,
-    title: finalTitle,
-    href: `/docs/${cleanTotalSlug}`,
-    order: finalOrder,
-  };
-
-  if (section) {
-    if (!sectionsMap[section]) {
-      sectionsMap[section] = { items: [], order: finalSectionOrder };
-    } else if (finalSectionOrder > 0 && sectionsMap[section].order === 0) {
-      sectionsMap[section].order = finalSectionOrder;
-    }
-    sectionsMap[section].items.push(item);
-  } else {
-    rootItems.push(item);
-  }
-});
-
-rootItems.sort((a, b) => a.order - b.order);
-Object.values(sectionsMap).forEach((sec) =>
-  sec.items.sort((a, b) => a.order - b.order),
-);
-
-const sideMenuItems: any[] = [];
-const sortedSections = Object.entries(sectionsMap).sort(
-  (a, b) => a[1].order - b[1].order,
-);
-
-sortedSections.forEach(([sectionName, secData]) => {
-  sideMenuItems.push({
-    isSection: true,
-    key: `section-${sectionName}`,
-    title: sectionName,
-    children: secData.items,
-  });
-});
-
-sideMenuItems.push(...rootItems);
-
-// Calculate default open sections
-const defaultOpenKeys = sideMenuItems
-  .filter(
-    (item) =>
-      item.children &&
-      item.children.some((child: any) => child.key === currentSlug),
-  )
-  .map((item) => item.key);
+function isSectionActive(section: DocSection) {
+  return section.items.some((item) => item.slug === currentSlug);
+}
 ---
 
 <nav class="docs-sidebar">
   <ul class="sidebar-list">
-    {
-      sideMenuItems.map((item) => (
+
+    {sections.map((section) => {
+      const open = isSectionActive(section);
+
+      return (
         <li class="sidebar-item">
-          {item.isSection ? (
-            <details
-              class="sidebar-details"
-              open={defaultOpenKeys.includes(item.key)}
-            >
-              <summary class="sidebar-summary">
-                <span class="sidebar-section-title">{item.title}</span>
-                <span class="sidebar-arrow">
-                  <svg
-                    viewBox="64 64 896 896"
-                    focusable="false"
-                    data-icon="down"
-                    width="10px"
-                    height="10px"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
-                  </svg>
-                </span>
-              </summary>
-              <ul class="sidebar-sublist">
-                {item.children.map((child: any) => (
+
+          <details class="sidebar-details" open={open}>
+            <summary class="sidebar-summary">
+              <span class="sidebar-section-title">
+                {section.title}
+              </span>
+
+              <span class="sidebar-arrow">
+                <svg
+                  viewBox="64 64 896 896"
+                  width="10"
+                  height="10"
+                  fill="currentColor"
+                >
+                  <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z" />
+                </svg>
+              </span>
+            </summary>
+
+            <ul class="sidebar-sublist">
+              {section.items.map((item) => {
+                const active = item.slug === currentSlug;
+
+                return (
                   <li class="sidebar-subitem">
                     <a
-                      href={child.href}
+                      href={item.href}
                       class:list={[
                         "sidebar-link",
-                        { active: child.key === currentSlug },
+                        { active },
                       ]}
                     >
-                      {child.title}
+                      {item.title}
                     </a>
                   </li>
-                ))}
-              </ul>
-            </details>
-          ) : (
-            <a
-              href={item.href}
-              class:list={[
-                "sidebar-link root-link",
-                { active: item.key === currentSlug },
-              ]}
-            >
-              {item.title}
-            </a>
-          )}
+                );
+              })}
+            </ul>
+          </details>
+
         </li>
-      ))
-    }
+      );
+    })}
+
   </ul>
 </nav>
 
 <style>
-  .docs-sidebar {
-    height: 100%;
-    padding-right: 16px;
-    font-family: inherit;
-  }
+.docs-sidebar {
+  height: 100%;
+  padding-right: 16px;
+}
 
-  .sidebar-list,
-  .sidebar-sublist {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
+/* LIST */
 
-  .sidebar-item {
-    margin-bottom: 4px;
-    font-size: 14px;
-  }
+.sidebar-list,
+.sidebar-sublist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-  .sidebar-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 16px;
-    cursor: pointer;
-    border-radius: 8px;
-    color: rgba(0, 0, 0, 0.88);
-    transition: background-color 0.3s;
-    list-style: none;
-  }
+.sidebar-item {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
 
-  .sidebar-summary::-webkit-details-marker {
-    display: none;
-  }
+/* SECTION */
 
-  .sidebar-summary:hover {
-    color: rgba(0, 0, 0, 0.88);
-  }
+.sidebar-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  .sidebar-section-title {
-    font-weight: 600;
-  }
+  padding: 8px 12px;
 
-  .sidebar-arrow {
-    display: flex;
-    align-items: center;
-    transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    color: rgba(0, 0, 0, 0.25);
-  }
+  cursor: pointer;
+  border-radius: 8px;
 
-  /* Ant Design Menu details arrow rotation */
-  .sidebar-details:not([open]) .sidebar-arrow {
-    transform: rotate(-90deg);
-  }
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 
-  .sidebar-subitem {
-    margin-top: 4px;
-    margin-bottom: 4px;
-  }
+  opacity: 0.6;
+}
 
-  .sidebar-link {
-    display: block;
-    padding: 8px 16px 8px 32px; /* Indent sub items */
-    color: rgba(0, 0, 0, 0.88);
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    line-height: 1.5714285714285714;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+.sidebar-summary::-webkit-details-marker {
+  display: none;
+}
 
-  .root-link {
-    padding-left: 16px; /* Do not indent root items */
-  }
+.sidebar-summary:hover {
+  opacity: 1;
+}
 
-  .sidebar-link:hover {
-    color: #2563eb;
-    background-color: rgba(37, 99, 235, 0.08); /* itemHoverBg */
-  }
+.sidebar-section-title {
+  font-weight: 500;
+}
 
-  .sidebar-link.active {
-    color: #2563eb;
-    background-color: rgba(37, 99, 235, 0.1); /* itemSelectedBg */
-  }
+/* ARROW */
+
+.sidebar-arrow {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-details:not([open]) .sidebar-arrow {
+  transform: rotate(-90deg);
+}
+
+/* ITEMS */
+
+.sidebar-subitem {
+  margin: 2px 0;
+}
+
+.sidebar-link {
+  display: block;
+
+  padding: 6px 12px 6px 20px;
+
+  font-size: 14px;
+  line-height: 1.4;
+
+  text-decoration: none;
+  color: inherit;
+
+  opacity: 0.8;
+  border-radius: 6px;
+
+  transition: all 0.15s ease;
+}
+
+.sidebar-link:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.sidebar-link.active {
+  opacity: 1;
+  font-weight: 500;
+  background: rgba(0, 0, 0, 0.08);
+}
 </style>

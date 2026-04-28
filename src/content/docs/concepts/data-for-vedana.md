@@ -1,6 +1,7 @@
 ---
 title: "Data for Vedana"
 section: "Concepts"
+order: 2
 ---
 
 ## Core Principle

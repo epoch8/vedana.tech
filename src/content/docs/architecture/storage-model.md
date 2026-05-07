@@ -50,7 +50,7 @@ Notes:
 
 ## Postgres / Datapipe
 
-ETL stores its tables in Postgres too. See the full list in [Vedana ETL](./vedana-etl.md). In short:
+ETL stores its tables in Postgres too. See the full list in [Vedana ETL](./architecture/vedana-etl.md). In short:
 
 - `dm_*` — the data model (anchors, links, attributes, queries, prompts, lifecycle).
 - `grist_nodes`, `grist_edges` — raw data from Grist.

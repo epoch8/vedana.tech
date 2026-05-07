@@ -179,7 +179,7 @@ Cypher strings are safe for read-only, but follow these rules:
 
 ## Tests
 
-See [Testing](./testing.md). In short:
+See [Testing](./contributing/testing.md). In short:
 
 - unit tests are required for non-trivial logic;
 - integration tests — where actual DBs / LLM are involved.
@@ -196,6 +196,6 @@ See [Testing](./testing.md). In short:
 
 ## What's next
 
-- [Testing](./testing.md)
-- [Repository Structure](./repository-structure.md)
-- [Contributing Guide](./contributing.md)
+- [Testing](./contributing/testing.md)
+- [Repository Structure](./contributing/repository-structure.md)
+- [Contributing Guide](./contributing/contributing.md)

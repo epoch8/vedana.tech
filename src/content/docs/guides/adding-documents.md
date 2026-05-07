@@ -106,6 +106,6 @@ The LLM will then automatically add the link to the answer.
 
 ## What's next
 
-- [Tuning Embeddings](./tuning-embeddings.md) — how to choose thresholds.
-- [Adding FAQ Entries](./adding-faq-entries.md) — for canonical answers.
-- [Adding Structured Data](./adding-structured-data.md) — hybrid approach (document + structured attributes).
+- [Tuning Embeddings](./guides/tuning-embeddings.md) — how to choose thresholds.
+- [Adding FAQ Entries](./guides/adding-faq-entries.md) — for canonical answers.
+- [Adding Structured Data](./guides/adding-structured-data.md) — hybrid approach (document + structured attributes).

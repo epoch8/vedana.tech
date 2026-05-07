@@ -112,6 +112,6 @@ What helps:
 
 ## What's next
 
-- [Roadmap](./roadmap.md) — what's planned.
-- [Use Cases](./use-cases.md) — where Vedana shines.
-- [FAQ](./faq.md) — common questions.
+- [Roadmap](./product/roadmap.md) — what's planned.
+- [Use Cases](./product/use-cases.md) — where Vedana shines.
+- [FAQ](./product/faq.md) — common questions.

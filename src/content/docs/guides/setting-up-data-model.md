@@ -107,7 +107,7 @@ See [Queries](../data-model/queries.md) for details.
 
 In the **Prompts** table add a row with `name=generate_answer_with_tools_tmplt` and a body adapted to your domain (tone, address forms, answer format). The default works, but customisation gives a noticeable quality boost.
 
-See [Prompts](../data-model/prompts.md) and [Customizing Prompts](./customizing-prompts.md).
+See [Prompts](../data-model/prompts.md) and [Customizing Prompts](./guides/customizing-prompts.md).
 
 ## Step 7. Run the ETL
 
@@ -144,6 +144,6 @@ Each time — iterate: edit → ETL → eval → analyse.
 
 ## What's next
 
-- [Adding Anchors](./adding-anchors.md), [Adding Attributes](./adding-attributes.md), [Adding Links](./adding-links.md) — details for each.
-- [Tuning Embeddings](./tuning-embeddings.md) — how to choose thresholds.
-- [Customizing Prompts](./customizing-prompts.md) — fine-tuning behaviour.
+- [Adding Anchors](./guides/adding-anchors.md), [Adding Attributes](./guides/adding-attributes.md), [Adding Links](./guides/adding-links.md) — details for each.
+- [Tuning Embeddings](./guides/tuning-embeddings.md) — how to choose thresholds.
+- [Customizing Prompts](./guides/customizing-prompts.md) — fine-tuning behaviour.

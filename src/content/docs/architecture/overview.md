@@ -118,7 +118,7 @@ RAG logic and integration with storage.
 - **`StartPipeline`** (`vedana_core.rag_pipeline`) — a separate pipeline that handles the `/start` command and reads the response from `ConversationLifecycle`.
 - **`LLM`** + **`Tool`** (`vedana_core.llm`) — wrapper over `LLMProvider` with a tool-calling loop (up to 5 iterations), structured prompts, and finalisation templates.
 
-See [Vedana Core](./vedana-core.md).
+See [Vedana Core](./architecture/vedana-core.md).
 
 ### `vedana-etl`
 
@@ -130,7 +130,7 @@ ETL pipeline built on [Datapipe](https://github.com/epoch8/datapipe).
 
 ETL is split into "flows" via Datapipe labels: `regular`, `on-demand`, `eval`.
 
-See [Vedana ETL](./vedana-etl.md).
+See [Vedana ETL](./architecture/vedana-etl.md).
 
 ### `vedana-backoffice`
 
@@ -167,7 +167,7 @@ Note: by default Vedana uses **pgvector**, not Memgraph vector. `MemgraphVectorS
 - **Prometheus**: LLM metrics (`llm_calls_total`, `llm_usage_prompt_tokens_total`, `llm_usage_completion_tokens_total`), pipeline metrics (`jims_pipeline_*`).
 - **Sentry**: integration through `setup_monitoring_and_tracing_with_sentry`.
 
-See [Observability](./observability.md).
+See [Observability](./architecture/observability.md).
 
 ## CI / CD
 

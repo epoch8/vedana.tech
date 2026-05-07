@@ -178,6 +178,6 @@ PRs don't merge until CI is green.
 
 ## What's next
 
-- [Code Style](./code-style.md)
-- [Repository Structure](./repository-structure.md)
-- [Contributing Guide](./contributing.md)
+- [Code Style](./contributing/code-style.md)
+- [Repository Structure](./contributing/repository-structure.md)
+- [Contributing Guide](./contributing/contributing.md)

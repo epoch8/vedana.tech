@@ -24,11 +24,6 @@ export type DocSection = {
 
 export const SECTION_ORDER = [
   {
-    id: "Overview",
-    title: "Overview",
-    order: 0,
-  },
-  {
     id: "Getting Started",
     title: "Getting Started",
     order: 1,
@@ -93,28 +88,18 @@ export async function getDocsNavigation(): Promise<DocSection[]> {
      1. NORMALIZE
   ========================= */
 
-  const normalized = docs.map((doc) => {
+  const normalized = docs.flatMap((doc) => {
     const section = doc.data.section;
 
-    if (!section) {
-      throw new Error(
-        `Doc "${doc.id}" is missing "section" in frontmatter`
-      );
-    }
+    if (!section || !knownSections.has(section)) return [];
 
-    if (!knownSections.has(section)) {
-      throw new Error(
-        `Unknown section "${section}" in doc "${doc.id}"`
-      );
-    }
-
-    return {
+    return [{
       title: doc.data.title,
       section,
       order: doc.data.order ?? 999,
-      slug: doc.id,              // ← ключевой фикс
-      href: `/docs/${doc.id}`,   // ← и тут
-    };
+      slug: doc.id,
+      href: `/docs/${doc.id}`,
+    }];
   });
 
   /* =========================

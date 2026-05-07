@@ -91,5 +91,5 @@ See [Custom ETL](../data-ingestion/custom-etl.md).
 
 ## What's next
 
-- [Data Model for Vedana](./data-model-for-vedana.md) — what the data model is and why you need it.
+- [Data Model for Vedana](./concepts/data-model-for-vedana.md) — what the data model is and why you need it.
 - [Setting Up Data Model](../guides/setting-up-data-model.md) — how to describe your domain.

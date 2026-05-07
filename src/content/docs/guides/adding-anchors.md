@@ -50,7 +50,7 @@ product   | category | PRODUCT_belongs_to_CATEGORY  | ...
 document  | category | DOCUMENT_regulates_CATEGORY  | ...
 ```
 
-See [Adding Links](./adding-links.md).
+See [Adding Links](./guides/adding-links.md).
 
 ## 5. Load the data
 
@@ -105,5 +105,5 @@ If you have typical questions about the new anchor ("Which products are in categ
 
 ## What's next
 
-- [Adding Attributes](./adding-attributes.md)
-- [Adding Links](./adding-links.md)
+- [Adding Attributes](./guides/adding-attributes.md)
+- [Adding Links](./guides/adding-links.md)

@@ -22,7 +22,7 @@ This guide describes three modes for installing Vedana: local development with D
 
 ## Option A. Docker Compose (recommended for the first run)
 
-The simplest path is to bring the entire stack up with a single command. See [Quick Start](./quick-start.md). The compose file `apps/vedana/docker-compose.yml` brings up app, api, widget, Postgres, Memgraph, Memgraph Lab, and Grist.
+The simplest path is to bring the entire stack up with a single command. See [Quick Start](./getting-started/quick-start.md). The compose file `apps/vedana/docker-compose.yml` brings up app, api, widget, Postgres, Memgraph, Memgraph Lab, and Grist.
 
 If a port is already in use on your host, change the corresponding mapping in `docker-compose.yml`.
 

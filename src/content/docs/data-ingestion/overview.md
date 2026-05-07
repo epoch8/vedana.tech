@@ -51,7 +51,7 @@ Suited to:
 - continuous ingestion;
 - complex transformations.
 
-See [Custom ETL](./custom-etl.md).
+See [Custom ETL](./data-ingestion/custom-etl.md).
 
 ## Critical note
 
@@ -61,7 +61,7 @@ If you load nodes with labels not described in Anchors, the assistant won't know
 
 ## What's next
 
-- [Documents and Chunks](./documents-and-chunks.md)
-- [Structured Data](./structured-data.md)
-- [FAQ](./faq.md)
-- [Custom ETL](./custom-etl.md)
+- [Documents and Chunks](./data-ingestion/documents-and-chunks.md)
+- [Structured Data](./data-ingestion/structured-data.md)
+- [FAQ](./data-ingestion/faq.md)
+- [Custom ETL](./data-ingestion/custom-etl.md)

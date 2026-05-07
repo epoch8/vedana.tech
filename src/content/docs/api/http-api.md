@@ -199,6 +199,6 @@ Watch metrics in `jims_pipeline_run_duration_seconds{pipeline="RagPipeline"}`.
 
 ## What's next
 
-- [Configuration Reference](./configuration-reference.md) — every ENV variable.
-- [Widget API](./widget-api.md) — embeddable widget.
-- [Python API](./python-api.md) — programmatic access.
+- [Configuration Reference](./api/configuration-reference.md) — every ENV variable.
+- [Widget API](./api/widget-api.md) — embeddable widget.
+- [Python API](./api/python-api.md) — programmatic access.

@@ -196,5 +196,5 @@ If you've recreated Memgraph with a different password — drop the `mg_graph` v
 
 ## What's next
 
-- [Monitoring & Metrics](./monitoring.md)
-- [Cost Management](./costs.md)
+- [Monitoring & Metrics](./operations/monitoring.md)
+- [Cost Management](./operations/costs.md)

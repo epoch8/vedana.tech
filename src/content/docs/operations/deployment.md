@@ -199,10 +199,10 @@ Liveness — a simple `/healthz`. Readiness — a request that actually checks D
 
 ## Cost optimization
 
-See [Cost Management](./costs.md).
+See [Cost Management](./operations/costs.md).
 
 ## What's next
 
-- [Monitoring & Metrics](./monitoring.md)
-- [Troubleshooting](./troubleshooting.md)
-- [Cost Management](./costs.md)
+- [Monitoring & Metrics](./operations/monitoring.md)
+- [Troubleshooting](./operations/troubleshooting.md)
+- [Cost Management](./operations/costs.md)

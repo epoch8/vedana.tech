@@ -107,5 +107,5 @@ If it works — great. If not — see Details:
 
 ## What's next
 
-- [Tuning Embeddings & Thresholds](./tuning-embeddings.md)
-- [Adding Anchors](./adding-anchors.md), [Adding Links](./adding-links.md)
+- [Tuning Embeddings & Thresholds](./guides/tuning-embeddings.md)
+- [Adding Anchors](./guides/adding-anchors.md), [Adding Links](./guides/adding-links.md)

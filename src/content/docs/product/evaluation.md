@@ -169,5 +169,5 @@ See [Monitoring & Metrics](../operations/monitoring.md).
 ## What's next
 
 - [Quick Start: Evaluation](../guides/setting-up-data-model.md#step-8-verify-on-the-golden-dataset)
-- [Limitations](./limitations.md)
+- [Limitations](./product/limitations.md)
 - [Customizing Prompts](../guides/customizing-prompts.md)

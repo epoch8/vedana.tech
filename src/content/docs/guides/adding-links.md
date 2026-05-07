@@ -110,5 +110,5 @@ In Details there should be Cypher with your `sentence`. If the LLM generated Cyp
 
 ## What's next
 
-- [Adding Anchors](./adding-anchors.md), [Adding Attributes](./adding-attributes.md)
-- [Setting Up Data Model](./setting-up-data-model.md)
+- [Adding Anchors](./guides/adding-anchors.md), [Adding Attributes](./guides/adding-attributes.md)
+- [Setting Up Data Model](./guides/setting-up-data-model.md)

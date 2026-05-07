@@ -107,5 +107,5 @@ Widget texts (greeting, placeholder, send button) are configured in Grist via `C
 
 ## What's next
 
-- [HTTP API](./http-api.md) — the underlying API (the widget is a thin wrapper over the same kernel).
+- [HTTP API](./api/http-api.md) — the underlying API (the widget is a thin wrapper over the same kernel).
 - [ConversationLifecycle](../data-model/conversation-lifecycle.md) — configure greetings.

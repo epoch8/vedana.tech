@@ -74,7 +74,7 @@ The hooks run linters and formatters on every commit.
 
 ## Code style
 
-See [Code Style](./code-style.md). In short:
+See [Code Style](./contributing/code-style.md). In short:
 
 - **ruff** for linting, line length 120 (see `[tool.ruff]` in `pyproject.toml`).
 - **mypy** for type checking, namespace packages, `enable_incomplete_feature = ["NewGenericSyntax"]`.
@@ -147,6 +147,6 @@ Vedana is distributed under the licence in [LICENSE](https://github.com/epoch8/v
 
 ## What's next
 
-- [Code Style](./code-style.md)
-- [Testing](./testing.md)
-- [Repository Structure](./repository-structure.md)
+- [Code Style](./contributing/code-style.md)
+- [Testing](./contributing/testing.md)
+- [Repository Structure](./contributing/repository-structure.md)

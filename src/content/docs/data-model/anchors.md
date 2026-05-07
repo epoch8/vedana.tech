@@ -91,11 +91,11 @@ If anchors are described poorly (vague descriptions, inconsistent names, missing
 - **Plural / non-Latin name.** Breaks queries and Cypher.
 - **Description that just repeats the name.** "Product is a product" — useless to the LLM.
 - **No `query`.** The assistant will have to guess via vector search — bad for precise queries.
-- **An anchor where an attribute would do.** If `category` has no own properties or links, keep it as a `string` attribute, not a separate anchor. See [Attributes vs Links](./attributes.md#attribute-vs-link).
+- **An anchor where an attribute would do.** If `category` has no own properties or links, keep it as a `string` attribute, not a separate anchor. See [Attributes vs Links](./data-model/attributes.md#attribute-vs-link).
 - **Anchor duplicates with different grammar.** `product` and `Product`, `branch` and `branches` — Cypher won't unify them.
 
 ## What's next
 
-- [Attributes](./attributes.md) — properties of anchors.
-- [Links](./links.md) — relationships between anchors.
+- [Attributes](./data-model/attributes.md) — properties of anchors.
+- [Links](./data-model/links.md) — relationships between anchors.
 - [Adding Anchors guide](../guides/adding-anchors.md) — step-by-step.

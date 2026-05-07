@@ -109,4 +109,4 @@ Usually option 1 is better.
 ## What's next
 
 - [FAQ concept](../data-ingestion/faq.md)
-- [Tuning Embeddings](./tuning-embeddings.md)
+- [Tuning Embeddings](./guides/tuning-embeddings.md)

@@ -78,4 +78,4 @@ Technically that means:
 - **a playbook (query scenarios)** — a set of steps the LLM should follow for typical intents;
 - **a LiteLLM wrapper** — so you can switch providers without touching the code.
 
-Next: [Data Model for Vedana](./data-model-for-vedana.md) → [Tools for Vedana](./tools-for-vedana.md) → [Playbook for Vedana](./playbook-for-vedana.md).
+Next: [Data Model for Vedana](./concepts/data-model-for-vedana.md) → [Tools for Vedana](./concepts/tools-for-vedana.md) → [Playbook for Vedana](./concepts/playbook-for-vedana.md).

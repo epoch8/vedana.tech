@@ -44,8 +44,8 @@ All CLIs also read environment variables with the `JIMS_` prefix (`auto_envvar_p
 
 ## What's next
 
-- [HTTP API](./http-api.md) — for external integrations.
-- [Widget API](./widget-api.md) — embedding in a web page.
-- [Telegram](./telegram.md) — Telegram bot.
-- [Python API](./python-api.md) — programmatic access.
-- [Configuration Reference](./configuration-reference.md) — every ENV variable.
+- [HTTP API](./api/http-api.md) — for external integrations.
+- [Widget API](./api/widget-api.md) — embedding in a web page.
+- [Telegram](./api/telegram.md) — Telegram bot.
+- [Python API](./api/python-api.md) — programmatic access.
+- [Configuration Reference](./api/configuration-reference.md) — every ENV variable.

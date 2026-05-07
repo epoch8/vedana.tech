@@ -78,7 +78,7 @@ RETURN DISTINCT d.title, d.url
 
 ## Link vs Attribute
 
-A common modeling question. See [Attributes → Attribute vs Link](./attributes.md#attribute-vs-link) for details.
+A common modeling question. See [Attributes → Attribute vs Link](./data-model/attributes.md#attribute-vs-link) for details.
 
 In short:
 
@@ -114,6 +114,6 @@ All of those reduce the determinism and clarity that make Semantic RAG work.
 
 ## What's next
 
-- [Anchors](./anchors.md)
-- [Attributes](./attributes.md)
+- [Anchors](./data-model/anchors.md)
+- [Attributes](./data-model/attributes.md)
 - [Adding Links guide](../guides/adding-links.md) — step-by-step.

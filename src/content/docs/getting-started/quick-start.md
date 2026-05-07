@@ -17,7 +17,7 @@ In 10 minutes you'll:
 ## Prerequisites
 
 - Docker and Docker Compose installed.
-- An LLM provider API key: OpenAI, OpenRouter, or Google/VertexAI (any combination — see [LLM configuration](./configuration.md#llm)).
+- An LLM provider API key: OpenAI, OpenRouter, or Google/VertexAI (any combination — see [LLM configuration](./getting-started/configuration.md#llm)).
 - ~5 GB of free disk space and ports `5432`, `7687`, `7444`, `3000`, `8080`, `8090`, `8484`, `9000` available.
 
 ## Step 1. Clone the repository and prepare `.env`

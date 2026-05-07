@@ -36,6 +36,6 @@ If your assistant's answers must be verifiable and aligned with real business lo
 
 ## What's next
 
-- [Quick Start](./quick-start.md) — bring Vedana up locally and ask your first question.
+- [Quick Start](./getting-started/quick-start.md) — bring Vedana up locally and ask your first question.
 - [Concepts](../concepts/what-is-vedana.md) — the theory: what Semantic RAG is, why classic RAG breaks, how the data model is organised.
 - [Architecture Overview](../architecture/overview.md) — how the code is structured and how the components fit together.

@@ -7,11 +7,11 @@ export default function remarkRelativeDocLinks() {
 
       // only local markdown links
       if (
-        node.url.endsWith(".md") &&
+        /\.md(?=#|$)/.test(node.url) &&
         !node.url.startsWith("http")
       ) {
         node.url = node.url
-          .replace(/\.md$/, "")
+          .replace(/\.md(?=#|$)/, "")
           .replace(/^\.\//, "/docs/");
       }
     });

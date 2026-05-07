@@ -18,7 +18,7 @@ Before loading data, describe the schema in **Data Model**:
 
 If you don't, the data lands in the graph but the assistant won't know about it.
 
-See [Setting Up Data Model](./setting-up-data-model.md).
+See [Setting Up Data Model](./guides/setting-up-data-model.md).
 
 ## 2. Prepare tables
 
@@ -140,5 +140,5 @@ Run ETL on cron (e.g. once an hour) — Vedana will stay current without full re
 
 ## What's next
 
-- [Adding Anchors](./adding-anchors.md), [Adding Attributes](./adding-attributes.md), [Adding Links](./adding-links.md)
+- [Adding Anchors](./guides/adding-anchors.md), [Adding Attributes](./guides/adding-attributes.md), [Adding Links](./guides/adding-links.md)
 - [Custom ETL](../data-ingestion/custom-etl.md) — for large volumes or external sources.

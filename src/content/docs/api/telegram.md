@@ -90,4 +90,4 @@ Alongside aiogram the bot brings up an aiohttp server with `/health` and `/healt
 ## What's next
 
 - [Architecture: JIMS Core](../architecture/jims-core.md) — thread internals.
-- [HTTP API](./http-api.md) — for non-Telegram integrations.
+- [HTTP API](./api/http-api.md) — for non-Telegram integrations.

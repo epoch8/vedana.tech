@@ -11,7 +11,13 @@ type Doc = CollectionEntry<"docs">;
 ======================================== */
 
 export const getStaticPaths = (async () => {
-  const docsEntries: Doc[] = await getCollection("docs");
+  const allDocs: Doc[] = await getCollection("docs");
+  const { SECTION_ORDER } = await import("../../lib/docs/navigation");
+  const knownSections = new Set(SECTION_ORDER.map((s) => s.id));
+
+  const docsEntries = allDocs.filter(
+    (entry) => entry.data.section && knownSections.has(entry.data.section)
+  );
 
   return docsEntries.map((entry) => {
     const slug = entry.data.slug ?? entry.id;

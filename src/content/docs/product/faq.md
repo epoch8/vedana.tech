@@ -129,6 +129,6 @@ If your question isn't covered, open an issue at [github.com/epoch8/vedana](http
 
 ## What's next
 
-- [Use Cases](./use-cases.md)
-- [Limitations](./limitations.md)
-- [Roadmap](./roadmap.md)
+- [Use Cases](./product/use-cases.md)
+- [Limitations](./product/limitations.md)
+- [Roadmap](./product/roadmap.md)

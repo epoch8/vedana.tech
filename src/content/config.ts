@@ -48,24 +48,20 @@ const docsCollection = defineCollection({
         base: "./src/content/docs",
       }).load(ctx);
 
-      for (const entry of ctx.store.values()) {
-        const { digest, ...rest } = entry;
+      const entries = [...ctx.store.values()];
+      ctx.store.clear();
 
-        const derivedSection = deriveSection(entry.id);
-        const derivedSlug = deriveSlug(entry.id);
+      for (const entry of entries) {
+        const { digest, ...rest } = entry;
 
         ctx.store.set({
           ...rest,
 
-          slug: derivedSlug, // 👉 добавляем slug прямо в entry
+          slug: deriveSlug(entry.id),
 
           data: {
             ...entry.data,
-
-            // если section НЕ задан — берём из папки
-            section: entry.data.section ?? derivedSection,
-
-            // если order НЕ задан — пусть будет 0
+            section: entry.data.section ?? deriveSection(entry.id),
             order: entry.data.order ?? 0,
           },
         });

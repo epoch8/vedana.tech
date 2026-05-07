@@ -82,9 +82,9 @@ You can override any of these in the `Prompts` table to change the format the LL
 
 ## What's next
 
-- [Anchors](./anchors.md)
-- [Attributes](./attributes.md)
-- [Links](./links.md)
-- [Queries](./queries.md)
-- [Prompts](./prompts.md)
-- [ConversationLifecycle](./conversation-lifecycle.md)
+- [Anchors](./data-model/anchors.md)
+- [Attributes](./data-model/attributes.md)
+- [Links](./data-model/links.md)
+- [Queries](./data-model/queries.md)
+- [Prompts](./data-model/prompts.md)
+- [ConversationLifecycle](./data-model/conversation-lifecycle.md)

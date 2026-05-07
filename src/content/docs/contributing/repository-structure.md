@@ -201,6 +201,6 @@ On merge to `main`:
 
 ## What's next
 
-- [Code Style](./code-style.md)
-- [Testing](./testing.md)
-- [Contributing Guide](./contributing.md)
+- [Code Style](./contributing/code-style.md)
+- [Testing](./contributing/testing.md)
+- [Contributing Guide](./contributing/contributing.md)

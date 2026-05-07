@@ -40,5 +40,5 @@ Vedana is designed for domains where correctness is critical:
 ## What's next
 
 - [Why Classic RAG Fails](./concepts/why-classic-rag-fails.md) — where ordinary RAG breaks down and why this is a structural problem, not a "bad embeddings" problem.
-- [Semantic RAG Overview](./semantic-rag-overview.md) — the four parts of Semantic RAG.
-- [Data Model for Vedana](./data-model-for-vedana.md) — how to describe a domain.
+- [Semantic RAG Overview](./concepts/semantic-rag-overview.md) — the four parts of Semantic RAG.
+- [Data Model for Vedana](./concepts/data-model-for-vedana.md) — how to describe a domain.

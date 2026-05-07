@@ -165,5 +165,5 @@ A minimal alert set for production:
 
 ## What's next
 
-- [Troubleshooting](./troubleshooting.md)
-- [Cost Management](./costs.md)
+- [Troubleshooting](./operations/troubleshooting.md)
+- [Cost Management](./operations/costs.md)

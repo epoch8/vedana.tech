@@ -83,12 +83,12 @@ In the answer's Details you should see Cypher queries — that means Vedana is w
 
 ## Your own dataset
 
-Once you've explored LIMIT, switch to your domain. See [Setting Up Data Model](./setting-up-data-model.md).
+Once you've explored LIMIT, switch to your domain. See [Setting Up Data Model](./guides/setting-up-data-model.md).
 
 You can keep LIMIT around as a sanity check — after platform changes, re-running it confirms basic behaviour didn't regress.
 
 ## What's next
 
 - [Quick Start](../getting-started/quick-start.md)
-- [Setting Up Data Model](./setting-up-data-model.md)
+- [Setting Up Data Model](./guides/setting-up-data-model.md)
 - [Evaluation](../product/evaluation.md)

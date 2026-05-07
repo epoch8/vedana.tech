@@ -145,6 +145,6 @@ Total: $130–300/month for ~ 1000 requests/day.
 
 ## What's next
 
-- [Monitoring & Metrics](./monitoring.md)
+- [Monitoring & Metrics](./operations/monitoring.md)
 - [Customizing Prompts](../guides/customizing-prompts.md)
 - [Configuration Reference](../api/configuration-reference.md)

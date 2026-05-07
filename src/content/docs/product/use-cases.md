@@ -123,6 +123,6 @@ If all three are "no", look at other tools.
 
 ## What's next
 
-- [Comparison with Classic RAG](./comparison.md)
-- [Quality Metrics & Evaluation](./evaluation.md)
-- [Limitations](./limitations.md)
+- [Comparison with Classic RAG](./product/comparison.md)
+- [Quality Metrics & Evaluation](./product/evaluation.md)
+- [Limitations](./product/limitations.md)

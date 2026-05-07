@@ -93,5 +93,5 @@ See [Data for Vedana](../concepts/data-for-vedana.md) for the broader picture.
 ## What's next
 
 - [Adding Documents guide](../guides/adding-documents.md) — step-by-step instructions.
-- [Structured Data](./structured-data.md) — when documents aren't enough.
-- [FAQ](./faq.md) — for short canonical answers.
+- [Structured Data](./data-ingestion/structured-data.md) — when documents aren't enough.
+- [FAQ](./data-ingestion/faq.md) — for short canonical answers.

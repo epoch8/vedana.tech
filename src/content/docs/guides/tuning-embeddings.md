@@ -117,4 +117,4 @@ The `llm_calls_total{model}` and `llm_usage_prompt_tokens_total{model}` metrics 
 ## What's next
 
 - [Evaluation](../product/evaluation.md) — how to measure.
-- [Customizing Prompts](./customizing-prompts.md) — improve answers beyond retrieval.
+- [Customizing Prompts](./guides/customizing-prompts.md) — improve answers beyond retrieval.

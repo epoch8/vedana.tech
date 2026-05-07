@@ -1,7 +1,5 @@
 ---
 title: Vedana Documentation
-section: Overview
-order: 0
 ---
 
 # Vedana Documentation

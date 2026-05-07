@@ -79,10 +79,10 @@ If your business case looks like this:
 
 ## What to choose in any case
 
-Whether RAG or Vedana, **definitely** set up a golden dataset and run eval regularly. Without it you can't objectively compare which approach works better for **your** case. See [Quality Metrics & Evaluation](./evaluation.md).
+Whether RAG or Vedana, **definitely** set up a golden dataset and run eval regularly. Without it you can't objectively compare which approach works better for **your** case. See [Quality Metrics & Evaluation](./product/evaluation.md).
 
 ## What's next
 
-- [Use Cases](./use-cases.md)
-- [Quality Metrics & Evaluation](./evaluation.md)
-- [Limitations](./limitations.md)
+- [Use Cases](./product/use-cases.md)
+- [Quality Metrics & Evaluation](./product/evaluation.md)
+- [Limitations](./product/limitations.md)

@@ -216,4 +216,4 @@ Metrics:
 
 `ThreadController.run_pipeline_with_context` opens an OTel span `jims.run_pipeline_with_context` with the attributes `jims.thread.id` and `jims.pipeline`. Below it, spans are created for Memgraph queries (`memgraph.execute_ro_cypher_query`, `memgraph.run_cypher`, `memgraph.text_search`, `memgraph.vector_search`) and for pgvector (`pgvector.vector_search`).
 
-Details — [Observability](./observability.md).
+Details — [Observability](./architecture/observability.md).

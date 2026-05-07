@@ -1,121 +1,166 @@
 ---
-title: "Attributes"
-section: "Data model"
-
+title: Attributes
+section: Data Model
+order: 3
 ---
 
-## What Is an Attribute
+# Attributes
 
-An attribute is a typed property attached to an anchor. If anchors define what exists, attributes define what we know about it — the specific, queryable data that describes each entity.
+An **attribute** is a typed property attached to an anchor (or link). If anchors describe *what exists*, attributes describe *what we know about it* — the specific, queryable data that describes each entity.
 
-For a `Product` anchor, attributes might include `name` (string), `price` (float), `currency` (string), and `in_stock` (boolean). 
+For a `Product` anchor attributes might be: `name` (string), `price` (float), `currency` (string), `in_stock` (bool). For `Branch`: `address`, `city`, `opening_hours`. For `Contract`: `start_date`, `end_date`, `counterparty`.
 
-For a `Branch` anchor: `address` (string), `city` (string), `opening_hours` (string). 
+Attributes are what makes **precise filtering** possible. Without them, Vedana behaves like basic RAG: it can retrieve a paragraph mentioning a product's price but can't filter products by price.
 
-For a `Contract`: `start_date` (date), `end_date` (date), `counterparty` (string).
+## Where they're defined
 
-Attributes are what make precise filtering possible. Without them, Vedana behaves like basic RAG: it can retrieve documents that mention a product's price, but it cannot filter products by price. The difference between approximate retrieval and deterministic answers comes down to whether the relevant data is stored as a typed attribute.
+![Anchor attributes table](../images/docs/dm-attributes.png)
 
-## How Attributes Sit in the Graph
+In Grist, attributes live in two tables:
 
-Each attribute becomes a property on a node in Memgraph. After ETL runs, a Product node with three declared attributes looks like this:
+- **`Anchor_attributes`** — properties attached to an anchor (a graph node).
+- **`Link_attributes`** — properties attached to a link (a graph edge).
 
-```mermaid
-graph TD
-    subgraph "Memgraph node"
-        N["(Product)
-        ─────────────────
-        product_id: 'p-001'
-        name: 'Laptop Pro'
-        price: 999.00
-        currency: 'EUR'
-        in_stock: true"]
-    end
+Both have the **same column structure**; the only difference is what they're attached to.
+
+## Fields
+
+| Field               | Type   | Description                                                                                              |
+| ------------------- | ------ | --------------------------------------------------------------------------------------------------------- |
+| **attribute_name**  | str    | System name — lowercase, no spaces, must match the column name in the data.                               |
+| **anchor / link**   | str    | The owner of the attribute (anchor name or link sentence).                                                 |
+| **description**     | str    | Human-readable description — goes into the LLM context.                                                    |
+| **data_example**    | str    | A real example value (`999.00`, `"Vilnius"`, `true`).                                                      |
+| **embeddable**      | bool   | Whether to build an embedding of this field for semantic search.                                           |
+| **embed_threshold** | float  | Minimum similarity for a result to be returned (0..1). Only applies if `embeddable=true`.                  |
+| **query**           | str    | Cypher to fetch this attribute (or its "owner" node).                                                       |
+| **dtype**           | str    | Data type: `str`, `int`, `float`, `bool`, `date`, `datetime`, `enum`, `url`, `file`.                       |
+
+## What you get in the graph
+
+![Anchor attributes example](../images/attributes-1.png)
+
+![Link attributes example](../images/attributes-2.png)
+
+After ETL, attributes become properties on the node:
+
+```
+(:Product {
+    product_id: "p-001",
+    name: "Laptop Pro",
+    price: 999.00,
+    currency: "EUR",
+    in_stock: true
+})
 ```
 
-The properties on the node are exactly the attributes you declared. No more, no less. If a column exists in your Grist data table but is not declared as an attribute in the data model, it will not appear on the node and cannot be queried.
+The properties on the node are **exactly** the attributes you declared. If a column exists in Grist but isn't declared in `Anchor_attributes`, it **won't** appear on the node and can't be queried.
 
-## Where Attributes Are Defined
+## Embeddable attributes
 
-Attributes are defined in **Grist > Data Model > Attributes** table. 
-Like the Anchors table, this table contains schema definitions, not actual data values. The actual values live in your business tables (e.g. `products`, `branches`). 
-The Attributes table tells Vedana what those values are and how to use them.
+Attributes with `embeddable=true` are vectorised at ETL time. Their values are stored as embeddings in pgvector (`rag_anchor_embeddings` or `rag_edge_embeddings`), making semantic search through `vector_text_search` available.
 
-During ETL:
-1. Attribute schema is loaded.
-2. Types are validated.
-3. Rows are checked against schema.
-4. Properties are written to Memgraph nodes.
+**Embeddable suits:**
 
-## How to Describe an Attribute
+- human-readable text fields where meaning-based search matters: `name`, `description`, `title`, `interest_name`, `category_label`;
+- unstructured content: chunk text in documents, FAQ questions.
 
-Each attribute definition typically includes:
-- anchor_name (which anchor it belongs to)
-- attribute_name
-- data_type 
-- description  
-- optional flags (filterable, searchable, embeddable) 
+**Embeddable doesn't suit:**
 
-Attributes must always belong to an anchor type.
+- identifiers (`product_id`, `sku`) — exact match is needed;
+- numeric values (`price`, `quantity`) — filters/comparisons are needed;
+- boolean flags (`in_stock`);
+- structured codes (`category_code: "A12-B"`).
 
-### Required Fields for an Attribute Definition
+### embed_threshold
 
-Each row in the Attributes table in Grist defines one property on one anchor type.
+Controls how close a query must be to a stored value for the result to be returned.
 
+- too low (`0.5`) → many irrelevant results;
+- too high (`0.95`) → misses valid matches;
+- start at `0.7`, then tune through evaluation.
 
-| Field               | What it contains                                                                                    |
-| ------------------- | --------------------------------------------------------------------------------------------------- |
-| **Attribute Name**  | System name of the attribute: lowercase, no spaces, matching the column name in your data table     |
-| **Description**     | Plain-language explanation of what this attribute represents — included in LLM context              |
-| **Anchor**          | The anchor type this attribute belongs to                                                           |
-| **Link**            | Set to true if this field is a foreign key reference to another anchor, rather than a scalar value  |
-| **Data example**    | A real example value from your data (e.g. `999.00`, `"Vilnius"`, `true`)                            |
-| **Embeddable**      | Whether the value should be vectorized for semantic search                                          |
-| **Query**           | The Cypher query used to retrieve this attribute from the graph                                     |
-| **dtype**           | The data type: `str`, `int`, `float`, `bool`, `date`, `datetime`, `enum`, `url`, or `file`          |
-| **embed_threshold** | Similarity score threshold for semantic search on this field (only applies when Embeddable is true) |
+The threshold can be set **per attribute** — useful when some fields require precision (names, SKUs) and others tolerate fuzziness (descriptions).
 
+## dtype
 
-Two fields deserve extra attention.
+`dtype` must **exactly** match how the data is stored in Grist. If the `price` column contains `"999.00"` (a string with quotes) but you declared `dtype=float`, ETL will either fail or write the value incorrectly. Check the actual data before declaring a type.
 
-**dtype** must exactly match what is stored in your Grist data table. If a price column contains values like `"999.00"` (a string with quotes) but dtype is declared as `float`, ETL will either fail or write the value incorrectly. Check your actual data before declaring a type.
+Supported types:
 
-**Query** is required for any attribute that should be directly retrievable. A missing or empty query here is one of the most common causes of the assistant returning vague or incomplete answers — it knows the attribute exists but cannot reliably fetch its value from the graph.
+- `str` — string;
+- `int`, `float` — numbers;
+- `bool` — `true/false`;
+- `date`, `datetime` — dates (ISO 8601 recommended);
+- `enum` — a value from a fixed set;
+- `url` — http(s) link;
+- `file` — file (linked to storage).
 
-## Embeddable Attributes and Semantic Search
+## query
 
-Attributes marked as **Embeddable** are vectorized during ETL. Their values are stored as embeddings alongside the node in Memgraph, making them available for semantic search — the assistant can find nodes by the meaning of an attribute value, not just by exact match.
+The `query` field is the Cypher used to fetch the attribute from the graph. Required **for any attribute that should be directly retrievable**.
 
-Embeddable is appropriate for human-readable text fields where users might search by phrasing rather than exact value: product names, descriptions, interest names, category labels. It is not appropriate for identifiers, numeric values, boolean flags, or structured codes.
+A missing or empty `query` is one of the most common causes of vague or incomplete answers: the assistant *knows* the attribute exists (it sees the description in the context) but can't reliably pull its value from the graph.
 
-The **embed_threshold** controls how similar a query must be to a stored value before the result is returned. Setting it too low returns loosely related results. Setting it too high misses valid matches. The right threshold depends on how precise the expected queries are for that field — start at 0.7 and adjust based on evaluation results.
+Example for `Product.price`:
+
+```cypher
+MATCH (p:product) WHERE p.id = $node_id RETURN p.price AS price
+```
 
 ## Attribute vs Link
 
-Not every value that references another entity should be an attribute. This is one of the most consequential modeling decisions you will make.
+The most common modeling question: **make a value an attribute or a link?**
 
-```mermaid
-flowchart TD
-    Q["Does the referenced entity\nhave its own attributes?"]
-    Q -- No --> A["Store as a string attribute\nProduct.category = 'Laptops'"]
-    Q -- Yes --> B["Does it participate in\nother relationships?"]
-    B -- No --> A
-    B -- Yes --> C["Model as a separate anchor\nwith a link\nProduct → belongs_to → Category"]
+Use **string attribute** when the value is scalar — a number, a date, a string, a flag — and exists only to describe this entity.
 
-    style A fill:#e8f5e9
-    style C fill:#e3f2fd
+Examples: `Product.price`, `Branch.opening_hours`, `Contract.end_date`.
+
+Use **link** when the value references another entity that has its own attributes or appears in other relationships.
+
+For example, `Product.category_id` → categories table. If categories have their own properties (description, parent_category) or appear in other relationships (`Category → regulated_by → LegalRequirement`), this is a link, not an attribute.
+
+```
+Attribute: Product.category = "Laptops"  (just a string)
+                     ↓
+Link:      Product → belongs_to → Category  (full entity with attributes)
 ```
 
-**Use an attribute** when the value is a scalar — a number, a date, a string, a flag — and it exists only to describe this entity. `Product.price`, `Branch.opening_hours`, `Contract.end_date` are all attributes.
+The practical difference:
 
-**Use a link** when the value references another entity that has its own attributes or appears in other relationships. `Product.category_id` pointing to a categories table is a candidate for a link, not an attribute, if categories have their own properties (like a description or a parent category) or appear in other relationships (like `Category → regulated_by → LegalRequirement`).
+- **String attribute** lets you filter products by category name.
+- **Link to a Category anchor** lets you traverse from products to categories and to everything the category is connected with: regulatory documents, sibling categories, products of related categories.
 
-The practical difference: a string attribute lets you filter products by category name. A link to a Category anchor lets you traverse from products to categories to everything the category is connected to — regulatory documents, related categories, products in sibling categories. The more the referenced entity participates in the graph, the stronger the case for a link.
+The more the target entity participates in the graph, the stronger the case for a link.
 
-## How Attributes Affect the Assistant
+## How it affects the assistant
 
-The full set of attribute definitions is included in the LLM context at query time. The assistant sees which properties exist on each anchor type, what their data types are, and what they mean. This is what allows it to generate valid Cypher filters, apply numeric comparisons correctly, and avoid inventing fields that do not exist in the schema.
+The full set of attribute definitions goes into the LLM context at query time. This lets it:
 
-An attribute that is not declared does not exist from the assistant's perspective, even if the data is present in the graph. Define every property that users might ask about.
+- generate valid Cypher filters (`WHERE p.price < 500`);
+- apply numeric comparisons correctly;
+- avoid inventing fields that don't exist in the schema.
 
-Next step:** [How to Define Attributes] — how to fill in the Attributes table in Grist, with examples, dtype reference, and common mistakes.
+If an attribute isn't declared — it **doesn't exist** for the assistant, even if the data is in the graph.
+
+## Checklist before adding an attribute
+
+- [ ] The data column exists and is populated.
+- [ ] `dtype` matches the actual format.
+- [ ] `embeddable` is set correctly (only for text).
+- [ ] `embed_threshold` is set (if embeddable).
+- [ ] `query` works — verified in Memgraph Lab.
+- [ ] You've considered whether this should be a link.
+
+## Common mistakes
+
+- **`dtype` doesn't match the data.** ETL will fail or write values incorrectly.
+- **`embeddable=true` for numbers/SKUs.** Useless — embedding "999.00" carries no meaning.
+- **Empty `query`.** The assistant knows the attribute exists but can't fetch it.
+- **Description that's too generic.** "Property of product" — the LLM won't know when to use it.
+- **One attribute "does it all".** Don't put JSON in one column if queries on it are important — split it into separate attributes.
+
+## What's next
+
+- [Tuning Embeddings & Thresholds](../guides/tuning-embeddings.md)
+- [Adding Anchors](../guides/adding-anchors.md), [Adding Links](../guides/adding-links.md)

@@ -1,9 +1,14 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import type { GetStaticPaths } from "astro";
+
 import DocsLayout from "../../layouts/DocsLayout.astro";
 
 type Doc = CollectionEntry<"docs">;
+
+/* ========================================
+   STATIC PATHS
+======================================== */
 
 export const getStaticPaths = (async () => {
   const docsEntries: Doc[] = await getCollection("docs");
@@ -18,28 +23,44 @@ export const getStaticPaths = (async () => {
   });
 }) satisfies GetStaticPaths;
 
+/* ========================================
+   PROPS
+======================================== */
+
 interface Props {
   entry: Doc;
 }
 
 const { entry } = Astro.props;
 
-// текущий slug
+/* ========================================
+   CURRENT SLUG
+======================================== */
+
 const currentSlug = entry.data.slug ?? entry.id;
 
-// контент
-const { Content, headings } = await render(entry);
+/* ========================================
+   RENDER CONTENT
+======================================== */
 
-// все доки (для sidebar / flow)
-const allDocs: Doc[] = await getCollection("docs");
+const { Content, headings } = await render(entry);
 ---
 
 <DocsLayout
   currentSlug={currentSlug}
   headings={headings}
-  allDocs={allDocs}
   title={entry.data.title}
 >
-  <h1>{entry.data.title}</h1>
-  <Content />
+
+  <article class="docs-article">
+
+    <Content />
+  </article>
+
 </DocsLayout>
+
+<style>
+.docs-article {
+  width: 100%;
+}
+</style>

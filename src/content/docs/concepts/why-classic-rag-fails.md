@@ -1,94 +1,106 @@
 ---
-title: "Why Classic RAG fails"
-section: "Concepts"
-order: 7
+title: Why Classic RAG Fails
+section: Concepts
+order: 2
 ---
 
-Before diving into Vedana’s architecture, it’s important to understand where classic RAG breaks down.
+# Why Classic RAG Fails
 
-## What is Classic RAG?
+Before diving into Vedana's architecture, it's important to understand exactly where classic RAG breaks down.
 
-Classic RAG connects an LLM to documents:
+## What classic RAG is
 
+Classic RAG connects an LLM to documents with a simple flow:
 
 ```
 Chunks → Embeddings → Top-K → LLM → Answer
 ```
 
+```mermaid
+flowchart LR
+    subgraph "Classic RAG: «All products in category X»"
+        Q1[Question] --> E1[embedding]
+        E1 --> K1[top-K chunks]
+        K1 --> L1[LLM produces<br/>a sample]
+        L1 --> R1[Some products<br/>missed ❌]
+    end
 
-It works well when the answer is contained within a few text fragments.
+    subgraph "Vedana: «All products in category X»"
+        Q2[Question] --> A[Cypher: MATCH ...<br/>WHERE category=X<br/>RETURN p]
+        A --> G[(Memgraph)]
+        G --> R2[All products ✅<br/>with sources]
+    end
+```
 
-## Where it works
+This works well when the answer fits in a few text fragments.
+
+### Where it works
 
 Classic RAG is effective for:
 
-- Summarization  
-- Simple factual questions  
-- Small document search  
-- Approximate answers  
+- summarization;
+- simple factual questions;
+- searching a small document set;
+- approximate answers.
 
-If the answer lives inside one or two paragraphs, RAG is usually enough.
+If the answer lives in one or two paragraphs, RAG is usually enough.
 
 ## Where it breaks
 
-Problems start when queries require completeness, structure, or logic.
+The trouble starts when a query requires **completeness**, **structure**, or **logic**.
 
-### 1. Aggregation (“How many?”)
+### 1. Aggregations ("how many?")
 
-RAG cannot count across a dataset — it guesses from top-K results.
+RAG can't count over a dataset — it guesses based on the top-K results. An answer to "How many of our contracts expire this quarter?" computed from top-K is close to the truth but not the actual number.
 
-### 2. Exhaustive queries (“Show me all”)
+### 2. Exhaustive queries ("show me all")
 
-RAG returns a sample, not the full set. Missing items are invisible.
+RAG returns a sample, not the full set. Missed items are invisible. "All documents that regulate category X" — top-K never guarantees this is *all* of them.
 
 ### 3. Relationship queries
 
-Questions requiring joins, graph traversal, or compatibility checks cannot be answered reliably.
+Questions that require joins, graph traversal, or compatibility checks can't be answered reliably through vector similarity. "Which documents regulate products in category X" — that needs traversing the edges `Product → belongs_to → Category → regulated_by → Document`.
 
 ### 4. Domain logic
 
-RAG does not execute rules. It predicts text.
+RAG doesn't execute rules. It predicts answer-shaped text. Any business validation ("can product A be sold together with product B to client C?") falls apart.
 
-## Root cause
+## The root cause
 
-LLMs do not build a structured model of the domain.  
-They operate on text patterns, not on data or logic.
+The LLM doesn't build a structured model of the domain. It works with text patterns, not with data or logic.
 
 As a result:
 
-- No guaranteed consistency  
-- No ability to enforce rules  
-- No reliable reasoning over systems  
+- no consistency guarantees;
+- no way to enforce rules;
+- no reliable system reasoning.
 
-Classic RAG amplifies this by asking the model to reason over incomplete text fragments.
+Classic RAG amplifies these limitations by asking the model to reason on top of incomplete text fragments.
 
-## What this means
+## What this means in practice
 
-These failures are structural.
+These failures are structural. They can't be fixed by:
 
-They cannot be fixed by:
+- better embeddings;
+- larger context windows;
+- raising top-K.
 
-- better embeddings  
-- larger context windows  
-- increasing top-K  
+Reliable answers need:
 
-Reliable answers require:
-
-- access to full data (not samples)  
-- structured queries (not similarity)  
-- explicit relationships  
-- executable logic  
+- access to **full data** (not a sample);
+- **structured queries** (not similarity);
+- **explicit relationships**;
+- **executable logic**.
 
 Fluency is not correctness.
 
 ## Why Vedana exists
 
-Reliable AI requires more than text retrieval.  
-It requires a system that can:
+Reliable AI requires more than text retrieval. It requires a system that can:
 
-- query structured data  
-- execute logic  
-- ensure completeness  
-- and attach evidence to every answer  
+- query structured data;
+- execute logic;
+- guarantee completeness;
+- attach a source to every answer.
 
-That is the problem Vedana is built to solve.
+That's the problem Vedana is built to solve.

@@ -1,131 +1,151 @@
 ---
-title: "Tools for Vedana"
-section: "Concepts"
+title: Tools for Vedana
+section: Concepts
 order: 6
 ---
 
-## Why Tools Exist
+# Tools for Vedana
 
-Vedana does not let the LLM generate answers freely from text. Instead, the assistant operates through explicit tools – functions it can call to inspect the graph, retrieve data, and produce answers that are grounded in what actually exists in the system.
+## Why tools exist
 
-Think of the LLM as an agent. 
-It receives a question, decides which tool is appropriate, executes it, and uses the result to form an answer. 
-It does not guess. It looks things up.
+Vedana **doesn't let** the LLM generate answers freely from text. The assistant works through explicit tools — functions it can call to:
 
-Vedana's assistant operates as a constrained agent. When it receives a question, it inspects the available tools, selects the one appropriate for the question, executes it, and uses the result to form an answer. If the first result is insufficient, it can continue exploring (calling additional tools or refining its approach) until it has what it needs.
+- inspect what's in the graph;
+- retrieve data;
+- assemble an answer grounded in real system data.
 
-What it cannot do is equally important. The assistant cannot invent tools that do not exist, bypass tool restrictions defined in the playbook, or access data outside the declared data model. Its behavior is bounded by the structure you define. This is by design – it is what makes the system predictable, auditable, and safe to deploy in production.
+The LLM in Vedana is an agent. It receives a question, decides which tool is appropriate, executes it, and uses the result to form an answer. It doesn't guess — it **looks things up**.
 
-## Built-in Tools
+If the first result is insufficient, the agent can keep exploring (call additional tools or refine its approach) until it has what it needs or hits the iteration limit (default 5, see `LLM.create_completion_with_tools`).
 
-Vedana ships with two core tools out of the box: vector search and Cypher.
+What the agent **cannot** do:
 
-### 1. Vector Search Tool
+- invent a tool that doesn't exist;
+- bypass restrictions defined in the playbook;
+- access data outside the declared data model.
 
-Vector search handles **semantic retrieval over text**. It works by embedding the user's query and finding the nearest matching content stored in Memgraph: document chunks, FAQ entries, or other embeddable fields.
+This is by design — it's what makes the system predictable, auditable, and safe to deploy in production.
 
-This tool is designed for questions where the answer lives somewhere in a body of text and needs to be found by meaning rather than by exact match. It handles natural language well, tolerates variation in phrasing, and does not require you to know exactly where the answer is or how it is worded.
+## Built-in tools
 
-Use vector search when is well-suited for questions like "What does the policy say about overtime?" where the answer lives in a document and needs to be found by meaning rather than by structure.
+Vedana ships with two core tools out of the box: `vector_text_search` and `cypher` (see `libs/vedana-core/src/vedana_core/rag_agent.py`).
+
+## When to use which tool
+
+```mermaid
+flowchart LR
+    subgraph "Structural question"
+        Q1["«Opening hours of the<br/>Vilnius branch»"] --> CY[cypher tool]
+        CY --> M[("MATCH (b:branch)<br/>WHERE b.name='Vilnius'<br/>RETURN b.opening_hours")]
+        M --> R1[Exact answer<br/>from the graph]
+    end
+
+    subgraph "Document question"
+        Q2["«What does the policy<br/>say about overtime?»"] --> VS[vector_text_search]
+        VS --> P[("document_chunk.content<br/>cosine similarity")]
+        P --> R2[Grounded answer<br/>from chunks]
+    end
+```
+
+### 1. Vector Search
+
+`vector_text_search` handles **semantic retrieval over text**. It works by embedding the user query and finding the nearest matching content stored in pgvector — document chunks, FAQ entries, or other embeddable fields.
+
+Suited to questions where the answer lives somewhere in text and needs to be found by meaning rather than exact match. Handles natural language well, tolerates phrasing variations.
+
+Arguments (see `VTSArgs` in code):
+
+- `label` — anchor / link name to search;
+- `property` — the specific attribute (must be `embeddable=true`);
+- `text` — text to search similarity against.
+
+Technically `label` and `property` are constrained via an `Enum` schema built from the data model's available vector indices. The LLM can't ask to search a field that doesn't exist.
 
 How it works:
-1. Embeddings are stored in Memgraph.
-2. Query is embedded.
-3. Nearest neighbors are retrieved.
 
-Vector search is useful when:
-- The query is text-heavy.
-- Exact structure is unknown.
-- Semantic matching is required.
+1. Embeddings are already stored in pgvector (populated by the ETL pipeline).
+2. The query text is embedded by the `EMBEDDINGS_MODEL`.
+3. Cosine similarity > threshold → top_n results.
+4. A list of objects with `similarity` and node/edge attributes is returned.
 
-The limitation of vector search is that it does not understand structure and relationships. It cannot reliably traverse the graph, count entities, enforce strict filters, or follow multi-hop paths. For those, you need Cypher.
+**Example (from a real playbook):**
 
-### 2. Cypher Tool
+```
+vector_text_search(label="interest", property="interest_name", text="quokkas")
+```
 
-The Cypher tool handles **structured graph queries**. When called, the LLM generates a Cypher query based on the user's question and the declared data model, runs it against Memgraph, and returns structured results directly from the graph.
+**Where it doesn't work.** Vector search doesn't understand structure or relationships. It can't reliably traverse the graph, count entities, apply strict filters, or follow multiple hops. For that you need Cypher.
 
-Cypher operates on what has been explicitly modeled – anchors, attributes, and links. It does not approximate or infer. If you ask how many products belong to a given category, it counts them. If you ask which branches carry a specific item, it traverses the relationship and returns every match. The answer is exact, complete, and traceable back to the data.
+### 2. Cypher
 
-Use Cypher when the question has a definite answer that depends on structure. 
+`cypher` handles **structured graph queries**. On call, the LLM generates a Cypher query based on the user's question and the data model description, runs it against Memgraph, and gets a structured result.
 
-For example: 
+Cypher operates only on what is **explicitly modeled** — anchors, attributes, links. It does not approximate or infer. If you ask how many products are in category X, it **counts** them. If you ask which branches stock product Y, it walks the relationship and returns **all** matches.
 
-"What are the opening hours of the Vilnius branch?"
+Arguments:
 
-"Which requirements apply to this product?"
+- `query` — Cypher query.
 
-"Which documents regulate category X?" 
+The query is executed in read-only mode (`execute_ro_cypher_query`); the result is limited to 30 rows (`rows_limit`).
 
-These are questions where correctness matters more than approximation, and where the answer should never be guessed.
-
-Cypher is what makes Vedana more than a document search system. It enables deterministic reasoning: the factual correctness of an answer comes from the graph, not from the model's best guess.
-Cypher is the mechanism through which the knowledge graph is actually used.
-
-Used for:
-- Attribute filtering.
-- Relationship traversal.
-- Deterministic domain queries.
-- Multi-hop graph exploration.
-    
-How it works:
-1. LLM generates Cypher query.
-2. Query runs against Memgraph.
-3. Structured results are returned.
-    
-Cypher is used when:
-- Structure matters.
-- Relationships are important.
-- Filters must be exact.
-
-## Tool Selection
-
-The assistant selects tools dynamically based on the type of question, the available anchor types, and the structure of the data model. It may choose **vector search**, **Cypher**, or a **combination of both**.
-
-Tool selection can also be explicitly governed by a **playbook**. Playbooks let you define which tool should be used for which type of question, in what order, and what fallback behavior is allowed. 
-For example, you can instruct Vedana to always prefer Cypher for product queries, use vector search only for document retrieval, or never answer a question without tool evidence.
-
-The LLM evaluates:
-- Type of question.
-- Available anchor types.
-- Data model structure.
-    
 **Example:**
 
-**Question:** *"What are the opening hours of the Moscow branch?"*
+```cypher
+MATCH (p:Product)-[:OFFER_belongs_to_CATEGORY]->(c:Category)
+WHERE c.category_name = "Embedded lighting"
+RETURN p
+LIMIT 30
+```
 
-**Correct behavior:** *Use Cypher (structured lookup)*.
-    
-**Question:** *"What does the policy say about overtime?"*
+**When you need it:**
 
-**Correct behavior:** *Use vector search (document retrieval).*
+- attribute filtering (`WHERE price < 500`);
+- relationship traversal (`MATCH (a)-[:LINK]->(b)`);
+- deterministic domain queries;
+- multi-hop graph exploration.
 
-For **hybrid retrieval**, a typical flow looks like this:
-- Vector search retrieves candidate content from documents.
-- A Cypher query narrows or enriches the results using graph structure.
-- The LLM formats the final answer from the combined output.
+## Tool selection
 
-This gives the system both semantic flexibility and structural precision.
+The assistant picks tools dynamically based on:
 
-## Extending Tools
+- the question type;
+- the available anchor types;
+- the data model structure;
+- the playbook (Queries) instructions.
 
-Tools are extensible.
-If your domain requires capabilities beyond vector search and Cypher, you can implement custom tools to:
-- Query external APIs.
-- Perform calculations.
-- Integrate ERP systems.
-- Execute domain-specific logic.
+It can pick **vector search**, **cypher**, or **a combination of both**.
 
-Custom tools must:
-- Have clear input/output schema.
-- Be deterministic.
-- Be registered in the tool registry.
-    
-See [How to Write a Custom Tool] for implementation details.
+**Example 1.** "What are the opening hours of the Moscow branch?" → Cypher (structured lookup on `Branch.opening_hours`).
 
-## Determinism Boundary
+**Example 2.** "What does the policy say about overtime?" → vector search over document chunks.
+
+**Hybrid scenario:**
+
+1. Vector search finds candidate chunks of the document.
+2. Cypher narrows the result through graph structure.
+3. The LLM assembles the final answer.
+
+## Extending tools
+
+Tools are extensible. If your domain needs capabilities beyond Cypher and vector search, you can implement a custom tool:
+
+- external API queries;
+- calculations;
+- ERP integrations;
+- domain logic.
+
+A custom tool must:
+
+- have a clear input/output schema (`pydantic.BaseModel` for arguments);
+- be deterministic;
+- be registered with the agent.
+
+See [Writing a Custom Tool](../guides/custom-tools.md).
+
+## The determinism boundary
 
 Tools are deterministic. The LLM is probabilistic.
-This distinction matters. The correctness of an answer in Vedana comes from the tools, from what the graph actually contains and what the query actually returns. The LLM's role is to select the right tool and format the result into readable language. It does not determine what is true. The data does.
-As long as tool results are stable and the data model is well-defined, the structural correctness of answers is stable too.
 
-Tool usage defines how Vedana explores the world.
+This separation is the point: the correctness of an answer in Vedana follows from the tools — from what's actually in the graph and what the query actually returns. The LLM's job is to pick the right tool and format the result in readable language. **The LLM doesn't define what's true. The data does.**
+
+As long as tool results are stable and the data model is well-defined, the structural correctness of answers is stable too.

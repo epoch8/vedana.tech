@@ -79,6 +79,105 @@
   margin-bottom: 0.5rem;
 }
 
+/* ---------- MEDIA / IMAGES ---------- */
+
+.content :global(img) {
+  display: block;
+
+  max-width: 100%;
+  height: auto;
+
+  margin: 1.75rem auto 2rem;
+
+  border-radius: var(--radius-md);
+}
+
+.content :global(p > img) {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.content :global(figure) {
+  margin: 2rem 0;
+}
+
+.content :global(figure img) {
+  margin: 0 auto;
+}
+
+.content :global(figcaption) {
+  margin-top: 0.75rem;
+
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* ---------- TABLES ---------- */
+
+.content :global(table) {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+
+  margin: 1.75rem 0 2rem;
+
+  overflow-x: auto;
+
+  border-collapse: collapse;
+  border-spacing: 0;
+
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+
+  color: var(--color-text);
+}
+
+.content :global(thead) {
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.content :global(th),
+.content :global(td) {
+  padding: 0.75rem 1rem;
+
+  border: 1px solid rgba(15, 23, 42, 0.12);
+
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.content :global(th) {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.content :global(td) {
+  color: var(--color-text-muted);
+}
+
+.content :global(tr:nth-child(even) td) {
+  background: rgba(15, 23, 42, 0.025);
+}
+
+.content :global(th:first-child),
+.content :global(td:first-child) {
+  border-left-color: rgba(15, 23, 42, 0.16);
+}
+
+.content :global(th:last-child),
+.content :global(td:last-child) {
+  border-right-color: rgba(15, 23, 42, 0.16);
+}
+
+.content :global(td code),
+.content :global(th code) {
+  white-space: nowrap;
+}
+
 /* ---------- CODE ---------- */
 
 .content pre {
@@ -96,7 +195,9 @@
 }
 
 .content p > code,
-.content li > code {
+.content li > code,
+.content td > code,
+.content th > code {
   background: var(--color-code-inline-bg);
   padding: 0.2rem 0.4rem;
   border-radius: var(--radius-sm);
@@ -120,5 +221,23 @@
     width: 100%;
     height: auto;
     position: static;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .content :global(img) {
+    margin: 1.25rem auto 1.5rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .content :global(table) {
+    font-size: 13px;
+  }
+
+  .content :global(th),
+  .content :global(td) {
+    padding: 0.65rem 0.75rem;
   }
 }

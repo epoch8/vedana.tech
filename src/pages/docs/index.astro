@@ -1,26 +1,19 @@
 ---
+import { getCollection, render } from "astro:content";
 import DocsLayout from "../../layouts/DocsLayout.astro";
-import { getDocsNavigation } from "@/lib/docs/navigation";
 
-const sections = await getDocsNavigation();
+const docs = await getCollection("docs");
 
-/* ========================================
-   SAFE SORT (не мутируем)
-======================================== */
+const readme =
+  docs.find((doc) => {
+    const id = doc.id.toLowerCase();
 
-const sortedSections = [...sections].sort(
-  (a, b) => a.order - b.order
-);
+    return id === "readme" || id.endsWith("/readme");
+  }) ?? null;
 
-/* ========================================
-   FLAT FLOW
-======================================== */
-
-const flatDocs = sortedSections.flatMap((section) =>
-  [...section.items].sort((a, b) => a.order - b.order)
-);
-
-const first = flatDocs[0];
+const { Content } = readme
+  ? await render(readme)
+  : { Content: null };
 ---
 
 <DocsLayout
@@ -28,41 +21,14 @@ const first = flatDocs[0];
   title="Vedana Docs"
 >
   <div class="docs-home">
-
-    <section class="hero">
-      <h1>Vedana</h1>
-
-      <p class="lead">
-        Vedana is a configurable Semantic RAG system that answers questions over structured business knowledge 
-        by combining data-model-aware reasoning, graph queries, and semantic vector search.
-      </p>
-
-      {first && (
-        <a class="start-button" href={first.href}>
-          Start →
-        </a>
-      )}
-    </section>
-
-    <section class="sections">
-      {sortedSections.map((section) => (
-        <div class="section">
-          <h3>{section.title}</h3>
-
-          <ul>
-            {[...section.items]
-              .sort((a, b) => a.order - b.order)
-              .map((item) => (
-                <li>
-                  <a href={item.href}>
-                    {item.title}
-                  </a>
-                </li>
-              ))}
-          </ul>
-        </div>
-      ))}
-    </section>
-
+    {Content && <Content />}
   </div>
 </DocsLayout>
+
+<style>
+.docs-home {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 16px 80px;
+}
+</style>

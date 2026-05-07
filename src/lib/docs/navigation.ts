@@ -24,34 +24,59 @@ export type DocSection = {
 
 export const SECTION_ORDER = [
   {
-    id: "Concepts",
-    title: "Concepts",
+    id: "Overview",
+    title: "Overview",
+    order: 0,
+  },
+  {
+    id: "Getting Started",
+    title: "Getting Started",
     order: 1,
   },
   {
-    id: "Quick Start",
-    title: "Quick Start",
+    id: "Concepts",
+    title: "Concepts",
     order: 2,
   },
   {
-    id: "Data model",
-    title: "Data model",
+    id: "Architecture",
+    title: "Architecture",
     order: 3,
   },
     {
-    id: "Preparing data for Vedana",
-    title: "Preparing data for Vedana",
+    id: "Data Model",
+    title: "Data Model",
     order: 4,
   },
       {
-    id: "Guides",
-    title: "Guides",
+    id: "Data Ingestion",
+    title: "Data Ingestion",
     order: 5,
   },
-        {
-    id: "Example Dataset",
-    title: "Example Dataset",
-    order: 5,
+  {
+    id: "API Reference",
+    title: "API Reference",
+    order: 6,
+  },
+  {
+    id: "Guides",
+    title: "Guides",
+    order: 7,
+  },
+  {
+    id: "Product",
+    title: "Product",
+    order: 8,
+  },
+  {
+    id: "Operations",
+    title: "Operations",
+    order: 9,
+  },
+  {
+    id: "Contributing",
+    title: "Contributing",
+    order: 10,
   },
 ];
 

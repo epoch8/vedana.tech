@@ -1,94 +1,111 @@
 ---
-title: How to Ingest Documents
-section: "Guides"
-
+title: Adding Documents
+section: Guides
+order: 6
 ---
 
-_This guide assumes you understand what document chunks are and how Vedana uses them. If not, read [Documents and Document Chunks](https://vedana.tech/docs/preparing-data-for-vedana/documents-and-document-chunks/) first._
+# Adding Documents
 
-## Before You Start
+Documents and their chunks are built-in functionality in Vedana. The default model already includes anchors `document` and `document_chunk` with retrieval pre-configured. You just need to load the files — chunking, embeddings, and search work out of the box.
 
-Make sure your source files are in a supported format (PDF, DOCX, TXT, Markdown, HTML, or exported Google Docs) and that text extraction has been reviewed for quality. Garbled or poorly extracted text will degrade retrieval regardless of how well the rest of the pipeline is configured.
+## 1. Prepare the files
 
-If your documents contain tables, price lists, or other structured content that users might query with specific values or filters, consider extracting that content as structured data alongside the document chunks. 
-See [Adding Structured Data] for guidance on when and how to do this.
+Supported:
 
-## Document Ingestion Process
-### Step 1 — Register Your Documents
+- PDF, DOCX, TXT, Markdown, HTML, exported Google Docs, CSV (as text).
 
-Open **Grist → Data → anchor_document** and create one row per file.
+Before uploading:
 
-Each row requires the following fields:
+- check that the text is extracted correctly (especially from PDF — many parsers mangle tables and columns);
+- remove boilerplate pages (cover pages, tables of contents) if they hurt semantic search;
+- split very large files into logical sections if they're too heterogeneous.
 
-| Field                              | Description                                                       |
-| ---------------------------------- | ----------------------------------------------------------------- |
-| `document_id`                      | A unique, stable identifier for this document (e.g. `policy-001`) |
-| `document_name`                    | A human-readable name                                             |
-| `document_summary`                 | The description of document (e.g. `policy`, `manual`, `contract`) |
-| `link_document_has_document_chunk` | Chunks that will be tied to this document.                        |
-| ...                                | Additional fields you deem necessary                              |
+## 2. Upload to Grist > Data > Documents
 
-You can add any domain-specific metadata that will be useful for filtering or attribution later — for example, an `owner` field, a `department` field, or an `effective_date`. These are optional but recommended if users are likely to ask questions that reference these properties.
+In the default model the Grist Data doc has a `documents` table:
 
-### Step 2 — Create the Chunks
+| document_id | title                       | source_url                                | content      |
+| ----------- | --------------------------- | ----------------------------------------- | ------------ |
+| doc-001     | Returns and exchanges       | https://acme.example.com/policy/refund    | (full text) |
+| doc-002     | Warranty policy 2026        | https://acme.example.com/policy/warranty  | (full text) |
 
-Open **Grist → Data → anchor_document_chunks** and add one row for each chunk of text.
+The `content` field is the full extracted text. ETL chunks it later.
 
-Each row requires:
+Alternatively, if there are many documents:
 
-| Field         | Description                                                             |
-| ------------- | ----------------------------------------------------------------------- |
-| `chunk_id`    | A unique identifier for this chunk (e.g. `policy-001-chunk-03`)         |
-| `document_id` | The ID of the parent document — must match a row in the Documents table |
-| `chunk_text`  | The raw text content of this chunk                                      |
+- store them in an S3 bucket and put the link in `source_url`, while extracting `content` in custom ETL;
+- keep the texts in another DB and load them through a custom ETL step.
 
-Optional but useful: `section`, `page_number`, or any other positional metadata that will help the assistant attribute retrieved content accurately.
+## 3. Configure chunking (if needed)
 
-**Chunking guidance:**
+The default parameters (300–800 tokens, overlap 0–50) live in the ETL step `prepare_nodes` for documents. If you need to change them, override the step in custom ETL (see [Custom ETL](../data-ingestion/custom-etl.md)).
 
-Aim for 300–800 tokens per chunk. If you are working with long, continuous documents where meaning spans multiple paragraphs — such as legal policies or technical specifications — add overlap between adjacent chunks so that retrieved chunks carry enough surrounding context to be understood on their own. A 10–15% overlap (roughly 50–100 tokens at the boundary) is a reasonable starting point.
+When to change:
 
-Avoid splitting mid-sentence or at arbitrary character counts. Split at natural boundaries: paragraph breaks, section headings, or numbered list items. The goal is for each chunk to be independently meaningful when read in isolation.
+- very short documents (FAQ-style) → smaller chunks, no overlap;
+- very long structured documents (contracts, regulations) → more overlap so heading terms appear in detail chunks.
 
-### Step 3 – Update the Data Model
+## 4. Run ETL
 
-Go to **Grist → Data Model** and confirm that the `document` and `document_chunk` anchor types are declared. If you are working with the default Vedana setup, these are pre-configured and no changes are needed. If you have added custom metadata fields to your anchor_documents or document_chunks tables, add the corresponding attribute definitions before running ETL.
+Backoffice → ETL → **Run Selected** for:
 
-Click **Update Data Model**  to apply any changes.
+- `data_model_steps` (if you changed the default model);
+- `grist_steps` (load documents);
+- `default_custom_steps` (chunk them);
+- `memgraph_steps` (load into the graph + build embeddings).
 
-### Step 4 – Configure Retrieval Behavior
+## 5. Verify in Memgraph Lab
 
-Open **Grist → Data Model → Queries** and confirm there is a query entry covering document-related questions. This entry tells the assistant which tool to use, how many chunks to retrieve, how to format the response, and whether to include source citations.
+```cypher
+MATCH (d:document)-[:CHUNK_belongs_to_DOCUMENT]-(c:document_chunk)
+RETURN d.title, count(c) AS num_chunks
+ORDER BY num_chunks DESC
+```
 
-A minimal query entry for document retrieval looks like this:
+This should show that documents have been split into chunks.
 
-- **Query type:** Document questions (e.g. "What does the policy say about X?")
-- **Tool:** `VTS_tool` (vector text search)
-- **Steps:** Embed the query, retrieve top-N chunks by similarity, synthesize answer from chunk content
-- **Output:** Include source document name and chunk reference
+```cypher
+MATCH (c:document_chunk) RETURN c.content LIMIT 3
+```
 
-If this entry is missing or incomplete, the assistant will not reliably route document questions to vector search. See [Configuring the Playbook] for full guidance on query entries.
+The chunk content should be human-readable.
 
-### Step 5 — Run ETL
+## 6. Verify in chat
 
-Open the Backoffice at `http://localhost:8000`, navigate to the ETL section, and run the pipeline. Confirm that the following steps complete successfully:
+Ask a document question:
 
-- Data model load
-- Data load
-- Embedding generation
+> "What does our return policy say about returns after 14 days?"
 
-After ETL completes, each document chunk exists as a node in Memgraph with an embedding attached. The assistant can now retrieve and use them.
+In Details a tool call `vector_text_search(label="document_chunk", property="content", text="...")` should appear. The assistant's answer should be grounded in the retrieved chunks.
 
-## Scaling Beyond Manual Entry
+## 7. If answers are bad
 
-For large document volumes, adding chunks row by row in Grist is not practical. In that case, use an automated chunking pipeline to process files in bulk and either batch-upload the results to Grist or write directly to Memgraph via custom ETL.
+| Symptom                                            | What to fix                                                          |
+| -------------------------------------------------- | -------------------------------------------------------------------- |
+| The assistant doesn't find a document that exists  | embed_threshold too high → lower to 0.55–0.65 for chunk content.    |
+| The assistant finds a lot of irrelevant material   | embed_threshold too low → raise it.                                  |
+| The assistant gets facts confused                   | Chunks are too big — chunk smaller.                                   |
+| Context is lost between chunks                      | Add overlap (10–20% of chunk size).                                   |
+| It doesn't call vector search at all              | Playbook problem — add a "document question" scenario.               |
 
-If writing directly to Memgraph, the pipeline must: create a document anchor node for each file, create a chunk anchor node for each chunk, generate and attach embeddings, and link each chunk back to its parent document. The data model must be defined in Grist before the pipeline runs — direct writes to Memgraph do not bypass schema validation.
+## 8. Source URLs / citations
 
-For implementation guidance, see [Custom ETL for Vedana].
+To let the assistant cite sources, in the playbook (Queries) write:
 
-## Google Drive and Google Docs
+```
+3) Format the answer as: "<answer text> (Source: <document.title>, <document.source_url>)"
+```
 
-Vedana does not include a built-in connector for Google Drive or Google Docs. To ingest content from either source, export the documents using the Google Drive API or Google Docs API, convert the exported content to plain text, chunk the text, and upload it to Grist or ingest it via custom ETL using the steps above.
+The LLM will then automatically add the link to the answer.
 
-See [Custom ETL for Vedana] for implementation details.
+## Best practices
+
+- **Always pair documents with FAQ.** Users ask basic questions — let FAQ answer them deterministically. Documents stay for deeper / specific questions.
+- **Don't dump the whole knowledge base into one file.** Better to have dozens of documents with meaningful titles — improves vector search results.
+- **Run the golden dataset on document questions regularly** — you'll quickly notice if a new document broke existing scenarios.
+
+## What's next
+
+- [Tuning Embeddings](./tuning-embeddings.md) — how to choose thresholds.
+- [Adding FAQ Entries](./adding-faq-entries.md) — for canonical answers.
+- [Adding Structured Data](./adding-structured-data.md) — hybrid approach (document + structured attributes).

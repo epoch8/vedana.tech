@@ -1,40 +1,39 @@
 ---
-title: "Playbook for Vedana"
-section: "Concepts"
-order: 4
+title: Playbook for Vedana
+section: Concepts
+order: 7
 ---
 
-## What Is a Playbook
+# Playbook
 
-While the data model defines what exists, the playbook defines how to respond. It is the behavioral configuration for Vedana,  controlling how the assistant detects intent, selects tools, structures its responses, and constrains its behavior.
-Playbooks make the agent predictable. Without one, the LLM may choose suboptimal tools, mix retrieval strategies, or answer too generically. With one, behavior becomes structured, constrained, and auditable.
+## What a playbook is
 
-## Where the Playbook Lives
+If the data model describes **what exists**, the playbook describes **how to react**. It's the behavioural configuration of Vedana: which intents the assistant recognises, which tools it calls and in what order, how it shapes and constrains its answers.
 
-The playbook is stored in **Grist** > **Data Model** > **Queries**.
-It is part of configuration and loaded during runtime.
+The playbook makes the agent predictable. Without one the LLM may pick a sub-optimal tool, mix retrieval strategies, or give too generic an answer. With one, behaviour becomes structured, constrained, and auditable.
 
-Because it lives in Grist:
-- It can be edited without redeploy
-- It is versionable
-- It is environment-specific
+## Where the playbook lives
 
-Playbook updates affect agent behavior immediately after reload.
+The playbook lives in **Grist > Data Model > Queries**. It's part of the configuration and is loaded at runtime on every request through `DataModel.get_queries()`.
 
-## Playbook Structure
+Because the playbook is data in Grist:
 
-Each playbook is organized around intents — discrete types of user requests. For each intent, the playbook defines:
+- you can change it without redeploying code;
+- it is versionable through Grist's mechanisms;
+- it is environment-specific (you can keep separate Grist documents for dev and prod).
 
-- The intent name and description
-- Which tools to use and in what order
-- How to format and constrain the response
-- Any additional behavioral rules
+Changes take effect right after the data model is reloaded.
 
-Each intent corresponds to a type of user request.
+## Structure
 
-## Intent-Based Behavior
+Each row in the Queries table is one intent. Fields:
 
-Playbook defines how Vedana reacts to different intents.
+- **query_name** — a short name or pattern for the question (`Who likes <interest>?`, `Give product information`).
+- **query_example** — a step-by-step instruction: which tool to call first, with what parameters, what to do with the result, which tool to call next.
+
+## Intent-based behaviour
+
+The playbook defines how Vedana reacts to different intents.
 
 Example intents:
 
@@ -42,82 +41,81 @@ Example intents:
 - "Give delivery information"
 - "Find branch address"
 - "Explain policy"
-    
-Each intent may require a different retrieval strategy. The playbook makes this explicit.
 
-Product information is structured data, so the playbook directs the assistant to prefer Cypher — querying the Product anchor, filtering by name or SKU, and traversing related attributes. Vector search is used only as a fallback. Cypher guarantees deterministic results, while similarity search does not.
+Each intent may need its own retrieval strategy:
 
-Delivery information typically lives in text documents, so the playbook directs the assistant to use vector search over document chunks, retrieve the relevant policy sections, and format the answer from what it finds.
+- **Product information** — structured data; the playbook tells the assistant to prefer Cypher: query the `Product` anchor, filter by name or SKU, traverse related attributes. Vector search is a fallback only.
+- **Delivery information** — usually lives in text documents; the playbook routes to vector search over document chunks, retrieving the relevant policy sections and shaping the answer from them.
 
-Branch locations, policy explanations, compliance mappings — each intent gets its own clearly defined retrieval path and response format.
-
-### Example: Product Information
+### Example: product information
 
 Intent: "Give information about a product"
 
-Behavior defined in playbook:
-- Prefer Cypher tool
-- Query Product anchor
-- Filter by product name or SKU
-- Traverse related attributes
-- Only use vector search as fallback
-    
-Why:
-Product information is structured.  
-Cypher guarantees deterministic results.
+Playbook behaviour:
 
-### Example: Delivery Information
+- prefer the Cypher tool;
+- query the `Product` anchor;
+- filter by name or SKU;
+- traverse related attributes;
+- use vector search only as a fallback.
+
+Why: product information is structured; Cypher gives deterministic results.
+
+### Example: delivery information
 
 Intent: "Give delivery information"
 
-Behavior defined in playbook:
-- Use vector search
-- Search document_chunks
-- Retrieve relevant policy sections
-- Format answer from retrieved chunks
-    
-Why:
-Delivery details are often located in text documents.  
-Vector search is appropriate.
+Behaviour:
 
-## What Playbook Controls
-**Tool selection**. You can specify that an intent must always use Cypher, prefer vector search, use hybrid retrieval, or never answer without tool results. This prevents random tool selection.
+- use vector search;
+- search `document_chunks`;
+- retrieve relevant policy sections;
+- shape the answer from the retrieved chunks.
 
-**Response instructions**. You can define exactly what each response should contain: price and availability for product queries, address and phone number for location queries, cited document chunks for policy queries. Responses become consistent and domain-specific rather than generically helpful.
+Why: delivery details are usually in text documents; vector search is appropriate.
 
-**Behavioral constraints**. The playbook acts as a guardrail. It prevents the assistant from improvising logic that should be deterministic. Without Playbook LLM may choose suboptimal tools, mix retrieval strategies and give a generic answer. With Playbook behaviour becomes structured, constrained and auditable.
+## What the playbook controls
 
-# Relationship to Data Model
+**Tool selection.** You can specify that an intent always uses Cypher, or prefers vector search, or applies a hybrid scheme, or never answers without tool results. This removes random tool choice.
 
-Data model defines what can be queried.  
-Playbook defines how it should be queried.
-Together, they fully specify runtime behavior: one defines the structure of the domain, the other defines the rules for navigating it.
+**Response instructions.** You can describe what each answer should contain for each intent: price and availability for product queries, address and phone for location queries, cited document chunks for policy queries. Answers become consistent and domain-specific instead of generic.
 
-# How to add new scenario to Playbook
+**Behavioural constraints.** The playbook is a guardrail. It prevents the assistant from improvising where things should be deterministic.
 
-To add a new instruction for the assistant:
+## Relationship to the data model
 
-1. Go to **Grist** > **Data Model** > **Queries**.
-2. Create a new row describing the following:
-   - **Query type** – What kind of user question this instruction handles.
-   - **Tool selection** – Which tools the assistant should use:
-     - VTS_tool for semantic search
-     - Cypher_tool for structured graph queries
-   - **Step-by-step logic** – The reasoning steps the assistant should follow.
-   - **Output format** – How the final response should be structured.
+- The data model describes **what can be queried**.
+- The playbook describes **how it should be queried**.
 
-<img src="/images/Playbook.png" alt="Hero" width="800" class="center-image" />
+Together they fully specify runtime behaviour: one defines the structure of the domain, the other the rules for navigating it.
 
-In the `query_name` column, specify the type of user question.
-In the `query_example` column, write the assistant instruction (prompt) that explains how to answer that type of query.
+## How to add a new scenario
 
-**Example structure**
+![Playbook in Grist](../images/Playbook.png)
 
-- When to apply: Define the use case (e.g., "document-related questions", "product compatibility checks").
-- Search strategy: Choose whether to start with vector search, follow with a structured query, or combine both.
-- Answer construction: Explain how the assistant should generate the final answer.
+1. Open **Grist > Data Model > Queries**.
+2. Create a row:
+   - `query_name` — the type of question.
+   - `query_example` — the step-by-step instruction for the assistant.
+3. In the backoffice → ETL, refresh the data model (run `data_model_steps`).
 
-The assistant uses these instructions to select the appropriate strategy and tools when responding to user questions.
+Example `query_example`:
 
-3. Update the Data Model.
+```
+1) Use vector_text_search to get the interest node:
+vector_text_search(on="node", label="interest", property="interest_name", text='<interest>')
+retrieve "node_id"
 
+2) Use Cypher to get all persons connected via PERSON_has_INTEREST:
+MATCH (p:person)-[:PERSON_has_INTEREST]->(i:interest)
+WHERE i.id=$node_id
+RETURN p.person_name, i.interest_name
+```
+
+**Structure of a good scenario:**
+
+- **When to apply** — describe the use case (document questions, product compatibility checks).
+- **Search strategy** — vector → Cypher, Cypher → vector, or a combination.
+- **Answer construction** — how exactly the final answer is built.
+
+The more precise the steps, the more stable the assistant's behaviour.

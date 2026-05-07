@@ -1,113 +1,144 @@
 ---
-title: How to Add Structured Data
-section: "Guides"
-
+title: Adding Structured Data
+section: Guides
+order: 7
 ---
 
+# Adding Structured Data
 
-_This guide assumes you understand what anchors, attributes, and links are. If not, read [Structured Data](https://vedana.tech/docs/preparing-data-for-vedana/structured-data/) and the [Data Model] section first._
+A step-by-step scenario: how to load structured data (products, contracts, branches) into Vedana.
 
-## Before You Start
+## 1. Describe the data model
 
-Make sure your source data is in a tabular format where each row represents one entity and each column represents a property or a reference to another entity. Data that doesn't meet this structure needs to be cleaned or reorganized before ingestion.
+Before loading data, describe the schema in **Data Model**:
 
-If your structured data is embedded inside unstructured documents (price tables in a PDF, address lists in a handbook, contract terms in a policy file) extract it into a clean table first. See [Extracting Structure from Documents] below.
+- anchors (`product`, `category`, `branch`);
+- their attributes;
+- the links between them.
 
-## Step 1 — Decide the Mapping
+If you don't, the data lands in the graph but the assistant won't know about it.
 
-Before uploading anything, map each column in your table to one of three roles. This is the most important step: errors here cause ETL failures or unreliable retrieval later.
+See [Setting Up Data Model](./setting-up-data-model.md).
 
-For each table, answer three questions:
+## 2. Prepare tables
 
-**What is the anchor?** The anchor is the entity each row represents. A products table → Product anchor. A branches table → Branch anchor. One row becomes one node.
+In the **Grist Data doc**, create a table per anchor.
 
-**Which columns are attributes?** Attributes are scalar properties of the entity — strings, numbers, booleans, dates. A column like `price (float)` or `city (string)` is an attribute.
+### `products`
 
-**Which columns are links?** A column is a link if it holds a reference to another entity (typically a foreign key). A `category_id` column referencing a categories table becomes a `belongs_to` link rather than a string attribute.
+| product_id | name      | description           | price | in_stock | category_id   |
+| ---------- | --------- | --------------------- | ----- | -------- | -------------- |
+| p-001      | MacBook Air | M2 chip laptop, 13"   | 1199  | true     | cat-laptops    |
+| p-002      | Dell XPS    | Premium ultrabook     | 1299  | true     | cat-laptops    |
 
-A completed mapping for a products table looks like this:
+The columns map to the `product` anchor's attributes. The `category_id` column will become a `PRODUCT_belongs_to_CATEGORY` edge (see step 3).
 
-|Column|Role|Type|
-|---|---|---|
-|`product_id`|Anchor primary key|string|
-|`name`|Attribute|string|
-|`price`|Attribute|float|
-|`in_stock`|Attribute|boolean|
-|`category_id`|Link → Category anchor|—|
+### `categories`
 
-When you're unsure whether something should be an attribute or a link, ask: does the target have its own attributes, or will it participate in other relationships? If yes, model it as a link. If it's just a plain value that will only ever be read, an attribute is simpler and sufficient.
+| category_id   | name    |
+| -------------- | ------- |
+| cat-laptops   | Laptops |
+| cat-monitors  | Monitors|
 
-## Step 2 — Clean Your Table
+### `branches`
 
-Before uploading to Grist, make sure your table has genuine tabular structure. The most common causes of failed ingestion are:
+| branch_id     | name           | address                                  | opening_hours          |
+| -------------- | -------------- | ----------------------------------------- | ---------------------- |
+| b-vno-01       | Acme Vilnius   | Gedimino pr. 1, Vilnius                  | Mon-Fri 09-21, Sat 10-18, Sun closed |
 
-- Merged cells across rows or columns
-- Multi-row headers (column names split across two rows)
-- Mixed data types within a single column (numbers and strings in the same price field)
-- Visual formatting used as structure (color-coded rows, manually aligned text)
-- Comma-separated values inside a single cell (multiple categories in one field)
+## 3. Connect tables via Links
 
-Each column must contain one data type, consistently, in every row. Each row must represent exactly one entity. If a column contains a comma-separated list, it needs to be split into a separate relationship table before ingestion.
+In **Data Model > Links**, set `anchor1_link_column_name` / `anchor2_link_column_name` for each link:
 
-## Step 3 — Upload the Table to Grist
+| anchor1  | anchor2  | sentence                       | anchor1_link_column_name |
+| -------- | -------- | ------------------------------ | ------------------------ |
+| product  | category | `PRODUCT_belongs_to_CATEGORY`  | category_id              |
 
-Open **Grist → Data** and create a new table. If you have an existing CSV or Excel file, you can import it directly. Grist accepts both formats.
+This tells ETL: "Take the `category_id` column in the products table, find the node in `category` by that id, and create an edge."
 
-Name the table clearly and consistently with the anchor type it will represent. A table named `products` maps to a Product anchor; a table named `branches` maps to a Branch anchor. Naming matters because ETL uses the table name to identify the anchor type.
+## 4. Run ETL
 
-## Step 4 — Define the Data Model
+Backoffice → ETL → **Run Selected**.
 
-Open **Grist → Data Model** and declare the structure you decided in Step 1.
+ETL sequentially:
 
-**In the Anchors table**, add one row for the anchor type this table represents. Fill in the noun (singular: `Product`, not `Products`), a clear description, an ID example, and the Cypher query for retrieval. See [Anchors](https://vedana.tech/docs/data-model/anchors/) for full field definitions.
+1. Reads the data model from Grist (`data_model_steps`).
+2. Reads the data from Grist (`grist_steps`).
+3. Prepares nodes / edges (`default_custom_steps`).
+4. Creates indexes and loads into Memgraph (`memgraph_steps`).
+5. Builds embeddings for embeddable attributes (`memgraph_steps` / `generate_embeddings`).
 
-**In the Attributes table**, add one row per column that is an attribute. For each row, specify the attribute name, the data type, the anchor it belongs to, and whether the value should be embeddable for semantic search. See [Attributes](https://vedana.tech/docs/data-model/attributes/) for full field definitions.
-
-**In the Links table**, add one row per column that is a link. Specify the source anchor, the target anchor, the edge label (e.g. `belongs_to`), and the Cypher query for traversal. See [Links](https://vedana.tech/docs/data-model/links/) for full field definitions.
-
-Click **Update Data Model** when done. ETL will validate the data against this schema. If the schema is missing or incomplete, ingestion will fail.
-
-## Step 5 — Run ETL
-
-Open the Backoffice at `http://localhost:8000` (or `http://localhost:9000`), navigate to the ETL section, and run the pipeline. Confirm that the following steps complete successfully:
-
-- Data model load
-- Data load
-- Embedding generation (if any attributes are marked embeddable)
-
-After ETL completes, every row in your table exists as a typed node in Memgraph with the declared attributes and links. Run a Cypher query in Memgraph Lab to confirm:
-
-cypher
+## 5. Verify in Memgraph Lab
 
 ```cypher
-MATCH (p:Product)
-RETURN p.product_id, p.name, p.price
-LIMIT 10
+// node counts per type
+CALL llm_util.schema() YIELD * RETURN *
+
+// product → category links
+MATCH (p:product)-[:PRODUCT_belongs_to_CATEGORY]->(c:category)
+RETURN p.name, c.name LIMIT 10
+
+// a structural query check
+MATCH (p:product) WHERE p.price < 1500 RETURN p.name, p.price ORDER BY p.price
 ```
 
-If nodes are missing or attributes are wrong, re-check the data model definition and re-run ETL.
+## 6. Verify in chat
 
-## Extracting Structure from Documents
+Ask questions that require structured data:
 
-If structured data is embedded inside a document rather than already in tabular form, extract it before ingesting.
+> "Show me all laptops cheaper than 1500 euros"
+> "Which branch has MacBook Air in stock?"
+> "Which category does Dell XPS belong to?"
 
-Common cases: a PDF containing a price table, a handbook with a branch address list, a contract with key terms presented in a list rather than a spreadsheet.
+In Details, Cypher should run with the right labels and filters.
 
-The process is:
+## 7. Hybrid approach with documents
 
-1. Open the source document and identify the structured elements: tables, repeating patterns, lists with consistent fields.
-2. Copy or export the content into a clean spreadsheet with one entity per row.
-3. Ensure each column contains one data type consistently.
-4. Upload to Grist and follow Steps 1–5 above.
+If you have both structured attributes and related descriptive documentation (contracts, technical specs), use both paths simultaneously:
 
-Do not skip this step and rely on document chunks instead. A price table left in a PDF can be retrieved through vector search, but only approximately. Extracted into a structured anchor, it becomes precisely queryable.
+| Anchor `contract` | Document `contract_text` |
+| ------------------ | ------------------------- |
+| `contract_id`, `start_date`, `end_date`, `counterparty` (attributes) | content in chunks, embeddable |
 
-## Combining Structured Data with Documents
+Connect them with the `CONTRACT_has_TEXT → document` link.
 
-For most domains, the best outcome comes from keeping explanatory content as document chunks and extracting measurable, queryable fields as structured anchors.
+Then:
 
-For a contract: keep the full text in document chunks for clause retrieval, and extract `contract_id`, `start_date`, `end_date`, and `counterparty` as a structured anchor. The assistant can then answer "when does this contract expire?" via Cypher, and "what does the indemnity clause say?" via vector search. Both from the same source document.
+- "When does contract C-123 expire?" → Cypher on `contract.end_date`;
+- "What does clause 5.2 of contract C-123 say?" → vector search on `document_chunk.content` + Cypher on `CONTRACT_has_TEXT`.
 
-For a product: keep the full product description in document chunks, and store `name`, `price`, `category`, and `in_stock` as structured attributes. The assistant can filter by price, check availability, and still retrieve descriptive text when needed.
+See [Structured Data](../data-ingestion/structured-data.md).
 
-The rule is simple: if users will ask for the value directly, structure it. If they will ask what the document says about it, keep it in chunks.
+## 8. Update support
+
+Datapipe is incremental: the next ETL run recomputes only changed rows. That means:
+
+- if you change a product's price → only it (and its embedding if the field is embeddable) is updated;
+- if you add a new branch → only that node is created;
+- if you delete a category → that node and its edges are removed.
+
+Run ETL on cron (e.g. once an hour) — Vedana will stay current without full recomputes.
+
+## Checklist
+
+- [ ] Anchors / Attributes / Links are described and reviewed.
+- [ ] Data tables are set up in Grist.
+- [ ] Table columns match `attribute_name`s in the model.
+- [ ] FK columns reference IDs in the other tables correctly.
+- [ ] ETL ran without errors.
+- [ ] Cypher checks in Memgraph Lab return data.
+- [ ] Test questions in chat work.
+- [ ] The golden dataset includes structural questions.
+
+## Common mistakes
+
+- **The FK column isn't listed in `anchor1_link_column_name`** → ETL doesn't build the edge.
+- **The target anchor with that ID doesn't exist.** ETL builds "dangling" edges; Cypher doesn't find pairs.
+- **Typo in the column name.** `category_Id` ≠ `category_id`. ETL skips mismatches.
+- **`dtype` in the model doesn't match Grist.** E.g. price as a string in Grist, `dtype=float` in the model. ETL may fail or write `null`.
+- **Forgot to run `memgraph_steps`.** Data model and node tables are updated, but Memgraph still has old data.
+
+## What's next
+
+- [Adding Anchors](./adding-anchors.md), [Adding Attributes](./adding-attributes.md), [Adding Links](./adding-links.md)
+- [Custom ETL](../data-ingestion/custom-etl.md) — for large volumes or external sources.

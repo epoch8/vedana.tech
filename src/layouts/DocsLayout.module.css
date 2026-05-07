@@ -203,6 +203,30 @@
   white-space: nowrap;
 }
 
+/* ---------- MERMAID ---------- */
+
+.content :global(pre[data-language="mermaid"]) {
+  display: none;
+}
+
+.content :global(.mermaid-diagram) {
+  margin: 1.75rem 0 2rem;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.content :global(.mermaid-diagram svg) {
+  max-width: 100%;
+  height: auto;
+}
+
+.content :global(.mermaid-diagram p) {
+  font-size: inherit;
+  line-height: inherit;
+  margin-bottom: 0;
+  color: inherit;
+}
+
 /* ---------- MOBILE ---------- */
 
 @media (max-width: 1024px) {

@@ -43,6 +43,8 @@ const docsCollection = defineCollection({
   loader: {
     name: "docs",
     load: async (ctx: any) => {
+      ctx.store.clear();
+
       await glob({
         pattern: "**/*.{md,mdx}",
         base: "./src/content/docs",

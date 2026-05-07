@@ -37,7 +37,7 @@
 
 .content h2 {
   font-size: var(--font-size-2xl);
-  font-weight: 600;
+  font-weight: 700;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
   color: var(--color-text);
@@ -194,13 +194,13 @@
   font-size: var(--font-size-sm);
 }
 
-.content p > code,
-.content li > code,
-.content td > code,
-.content th > code {
+.content :not(pre) > code {
   background: var(--color-code-inline-bg);
-  padding: 0.2rem 0.4rem;
+  border: 1px solid var(--color-code-inline-border);
+  padding: 0.15rem 0.4rem;
   border-radius: var(--radius-sm);
+  font-size: 0.875em;
+  white-space: nowrap;
 }
 
 /* ---------- MOBILE ---------- */

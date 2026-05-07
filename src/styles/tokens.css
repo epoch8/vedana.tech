@@ -29,11 +29,21 @@
   --letter-normal: 0;
   --letter-wide: 0.08em;
 
+  /* Font family */
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
   /* Font sizes (base scale) */
   --font-size-base: 1rem;
   --font-size-sm: 0.875rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+
+  /* Code */
+  --color-code-bg: #1a2540;
+  --color-code-text: #dde6f5;
+  --color-code-inline-bg: #eef1f8;
+  --color-code-inline-border: #d5dcea;
 
   /* Radius */
   --radius-sm: 4px;

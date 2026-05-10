@@ -6,13 +6,15 @@ order: 4
 
 # Configuration
 
+> **Two configuration documents — when to read which.** This page is a **purpose-grouped tour** of Vedana's environment variables — read top-to-bottom to understand what to set when bringing up the stack. The [Configuration Reference](../api/configuration-reference.md) is the **authoritative complete list** grouped by Python class — use it as a lookup table. Defaults shown in this guide are mirrored from the reference; when you spot a discrepancy, the reference (and ultimately the source code) wins.
+
 Vedana is configured through environment variables. Everything important is read via `pydantic-settings` in three places:
 
 - `vedana_core.settings.VedanaCoreSettings` — main settings of the RAG pipeline.
 - `vedana_etl.settings.Settings` — ETL settings.
 - `jims_core.llms.llm_provider.LLMSettings` — LLM provider parameters.
 
-This guide covers the most important variables. The full reference is in the [Configuration Reference](../api/configuration-reference.md).
+All three classes use `env_prefix=""` and read the same `.env` file at `apps/vedana/.env`, so any shared variable name (e.g. `MODEL`, `EMBEDDINGS_MODEL`) is read by every class that declares it.
 
 ## LLM
 
@@ -20,7 +22,7 @@ Vedana runs on top of [LiteLLM](https://www.litellm.ai/). Model names follow the
 
 | Variable                          | Purpose                                                                                                | Default                       |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| `MODEL`                            | Main model: user answers and Cypher generation.                                                        | `gpt-4.1`                     |
+| `MODEL`                            | Main model: user answers and Cypher generation. Always set this explicitly in `.env`. ([why](../api/configuration-reference.md#llm-provider-llmsettings)) | `gpt-4.1`                     |
 | `FILTER_MODEL`                     | Model for the data model filtering step (see [`RagPipeline.filter_data_model`](../architecture/vedana-core.md#data-model-filtering)). Usually smaller and faster. | `gpt-4.1-mini`               |
 | `JUDGE_MODEL`                      | Model for the evaluation pipeline (LLM-as-judge).                                                       | `gpt-4.1-mini`                |
 | `EMBEDDINGS_MODEL`                 | Embeddings model.                                                                                       | `text-embedding-3-large`      |
@@ -30,6 +32,8 @@ Vedana runs on top of [LiteLLM](https://www.litellm.ai/). Model names follow the
 | `MODEL_API_KEY`                    | If set, overrides the key for the main model (otherwise the standard provider env var is used).         | `None`                        |
 | `EMBEDDINGS_MODEL_API_KEY`         | Same for the embeddings model.                                                                           | `None`                        |
 | `OPENROUTER_API_BASE_URL`          | OpenRouter endpoint (you can change it to your own gateway).                                            | `https://openrouter.ai/api/v1`|
+
+> **Note on `MODEL`.** Vedana has two settings classes that both read the `MODEL` env var (`VedanaCoreSettings` and `LLMSettings` from jims-core). Their built-in fallback defaults differ (`gpt-4.1` vs `gpt-4.1-nano`) but in any real deployment you should set `MODEL` explicitly in `.env` — both classes then read the same value. See [Configuration Reference → LLM Provider](../api/configuration-reference.md#llm-provider-llmsettings) for details.
 
 ## RAG pipeline
 

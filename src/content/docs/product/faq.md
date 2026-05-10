@@ -12,6 +12,19 @@ A collection of frequently asked questions about Vedana — for product managers
 
 An open-source framework for AI assistants whose answers can be verified: instead of "guessing from text", Vedana queries a structured knowledge graph and knows where every fact came from.
 
+## What licence is Vedana released under? Can we use it commercially?
+
+Vedana is released under the **[Apache License 2.0](https://github.com/epoch8/vedana/blob/main/LICENSE)**. This is a permissive licence that explicitly allows:
+
+- **Commercial use** — including in closed-source / proprietary products.
+- **Modification** — fork it, change it, ship it.
+- **Redistribution** — bundle it into your own product or distribution.
+- **Private use** — use it inside your company without publishing anything.
+
+Requirements are minimal: keep the copyright and licence notice, and state any significant changes you make. Apache 2.0 also includes an **explicit patent grant** from contributors, which is what most enterprise legal teams care about (it's the main reason Apache 2.0 is preferred over MIT for B2B adoption).
+
+Vedana itself bundles a few third-party components (Memgraph, Grist, Postgres, pgvector, Reflex) — each ships under its own licence; review them for your deployment if you redistribute the full stack.
+
 ## How is Vedana different from LangChain / LlamaIndex / Haystack?
 
 These are tools of different kinds. LangChain / LlamaIndex / Haystack are **libraries for classic RAG** — you assemble the pipeline yourself. Vedana is a **ready framework for Semantic RAG** with a data model, knowledge graph, ETL, and evaluation. Put another way, Vedana = a pre-built pattern of "document RAG + structural graph + playbook" with production infrastructure around it.

@@ -53,16 +53,16 @@ For an edge attribute, do the same in **Link_attributes**, putting the edge `sen
 
 ## 5. Pick `embed_threshold`
 
-For embeddable attributes only.
+For embeddable attributes only. Use the canonical starting table from [Tuning Embeddings & Thresholds](./tuning-embeddings.md#starting-values):
 
-| Scenario                                                   | Starting threshold |
-| ----------------------------------------------------------- | ------------------- |
-| Names and exact identifiers (product, employee, brand)      | 0.75–0.85            |
-| Descriptions and explanatory text                           | 0.65–0.75            |
-| Long documents / chunks                                     | 0.50–0.65            |
-| Synonym / semantic-near searches                            | 0.55–0.70            |
+| Attribute kind                                              | Start     |
+| ----------------------------------------------------------- | --------- |
+| Names / exact identifiers (product, employee, brand)        | 0.75–0.85 |
+| Descriptions and explanatory text                           | 0.65–0.75 |
+| Long documents / chunks                                     | 0.50–0.65 |
+| FAQ entries                                                  | 0.70–0.78 |
 
-After running on the golden dataset, adjust. Too many false positives → raise; missed valid matches → lower.
+After running on the golden dataset, adjust. Too many false positives → raise; missed valid matches → lower. Full tuning loop and edge cases (long-vs-short text, common terms across anchors) — see [Tuning Embeddings & Thresholds](./tuning-embeddings.md).
 
 ## 6. Run ETL
 

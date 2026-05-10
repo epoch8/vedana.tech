@@ -145,19 +145,54 @@ async def make_vedana_app() -> VedanaApp:
     ...
 ```
 
-And in ETL drop the `generate_embeddings` steps (or replace them with writes to the new store):
+And in ETL drop the `generate_embeddings` steps (the last two `BatchTransform`s in `memgraph_steps`, see `libs/vedana-etl/src/vedana_etl/pipeline.py`) and replace them with writes to your store. Either redefine `memgraph_steps` from scratch, or build a custom list that reuses Vedana's index/load steps and adds your own embedding writer:
 
 ```python
-memgraph_steps = [
-    *original_memgraph_steps_without_embeddings,
+from vedana_etl.pipeline import (
+    nodes, edges,
+    dm_anchor_attributes, dm_link_attributes,
+    memgraph_anchor_indexes, memgraph_link_indexes,
+    memgraph_nodes, memgraph_edges,
+)
+from vedana_etl import steps
+from datapipe.compute import BatchTransform
+
+custom_memgraph_steps = [
     BatchTransform(
-        func=write_to_my_vector_store,
+        func=steps.ensure_memgraph_node_indexes,
+        inputs=[dm_anchor_attributes],
+        outputs=[memgraph_anchor_indexes],
+        transform_keys=["attribute_name"],
+    ),
+    BatchTransform(
+        func=steps.ensure_memgraph_edge_indexes,
+        inputs=[dm_link_attributes],
+        outputs=[memgraph_link_indexes],
+        transform_keys=["attribute_name"],
+    ),
+    BatchTransform(
+        func=steps.pass_df_to_memgraph,
+        inputs=[nodes],
+        outputs=[memgraph_nodes],
+        transform_keys=["node_id", "node_type"],
+    ),
+    BatchTransform(
+        func=steps.pass_df_to_memgraph,
+        inputs=[edges],
+        outputs=[memgraph_edges],
+        transform_keys=["from_node_id", "to_node_id", "edge_label"],
+    ),
+    # Replaces the two generate_embeddings steps:
+    BatchTransform(
+        func=write_to_my_vector_store,           # your function
         inputs=[nodes, dm_anchor_attributes],
-        outputs=[my_vts_marker],
-        ...
+        outputs=[my_vts_marker],                 # your output table
+        transform_keys=["node_id", "node_type"],
     ),
 ]
 ```
+
+Pass `custom_memgraph_steps` instead of `memgraph_steps` when constructing the `Pipeline`. The first four `BatchTransform`s are the unchanged Vedana steps; only the embedding writer is replaced.
 
 ### 5. Streaming ETL
 

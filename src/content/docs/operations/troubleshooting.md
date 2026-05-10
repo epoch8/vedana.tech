@@ -169,7 +169,7 @@ If you've recreated Memgraph with a different password — drop the `mg_graph` v
 
 **Causes and fixes:**
 
-- Data model filtering isn't on → set `ENABLE_DM_FILTERING=true`.
+- **Data model filtering is disabled.** `ENABLE_DM_FILTERING=true` is the default and is the right setting in production — keep it on. Only turn it off (`false`) if you're debugging the agent's behaviour with the full data model in context, or if your data model is so small that the filtering step costs more than it saves. If you've explicitly set it to `false`, set it back to `true`. (Same recommendation appears in [Cost Management](./costs.md#5-keep-data-model-filtering-on) — the two pages agree: keep it on by default.)
 - Large data model in context → override rendering templates to drop `query` fields.
 - `pipeline_history_length` too large → drop to 10–15.
 - Many retry iterations → improve the playbook so the agent picks the right path immediately.

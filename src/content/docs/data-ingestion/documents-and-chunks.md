@@ -34,17 +34,28 @@ Suited to **explanatory content**: policies, manuals, contracts, knowledge base 
 
 ## What files can be ingested
 
-Any file that converts reliably to plain text:
+> **Important: Vedana does not extract text from binary documents automatically.** The chunking and embedding pipeline operates on **plain text only**. If you put a PDF or DOCX file straight into Grist (or your custom source), it will be stored as a binary blob and **nothing useful** will be ingested. You must extract the text yourself before loading — Vedana ingests the resulting text, not the original file.
+>
+> Recommended pre-processing tools (run before loading into Grist or your data source):
+>
+> - **PDF** — `pdftotext` (poppler), `pymupdf`, `unstructured`, or a managed service (Mathpix, Azure Document Intelligence) for scans / complex layouts.
+> - **DOCX** — `python-docx`, `mammoth`, or `pandoc` to convert to Markdown.
+> - **HTML** — `trafilatura` or `readability-lxml` to strip boilerplate.
+> - **Scans / images** — OCR (Tesseract, AWS Textract, Azure Document Intelligence) before any of the above.
+>
+> Extending Vedana with an automatic extractor (PDF/DOCX → text inside the ETL) is straightforward via [Custom ETL](./custom-etl.md) — but it's not done out of the box.
 
-- PDF
-- DOCX
+Once you have plain text, any of these formats can be loaded:
+
+- PDF (after `pdftotext` or similar)
+- DOCX (after `python-docx` / `pandoc`)
 - TXT
 - Markdown
-- HTML
-- Google Docs (export)
+- HTML (cleaned)
+- Google Docs (export to text/Markdown)
 - CSV (as text)
 
-**Not directly supported:** images, audio, video — they need to be transcribed or OCR'd first.
+**Not supported even after pre-processing without extra work:** images, audio, video — they need to be transcribed or OCR'd first.
 
 The format matters less than the **quality of the extraction**. Garbled characters, broken sentences, merged columns → bad chunks → bad answers. Review the extracted text before uploading.
 

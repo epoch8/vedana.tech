@@ -135,9 +135,9 @@ Small focused PRs go through faster than big "everything-at-once" ones.
 
 Be respectful. Vedana follows the [Contributor Covenant](https://www.contributor-covenant.org/). Constructive criticism is welcome; personal attacks are not.
 
-## Licence
+## License
 
-Vedana is distributed under the licence in [LICENSE](https://github.com/epoch8/vedana/blob/main/LICENSE). By submitting a PR you agree your code is distributed under the same licence.
+Vedana is distributed under the **[Apache License 2.0](https://github.com/epoch8/vedana/blob/main/LICENSE)**. By submitting a PR you agree your code is distributed under the same license. Apache 2.0 includes an explicit patent grant from contributors — you grant the project a license to any patents that read on your contribution.
 
 ## Contacting the team
 

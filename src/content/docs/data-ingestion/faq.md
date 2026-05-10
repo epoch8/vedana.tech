@@ -27,36 +27,31 @@ Each row is one FAQ entry. The table is predefined and ready to use; you only ne
 
 ## How retrieval works
 
+FAQ is **not a hardcoded pre-step in the pipeline** — there's no special "is this an FAQ question?" branch in `RagPipeline`. Instead, FAQ entries are loaded into the knowledge graph as a regular anchor (`faq`) whose `question` attribute is embeddable. The agent finds the matching FAQ entry the same way it finds any other answer: by issuing a `vector_text_search` tool call.
+
 ```mermaid
 flowchart TD
-    Q[User:<br/>"What's the return policy?"] --> EM[Embed query]
-    EM --> S[Vector similarity vs<br/>FAQ.question]
-    S --> C{Score > threshold?}
-    C -- "Yes" --> A[Return FAQ.answer<br/>verbatim]
-    C -- "No" --> P[Forward to the main<br/>RagPipeline]
-    P --> CY[cypher / vector<br/>search over the graph]
-    CY --> ANS[Grounded answer]
+    Q[User:<br/>"What's the return policy?"] --> RP[RagPipeline]
+    RP --> DMF[Data model filtering<br/>e.g. faq + return_policy anchors]
+    DMF --> AG[RagAgent decides<br/>which tool to use]
+    AG --> VTS["vector_text_search<br/>label=faq, property=question"]
+    VTS --> S{High similarity to<br/>a stored faq.question?}
+    S -- "Yes" --> ANS[Agent returns the<br/>matching faq.answer]
+    S -- "No" --> OTHER[Agent continues with<br/>cypher / other vts calls]
+    OTHER --> ANS2[Grounded answer<br/>from the graph + documents]
 ```
 
-When a user submits a question, the system checks the FAQ table **before** any other retrieval. The user's question is embedded and compared to the `question` column via vector similarity. If the score exceeds the configured threshold, the corresponding `answer` is returned.
+What actually happens at runtime:
 
-Workflow:
+1. The user's question enters `RagPipeline.process_rag_query` (see [Vedana Core architecture](../architecture/vedana-core.md#rag-pipeline)).
+2. Data model filtering may include or exclude the `faq` anchor depending on the question.
+3. The agent looks at the available data model and decides which tool to invoke. For a known intent it issues `vector_text_search(label="faq", property="question", text=<user question>)`.
+4. pgvector returns rows from the `faq` anchor whose `question` similarity ≥ the attribute's `embed_threshold`.
+5. The agent reads the `answer` field of the matching row and returns it (often verbatim, sometimes lightly rephrased depending on the system prompt).
 
-1. User asks a question.
-2. FAQ intent check.
-3. Vector similarity (or direct match) is applied to the `question` column.
-4. The matching FAQ entry is retrieved.
-5. The corresponding `answer` is returned.
+If no row matches above the threshold, the agent simply doesn't find an FAQ answer and proceeds with other tool calls (Cypher over structured anchors, vector search over `document_chunk`, etc.) — the same as for any other question type.
 
-```
-User → embedding → similarity ⩾ threshold? →
-   Yes → return FAQ answer
-   No  → continue in the main pipeline (documents / graph)
-```
-
-FAQ retrieval **bypasses** graph traversal and document retrieval. It's lightweight, fast, efficient. A well-matched FAQ entry always returns the same answer.
-
-The threshold controlling "close enough" is configured in the data model. If FAQ matches too broadly or too narrowly, that's the first place to look.
+The threshold controlling "close enough" is the `embed_threshold` of the `faq.question` attribute in the data model. Recommended starting range: **0.70–0.78** (see [Tuning Embeddings & Thresholds](../guides/tuning-embeddings.md#starting-values)). If FAQ matches too broadly or too narrowly, that's the first place to look.
 
 ## How FAQ differs from documents and structured data
 

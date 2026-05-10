@@ -73,7 +73,7 @@ If FAQ matches too broadly (it answers FAQ for questions that should hit the gra
 
 If FAQ misses similar questions (the user phrases the same thing differently and gets nothing) → lower the threshold.
 
-Starting value: 0.7. Tune via the golden dataset (see [Evaluation](../product/evaluation.md)).
+Starting range: **0.70–0.78** for FAQ entries (see the canonical table in [Tuning Embeddings & Thresholds](./tuning-embeddings.md#starting-values)). Tune via the golden dataset (see [Evaluation](../product/evaluation.md)).
 
 ## 7. When to write multiple variants of a question
 

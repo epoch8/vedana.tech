@@ -1,114 +1,139 @@
 ---
-title: Adding Links
-section: Guides
-order: 5
+title: How to Define Links
 ---
 
-# Adding Links
+_This guide assumes you understand what links are and how they differ from attributes. If not, read [Links] first._
 
-A step-by-step scenario: how to add a new link between anchors.
+## Before You Start
 
-## 1. Decide whether you need a link
+Links connect anchor types that are already defined. Before adding a row to the Links table, confirm that both the source anchor and the target anchor exist in the Anchors table, and that the source anchor has a column in its data table containing the target's primary key.
 
-Create a link if:
+For example, to create a `belongs_to` link from Product to Category:
 
-- there's a real domain relationship between two anchors that needs to be traversed;
-- users ask multi-hop questions ("which documents regulate products of category X");
-- there's a foreign key in the data pointing to another anchor.
+- `Product` must be defined in the Anchors table
+- `Category` must be defined in the Anchors table
+- The products data table must have a `category_id` column containing valid Category IDs
 
-Don't create a link if:
+If the target anchor does not exist yet, define it first. A link to an undefined anchor will fail during ETL.
 
-- the value is just a "string" that doesn't reference anything → attribute;
-- the relationship is obvious to people but no one asks questions about it (overengineering).
+## Step 1 — Open the Links Table
 
-## 2. Prepare the data
+Go to **Grist → Data Model → Links**. Each row defines one relationship type between two anchor types.
 
-The source tables must contain something ETL can build the edge from. Possible variants:
+<img src="/images/links-1.png" alt="Hero" width="800" class="center-image" />
 
-- **Foreign key** in the anchor1 table (`product.category_id`).
-- **Foreign key** in the anchor2 table (`document.category_id`).
-- **A join table** (`product_branch_availability` with `product_id`, `branch_id`).
 
-In the first two cases, fill in `anchor1_link_column_name` or `anchor2_link_column_name` as appropriate.
+## Step 2 — Set the Source and Target Anchors
 
-## 3. Fill in the row in Links
+In the **Anchor1** and **Anchor2** columns, set the source and target of the relationship. The relationship runs from Anchor1 to Anchor2.
 
-**Grist > Data Model > Links**:
+For `Product → belongs_to → Category`:
 
-| anchor1  | anchor2  | sentence                       | description                              | query                                                                                                                | anchor1_link_column_name | anchor2_link_column_name | has_direction |
-| -------- | -------- | ------------------------------ | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------ | ------------------------ | ------------- |
-| product  | category | `PRODUCT_belongs_to_CATEGORY`  | A product belongs to a category.         | `MATCH (p:product)-[:PRODUCT_belongs_to_CATEGORY]->(c:category) WHERE p.product_id=$id RETURN c.name`               | `category_id`            |                          | true          |
-| document | category | `DOCUMENT_regulates_CATEGORY`  | A document regulates a category's requirements. | `MATCH (d:document)-[:DOCUMENT_regulates_CATEGORY]->(c:category) WHERE c.category_id=$id RETURN d.title, d.url`     | `category_id`            |                          | true          |
-| product  | branch   | `PRODUCT_available_at_BRANCH`  | The product is available at a branch.    | `MATCH (p:product)-[:PRODUCT_available_at_BRANCH]->(b:branch) WHERE p.product_id=$id RETURN b.name, b.address`      |                          |                          | true          |
+- Anchor1: `Product`
+- Anchor2: `Category`
 
-### Naming convention
+Choose the direction that matches the most natural traversal direction for the questions users will ask. If users ask "which category does this product belong to?", the traversal goes from Product to Category — so Product is Anchor1.
 
-`sentence` is the edge label in Memgraph. The convention adopted in Vedana: `ANCHOR1_verb_ANCHOR2` in upper case with underscores. This improves Cypher readability and helps the LLM understand meaning.
+## Step 3 — Set the Edge Label
+
+The **Sentence** column contains the edge label as it will appear in Memgraph — the relationship type used in Cypher queries. Use a verb or verb phrase in the format that makes a sentence when read between the two anchor names.
+
+| Anchor1     | Sentence        | Anchor2        |
+| ----------- | --------------- | -------------- |
+| Product     | belongs_to      | Category       |
+| Product     | available_at    | Branch         |
+| Contract    | signed_with     | Counterparty   |
+| Requirement | applies_to      | Product        |
+| Employee    | works_in        | Department     |
+| Document    | has             | Document_chunk |
+| Regulation  | is_described_in | Document       |
+
+Use underscores, not spaces. The label is case-sensitive in Memgraph — whatever you write here is what you must use in Cypher queries. Keep it consistent with the naming conventions used across your model.
+
+Avoid generic labels like `related_to` or `connected_with`. These carry no semantic meaning and make it impossible for the assistant to understand what the relationship represents.
+
+## Step 4 — Write the Description
+
+The description explains the type of connection.
 
 Examples:
-- `PERSON_has_INTEREST`
-- `PRODUCT_belongs_to_CATEGORY`
-- `CONTRACT_signed_with_COUNTERPARTY`
 
-### `has_direction`
+- 'bidirectional link'
+- 'one-way link'
 
-Use `true` for most real relationships — it makes LLM reasoning simpler and more accurately reflects domain semantics. Use `false` only for genuinely symmetric relationships (`CITY_neighbors_CITY`).
+## Step 5 — Write the Cypher Query
 
-### `query`
+The **Query** field contains the Cypher statement used to traverse this relationship. This is the query the assistant runs when it needs to follow this link during retrieval.
 
-The most important field. It's the **Cypher for traversing** the link, which the LLM can use as a template. The more precise, the better.
-
-Good practices:
-
-- parameterise via `$id` (or `$from_id`, `$to_id`);
-- return only the fields you need, not `RETURN *`;
-- if you do multi-hop traversal — describe the pattern in the playbook.
-
-## 4. Add edge attributes if needed
-
-If the link has its own properties (`since: 2024-01-01`, `priority: 1`, `assigned_by: "John"`), describe them in **Link_attributes** — same structure as Anchor_attributes; in the `link` column put the edge `sentence`.
-
-## 5. Run ETL
-
-Backoffice → ETL → **Run Selected**.
-
-## 6. Verify in Memgraph Lab
+For `Product → belongs_to → Category`:
 
 ```cypher
-MATCH (p:product)-[:PRODUCT_belongs_to_CATEGORY]->(c:category)
-RETURN p.name, c.name LIMIT 10
+MATCH (p:Product)-[:belongs_to]->(c:Category)
+WHERE p.product_id = $id
+RETURN c.category_id, c.name
 ```
 
-Pairs should be returned. If empty — check that:
+For a reverse traversal — finding all products in a category:
 
-- ETL actually built the edges (the `memgraph_edges` step succeeded);
-- the foreign key in the data isn't empty;
-- the anchor names match.
+```cypher
+MATCH (p:Product)-[:belongs_to]->(c:Category)
+WHERE c.category_id = $id
+RETURN p.product_id, p.name, p.price
+```
 
-## 7. Verify in chat
+Include both traversal directions if users will ask questions from either direction. Two entries in the Links table — one for each direction — is the correct approach, not a single bidirectional entry.
 
-Ask a question requiring traversal of the new edge:
+Verify the query works in Memgraph Lab before saving. Run it manually after ETL with a real ID substituted for `$id`:
 
-> "What products are in the Laptops category?"
+```cypher
+MATCH (p:Product)-[:belongs_to]->(c:Category)
+WHERE p.product_id = "p-001"
+RETURN c.category_id, c.name
+```
 
-In Details there should be Cypher with your `sentence`. If the LLM generated Cypher with a different edge name — improve the link description and `query` field.
+## Step 6 — Set the Link Column Names
 
-## Best practices
+The **anchor1_link_column_name** and **anchor2_link_column_name** fields specify which column in each anchor's data table holds the foreign key reference.
 
-- **Verb-like names.** `belongs_to`, `applies_to`, `located_in` — not `relation_a`.
-- **Consistent direction.** Don't add `Product → in → Category` and `Category → contains → Product` in parallel — it inflates the graph.
-- **Minimise generic links.** `related_to` carries no meaning and reduces graph expressiveness.
-- **Document via `description`.** It goes into the LLM context.
+<img src="/images/links-2.png" alt="Hero" width="800" class="center-image" />
 
-## Common mistakes
+For the products table containing a `category_id` column:
 
-- **Encoding a relationship as a string attribute.** `Product.category = "Laptops"` blocks all traversal.
-- **Empty `query`.** Multi-hop reasoning won't work.
-- **No direction.** The LLM doesn't know which way to traverse.
-- **Cycles without semantics.** `A → related → B`, `B → related → A`, `A → related → C`, `C → related → A` — the LLM gets lost.
-- **Duplicate labels.** `product_belongs_to_category` and `PRODUCT_belongs_to_CATEGORY` — for Cypher these are different edges.
+- `anchor1_link_column_name`: `category_id` (the column on the Product side)
+- `anchor2_link_column_name`: `category_id` (the matching primary key on the Category side)
 
-## What's next
+ETL uses these to resolve which rows to connect with edges. If these fields are wrong or missing, ETL will not create the edges and the link will exist in the schema but not in the graph.
 
-- [Adding Anchors](./guides/adding-anchors.md), [Adding Attributes](./guides/adding-attributes.md)
-- [Setting Up Data Model](./guides/setting-up-data-model.md)
+## Step 7 — Set Direction
+
+Set **has_direction** to `true` for directional relationships, which is most relationships. Leave it unset or `false` only when the relationship is genuinely symmetric and traversal in either direction is equally valid.
+
+When direction is set, Cypher traversal queries must follow the declared direction using `->`. Queries using `<-` will return no results unless you have defined a reverse link.
+
+## Step 8 — Update the Data Model and Run ETL
+
+In the Backoffice click **Reload Data Model**, then run ETL. After ETL completes, verify that edges were created in Memgraph Lab by traversing the relationship:
+
+```cypher
+MATCH (p:Product)-[:belongs_to]->(c:Category)
+RETURN p.name, c.name
+LIMIT 10
+```
+
+If the query returns results, the link is working. If it returns nothing, check:
+
+- That both anchor types have nodes in the graph (run a count query for each)
+- That the `anchor1_link_column_name` matches the exact column name in the source data table
+- That the foreign key values in the source column match actual primary keys in the target anchor's data
+
+## Common Mistakes
+
+**Encoding relationships as string attributes instead of links.** Storing `Product.category = "Electronics"` as a plain string works for simple filtering but prevents traversal. If `Category` has its own attributes or connects to other entities, it should be an anchor with a proper link.
+
+**Using generic edge labels.** Labels like `related_to`, `has`, or `connected` carry no semantic meaning. The assistant uses edge labels to understand what a relationship means. Use specific verb phrases: `belongs_to`, `regulated_by`, `available_at`.
+
+**Mismatched column names.** If `anchor1_link_column_name` does not exactly match the column header in the source data table, ETL will not create the edges. Column names are case-sensitive.
+
+**Missing the reverse direction.** If users will ask questions that traverse a relationship in both directions — "which products are in this category?" as well as "which category does this product belong to?" — define both directions explicitly as separate entries in the Links table.
+
+**Circular links without clear semantics.** A relationship like `Category → parent_of → Category` (for hierarchical categories) is valid but needs careful query design to avoid infinite traversal loops. If you model hierarchical or recursive relationships, make sure the Cypher queries include depth limits.

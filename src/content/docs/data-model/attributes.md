@@ -78,9 +78,16 @@ Controls how close a query must be to a stored value for the result to be return
 
 - too low (`0.5`) → many irrelevant results;
 - too high (`0.95`) → misses valid matches;
-- start at `0.7`, then tune through evaluation.
+- choose a starting value based on the attribute kind (canonical table in [Tuning Embeddings & Thresholds](../guides/tuning-embeddings.md#starting-values)), then tune through evaluation:
 
-The threshold can be set **per attribute** — useful when some fields require precision (names, SKUs) and others tolerate fuzziness (descriptions).
+| Attribute kind                  | Start     |
+| ------------------------------- | --------- |
+| Names / exact identifiers       | 0.75–0.85 |
+| Descriptions                    | 0.65–0.75 |
+| Document chunks                 | 0.50–0.65 |
+| FAQ                             | 0.70–0.78 |
+
+The threshold can be set **per attribute** — useful when some fields require precision (names, SKUs) and others tolerate fuzziness (descriptions). See [Tuning Embeddings & Thresholds](../guides/tuning-embeddings.md) for the full tuning loop.
 
 ## dtype
 

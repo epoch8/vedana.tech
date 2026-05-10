@@ -6,7 +6,11 @@ order: 6
 
 # Configuration Reference
 
-A full reference of environment variables read by Vedana. All defaults are stated explicitly.
+> **Two configuration documents — when to read which.** This page is the **authoritative complete reference**, grouped by the Python class that reads each variable — use it as a lookup table when wiring up your `.env`. For a purpose-grouped tour (LLM / RAG / DB / observability) read top-to-bottom, see the [Configuration guide](../getting-started/configuration.md). When the two pages disagree on a default, **this page wins** (it mirrors the source code directly).
+
+A full reference of environment variables read by Vedana, grouped by the Python class that reads them.
+
+> **All three classes below use `env_prefix=""` and read the same `.env` file.** That means a single env variable like `MODEL` is read by every class that declares it. The "default" column is the value used **only when the variable is absent from `.env` and the runtime environment** — in any real deployment `.env.example` sets it explicitly.
 
 ## Vedana Core (`VedanaCoreSettings`)
 
@@ -19,7 +23,7 @@ File: `libs/vedana-core/src/vedana_core/settings.py`.
 | `GRIST_DATA_MODEL_DOC_ID`       | str    | —                        | DocId of the document with the data model.                        |
 | `GRIST_DATA_DOC_ID`             | str    | —                        | DocId of the document with the data.                              |
 | `DEBUG`                         | bool   | `false`                  | Verbose logs and dev features.                                    |
-| `MODEL`                         | str    | `gpt-4.1`                | Main LLM model.                                                    |
+| `MODEL`                         | str    | `gpt-4.1`                | Main LLM model used by `RagPipeline` / `RagAgent` for answer generation and Cypher. **This is the value that wins in the standard pipeline** — Vedana Core overrides the inner LLM provider on every call. |
 | `ENABLE_DM_FILTERING`           | bool   | `true`                   | Enable the data model filtering step.                             |
 | `FILTER_MODEL`                  | str    | `gpt-4.1-mini`           | Model used for filtering.                                          |
 | `JUDGE_MODEL`                   | str    | `gpt-4.1-mini`           | Model used for evaluation (LLM-as-judge).                          |
@@ -34,9 +38,13 @@ File: `libs/vedana-core/src/vedana_core/settings.py`.
 
 File: `libs/jims-core/src/jims_core/llms/llm_provider.py`.
 
+`LLMSettings` is the inner provider used by `jims-core`. It reads the same `MODEL` env var as `VedanaCoreSettings`, but if you instantiate `jims-core` standalone (without `vedana-core`), no override happens and the fallback default (`gpt-4.1-nano`) applies.
+
+> **Which `MODEL` actually runs?** In the standard Vedana stack the two classes read the **same env var**, so whatever you put in `.env` (e.g. `MODEL=gpt-4.1-mini`) is used by both. The defaults differ only as a safety net for standalone `jims-core` users who don't set the env var: vedana-core falls back to `gpt-4.1` (heavier, better tool-calling), jims-core falls back to `gpt-4.1-nano` (cheap, OK for non-RAG flows). **For all production deployments — set `MODEL` explicitly in `.env`.**
+
 | Variable                          | Type   | Default                          | Description                                                            |
 | --------------------------------- | ------ | -------------------------------- | ----------------------------------------------------------------------- |
-| `MODEL`                            | str    | `gpt-4.1-nano`                   | LLMProvider's default model when `vedana_core` doesn't override it.    |
+| `MODEL`                            | str    | `gpt-4.1-nano`                   | Fallback model for `jims-core` standalone use. Overridden by vedana-core in the standard pipeline. |
 | `EMBEDDINGS_MODEL`                 | str    | `text-embedding-3-large`         | Embeddings model.                                                       |
 | `EMBEDDINGS_DIM`                   | int    | `1024`                           | Dimensionality.                                                          |
 | `EMBEDDINGS_MAX_BATCH_SIZE`        | int    | `2048`                           | Max texts per embeddings batch.                                         |

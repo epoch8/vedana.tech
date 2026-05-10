@@ -4,6 +4,8 @@ title: Vedana Documentation
 
 # Vedana Documentation
 
+> Licensed under the **[Apache License 2.0](https://github.com/epoch8/vedana/blob/main/LICENSE)** — free for commercial and non-commercial use, including modification and redistribution.
+
 **Vedana** is an open-source multi-agent system for building AI assistants on top of **Semantic RAG** (Retrieval-Augmented Generation over a knowledge graph). Unlike classic RAG, Vedana doesn't guess answers based on text similarity — it explores the knowledge base step by step: it issues Cypher queries against the graph, runs vector search, verifies sources, and assembles an answer from real data.
 
 Vedana is built around three components:
@@ -116,4 +118,4 @@ Depending on your role:
 
 ## License and community
 
-The project is distributed under the license listed in [LICENSE](https://github.com/epoch8/vedana/blob/main/LICENSE). Source code and issue tracker — at [github.com/epoch8/vedana](https://github.com/epoch8/vedana). Product website: [vedana.tech](https://vedana.tech).
+The project is distributed under the **[Apache License 2.0](https://github.com/epoch8/vedana/blob/main/LICENSE)** — a permissive license that allows commercial use, modification, and redistribution, including in proprietary products, with attribution and a notice of changes. Source code and issue tracker — at [github.com/epoch8/vedana](https://github.com/epoch8/vedana). Product website: [vedana.tech](https://vedana.tech).

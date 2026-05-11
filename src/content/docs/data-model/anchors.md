@@ -8,7 +8,7 @@ order: 2
 
 An **anchor** is a domain entity type. Every class of objects the assistant can look up, filter, count, or traverse is described as an anchor.
 
-In Memgraph each anchor corresponds to a class of nodes whose label equals `anchor.noun`. When you define a `Product` anchor and run ETL, every row in your products table in Grist becomes a `:Product` node with its columns stored as properties.
+In Memgraph each anchor corresponds to a class of nodes whose label equals `anchor.noun` **literally** (no case conversion). When you define a `product` anchor and run ETL, every row in your products table in Grist becomes a `:product` node with its columns stored as properties. The canonical convention used across Vedana is **lowercase singular** (`product`, `interest`, `document_chunk`); the Cypher examples below follow that convention.
 
 > An anchor is the **schema**, not data. The Anchors table in Grist describes *what kinds of things exist*, not the things themselves.
 
@@ -28,11 +28,11 @@ In Memgraph each anchor corresponds to a class of nodes whose label equals `anch
 One row in Anchors + the corresponding rows of data = a graph like:
 
 ```
-(:Product {id: "p-001", name: "Laptop", price: 999.00})
-(:Product {id: "p-002", name: "Monitor", price: 349.00})
+(:product {id: "p-001", name: "Laptop", price: 999.00})
+(:product {id: "p-002", name: "Monitor", price: 349.00})
 ```
 
-The label (`Product`) comes from `anchor.noun`. The properties come from data rows. The label is what allows Cypher to find nodes of this specific type: `MATCH (p:Product) RETURN p`.
+The label (`product`) comes from `anchor.noun`. The properties come from data rows. The label is what allows Cypher to find nodes of this specific type: `MATCH (p:product) RETURN p`.
 
 ## Examples from the test dataset (LIMIT)
 
@@ -54,7 +54,7 @@ If anchors are described poorly (vague descriptions, inconsistent names, missing
 ## Anchors vs data vs documents
 
 - An anchor is a **type**, not a row. Analogy: `CREATE TABLE`, not `INSERT INTO`.
-- `document_chunks` is a built-in anchor in the default model. Most anchors you'll create yourself are **structured** domain entities: products, contracts, branches, employees, whatever your domain requires.
+- `document` / `document_chunk` are anchors that the [Documents and Chunks](../data-ingestion/documents-and-chunks.md) workflow expects you to declare in your Grist Data Model (they're a Vedana **convention**, not a hardcoded built-in — there's no code that seeds them into a new Data Model doc automatically). Most anchors you'll create yourself are **structured** domain entities: products, contracts, branches, employees, whatever your domain requires.
 
 ## Examples
 

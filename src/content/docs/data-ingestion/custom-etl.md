@@ -27,7 +27,7 @@ When Grist + the default ETL aren't a fit — large volumes, streaming, sources 
 
 ### 1. Custom data source
 
-Replace `grist_steps` with your own `BatchGenerate` steps. Return a DataFrame with the same columns as `grist_nodes` / `grist_edges`:
+Replace `grist_steps` with your own `BatchGenerate` steps. Return DataFrames matching the catalog schemas — see `GENERIC_NODE_DATA_SCHEMA` / `GENERIC_EDGE_DATA_SCHEMA` in `vedana_etl/schemas.py`. Edges require **six columns** (`from_node_id`, `to_node_id`, `from_node_type`, `to_node_type`, `edge_label`, `attributes`); the four `*_type` and `*_id` columns together form the primary key and Vedana does **not** infer `from_node_type` / `to_node_type` for you.
 
 ```python
 import pandas as pd
@@ -42,7 +42,14 @@ def get_my_data():
         ...
     ])
     edges_df = pd.DataFrame([
-        {"from_node_id": "p-001", "to_node_id": "cat-01", "edge_label": "PRODUCT_belongs_to_CATEGORY", "attributes": {}},
+        {
+            "from_node_id": "p-001",
+            "to_node_id": "cat-01",
+            "from_node_type": "product",
+            "to_node_type": "category",
+            "edge_label": "PRODUCT_belongs_to_CATEGORY",
+            "attributes": {},
+        },
         ...
     ])
     yield nodes_df, edges_df

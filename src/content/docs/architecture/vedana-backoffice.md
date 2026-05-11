@@ -60,7 +60,7 @@ Steps:
 2. Pick configs: `Judge Configuration` (judge model and prompt), `Pipeline Configuration` (main pipeline model, filtering flag, `top_n`).
 3. **Refresh Data Model** — guarantees you're using the latest data model.
 4. **Run Selected** — starts the evaluation.
-5. Get the aggregate **Hit Rate** metric and the per-question breakdown.
+5. Get the aggregate **Pass Rate** metric (internally `pass_rate = passed / total`, see `states/eval.py`) — together with `avg_rating`, `cost_total`, and per-test answer times — and the per-question breakdown.
 
 See [Quality Metrics & Evaluation](../product/evaluation.md).
 
@@ -69,12 +69,15 @@ See [Quality Metrics & Evaluation](../product/evaluation.md).
 A view of the current data model the way the LLM sees it:
 
 - list of anchors / links / attributes with descriptions;
-- indices (vector / text);
-- diff against the previous Grist state.
+- indices (vector / text).
+
+> A "diff against the previous Grist state" is on the roadmap and not yet implemented in `pages/`.
 
 ### Prompts editor
 
-View and edit the prompt templates from the `Prompts` table. Changes are committed back to Grist.
+View the prompt templates that come from the `Prompts` table.
+
+> Write-back of edited prompts to Grist is **not yet implemented**. To change a template, edit the row directly in Grist > Data Model > Prompts, then re-run `data_model_steps` (or "Refresh Data Model").
 
 > Important: the backoffice is a tool for configuration and monitoring. The "knowledge" itself lives in Grist and the graph; the backoffice only displays it / runs the ETL for it.
 
@@ -97,7 +100,9 @@ services:
 uv run vedana-backoffice-with-caddy
 ```
 
-Caddy is bundled and proxies the Reflex backend behind a single address — to the user the UI looks like a single service on port 9000.
+Caddy proxies the Reflex backend behind a single address — to the user the UI looks like a single service on port 9000.
+
+> **Caddy must be on `PATH`.** `vedana-backoffice-with-caddy` spawns Caddy as a subprocess (`start_services.py:23` calls `subprocess.Popen(["caddy", "run", ...])`), so the `caddy` binary has to be installed locally (`brew install caddy` on macOS, `apt install caddy` on Debian). If you don't need Caddy, run `uv run reflex run --env dev --backend-only` from `apps/vedana/` and point your browser at port 8000.
 
 ### Debug mode
 

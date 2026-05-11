@@ -36,17 +36,17 @@ Choose the direction that matches the most natural traversal direction for the q
 
 ## Step 3 — Set the Edge Label
 
-The **Sentence** column contains the edge label as it will appear in Memgraph — the relationship type used in Cypher queries. Use a verb or verb phrase in the format that makes a sentence when read between the two anchor names.
+The **Sentence** column contains the edge label as it will appear in Memgraph — the relationship type used in Cypher queries. Vedana stores `sentence` literally; there is no case normalisation in the code. The canonical convention used in [Links](../data-model/links.md), [Queries](../data-model/queries.md) and elsewhere in this documentation is `ANCHOR1_verb_ANCHOR2` (anchor names UPPER-cased, verb in `snake_case`, e.g. `PRODUCT_belongs_to_CATEGORY`, `PERSON_has_INTEREST`). Sticking to one format makes Cypher and the playbook examples consistent.
 
-| Anchor1     | Sentence        | Anchor2        |
-| ----------- | --------------- | -------------- |
-| Product     | belongs_to      | Category       |
-| Product     | available_at    | Branch         |
-| Contract    | signed_with     | Counterparty   |
-| Requirement | applies_to      | Product        |
-| Employee    | works_in        | Department     |
-| Document    | has             | Document_chunk |
-| Regulation  | is_described_in | Document       |
+| Anchor1     | Sentence                            | Anchor2        |
+| ----------- | ------------------------------------ | -------------- |
+| product     | `PRODUCT_belongs_to_CATEGORY`        | category       |
+| product     | `PRODUCT_available_at_BRANCH`        | branch         |
+| contract    | `CONTRACT_signed_with_COUNTERPARTY`  | counterparty   |
+| requirement | `REQUIREMENT_applies_to_PRODUCT`     | product        |
+| employee    | `EMPLOYEE_works_in_DEPARTMENT`       | department     |
+| document    | `DOCUMENT_has_DOCUMENT_CHUNK`        | document_chunk |
+| regulation  | `REGULATION_is_described_in_DOCUMENT`| document       |
 
 Use underscores, not spaces. The label is case-sensitive in Memgraph — whatever you write here is what you must use in Cypher queries. Keep it consistent with the naming conventions used across your model.
 
@@ -68,7 +68,7 @@ The **Query** field contains the Cypher statement used to traverse this relation
 For `Product → belongs_to → Category`:
 
 ```cypher
-MATCH (p:Product)-[:belongs_to]->(c:Category)
+MATCH (p:product)-[:PRODUCT_belongs_to_CATEGORY]->(c:category)
 WHERE p.product_id = $id
 RETURN c.category_id, c.name
 ```
@@ -76,7 +76,7 @@ RETURN c.category_id, c.name
 For a reverse traversal — finding all products in a category:
 
 ```cypher
-MATCH (p:Product)-[:belongs_to]->(c:Category)
+MATCH (p:product)-[:PRODUCT_belongs_to_CATEGORY]->(c:category)
 WHERE c.category_id = $id
 RETURN p.product_id, p.name, p.price
 ```
@@ -86,7 +86,7 @@ Include both traversal directions if users will ask questions from either direct
 Verify the query works in Memgraph Lab before saving. Run it manually after ETL with a real ID substituted for `$id`:
 
 ```cypher
-MATCH (p:Product)-[:belongs_to]->(c:Category)
+MATCH (p:product)-[:PRODUCT_belongs_to_CATEGORY]->(c:category)
 WHERE p.product_id = "p-001"
 RETURN c.category_id, c.name
 ```
@@ -115,7 +115,7 @@ When direction is set, Cypher traversal queries must follow the declared directi
 In the Backoffice click **Reload Data Model**, then run ETL. After ETL completes, verify that edges were created in Memgraph Lab by traversing the relationship:
 
 ```cypher
-MATCH (p:Product)-[:belongs_to]->(c:Category)
+MATCH (p:product)-[:PRODUCT_belongs_to_CATEGORY]->(c:category)
 RETURN p.name, c.name
 LIMIT 10
 ```

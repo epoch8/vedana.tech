@@ -94,9 +94,9 @@ The pipeline:
 
 ## Metrics
 
-### Hit Rate
+### Hit Rate (a.k.a. `pass_rate`)
 
-The main metric — **Hit Rate**: the fraction of questions the system answered correctly. A value between 0 and 1.
+The main metric — **Hit Rate**: the fraction of questions the system answered correctly, a value between 0 and 1. Internally the eval state in `libs/vedana-backoffice/src/vedana_backoffice/states/eval.py` exposes it as `pass_rate = passed / total` (alongside `passed`, `failed`, `avg_rating`, `cost_total`, `judge_cost_total`, `avg_answer_time_sec`, `median_answer_time_sec`). The two names are the same metric.
 
 | Hit Rate     | What it means                                                                          |
 | ------------ | --------------------------------------------------------------------------------------- |

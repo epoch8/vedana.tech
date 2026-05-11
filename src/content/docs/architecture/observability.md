@@ -21,7 +21,7 @@ Traces are created in several places:
 | `memgraph.vector_search`              | `vedana_core.vts.MemgraphVectorStore`                 | label, prop_type, prop_name, top_n, threshold, query             |
 | `pgvector.vector_search`              | `vedana_core.vts.PGVectorStore`                       | same + the generated SQL                                           |
 
-Typical trace hierarchy:
+Typical trace hierarchy (the `llm.*` rows below are illustrative — the actual span names come from `openinference.instrumentation.litellm` and use the provider/operation names from LiteLLM, e.g. `litellm.completion`. Vedana does not create custom `llm.chat_completion_*` spans itself):
 
 ```mermaid
 gantt
@@ -33,19 +33,19 @@ gantt
     jims.run_pipeline_with_context :a1, 0, 12400
 
     section Filter step
-    llm.chat_completion_structured (FILTER_MODEL) :a2, 100, 1200
+    litellm.completion (FILTER_MODEL, structured) :a2, 100, 1200
 
     section Tool iter 1
-    llm.chat_completion_with_tools :a3, 1300, 3500
+    litellm.completion (with tools) :a3, 1300, 3500
     memgraph.execute_ro_cypher_query :a4, 4500, 200
     pgvector.vector_search :a5, 4500, 100
 
     section Tool iter 2
-    llm.chat_completion_with_tools :a6, 5000, 4100
+    litellm.completion (with tools) :a6, 5000, 4100
     memgraph.execute_ro_cypher_query :a7, 8800, 300
 
     section Final answer
-    llm.chat_completion_with_tools :a8, 9300, 3000
+    litellm.completion (with tools) :a8, 9300, 3000
 ```
 
 Exporter configuration is done through the standard ENV variables of the [OpenTelemetry SDK](https://opentelemetry.io/docs/languages/python/exporters/):
@@ -80,13 +80,13 @@ Beyond Prometheus, `LLMProvider` keeps a local `usage: dict[str, ModelUsage]` co
 
 ### Starting metrics
 
-JIMS CLIs accept a `--metrics-port` option (default 8000):
+JIMS CLIs accept a `--metrics-port` option. Defaults differ per service so two services can run on the same host without colliding: `jims-api` / `jims-telegram` / `jims-max` default to **8000**; `jims-widget` defaults to **8001**. Run, for example:
 
 ```bash
-uv run python -m jims_api.main --app vedana_core.app:app --metrics-port 8000
+uv run python -m jims_api.main --app vedana_core.app:app --port 8080 --metrics-port 8000
 ```
 
-Metrics are served at `http://host:8000/metrics`. `setup_prometheus_metrics(port=8000)` brings up the standard Prometheus client HTTP server.
+`--port 8080` sets the API's own HTTP port; `--metrics-port 8000` runs the Prometheus scrape endpoint at `http://host:8000/metrics`. `setup_prometheus_metrics(port=...)` brings up the standard Prometheus client HTTP server.
 
 ## Sentry
 
@@ -97,9 +97,10 @@ Enabled by the `--enable-sentry` CLI flag. Configuration:
 
 What goes to Sentry:
 
-- unhandled exceptions inside pipelines;
-- OpenTelemetry spans (via the OTel→Sentry integration);
-- tool-call errors (via `logger.exception` in `LLM.create_completion_with_tools`).
+- unhandled exceptions raised out of pipelines (anything not caught by `RagPipeline`'s `try`/`except`);
+- OpenTelemetry spans, via the Sentry → OTel integration (`setup_monitoring_and_tracing_with_sentry` registers a `SentrySpanProcessor` on the tracer provider).
+
+> **Note on tool-call errors:** there is no dedicated `loguru` → Sentry handler in `setup_monitoring_and_tracing_with_sentry` (`jims_core/util.py:24-49`). Tool-call errors inside `LLM.create_completion_with_tools` are caught with `logger.exception(...)` and returned to the LLM as a string — they don't propagate out, so they only surface in Sentry if `sentry_sdk`'s default `LoggingIntegration` picks them up.
 
 ## What to log
 
@@ -119,8 +120,9 @@ Pipeline errors are written via `self.logger.exception(...)` — so the stack en
 
 ## Healthchecks
 
-- HTTP API: `GET /healthz` → `{"status":"ok"}`.
-- Telegram bot, widget: separate `aiohttp` endpoints `/health` and `/healthz` on `--healthcheck-port` (default 9000).
+- HTTP API (`jims-api`): `GET /healthz` → `{"status":"ok"}` on the main HTTP port (no separate healthcheck server).
+- Web widget (`jims-widget`): `GET /healthz` on the main HTTP port. There is **no** `--healthcheck-port` flag for the widget.
+- Telegram bot (`jims-telegram`): separate `aiohttp` endpoints `/health` and `/healthz` on `--healthcheck-port` (default 9000).
 - Postgres: `pg_isready -U postgres` (compose healthcheck).
 - Grist: `wget http://localhost:8484/api/status`.
 

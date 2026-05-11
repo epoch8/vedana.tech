@@ -115,7 +115,7 @@ RAG logic and integration with storage.
 - **`Graph` / `MemgraphGraph`** (`vedana_core.graph`) — async Memgraph client (via the neo4j driver), including helpers for indices and schema introspection (`llm_util.schema()`).
 - **`VectorStore` / `PGVectorStore`** (`vedana_core.vts`) — on top of pgvector, cosine similarity over `rag_anchor_embeddings` and `rag_edge_embeddings`.
 - **`DataModel`** (`vedana_core.data_model`) — reads Anchors / Links / Attributes / Queries / Prompts / ConversationLifecycle from the `dm_*` tables in Postgres (populated from Grist by ETL). Contains the `dm_*_descr_template` templates that render the model into LLM-friendly text.
-- **`StartPipeline`** (`vedana_core.rag_pipeline`) — a separate pipeline that handles the `/start` command and reads the response from `ConversationLifecycle`.
+- **`StartPipeline`** (`vedana_core.start_pipeline`) — a separate pipeline that handles the `/start` command and reads the response from `ConversationLifecycle`. (A duplicate definition exists in `vedana_core.rag_pipeline` for historical reasons; `vedana_core.app` imports from `start_pipeline.py`.)
 - **`LLM`** + **`Tool`** (`vedana_core.llm`) — wrapper over `LLMProvider` with a tool-calling loop (up to 5 iterations), structured prompts, and finalisation templates.
 
 See [Vedana Core](./architecture/vedana-core.md).

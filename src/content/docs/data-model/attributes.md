@@ -28,13 +28,13 @@ Both have the **same column structure**; the only difference is what they're att
 | Field               | Type   | Description                                                                                              |
 | ------------------- | ------ | --------------------------------------------------------------------------------------------------------- |
 | **attribute_name**  | str    | System name — lowercase, no spaces, must match the column name in the data.                               |
-| **anchor / link**   | str    | The owner of the attribute (anchor name or link sentence).                                                 |
+| **anchor** (in `Anchor_attributes`) / **link** (in `Link_attributes`)   | str    | The owner of the attribute. Note: the column is named `anchor` in `Anchor_attributes` and `link` in `Link_attributes`.                                                 |
 | **description**     | str    | Human-readable description — goes into the LLM context.                                                    |
 | **data_example**    | str    | A real example value (`999.00`, `"Vilnius"`, `true`).                                                      |
 | **embeddable**      | bool   | Whether to build an embedding of this field for semantic search.                                           |
-| **embed_threshold** | float  | Minimum similarity for a result to be returned (0..1). Only applies if `embeddable=true`.                  |
+| **embed_threshold** | float  | Minimum similarity for a result to be returned (0..1). Only applies if `embeddable=true`. If the cell is empty, `DataModel.get_anchors` falls back to `1.0` (effectively "never match"); `RagPipeline.__init__` also defines a pipeline-level fallback `threshold=0.8` used when no per-attribute threshold is registered for a `(label, property)` pair. **Always set this explicitly for embeddable attributes** — the doc-level recommendation is to start around `0.7` and tune.                  |
 | **query**           | str    | Cypher to fetch this attribute (or its "owner" node).                                                       |
-| **dtype**           | str    | Data type: `str`, `int`, `float`, `bool`, `date`, `datetime`, `enum`, `url`, `file`.                       |
+| **dtype**           | str    | Hint string. Stored as-is in `dm_*_attributes` (`steps.py:90, 109`) and used by the LLM in the data-model description and by `vedana_core.utils.cast_dtype` for value coercion in Grist providers. There is no enum validation of the string itself — common values are `str`, `int`, `float`, `bool`, `date`, `datetime`, `enum`, `url`, `file`. Make sure it matches the actual stored format.                       |
 
 ## What you get in the graph
 
@@ -45,7 +45,8 @@ Both have the **same column structure**; the only difference is what they're att
 After ETL, attributes become properties on the node:
 
 ```
-(:Product {
+(:product {
+    id: "p-001",
     product_id: "p-001",
     name: "Laptop Pro",
     price: 999.00,
@@ -109,7 +110,7 @@ The `query` field is the Cypher used to fetch the attribute from the graph. Requ
 
 A missing or empty `query` is one of the most common causes of vague or incomplete answers: the assistant *knows* the attribute exists (it sees the description in the context) but can't reliably pull its value from the graph.
 
-Example for `Product.price`:
+Example for `product.price` (Vedana stores the literal `id` property on every node, set by `ensure_memgraph_node_indexes` and `pass_df_to_memgraph` — `steps.py:485`; a natural-key column like `product_id` is also present if it was declared as an attribute on the anchor):
 
 ```cypher
 MATCH (p:product) WHERE p.id = $node_id RETURN p.price AS price

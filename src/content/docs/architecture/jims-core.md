@@ -54,14 +54,15 @@ class ThreadEventDB(Base):
     event_id: UUID   # primary
     created_at: datetime  # server_default=now()
     event_type: str       # full type, e.g. "comm.user_message.user1"
-    event_domain: str     # "comm"
-    event_name: str       # "user_message"
-    event_data: JSON      # payload
+    event_domain: str     # "comm" (nullable; currently NOT populated by ThreadController)
+    event_name: str       # "user_message" (nullable; currently NOT populated by ThreadController)
+    event_data: JSON      # payload (Postgres JSON, see note below)
 ```
 
 Notes:
 
-- `event_data` is stored as `JSON` (for SQLite) / `JSONB` (for PostgreSQL).
+- `event_data` is stored as Postgres `JSON` (not `JSONB`). See `jims_core/db.py:46`.
+- `event_domain` and `event_name` columns exist in the schema but are not populated by `ThreadController.store_event_dict` / `store_user_message` / `store_assistant_message` — only `event_type` is written. They remain `NULL`.
 - `created_at` is set by the server.
 - One thread = one chain of events ordered by `created_at`.
 
@@ -108,7 +109,7 @@ ctl = await ThreadController.new_thread(
 
 # or
 ctl = await ThreadController.from_thread_id(sessionmaker, thread_id)
-ctl = await ThreadController.latest_thread_from_contact_id(sessionmaker, contact_id)
+ctl = await ThreadController.latest_thread_from_contact_id(sessionmaker, from_contact_id=contact_id)
 ```
 
 When a new thread is created, a `jims.lifecycle.thread_created` event is automatically recorded.
@@ -210,7 +211,7 @@ Metrics:
 - `llm_usage_prompt_tokens_total{model}`
 - `llm_usage_completion_tokens_total{model}`
 
-`cached_tokens` (if the provider reports them) and `request_cost` (via LiteLLM's `_hidden_params.response_cost`) are also captured.
+`cached_tokens` (if the provider reports them) and `requests_cost` (via LiteLLM's `_hidden_params.response_cost`) are also captured on `ModelUsage`.
 
 ## Metrics and tracing
 

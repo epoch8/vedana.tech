@@ -6,7 +6,9 @@ order: 6
 
 # Adding Documents
 
-Documents and their chunks are built-in functionality in Vedana. The default model already includes anchors `document` and `document_chunk` with retrieval pre-configured. You just need to load the files — chunking, embeddings, and search work out of the box.
+Vedana ingests documents through the same Anchor / Link / Attribute mechanism as any other entity — there is no special "document" code path. The convention in this guide (and in test fixtures) is to declare anchors `document` and `document_chunk` and a link between them, then point an embeddable `content` attribute at the chunk text.
+
+> **Read first:** [Documents and Chunks](../data-ingestion/documents-and-chunks.md) — there is **no built-in chunking step** in the default ETL (`prepare_nodes` is a pass-through). You either pre-chunk the document text before loading it into Grist, or you add a custom step in your own ETL.
 
 ## 1. Prepare the files
 
@@ -20,16 +22,16 @@ Before uploading:
 - remove boilerplate pages (cover pages, tables of contents) if they hurt semantic search;
 - split very large files into logical sections if they're too heterogeneous.
 
-## 2. Upload to Grist > Data > Documents
+## 2. Upload to Grist > Data > Anchor_document
 
-In the default model the Grist Data doc has a `documents` table:
+`GristDataProvider` discovers anchor data by table-name prefix: every table named `Anchor_<noun>` is treated as the data for the matching anchor (`vedana_core/data_provider.py:69`). So for a `document` anchor, create a table called `Anchor_document` with the columns that map to the anchor's attributes:
 
-| document_id | title                       | source_url                                | content      |
-| ----------- | --------------------------- | ----------------------------------------- | ------------ |
-| doc-001     | Returns and exchanges       | https://acme.example.com/policy/refund    | (full text) |
-| doc-002     | Warranty policy 2026        | https://acme.example.com/policy/warranty  | (full text) |
+| id      | title                       | source_url                                | content      |
+| ------- | --------------------------- | ----------------------------------------- | ------------ |
+| doc-001 | Returns and exchanges       | https://acme.example.com/policy/refund    | (full text) |
+| doc-002 | Warranty policy 2026        | https://acme.example.com/policy/warranty  | (full text) |
 
-The `content` field is the full extracted text. ETL chunks it later.
+The `content` field is the full extracted text. **You** are responsible for splitting it into chunks before storing — either by pre-chunking and writing rows into a separate `Anchor_document_chunk` table, or by adding a chunking step to your custom ETL.
 
 Alternatively, if there are many documents:
 
@@ -38,9 +40,9 @@ Alternatively, if there are many documents:
 
 ## 3. Configure chunking (if needed)
 
-The default parameters (300–800 tokens, overlap 0–50) live in the ETL step `prepare_nodes` for documents. If you need to change them, override the step in custom ETL (see [Custom ETL](../data-ingestion/custom-etl.md)).
+There is no built-in chunking step in the default ETL — `prepare_nodes` returns the input DataFrame unchanged. Recommended chunk sizes (300–800 tokens, with 0–50 token overlap for documents where context across paragraphs matters) are a target for **your own** pre-processing or a custom Datapipe step you add via [Custom ETL](../data-ingestion/custom-etl.md).
 
-When to change:
+When to tune:
 
 - very short documents (FAQ-style) → smaller chunks, no overlap;
 - very long structured documents (contracts, regulations) → more overlap so heading terms appear in detail chunks.
@@ -57,7 +59,11 @@ Backoffice → ETL → **Run Selected** for:
 ## 5. Verify in Memgraph Lab
 
 ```cypher
-MATCH (d:document)-[:CHUNK_belongs_to_DOCUMENT]-(c:document_chunk)
+// edge label below depends on the `sentence` you declared in Grist > Links.
+// The Vedana convention is ANCHOR1_verb_ANCHOR2 — e.g. DOCUMENT_has_DOCUMENT_CHUNK
+// (matches the test fixture in libs/vedana-core/tests/test_data_model.py).
+// If you declared it the other way (CHUNK_belongs_to_DOCUMENT), use that label here.
+MATCH (d:document)-[:DOCUMENT_has_DOCUMENT_CHUNK]-(c:document_chunk)
 RETURN d.title, count(c) AS num_chunks
 ORDER BY num_chunks DESC
 ```

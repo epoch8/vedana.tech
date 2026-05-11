@@ -31,16 +31,18 @@ app = make_jims_app()  # this is a coroutine
 
 Every CLI service has a shared set of flags:
 
-| Flag                     | Default      | Description                                                                |
-| ------------------------ | ------------ | --------------------------------------------------------------------------- |
-| `--app`                   | `app`        | which `JimsApp` to import (`vedana_core.app:app` for Vedana)              |
-| `--enable-sentry`         | off          | enable Sentry integration (reads `SENTRY_DSN`, `SENTRY_ENVIRONMENT`)      |
-| `--enable-healthcheck`    | on           | bring up a separate `/healthz` (where applicable)                          |
-| `--healthcheck-port`      | 9000         | healthcheck port                                                            |
-| `--metrics-port`          | 8000         | Prometheus port                                                              |
-| `--verbose`               | off          | turn on debug logs                                                           |
+| Flag                     | Default      | Description                                                                | Available on                                                                 |
+| ------------------------ | ------------ | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `--app`                   | `app`        | which `JimsApp` to import (`vedana_core.app:app` for Vedana)              | all CLIs                                                                      |
+| `--enable-sentry`         | off          | enable Sentry integration (reads `SENTRY_DSN`, `SENTRY_ENVIRONMENT`)      | all CLIs                                                                      |
+| `--enable-healthcheck`    | on           | bring up a separate `aiohttp` `/healthz` server                            | **`jims-telegram` only.** `jims-api` and `jims-widget` expose `/healthz` on their main HTTP port. |
+| `--healthcheck-port`      | 9000         | healthcheck port for the separate server                                    | **`jims-telegram` only.**                                                     |
+| `--metrics-port`          | 8000 (8001 for `jims-widget`) | Prometheus port. Default differs per service to avoid collisions on one host. | all CLIs                                                                |
+| `--verbose`               | off          | turn on debug logs                                                           | all CLIs                                                                      |
 
 All CLIs also read environment variables with the `JIMS_` prefix (`auto_envvar_prefix="JIMS"`).
+
+> Note: `--healthcheck-port` defaults to `9000`, which is the same port the backoffice (Caddy) binds to in `apps/vedana/docker-compose.yml`. If you run `jims-telegram` on the same host as the backoffice, override it (`--healthcheck-port 9100` or similar).
 
 ## What's next
 

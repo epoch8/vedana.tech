@@ -64,7 +64,7 @@ When the bot is started (`TelegramController.create(jims_app).run()`):
 - Each Telegram chat becomes a separate JIMS thread.
 - `contact_id` is built from the Telegram user id.
 - `thread_config` contains `{"interface": "telegram", ...}` — you can use that in your pipeline for channel-specific behaviour.
-- The `/start` command runs the `conversation_start_pipeline` (`StartPipeline`), which reads the message from `ConversationLifecycle["/start"]`.
+- The `/start` command **always creates a new JIMS thread** (it does not reuse the existing one) and then runs the `conversation_start_pipeline` (`StartPipeline`), which reads the welcome message from `ConversationLifecycle["/start"]`. Previous chat history for that contact stays in the database but is no longer used as conversation context. If you want `/start` to resume an existing thread, you'll need to subclass `TelegramController.command_start`.
 - Every text message runs the main pipeline (`RagPipeline`).
 
 Intermediate status updates (`update_agent_status`) are surfaced as "typing..." via the Telegram Bot API (`sendChatAction`).

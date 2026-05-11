@@ -22,7 +22,7 @@ dependencies = [
 ]
 ```
 
-When working inside the workspace (or after `uv build && uv publish`), the packages `jims-core`, `vedana-core`, `vedana-etl`, `jims-api`, `jims-widget`, `jims-telegram`, `jims-tui`, `jims-backoffice` are available as regular libraries.
+When working inside the uv workspace, every internal package (`jims-core`, `vedana-core`, `vedana-etl`, `jims-api`, `jims-widget`, `jims-telegram`, `jims-tui`, `jims-backoffice`, `vedana-backoffice`) is installed editable from `libs/*` — see the `[tool.uv.sources]` block in the root `pyproject.toml`. The `Makefile` exposes `make build` targets that run `uv build` per package, and `make publish` uses `uv publish` with a GCP OAuth token. The published artifacts go to Epoch8's internal GCP Artifact Registry; **Vedana packages are not on public PyPI** at the moment. To consume them outside the workspace you need either to add them to your own `[tool.uv.sources]` (workspace mode), or to configure your installer against the internal registry.
 
 ## Minimal example: ask a question
 
@@ -85,7 +85,10 @@ records = list(await vedana.graph.execute_ro_cypher_query(
 ))
 
 # vector search directly
-emb = await vedana.pipeline.llm.llm.create_embedding("quokka")  # simplified
+from jims_core.llms.llm_provider import LLMProvider
+
+llm = LLMProvider()  # reads MODEL / EMBEDDINGS_MODEL / EMBEDDINGS_DIM from env
+emb = await llm.create_embedding("quokka")
 hits = await vedana.vts.vector_search(
     label="interest",
     prop_type="node",
@@ -106,12 +109,14 @@ queries = await vedana.data_model.get_queries()
 Implement the `Pipeline` protocol (`jims_core.schema.Pipeline`):
 
 ```python
+from typing import Any
 from jims_core.thread.thread_context import ThreadContext
 
 class MyPipeline:
-    async def __call__(self, ctx: ThreadContext) -> None:
+    async def __call__(self, ctx: ThreadContext) -> Any:  # the protocol allows Any
         msg = ctx.get_last_user_message()
         ctx.send_message(f"Echo: {msg}")
+        # return value is unused by ThreadController; returning None is fine
 ```
 
 Swap it into `JimsApp`:

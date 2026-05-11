@@ -28,7 +28,7 @@ Prometheus metrics:
 - `llm_usage_prompt_tokens_total{model}` — prompt tokens consumed;
 - `llm_usage_completion_tokens_total{model}` — completion tokens.
 
-In each answer's technical info (`rag.query_processed.event_data.technical_info.model_stats`) you have full per-model usage stats including `cached_tokens` and `request_cost` (when LiteLLM gets it from the provider).
+In each answer's technical info (`rag.query_processed.event_data.technical_info.model_stats`) you have full per-model usage stats including `cached_tokens` and `requests_cost` (when LiteLLM gets it from the provider — the field name on `ModelUsage` has a trailing `s`, see `jims_core/llms/llm_provider.py:54-60`).
 
 In Sentry / Datadog you can build a "cost per request" dashboard via recording rules.
 

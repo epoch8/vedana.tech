@@ -53,14 +53,16 @@ See also: [Architecture → Observability](../architecture/observability.md).
 
 ### Database
 
-Standard Postgres metrics through `postgres_exporter`:
+> `postgres_exporter` and `memgraph_exporter` are **recommended optional add-ons**, not part of Vedana's repo or `apps/vedana/docker-compose.yml`. To get the metrics below you need to install and scrape them yourself.
+
+Standard Postgres metrics through `postgres_exporter` (e.g. [prometheus-community/postgres_exporter](https://github.com/prometheus-community/postgres_exporter)):
 
 - connections;
 - query duration;
 - size of `thread_events`, `rag_anchor_embeddings`;
 - bloat and autovacuum activity.
 
-Memgraph through `memgraph_exporter` (if used):
+Memgraph through a Memgraph metrics exporter (if used):
 
 - query duration;
 - memory usage;
@@ -86,18 +88,18 @@ Useful patterns for grep / Loki queries:
 
 ## OpenTelemetry traces
 
-A typical trace flow:
+A typical trace flow (LLM spans below are illustrative; in Jaeger/Tempo you'll see span names produced by `openinference.instrumentation.litellm` — typically `litellm.completion` — not the `llm.chat_completion_*` labels):
 
 ```
 jims.run_pipeline_with_context (12.4s)
 ├── memgraph.execute_ro_cypher_query (0.1s)
-├── llm.chat_completion_structured (1.2s) [filtering]
-├── llm.chat_completion_with_tools (3.5s) [iter 1]
+├── litellm.completion (1.2s) [filtering, structured]
+├── litellm.completion (3.5s) [iter 1, with tools]
 │   ├── memgraph.execute_ro_cypher_query (0.2s)
 │   └── pgvector.vector_search (0.1s)
-├── llm.chat_completion_with_tools (4.1s) [iter 2]
+├── litellm.completion (4.1s) [iter 2, with tools]
 │   └── memgraph.execute_ro_cypher_query (0.3s)
-└── llm.chat_completion_with_tools (3.0s) [iter 3 - final answer]
+└── litellm.completion (3.0s) [iter 3 - final answer]
 ```
 
 This shows where time is actually spent. The bottleneck is usually LLM calls; sometimes a slow Cypher.
@@ -112,7 +114,7 @@ In addition to the technical metrics, it's worth counting:
 - **average thread length** (`COUNT(thread_events) / COUNT(threads)`);
 - **share of `rag.error` events** — quality drops or LLM provider failures;
 - **share of smalltalk** vs real questions — helps assess whether the assistant is being used as intended;
-- **CSAT** — if you give the user a "useful/not" button, log it as `comm.user_feedback`.
+- **CSAT** — if you give the user a "useful/not" button, log it as `comm.user_feedback`. Note: this is **not a built-in event type** — Vedana doesn't produce `comm.user_feedback` itself. You add the rating capture in your interface (widget / Telegram / your API) and write it through `ctx.send_event("comm.user_feedback", {...})` or `ctl.store_event_dict(...)`. Pick any event_type you like; `comm.user_feedback` is just a convention.
 
 ## Sampling real conversations
 

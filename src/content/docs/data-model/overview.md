@@ -10,7 +10,7 @@ The data model in Vedana is the contract between your domain and the assistant. 
 
 The data model is **not the data**, it's the schema. The data itself (products, documents, contracts, branches) lives in the Grist Data doc and is loaded into the graph through ETL. The data model lives in the Grist Data Model doc and describes how that data is interpreted.
 
-## The six tables
+## The seven tables
 
 | Table                    | Required?                              | Purpose                                                                  |
 | ------------------------ | --------------------------------------- | ------------------------------------------------------------------------- |
@@ -36,7 +36,7 @@ For each request:
 
 ## Rendering templates
 
-By default the data model is rendered into six sections:
+By default the data model is rendered into five sections (Nodes, Node attributes, Links, Link attributes, Typical questions). Section headers in the built-in defaults are in Russian — `## Узлы:`, `## Атрибуты узлов:`, etc. — and can be overridden via `dm_descr_template` in the `Prompts` table:
 
 ```text
 ## Nodes:

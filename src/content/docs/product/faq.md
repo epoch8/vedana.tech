@@ -31,11 +31,11 @@ These are tools of different kinds. LangChain / LlamaIndex / Haystack are **libr
 
 ## Can Vedana be used without Memgraph / Neo4j?
 
-Technically — no, you do need a graph DB. But `Graph` is an abstract class, and you can implement your own backend on top of any Cypher-compatible DB (Memgraph, Neo4j, AWS Neptune with Cypher). See [Vedana Core architecture](../architecture/vedana-core.md).
+Technically — no, you do need a graph DB. But `Graph` is an abstract class, and you can implement your own backend on top of any Cypher-compatible DB. For Neo4j the existing `CypherGraph` should largely work (the Bolt driver is shared with Memgraph). AWS Neptune supports only the [openCypher subset](https://docs.aws.amazon.com/neptune/latest/userguide/opencypher.html) — not full Cypher — so plugging Neptune in realistically means subclassing `Graph` (not just `CypherGraph`) and adapting the query patterns Vedana's `data_model.query` fields generate. See [Vedana Core architecture](../architecture/vedana-core.md).
 
 ## Can it run without Postgres?
 
-JIMS tables and Datapipe require Postgres. Technically, Postgres can be replaced with any SQLAlchemy-compatible DB, but the migrations are written for Postgres + pgvector. SQLite works for an MVP, but vector search won't work without pgvector.
+JIMS tables and Datapipe require Postgres in production. Migrations are written for Postgres + pgvector. SQLite is **not** a tested production target — the only SQLite usage in the repo is the in-memory test database in `libs/vedana-core/tests/test_data_model.py` for unit tests of `DataModel`. The `jims_core/db.py` schema has a `JSON.with_variant(sa.JSON, "sqlite")` shim but the migrations and `vedana_etl.store` aren't validated against SQLite, and vector search requires pgvector. Treat "works on SQLite for an MVP" as an aspiration, not a guarantee.
 
 ## Can it run without Grist?
 
@@ -50,7 +50,7 @@ Vedana runs on LiteLLM, so theoretically — any. In practice:
 - **Google Gemini** — large context, cheap, sometimes worse at following step-by-step playbooks.
 - **Local models via Ollama** — workable for on-prem, but tool-calling quality is much lower.
 
-For production we recommend `gpt-4.1-mini` or `claude-3.5-haiku` as the main model, plus a small model (`gpt-4.1-nano`, `gemini-2.0-flash`) for filtering.
+For production we recommend `gpt-4.1-mini` or `claude-3.5-haiku` as the main model, plus a small model (`gpt-4.1-nano`, `gemini-2.0-flash`) for filtering. The shipped `apps/vedana/.env.example` sets `MODEL="gpt-4.1-mini"`, so the recommended default and the file you copy from match. The class-level fallbacks in `VedanaCoreSettings` (`gpt-4.1`) and `LLMSettings` (`gpt-4.1-nano`) are safety nets for when the env var isn't set at all — for any real deployment, set `MODEL` explicitly in `.env`.
 
 ## How much data can Vedana handle?
 

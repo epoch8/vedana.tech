@@ -64,7 +64,11 @@ flowchart LR
 
 ### Things to definitely change for production
 
-1. **Change the passwords** — `MEMGRAPH_PWD`, `POSTGRES_PASSWORD`, `GRIST_SESSION_SECRET`. No `.env.example` defaults.
+1. **Change every default credential.** The repo ships with several non-empty defaults purely for local Docker Compose — they are **not** safe for production:
+   - `MEMGRAPH_PWD="modular-current-bonjour-senior-neptune-8618"` in `apps/vedana/.env.example`,
+   - `SENTRY_DSN` (Epoch8 demo project) in `apps/vedana/.env.example`,
+   - `POSTGRES_PASSWORD: postgres`, `GRIST_SESSION_SECRET: dev-secret`, and `GRIST_API_KEY: 095081…` hard-coded in `apps/vedana/docker-compose.yml`.
+   For production, generate new secrets and inject them via your secrets manager (don't keep them in the repo).
 2. **Enable TLS** — Caddy can do it automatically; you only need a public hostname and DNS. You can put nginx/Cloudflare tunnel in front.
 3. **Close unnecessary ports.** Only the following should be public:
    - 80/443 (Caddy → backoffice / widget),
@@ -75,7 +79,7 @@ flowchart LR
    - Memgraph: snapshot + cypherl dumps (see [Storage Model](../architecture/storage-model.md)).
    - Grist: document export.
 5. **Turn on Sentry** — `SENTRY_DSN` + `SENTRY_ENVIRONMENT`.
-6. **Turn on Prometheus scraping** — on each service's `--metrics-port`. For example via Grafana Cloud or an internal Prometheus.
+6. **Turn on Prometheus scraping** — on each service's `--metrics-port`. Defaults differ per service to avoid port collisions when several CLIs run on the same host: `jims-api` / `jims-telegram` / `jims-max` default to **8000**; `jims-widget` defaults to **8001**. In a Compose / Kubernetes setup where each service runs in its own container, you can keep these defaults; if you co-locate services, override with explicit `--metrics-port`. See [API Overview → Common CLI configuration](../api/overview.md).
 7. **Pin Docker image versions** — don't use `:latest` for Memgraph and Grist in production. Pin tags.
 
 ### A service unit (systemd, as an example)

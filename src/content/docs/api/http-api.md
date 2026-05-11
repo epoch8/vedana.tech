@@ -40,7 +40,7 @@ In docker-compose the `api` service runs the same command and exposes port 8080.
 Two modes are supported:
 
 1. **Bearer token.** If `--api-key` is set, every request must include `Authorization: Bearer <token>`.
-2. **Authentik (optional).** If `--authentik-url` and `--authentik-app-slug` are set, the user's token is checked via `GET /api/v3/core/applications/<slug>/check_access/`.
+2. **Authentik (optional).** If **both** `--authentik-url` **and** `--authentik-app-slug` are set, the user's token is checked via `GET /api/v3/core/applications/<slug>/check_access/`. Setting only one of the two will not enable Authentik verification (the check in `jims_api/main.py:60-75` requires both); the request will simply fail with `401`. Always pass them together.
 3. **No auth.** If both are empty, the API is public (dev / closed network only).
 
 You can use both at the same time: api-key is tried first, then Authentik.

@@ -45,7 +45,7 @@ Bad examples:
 
 ## 3. Fill in the FAQ table in Grist
 
-In **Grist Data doc > faq** (or whichever table your config uses):
+In **Grist Data doc > `Anchor_faq`** (the `Anchor_` prefix is hard-coded — see `vedana_core/data_provider.py:69`; there's currently no env var to change it):
 
 | question                              | answer                                                                |
 | ------------------------------------- | --------------------------------------------------------------------- |

@@ -109,7 +109,7 @@ Algorithm:
 
 A `context.dm_filter_reasoning` event with the LLM's reasoning is sent into the thread (when filtering succeeded) — it's later included in `ctx.context(...)` (see `ThreadContext.context`).
 
-In parallel, a `rag.data_model_filtered` event is sent with full telemetry: `selected_anchors`, `selected_links`, `original_counts`, `filtered_counts`, `reasoning`.
+After the agent has produced its answer, a `rag.data_model_filtered` event is sent (at the end of `process_rag_query`) with full telemetry: `selected_anchors`, `selected_links`, `original_counts`, `filtered_counts`, `reasoning`.
 
 If filtering raises, the fallback is the full data model (`DataModel.to_text_descr()` without arguments).
 
@@ -153,8 +153,8 @@ All of it goes into `rag.query_processed`. The backoffice shows it under "Detail
 
 `VTSArgs` is a pydantic model with fields:
 
-- `label` — anchor / link name, constrained by an `Enum` built from `vts_indices`;
-- `property` — field name, constrained by an `Enum` of unique embeddable fields;
+- `label` — anchor / link name; when at least one embeddable index exists in the data model, the field is constrained by an `Enum` built from `vts_indices`. With no embeddable indexes the base `VTSArgs` (free-string `label`/`property`) is used.
+- `property` — field name, similarly Enum-constrained when indexes exist, otherwise a free string.
 - `text` — text to search.
 
 In code:

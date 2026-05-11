@@ -22,9 +22,9 @@ See [Setting Up Data Model](./guides/setting-up-data-model.md).
 
 ## 2. Prepare tables
 
-In the **Grist Data doc**, create a table per anchor.
+In the **Grist Data doc**, create one table per anchor. **The table name must follow the `Anchor_<noun>` convention** (`Anchor_product`, `Anchor_category`, `Anchor_branch`, …) — `GristDataProvider` discovers anchor data by that prefix (`vedana_core/data_provider.py:69`, `anchor_table_prefix = "Anchor_"`). The prefix is hard-coded; tables not matching it are ignored. In Grist's UI tabs you can keep nicer display names alongside the underlying table id.
 
-### `products`
+### `Anchor_product`
 
 | product_id | name      | description           | price | in_stock | category_id   |
 | ---------- | --------- | --------------------- | ----- | -------- | -------------- |
@@ -33,14 +33,14 @@ In the **Grist Data doc**, create a table per anchor.
 
 The columns map to the `product` anchor's attributes. The `category_id` column will become a `PRODUCT_belongs_to_CATEGORY` edge (see step 3).
 
-### `categories`
+### `Anchor_category`
 
 | category_id   | name    |
 | -------------- | ------- |
 | cat-laptops   | Laptops |
 | cat-monitors  | Monitors|
 
-### `branches`
+### `Anchor_branch`
 
 | branch_id     | name           | address                                  | opening_hours          |
 | -------------- | -------------- | ----------------------------------------- | ---------------------- |

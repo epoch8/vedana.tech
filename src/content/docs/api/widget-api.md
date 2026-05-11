@@ -22,75 +22,98 @@ order: 3
 uv run python -m jims_widget.main \
   --app vedana_core.app:app \
   --host 0.0.0.0 \
-  --port 8090
+  --port 8090 \
+  --cors-origins "*" \
+  --metrics-port 8001
 ```
 
-The CLI options are the same shared ones as in other interfaces (`--app`, `--enable-sentry`, `--metrics-port`, `--verbose`).
+### CLI options
+
+| Flag             | Default | Description                                                                 |
+| ---------------- | ------- | ---------------------------------------------------------------------------- |
+| `--app`          | `app`   | JIMS app in `module:attr` form (use `vedana_core.app:app` for Vedana).      |
+| `--host`         | `0.0.0.0` | HTTP bind host.                                                            |
+| `--port`         | `8090`  | HTTP port for both the WebSocket and the static assets.                     |
+| `--cors-origins` | `*`     | Comma-separated CORS origins. Use `*` for development; restrict in production. |
+| `--enable-sentry`| off     | Enable Sentry tracing.                                                       |
+| `--metrics-port` | `8001`  | Prometheus port. **Different default from `jims-api` (8000)** so both can run on the same host. |
+| `--verbose`      | off     | Debug logs.                                                                  |
 
 ## Embedding in a page
 
 Once the service is running, drop on your page:
 
 ```html
-<script src="https://your-vedana-host/widget/embed.js"
-        data-app="vedana_core"
+<script src="https://your-vedana-host/static/jims-widget.js"
+        data-server="https://your-vedana-host"
         async></script>
 ```
 
 The widget creates a floating chat button in the bottom-right corner. Clicking it opens the conversation window.
 
-Customisation (via data attributes or window config):
+`data-server` is **required** — it tells the script which origin to open the WebSocket against. All other attributes are optional.
 
-- `data-position="bottom-left|bottom-right"`
-- `data-color="#1a73e8"`
-- `data-title="Assistant"`
-- `data-greeting="Hello!"`
-- `data-contact-id="..."` — if you already have a user-id from your session
+| Attribute            | Default        | Description                                                                  |
+| -------------------- | -------------- | ----------------------------------------------------------------------------- |
+| `data-server`        | —              | **Required.** Origin of the widget backend.                                  |
+| `data-contact-id`    | empty          | Persistent visitor identifier. If empty, the backend generates `widget:<uuid7>`. |
+| `data-thread-id`     | empty          | Resume an existing thread.                                                    |
+| `data-intro-message` | empty          | Initial AI greeting shown when the panel opens.                              |
+| `data-position`      | `bottom-right` | `bottom-right` or `bottom-left`.                                              |
+| `data-open`          | `false`        | `"true"` to start with the panel expanded.                                    |
+| `data-title`         | `AI Assistant` | Header title.                                                                 |
+| `data-accent`        | `#4f46e5`      | Accent hex colour.                                                            |
 
-> The exact attribute set may vary by version. See `libs/jims-widget/src/jims_widget/static/embed.js` in your version of the repo.
+For the source of truth, see `libs/jims-widget/src/jims_widget/static/jims-widget.js`.
 
-## REST endpoints
+## Endpoints
 
-The widget uses the same concepts as `jims-api`:
+The widget backend exposes:
 
-- `GET /healthz` — healthcheck.
-- `POST /threads` — create a new thread.
-- `POST /threads/{thread_id}/messages` — send a message.
-- `GET /threads/{thread_id}/events?since=...` — fetch events for rendering.
-- `WS /threads/{thread_id}/stream` — WebSocket for real-time delivery of assistant messages and status updates.
+- `GET /healthz` — healthcheck (`{"status":"ok"}`).
+- `GET /` — a built-in demo page (`static/demo.html`).
+- `GET /static/*` — static asset mount, serving the embed script and the demo HTML.
+- `WS /ws/chat?thread_id=<uuid>&contact_id=<id>` — the only chat transport. Both query parameters are optional; if `thread_id` is missing or unknown, the backend creates a new thread.
+
+There are **no REST endpoints for `POST /threads`, `POST /threads/{id}/messages`, `GET /threads/{id}/events`**. All chat flows go through the WebSocket.
 
 ## WebSocket protocol
 
 Connection:
 
 ```
-ws://your-vedana-host:8090/threads/{thread_id}/stream
+ws://your-vedana-host:8090/ws/chat?thread_id={uuid}&contact_id={id}
 ```
 
-Server-side messages (JSON):
+**Client → server** — a DeepChat frame. Any of these is accepted (`_extract_user_text` normalises them):
 
 ```json
-{
-  "type": "status",
-  "data": {"text": "Searching knowledge base..."}
-}
+{"messages": [{"role": "user", "text": "Hello"}]}
 ```
 
 ```json
-{
-  "type": "event",
-  "data": {
-    "event_type": "comm.assistant_message",
-    "event_data": {"role": "assistant", "content": "..."}
-  }
-}
+"Hello"
 ```
 
-Client-side messages:
+```text
+Hello
+```
+
+**Server → client** — a single flat JSON payload per pipeline run:
 
 ```json
-{"type": "message", "data": {"content": "Hello"}}
+{"text": "<assistant answer>"}
 ```
+
+```json
+{"error": "Empty message"}
+```
+
+```json
+{"error": "Processing error: <message>"}
+```
+
+There is **no `{"type":"status|event","data":{...}}` envelope** at the moment, and no intermediate status events over the WebSocket — only the final assistant text (or an error). Token-by-token streaming is on the roadmap.
 
 ## Security
 

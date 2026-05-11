@@ -72,16 +72,16 @@ A common rule of thumb: **300–800 tokens per chunk** for most document types.
 
 For documents where meaning depends heavily on continuity across paragraphs (long policies, multi-section contracts), it helps to add **overlap** between adjacent chunks — they share some text so any retrieved chunk remains understandable on its own.
 
-## Default model for documents
+## Recommended model for documents
 
-Vedana ships with a ready-made model for documents:
+The convention Vedana documents (and the test fixtures) follow is:
 
 - anchor `document` — the parent document (id, title, url, source);
 - anchor `document_chunk` — a chunk (id, content, position);
-- link `CHUNK_belongs_to_DOCUMENT` — chunk ↔ document;
-- attribute `document_chunk.content` — `embeddable=true` with a sensible default threshold.
+- link between them — connect `document` and `document_chunk` (the test fixture `test_data_model.py` uses the sentence `DOCUMENT_has_DOCUMENT_CHUNK`; this guide and the [Adding Documents](../guides/adding-documents.md) examples use `CHUNK_belongs_to_DOCUMENT` going the other way — pick one direction and use it consistently);
+- attribute `document_chunk.content` — `embeddable=true`, with `embed_threshold` set explicitly (recommended starting point ≈ 0.55–0.65 for chunk content; do not leave the cell empty — `DataModel` falls back to `1.0` which never matches).
 
-No additional modeling is required. Just load the documents.
+> **Not built-in:** Vedana does **not** seed these anchors/links into your Grist Data Model automatically. You declare them yourself the first time you ingest documents. There is also **no chunking step in the default ETL** — `prepare_nodes` is a no-op pass-through (`vedana_etl/steps.py`: `return grist_nodes_df.copy()`). You either chunk the text before uploading to Grist, or add a custom chunking step via [Custom ETL](./custom-etl.md). The "300–800 tokens" figure earlier in this page is a recommended target for your own pre-processing, not a built-in default.
 
 ## How the assistant uses chunks at runtime
 

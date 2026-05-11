@@ -35,14 +35,15 @@ class ThreadEventDB(Base):
     event_id: UUID   # PK
     created_at: datetime  # server_default=now()
     event_type: str       # "comm.user_message", "rag.query_processed", ...
-    event_domain: str
-    event_name: str
-    event_data: JSON
+    event_domain: str     # nullable; not populated by ThreadController
+    event_name: str       # nullable; not populated by ThreadController
+    event_data: JSON      # Postgres JSON (not JSONB)
 ```
 
 Notes:
 
-- `event_data` is stored as `JSON` (for SQLite) / `JSONB` (for PostgreSQL).
+- `event_data` is stored as Postgres `JSON` (with a SQLite `JSON` variant for tests). See `jims_core/db.py:46`.
+- `event_domain` / `event_name` exist in the schema but are not written today — only `event_type` is populated.
 - `created_at` is set by the server.
 - One thread = one chain of events ordered by `created_at`.
 
@@ -130,13 +131,24 @@ Read-only Cypher is executed with `RoutingControl.READ` so you can split read/wr
 
 ### Vector index in Memgraph (optional)
 
-Switching to `MemgraphVectorStore`, search uses Memgraph's stored procedures:
+`MemgraphVectorStore` is implemented in `vedana_core.vts` but is **not wired up by default** — `make_vedana_app` uses `PGVectorStore`. The ETL also no longer creates Memgraph vector indexes automatically: the blocks in `vedana_etl/steps.py:494-511, 555-572` are commented out (with the note "Deprecated due to move to pgvectorstore"), and the migration `2026_02_18_1105-3c5cc51455c5_rm_memgraph_vector_indices.py` dropped the related metadata tables. To use this path you need to create the vector indexes manually in Memgraph.
+
+If you do enable it, search for nodes uses:
 
 ```cypher
 CALL vector_search.search($idx_name, $top_n, $embedding)
 YIELD similarity, node
 WHERE similarity > $threshold
 RETURN *
+```
+
+Search for edges uses a separate procedure:
+
+```cypher
+CALL vector_search.search_edges($idx_name, $top_n, $embedding)
+YIELD similarity, edge
+WITH similarity, edge WHERE similarity > $threshold
+RETURN similarity, edge, startNode(edge) AS start, endNode(edge) AS end;
 ```
 
 Index names follow the pattern `{label}_{prop}_embed_idx` (spaces become underscores).

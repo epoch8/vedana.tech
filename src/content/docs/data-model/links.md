@@ -34,13 +34,13 @@ The link `Product → belongs_to → Category` after ETL produces edges:
 ![Person → has → Interest](../images/docs/link-person-interest.png)
 
 ```
-(:Product {id: "p-001"}) -[:PRODUCT_belongs_to_CATEGORY]-> (:Category {id: "cat-01"})
+(:product {id: "p-001"}) -[:PRODUCT_belongs_to_CATEGORY]-> (:category {id: "cat-01"})
 ```
 
-Cypher can now:
+Cypher can now (anchor labels are literal — lowercase singular by convention; the edge label `sentence` is preserved verbatim, see [Adding Links](../guides/adding-links.md)):
 
 ```cypher
-MATCH (p:Product)-[:PRODUCT_belongs_to_CATEGORY]->(c:Category)
+MATCH (p:product)-[:PRODUCT_belongs_to_CATEGORY]->(c:category)
 WHERE c.name = "Laptops"
 RETURN p
 ```
@@ -49,12 +49,14 @@ This is impossible with document chunks alone.
 
 ## Direction
 
-Links are **directional by design**. Even when the relationship is conceptually symmetric, the direction in the graph must be explicit.
+Every edge in Memgraph has a direction (an arrow from `anchor1` to `anchor2`), but the `has_direction` column on the `Links` table controls whether Vedana **treats** the relationship as directed.
 
-If you need "bidirectional" behaviour, two options:
+- `has_direction = true` — only the explicit `anchor1 → anchor2` edge is loaded. Cypher must follow the arrow (`-[:LABEL]->`); the reverse direction returns nothing.
+- `has_direction = false` (the **default** in `Link` / `dm_links` schema) — ETL automatically duplicates each edge in the opposite direction (`vedana_etl/steps.py:422-450`), so a traversal in either Cypher direction works. In other words, links are **undirected by default**; mark `has_direction=true` when direction is semantically meaningful.
 
-1. Create two links with different `sentence`s (`A_likes_B` and `B_liked_by_A`). More expensive, but semantically precise.
-2. In Cypher, use undirected traversal: `MATCH (a)-[r]-(b)` (without an arrow). Cheaper, but mixes directions.
+If you need explicit "two named relationships" semantics, you can also create two links with different `sentence`s (`A_likes_B` and `B_liked_by_A`). More expensive, but disambiguates direction-specific attributes.
+
+In Cypher you can always use undirected traversal `MATCH (a)-[r]-(b)` (without an arrow) regardless of the column setting.
 
 ## Multi-hop reasoning
 
@@ -70,8 +72,8 @@ With this structure Vedana answers: **"Which legal documents regulate products i
 That's a query requiring traversal of two links in sequence. Vector search can't do this. Graph traversal can.
 
 ```cypher
-MATCH (p:Product)-[:PRODUCT_belongs_to_CATEGORY]->(c:Category)
-       -[:CATEGORY_regulated_by_LEGAL_DOCUMENT]->(d:LegalDocument)
+MATCH (p:product)-[:PRODUCT_belongs_to_CATEGORY]->(c:category)
+       -[:CATEGORY_regulated_by_LEGAL_DOCUMENT]->(d:legal_document)
 WHERE c.name = $cat_name
 RETURN DISTINCT d.title, d.url
 ```

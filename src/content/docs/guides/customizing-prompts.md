@@ -80,7 +80,7 @@ That can shrink the context 2–3x for large data models.
 
 ## Best practices
 
-- **Test via golden dataset.** Hit Rate is the only objective indicator.
+- **Test via golden dataset.** Pass Rate (the aggregate `pass_rate` metric in the eval state, surfaced in the backoffice) is the only objective indicator.
 - **Version.** Give the prompt a date suffix (`vedana_main_20260301`) and keep the previous version in a comment column in Grist for rollback.
 - **Don't write a prompt-novel.** Every extra paragraph goes into every request. Shorter is cheaper.
 - **Separate "how to behave" from "what to answer".** Behaviour → main prompt. What exactly to answer → the Queries playbook (more precise and reproducible).

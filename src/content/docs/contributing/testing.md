@@ -10,9 +10,11 @@ Vedana uses pytest. Tests come in three categories:
 
 | Category       | Location                                                              | When to run                       |
 | -------------- | --------------------------------------------------------------------- | --------------------------------- |
-| Unit           | `libs/<package>/tests/unit`                                            | on every commit                   |
-| Integration    | `libs/<package>/tests/integration`                                     | requires DB / API to be up        |
-| Cassette-based | `libs/<package>/tests/cassettes` (VCR)                                 | for LLM calls with recorded responses |
+| Unit           | `libs/<package>/tests/unit/` or flat `libs/<package>/tests/test_*.py` | on every commit                   |
+| Integration    | `libs/<package>/tests/integration/` (in `vedana-etl` the folder is `tests/integ/`) | requires DB / Memgraph / API to be up |
+| Cassette-based | `libs/<package>/tests/cassettes/` (VCR)                                 | for LLM calls with recorded responses |
+
+> **Layout is not uniform across packages today.** `vedana-etl` uses `tests/integ/`, `jims-widget` uses both `tests/unit/` and `tests/integration/`, `jims-api` only `tests/integration/`, `jims-core` and `vedana-core` have a flat `tests/` directory with `test_*.py` files. Treat the table above as the **target** layout and the per-package `tests/` directory as the source of truth.
 
 ## Running
 
@@ -34,10 +36,10 @@ Unit only:
 uv run pytest libs/vedana-core/tests/unit
 ```
 
-By marker:
+By marker (note: the `integration` marker is **not registered** in `pyproject.toml`/`conftest.py` today, so `pytest` may emit a "PytestUnknownMarkWarning". To suppress, add it under `[tool.pytest.ini_options] markers = ["integration: requires external services"]` in the relevant package). For now the most reliable way to skip integration tests is to point pytest at the unit directory directly:
 
 ```bash
-uv run pytest -m "not integration"
+uv run pytest libs/vedana-etl/tests/unit
 ```
 
 ## Preparing infra for integration tests
@@ -118,6 +120,8 @@ For tests that call the LLM, we use `vcr.py` or cassette-based mocking. That:
 
 Cassettes are stored at `tests/cassettes/<test_name>.yaml`. To re-record — `pytest --record-mode=once` (or equivalent).
 
+> Today only `libs/jims-core/tests/cassettes/` exists; other packages don't ship cassettes. As you add LLM-touching tests in other packages, follow this convention so the pattern is uniform.
+
 > Be careful: a cassette can contain sensitive data. Before committing, check there are no real API keys in there.
 
 ## Snapshot tests
@@ -145,6 +149,8 @@ Run:
 ```bash
 uv run pytest --cov=vedana_core --cov-report=html
 ```
+
+> `pytest-cov` is not currently in the root workspace's dev dependencies. Add it to your local environment (`uv add --dev pytest-cov` inside the package you're measuring) before running.
 
 Don't chase 100% — cover behaviour, not lines.
 

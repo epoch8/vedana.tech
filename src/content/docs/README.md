@@ -18,7 +18,7 @@ Vedana is built around three components:
 
 Depending on your role:
 
-- **I'm a developer and want to run Vedana locally** — start with [Quick Start](./getting-started/quick-start.md), then [Installation](./getting-started/installation.md) and [Architecture Overview](./architecture/overview.md).
+- **I'm a developer and want to run Vedana locally** — start with [Quick Start](./getting-started/quick-start.md) to see Vedana working in Docker. If you then want to develop *on* Vedana itself (debug a service, add a feature), see [Local Development](./getting-started/local-development.md), then [Architecture Overview](./architecture/overview.md).
 - **I'm a product manager and want to understand what this product is** — start with [What is Vedana](./concepts/what-is-vedana.md) and [Why Classic RAG Fails](./concepts/why-classic-rag-fails.md), then [Use Cases](./product/use-cases.md).
 - **I want to describe my domain and load data** — read [Data Model](./data-model/overview.md) and then [Data Ingestion](./data-ingestion/overview.md).
 - **I want to contribute** — see the [Contributing Guide](./contributing/contributing.md).
@@ -29,7 +29,7 @@ Depending on your role:
 
 - [Introduction](./getting-started/introduction.md) — what Vedana is in one paragraph and who needs it.
 - [Quick Start](./getting-started/quick-start.md) — bring up the stack in Docker and ask your first question in 10 minutes.
-- [Installation](./getting-started/installation.md) — environment variables, requirements, local and production setups.
+- [Local Development](./getting-started/local-development.md) — develop on Vedana itself: native Python with `uv`, infrastructure in Docker. (For first-run demo see Quick Start; for production see [Operations → Deployment](./operations/deployment.md).)
 - [Configuration](./getting-started/configuration.md) — every key ENV variable and what it means.
 
 ### Concepts (for all roles)

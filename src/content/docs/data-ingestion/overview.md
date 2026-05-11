@@ -12,7 +12,7 @@ Vedana supports three types of domain data. Choosing the right type is the most 
 | -------------------- | ----------------------------------------------------------------------------- | ---------------------- |
 | **Documents**        | Explanatory text. "What does the policy say about X?", "Tell me about…"      | Memgraph + pgvector   |
 | **Structured data**  | Specific values, filters, relationships. "How many…", "All… cheaper than X", "Who is connected to…" | Memgraph (nodes + edges) |
-| **FAQ**              | Short, fixed answers. "Opening hours", "Warranty", "How to return"            | Grist (separate table) |
+| **FAQ**              | Short, fixed answers. "Opening hours", "Warranty", "How to return"            | Grist `Anchor_faq` table (same mechanism as any other anchor — see [FAQ](./faq.md)) |
 
 ## How they complement each other
 

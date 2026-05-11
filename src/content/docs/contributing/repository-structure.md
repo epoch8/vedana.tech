@@ -34,21 +34,24 @@ Runnable applications using the libraries.
 ```
 apps/
 ├── vedana/                   # the main Vedana production service
+│   ├── CHANGELOG.md
+│   ├── README.md              # quick orientation for the deployable app
 │   ├── Dockerfile
 │   ├── Makefile
 │   ├── alembic.ini            # migrations
 │   ├── docker-compose.yml     # stack: app + api + widget + db + memgraph + grist
-│   ├── infra/                 # auxiliary configs (Caddy, Grist init)
+│   ├── data/                  # mounted into containers (currently empty; reserved for ad-hoc seed data / artifacts)
+│   ├── infra/                 # auxiliary configs (Caddy, Grist init seeds)
 │   ├── migrations/            # Alembic migrations
 │   ├── pyproject.toml
-│   ├── rxconfig.py            # Reflex config
 │   ├── .env.example
-│   ├── .env.ci-cd
-│   ├── docs/                  # internal documentation assets
-│   └── assets/                # static files
+│   └── .env.ci-cd
 └── jims-demo/                 # a minimal JIMS-only example without Vedana
     ├── jims_demo/
-    └── migrations/
+    │   ├── app.py              # JimsApp wiring (sessionmaker + custom pipeline)
+    │   ├── db.py               # SQLAlchemy session/engine setup
+    │   └── simple_pipeline.py  # tiny example Pipeline implementation
+    └── migrations/             # Alembic migrations for the demo's Postgres tables
 ```
 
 ## `libs/`
@@ -90,11 +93,19 @@ libs/
 │       ├── chat_app.py
 │       └── main.py
 │
-├── jims-max/                 # additional interfaces (Max)
+├── jims-max/                 # VK Max messenger integration
 │   └── src/jims_max/
+│       ├── main.py            # CLI entry point
+│       └── controller.py      # MaxController — message handling and pipeline wiring
 │
 ├── jims-backoffice/          # minimal FastAPI backoffice (for JIMS demos)
 │   └── src/jims_backoffice/
+│       ├── app.py             # route setup, healthcheck, HTML landing
+│       ├── main_app.py        # FastAPI() instance
+│       ├── forms.py           # FastUI form schemas
+│       ├── routes/            # event / home routes
+│       ├── settings.py
+│       └── utils.py
 │
 ├── vedana-core/              # Vedana kernel: RAG pipeline, agent, tools
 │   └── src/vedana_core/

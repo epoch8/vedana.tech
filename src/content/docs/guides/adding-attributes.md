@@ -66,7 +66,7 @@ After running on the golden dataset, adjust. Too many false positives → raise;
 
 ## 6. Run ETL
 
-Backoffice → ETL → **Run Selected** on `memgraph_steps` (or do a full run). Datapipe recomputes embeddings only for those whose schema changed.
+Backoffice → ETL → **Run Selected** on `memgraph_steps` (or do a full run). Datapipe is incremental: `generate_embeddings` is keyed by `(node_id, node_type)` for anchors and `(from_node_id, to_node_id, edge_label)` for edges. When a row in `nodes`/`edges` or in `dm_anchor_attributes`/`dm_link_attributes` changes (including flipping `embeddable` or editing `embed_threshold`/`attribute_name`), Datapipe re-runs the step only for the affected keys. A bulk change like adding an embeddable attribute on an anchor will recompute every node of that type once; subsequent runs are cheap.
 
 ## 7. Verify
 

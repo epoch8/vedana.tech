@@ -163,7 +163,7 @@ If you've recreated Memgraph with a different password — drop the `mg_graph` v
 1. `jims_pipeline_run_duration_seconds` metrics — where does it grow?
 2. If it's LLM latency — look at traces. Maybe additional tool-call iterations crept in.
 3. If it's Memgraph latency — add indexes (`CREATE INDEX ON :Product(price)` for frequently-filtered fields).
-4. If it's pgvector latency — add an HNSW index on `rag_anchor_embeddings.embedding`.
+4. If it's pgvector latency — add an HNSW index on `rag_anchor_embeddings.embedding` manually (`CREATE INDEX ... USING hnsw (embedding vector_cosine_ops)`). Vedana's Alembic migrations do **not** create this index automatically — its optimal parameters depend on your row count, dimensionality, and recall/latency target, so it's left as an explicit operator decision.
 
 ### Very expensive requests (lots of tokens)
 

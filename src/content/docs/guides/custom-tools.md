@@ -99,8 +99,17 @@ class MyRagPipeline(RagPipeline):
 And then swap the class in `make_vedana_app`:
 
 ```python
-pipeline = MyRagPipeline(graph=graph, vts=vts, data_model=data_model, ...)
+import logging
+
+pipeline = MyRagPipeline(
+    graph=graph,
+    vts=vts,
+    data_model=data_model,
+    logger=logging.getLogger(__name__),  # RagPipeline requires logger as a positional/keyword arg
+)
 ```
+
+> `RagPipeline.__init__` requires `logger` — there is no default. The Vedana factory `make_vedana_app` passes `loguru.logger`; in your own setup pass any logger you like.
 
 ## Best practices
 
@@ -142,7 +151,7 @@ Before production:
 
 - unit-test the `fn` itself;
 - integration-test by running golden questions through the pipeline with the tool plugged in and comparing answers;
-- monitor — the `llm_calls_total` metric and your own counter "how many times was my tool called".
+- monitor — the built-in `llm_calls_total{model}` counter only tracks LLM calls (labelled by model), **not tool calls**. There is no built-in per-tool counter. If you need one, register your own `prometheus_client.Counter` (e.g. `vedana_tool_calls_total{tool_name}`) and increment it inside your `fn`.
 
 ## What you can't do with a custom tool
 

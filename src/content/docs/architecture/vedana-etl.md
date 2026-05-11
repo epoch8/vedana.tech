@@ -173,10 +173,10 @@ This is the "section you can swap" — if your source isn't Grist, you write you
 
 Loading into the graph and embeddings:
 
-- `ensure_memgraph_node_indexes` — creates indexes on embeddable node attributes.
-- `ensure_memgraph_edge_indexes` — same for edges.
+- `ensure_memgraph_node_indexes` — creates label indexes and uniqueness constraints on `id` for each anchor label. (Vector indexes are commented out — Vedana moved embeddings to pgvector. See `vedana_etl/steps.py:462-518`.)
+- `ensure_memgraph_edge_indexes` — creates edge indexes for each link label. (Vector edge indexes are commented out for the same reason.)
 - `pass_df_to_memgraph` (for `nodes`/`edges`) — writes nodes and edges into Memgraph via `Neo4JStore`.
-- `generate_embeddings` — for each row in `nodes` / `edges`, build embeddings for every embeddable attribute via `LLMProvider.create_embeddings`.
+- `generate_embeddings` — for each row in `nodes` / `edges`, build embeddings for every embeddable attribute via `LLMProvider.create_embeddings_sync` (synchronous batched call).
 
 ### `eval_steps`
 

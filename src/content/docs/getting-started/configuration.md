@@ -56,7 +56,7 @@ The threshold and `top_n` parameters for vector search are configured in code (`
 | `JIMS_DB_USE_NULL_POOL`         | Disable the connection pool (useful in serverless setups).             | `false`                                  |
 | `JIMS_DB_POOL_SIZE`             | Pool size.                                                              | SQLAlchemy default                       |
 | `JIMS_DB_POOL_MAX_OVERFLOW`     | Maximum extra connections above the pool.                               | SQLAlchemy default                       |
-| `CREATE_PGVECTOR_EXTENSION`     | Whether the migration should create the `pgvector` extension.          | `true`                                   |
+| `CREATE_PGVECTOR_EXTENSION`     | Whether the migration should run `CREATE EXTENSION pgvector`. Use `true` for self-hosted Postgres where you manage the cluster (default). Use `false` on managed Postgres (Yandex Cloud, Google Cloud SQL, Supabase, Neon, RDS) — those vendors enable extensions through their own control plane rather than via SQL inside a migration. | `true`                                   |
 
 > By default, JIMS and Datapipe write to the same database. They can be split into two if you need isolation.
 

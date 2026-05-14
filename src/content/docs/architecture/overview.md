@@ -23,13 +23,12 @@ vedana/
 ├── libs/
 │   ├── jims-core/      # threads, events, ThreadController, LLMProvider
 │   ├── jims-api/       # FastAPI HTTP API
-│   ├── jims-widget/    # web widget (FastAPI + static)
+│   ├── jims-widget/    # web widget (DeepChat-based, FastAPI + static)
 │   ├── jims-telegram/  # Telegram bot
 │   ├── jims-tui/       # Terminal UI
-│   ├── jims-max/       # additional interfaces
 │   ├── jims-backoffice/# minimal FastAPI backoffice
 │   ├── vedana-core/    # RagPipeline, RagAgent, Graph, VectorStore, DataModel
-│   ├── vedana-etl/     # Datapipe catalog, steps, incremental loading
+│   ├── vedana-etl/     # Datapipe-based ETL with incremental processing
 │   └── vedana-backoffice/ # Reflex admin UI (chat, ETL runner, eval)
 ├── pyproject.toml      # uv workspace config
 └── Makefile            # package build/publish targets
@@ -55,7 +54,7 @@ The CLI scripts of the repository are described in the project [README.md](https
                        │ make_context()
                        ▼
                 ┌──────────────────┐
-                │ ThreadContext    │  history, events, llm, status_updater
+                │ ThreadContext    │  Session-level: history, events, llm, status_updater
                 └──────┬───────────┘
                        │
                        ▼
@@ -149,7 +148,6 @@ In docker-compose the backoffice runs behind a Caddy reverse proxy (CLI: `vedana
 - **`jims-widget`** — embeddable web widget.
 - **`jims-telegram`** — Telegram bot via aiogram.
 - **`jims-tui`** — Terminal UI built on [Textual](https://textual.textualize.io/) for interactive debugging.
-- **`jims-max`** — integration point for other interfaces (Max, additional messengers).
 
 ## Data storage
 

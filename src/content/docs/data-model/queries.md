@@ -122,7 +122,7 @@ Because Queries live in Grist, you have built-in change history through Grist (r
    vector_text_search(label="document_chunk", property="content", text="<user question>")
 
 2) Get the parent document:
-   MATCH (c:document_chunk)-[:CHUNK_belongs_to_DOCUMENT]->(d:document)
+   MATCH (d:document)-[:DOCUMENT_has_DOCUMENT_CHUNK]->(c:document_chunk)
    WHERE c.id IN $chunk_ids RETURN d.title, d.url
 
 3) Format: answer based on the chunks + a link to the document.

@@ -112,6 +112,6 @@ What helps:
 
 ## What's next
 
-- [Roadmap](./product/roadmap.md) — what's planned.
 - [Use Cases](./product/use-cases.md) — where Vedana shines.
 - [FAQ](./product/faq.md) — common questions.
+- [GitHub Issues](https://github.com/epoch8/vedana/issues) — what's planned and in progress.

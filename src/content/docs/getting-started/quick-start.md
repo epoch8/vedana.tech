@@ -56,6 +56,8 @@ DB_CONN_URI="postgresql://postgres:postgres@db:5432"
 
 The default models (`gpt-4.1-mini`, `text-embedding-3-large`) can be changed in `.env` — see the [Configuration guide](./configuration.md) and the [Configuration Reference](../api/configuration-reference.md).
 
+> **Picking `MODEL`.** `gpt-4.1-mini` is a good default for the Quick Start and for simple assistants: it's cheap, fast, and works well on a small data model like the LIMIT test dataset. For domains with larger data models, longer Cypher reasoning, or more nuanced answers, consider upgrading `MODEL` to the larger `gpt-4.1`. `FILTER_MODEL` (the data-model filtering step) can usually stay on `gpt-4.1-mini` even when the main `MODEL` is upgraded.
+
 ## Step 2. Bring up the stack
 
 ```bash

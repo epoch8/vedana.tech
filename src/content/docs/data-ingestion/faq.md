@@ -23,7 +23,7 @@ A predefined question/answer pair stored in Grist. When a user asks a question t
 | **question** | A representative phrasing of the question.   |
 | **answer**   | The exact answer to return.                  |
 
-Each row is one FAQ entry. The table is predefined and ready to use; you only need to populate it.
+Each row is one FAQ entry. **The attribute names (`question`, `answer`) are your choice** — Vedana doesn't hardcode them. We use `question` / `answer` throughout these docs because they read naturally; the test fixture in `libs/vedana-core/tests/test_data_model.py` happens to use `faq_question_text` / `faq_answer_text` instead. Whatever you pick, just make sure the names in your Grist `Anchor_attributes` table match what you reference in `vector_text_search(... property=...)` and in any Cypher you write.
 
 ## How retrieval works
 

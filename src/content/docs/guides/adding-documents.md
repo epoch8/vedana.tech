@@ -60,9 +60,8 @@ Backoffice → ETL → **Run Selected** for:
 
 ```cypher
 // edge label below depends on the `sentence` you declared in Grist > Links.
-// The Vedana convention is ANCHOR1_verb_ANCHOR2 — e.g. DOCUMENT_has_DOCUMENT_CHUNK
-// (matches the test fixture in libs/vedana-core/tests/test_data_model.py).
-// If you declared it the other way (CHUNK_belongs_to_DOCUMENT), use that label here.
+// The recommended form is ANCHOR1_verb_ANCHOR2 — e.g. DOCUMENT_has_DOCUMENT_CHUNK.
+// If you declared it differently, substitute your label here.
 MATCH (d:document)-[:DOCUMENT_has_DOCUMENT_CHUNK]-(c:document_chunk)
 RETURN d.title, count(c) AS num_chunks
 ORDER BY num_chunks DESC

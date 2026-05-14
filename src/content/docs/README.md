@@ -99,8 +99,8 @@ Depending on your role:
 - [Comparison with Classic RAG](./product/comparison.md)
 - [Quality Metrics & Evaluation](./product/evaluation.md)
 - [Limitations](./product/limitations.md)
-- [Roadmap](./product/roadmap.md)
 - [FAQ](./product/faq.md)
+- [Open roadmap items on GitHub](https://github.com/epoch8/vedana/issues)
 
 ### Operations
 

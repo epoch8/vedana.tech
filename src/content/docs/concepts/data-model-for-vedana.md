@@ -172,7 +172,22 @@ The data model goes directly into the LLM context. The assistant sees:
 
 If something isn't described in the data model — it **doesn't exist** for the assistant, even if the data is in the graph.
 
-In Vedana this is sped up by the **data model filtering** step: a small model (`FILTER_MODEL`) first picks the relevant anchors / links / queries for the specific question, and only those go into the main model's context. This reduces token consumption and improves precision.
+### Data model filtering
+
+For non-trivial domains the full data model description can be large — dozens of anchor types, hundreds of attributes, several Query scenarios — and feeding all of it into the main model on every turn is both expensive and noisy.
+
+To handle this, Vedana adds a **data model filtering** step in front of the main answer-generation loop:
+
+1. A small, fast model (`FILTER_MODEL`, by default `gpt-4.1-mini`) receives the user's question together with the full data model description.
+2. It picks the subset of **anchors, links, attributes, and Queries** that are actually relevant to the question.
+3. Only that filtered slice goes into the main model's context.
+
+This filtering step has two useful side effects:
+
+- **Token economy on large data models.** The bigger your domain, the larger the win — filtering is what makes Vedana practical on data models with hundreds of attributes. On very small data models (e.g. the LIMIT test dataset) the gain is negligible, and you can disable filtering via `ENABLE_DM_FILTERING=false`.
+- **Explicit reasoning before the answer.** Because the filter model has to *name* which anchors / links / queries are relevant, it effectively performs a small chain-of-thought step about the question before any retrieval happens. The main model then starts with a clearly-scoped problem rather than the entire schema.
+
+See [`RagPipeline.filter_data_model`](../architecture/vedana-core.md#data-model-filtering) for the implementation, and the `FILTER_MODEL` / `ENABLE_DM_FILTERING` entries in the [Configuration guide](../getting-started/configuration.md) for tuning.
 
 ## Minimum vs advanced usage
 

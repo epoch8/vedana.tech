@@ -182,7 +182,7 @@ In docker-compose this is done by a separate `db-migrate` service, which waits f
 
 ## Backups and restore
 
-> ⚠️ The docker-compose file has a TODO `add complete snapshots for SQL and Cypherl (db / memgraph)`. Backups are currently the operator's responsibility.
+> ⚠️ Vedana does **not** ship backup/restore scripts. The repo's `docker-compose.yml` carries a TODO `add complete snapshots for SQL and Cypherl (db / memgraph)`; until that lands, backups are entirely the operator's responsibility. Everything below is a **recommended scheme**, not something Vedana performs automatically.
 
 A recommended scheme for production:
 

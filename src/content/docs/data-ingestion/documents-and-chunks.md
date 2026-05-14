@@ -13,7 +13,7 @@ flowchart LR
     F[("PDF / DOCX / TXT /<br/>HTML / MD")] --> EX[Extract text]
     EX --> CH[Chunk 300-800 tokens]
     CH --> N1[("(:document_chunk)<br/>content, position")]
-    N1 -- CHUNK_belongs_to_DOCUMENT --> D[("(:document)<br/>title, url")]
+    D -- DOCUMENT_has_DOCUMENT_CHUNK --> N1
     CH --> EM[create_embedding] --> V[("pgvector:<br/>rag_anchor_embeddings")]
 
     Q[User<br/>question] --> QE[embedding] --> VS[cosine similarity > th]
@@ -78,7 +78,7 @@ The convention Vedana documents (and the test fixtures) follow is:
 
 - anchor `document` — the parent document (id, title, url, source);
 - anchor `document_chunk` — a chunk (id, content, position);
-- link between them — connect `document` and `document_chunk` (the test fixture `test_data_model.py` uses the sentence `DOCUMENT_has_DOCUMENT_CHUNK`; this guide and the [Adding Documents](../guides/adding-documents.md) examples use `CHUNK_belongs_to_DOCUMENT` going the other way — pick one direction and use it consistently);
+- link between them — `DOCUMENT_has_DOCUMENT_CHUNK` (recommended), with `anchor1 = document` and `anchor2 = document_chunk`. The link name itself is your choice — Vedana doesn't special-case it — but pick one form (e.g. `ANCHOR1_verb_ANCHOR2`) and reuse it everywhere you reference the link in Cypher;
 - attribute `document_chunk.content` — `embeddable=true`, with `embed_threshold` set explicitly (recommended starting point ≈ 0.55–0.65 for chunk content; do not leave the cell empty — `DataModel` falls back to `1.0` which never matches).
 
 > **Not built-in:** Vedana does **not** seed these anchors/links into your Grist Data Model automatically. You declare them yourself the first time you ingest documents. There is also **no chunking step in the default ETL** — `prepare_nodes` is a no-op pass-through (`vedana_etl/steps.py`: `return grist_nodes_df.copy()`). You either chunk the text before uploading to Grist, or add a custom chunking step via [Custom ETL](./custom-etl.md). The "300–800 tokens" figure earlier in this page is a recommended target for your own pre-processing, not a built-in default.

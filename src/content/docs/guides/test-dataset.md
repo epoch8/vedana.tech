@@ -23,7 +23,7 @@ Three Grist documents are brought up alongside the stack:
 - **Data Model** — the data model description:
   - anchors `person` and `interest`;
   - link `PERSON_has_INTEREST`;
-  - attributes `person.person_name`, `interest.interest_name` (embeddable);
+  - attributes: `person.person_id`, `person.person_name` (embeddable), `interest.interest_id`, `interest.interest_name` (embeddable);
   - a set of Queries (the playbook) for typical questions.
 - **Golden Dataset** — the golden dataset for evaluation:
   - questions like "Who likes X?", "What are Y's interests?", "Who is interested in Z?";

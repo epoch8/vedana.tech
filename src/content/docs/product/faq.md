@@ -64,7 +64,7 @@ Vedana isn't designed for billions of nodes. If you have Big Data, use it as a m
 
 ## Can I get a streaming response?
 
-In the HTTP API at the time of writing — no, the response is returned all at once. The web widget (`jims-widget`) uses WebSockets and delivers events progressively (status updates + final answer). True token-by-token streaming is on the roadmap.
+In the HTTP API today — no, the response is returned all at once after the full pipeline completes (`POST /api/v1/chat` returns a `ChatResponse` JSON in one shot; there is no SSE / chunked transfer). The web widget (`jims-widget`) currently behaves the same way: the WebSocket on `/ws/chat` returns a single `{"text": ...}` (or `{"error": ...}`) frame after the pipeline finishes — there are no intermediate status events and no token-by-token streaming yet. Token-by-token streaming is tracked in [GitHub Issues](https://github.com/epoch8/vedana/issues).
 
 ## How much does a request cost?
 
@@ -144,4 +144,4 @@ If your question isn't covered, open an issue at [github.com/epoch8/vedana](http
 
 - [Use Cases](./product/use-cases.md)
 - [Limitations](./product/limitations.md)
-- [Roadmap](./product/roadmap.md)
+- [GitHub Issues](https://github.com/epoch8/vedana/issues) — open roadmap items.

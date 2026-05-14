@@ -79,7 +79,7 @@ sequenceDiagram
     participant P as Pipeline
     participant LLM as LLMProvider
 
-    U->>TC: store_user_message(content)
+    U->>TC: store_event_dict("comm.user_message", {role:"user", content})
     TC->>DB: INSERT thread_events (comm.user_message)
     U->>TC: run_pipeline_with_context(pipeline)
     TC->>DB: SELECT thread_events
@@ -153,7 +153,7 @@ class ThreadContext:
 
 - `ctx.get_last_user_message()` — the last user message.
 - `ctx.get_last_user_action()` — the last user action in the `comm.*` domain (including buttons, commands).
-- `ctx.context(conversation_length=20)` — enriched history: the last N `comm.*` messages plus related `context.*` events (for example, reasoning from data model filtering). Vedana uses this method to feed the LLM with context.
+- `ctx.context(conversation_length=20)` — enriched history: the last N `comm.*` messages, interleaved (by `created_at`) with any `context.*` events that fall into the same window (for example, reasoning from data model filtering). Note: the current implementation collects **all** `context.*` events from the window in reverse order; the linkage to a specific `comm.*` message is by time-ordering, not by an explicit relation. Vedana uses this method to feed the LLM with context.
 - `ctx.get_state(state_name, state_type)` — the latest state of type `state_type`.
 
 ### Writing

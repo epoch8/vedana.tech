@@ -8,7 +8,7 @@ order: 2
 
 An **anchor** is a domain entity type. Every class of objects the assistant can look up, filter, count, or traverse is described as an anchor.
 
-In Memgraph each anchor corresponds to a class of nodes whose label equals `anchor.noun` **literally** (no case conversion). When you define a `product` anchor and run ETL, every row in your products table in Grist becomes a `:product` node with its columns stored as properties. The canonical convention used across Vedana is **lowercase singular** (`product`, `interest`, `document_chunk`); the Cypher examples below follow that convention.
+In Memgraph each anchor corresponds to a class of nodes whose label equals `anchor.noun` **literally** (no case conversion). When you define a `product` anchor and run ETL, every row in your products table in Grist becomes a `:product` node with its columns stored as properties. Pick any naming style you like (`product` / `Product` / `products` — all work); the only hard rule is that the label is what `MATCH (n:<label>)` will be looking for, so be consistent across Anchors, Links and Queries. The Cypher examples below use lowercase singular (`product`, `interest`, `document_chunk`) because that's how the test dataset and most of our examples happen to be written — not because the engine enforces it.
 
 > An anchor is the **schema**, not data. The Anchors table in Grist describes *what kinds of things exist*, not the things themselves.
 
@@ -16,7 +16,7 @@ In Memgraph each anchor corresponds to a class of nodes whose label equals `anch
 
 | Field           | Type   | Description                                                                                                                          |
 | --------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| **noun**        | str    | Entity name: Latin script, singular, unique. Becomes the label in Memgraph. PK of the table.                                        |
+| **noun**        | str    | Entity name. Becomes the label in Memgraph **literally** (no case conversion). Latin script and uniqueness across the table are required; singular vs. plural and case are your choice — pick a style and stay consistent. PK of the table. |
 | **description** | str    | Human-readable description. Goes into the LLM context. The more precise — the better the assistant picks the anchor.               |
 | **id_example**  | str    | A real example of a primary key (`product_id: "p-001"`). Helps the ETL and the LLM understand the format.                            |
 | **query**       | str    | Cypher query to retrieve entities of this type. Without it, detail retrieval is unreliable — the assistant falls back to less precise methods. |
@@ -54,7 +54,7 @@ If anchors are described poorly (vague descriptions, inconsistent names, missing
 ## Anchors vs data vs documents
 
 - An anchor is a **type**, not a row. Analogy: `CREATE TABLE`, not `INSERT INTO`.
-- `document` / `document_chunk` are anchors that the [Documents and Chunks](../data-ingestion/documents-and-chunks.md) workflow expects you to declare in your Grist Data Model (they're a Vedana **convention**, not a hardcoded built-in — there's no code that seeds them into a new Data Model doc automatically). Most anchors you'll create yourself are **structured** domain entities: products, contracts, branches, employees, whatever your domain requires.
+- `document` / `document_chunk` / `faq` are anchors that the [Documents and Chunks](../data-ingestion/documents-and-chunks.md) and [FAQ](../data-ingestion/faq.md) workflows expect you to declare in your Grist Data Model. They are a **recommended starter set** — almost every real project has documents, chunks of those documents, and a list of common Q&A — so we suggest adding them straight into your data model. There's no magic: nothing is seeded into Grist automatically, and no code path special-cases these names. Most anchors you'll create yourself are **structured** domain entities: products, contracts, branches, employees, whatever your domain requires.
 
 ## Examples
 
@@ -79,7 +79,7 @@ If anchors are described poorly (vague descriptions, inconsistent names, missing
 
 ## Checklist before adding an anchor
 
-- [ ] Name is singular, Latin script, unique.
+- [ ] Name is Latin script, unique across the table. Pick singular or plural — just be consistent across Anchors, Links and Queries.
 - [ ] Description explains what it is and when to use (not "represents X").
 - [ ] `id_example` is a real example of a key from your table.
 - [ ] `query` is a working Cypher query — paste it into Memgraph Lab and verify a result.
@@ -88,11 +88,11 @@ If anchors are described poorly (vague descriptions, inconsistent names, missing
 
 ## Common mistakes
 
-- **Plural / non-Latin name.** Breaks queries and Cypher.
+- **Non-Latin name.** Breaks queries and Cypher (Memgraph's Bolt driver doesn't always handle non-ASCII identifiers gracefully).
 - **Description that just repeats the name.** "Product is a product" — useless to the LLM.
 - **No `query`.** The assistant will have to guess via vector search — bad for precise queries.
 - **An anchor where an attribute would do.** If `category` has no own properties or links, keep it as a `string` attribute, not a separate anchor. See [Attributes vs Links](./data-model/attributes.md#attribute-vs-link).
-- **Anchor duplicates with different grammar.** `product` and `Product`, `branch` and `branches` — Cypher won't unify them.
+- **Two anchors that differ only by case or number.** `product` and `Product`, `branch` and `branches` — these are **different labels** in Memgraph and Cypher won't unify them. Pick one form and stick to it.
 
 ## What's next
 

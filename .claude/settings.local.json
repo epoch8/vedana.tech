@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(ls ~/Documents/Sketchbooks/ | grep -i \"egr\")",
-      "Read(//Users/olga/Documents/Sketchbooks/**)"
-    ]
-  }
-}

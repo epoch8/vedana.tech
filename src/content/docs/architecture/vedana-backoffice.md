@@ -57,7 +57,7 @@ It uses exactly the same `vedana_etl.pipeline.get_pipeline(...)` as in CLI mode 
 Steps:
 
 1. Pick questions from `eval_gds` (the golden dataset).
-2. Pick configs: `Judge Configuration` (judge model and prompt), `Pipeline Configuration` (main pipeline model, filtering flag, `top_n`).
+2. Pick configs: `Judge configuration` (judge model and prompt), `Pipeline config` (main pipeline model, filtering flag, `top_n`).
 3. **Refresh Data Model** — guarantees you're using the latest data model.
 4. **Run Selected** — starts the evaluation.
 5. Get the aggregate **Pass Rate** metric (internally `pass_rate = passed / total`, see `states/eval.py`) — together with `avg_rating`, `cost_total`, and per-test answer times — and the per-question breakdown.

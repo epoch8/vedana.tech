@@ -92,6 +92,7 @@ Depending on your role:
 - [Tuning Embeddings & Thresholds](./guides/tuning-embeddings.md)
 - [Customizing Prompts](./guides/customizing-prompts.md)
 - [Writing a Custom Tool](./guides/custom-tools.md)
+- [Multi-tenancy](./guides/multi-tenancy.md)
 
 ### Product (for PMs)
 
@@ -108,6 +109,7 @@ Depending on your role:
 - [Monitoring & Metrics](./operations/monitoring.md)
 - [Troubleshooting](./operations/troubleshooting.md)
 - [Cost Management](./operations/costs.md)
+- [Security](./operations/security.md)
 
 ### Contributing
 

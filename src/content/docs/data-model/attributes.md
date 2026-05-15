@@ -34,7 +34,7 @@ Both have the **same column structure**; the only difference is what they're att
 | **embeddable**      | bool   | Whether to build an embedding of this field for semantic search.                                           |
 | **embed_threshold** | float  | Minimum similarity for a result to be returned (0..1). Only applies if `embeddable=true`. If the cell is empty, `DataModel.get_anchors` falls back to `1.0` (effectively "never match"); `RagPipeline.__init__` also defines a pipeline-level fallback `threshold=0.8` used when no per-attribute threshold is registered for a `(label, property)` pair. **Always set this explicitly for embeddable attributes** — the doc-level recommendation is to start around `0.7` and tune.                  |
 | **query**           | str    | Cypher to fetch this attribute (or its "owner" node).                                                       |
-| **dtype**           | str    | Hint string. Stored as-is in `dm_*_attributes` (`steps.py:90, 109`) and used by the LLM in the data-model description and by `vedana_core.utils.cast_dtype` for value coercion in Grist providers. There is no enum validation of the string itself — common values are `str`, `int`, `float`, `bool`, `date`, `datetime`, `enum`, `url`, `file`. Make sure it matches the actual stored format.                       |
+| **dtype**           | str    | Hint string. Stored as-is in `dm_*_attributes` (`steps.py:90, 109`). Used by the LLM in the data-model description, and — only for `str`, `int`, `float`, `bool` — by `vedana_core.utils.cast_dtype` for value coercion in Grist providers. There is no enum validation of the string itself; other common values (`date`, `datetime`, `enum`, `url`, `file`) are hints to the LLM only and pass through Grist providers as-is. Make sure it matches the actual stored format.                       |
 
 ## What you get in the graph
 
@@ -94,15 +94,18 @@ The threshold can be set **per attribute** — useful when some fields require p
 
 `dtype` must **exactly** match how the data is stored in Grist. If the `price` column contains `"999.00"` (a string with quotes) but you declared `dtype=float`, ETL will either fail or write the value incorrectly. Check the actual data before declaring a type.
 
-Supported types:
+`dtype` is stored as a free string in `dm_*_attributes` (no enum validation). It has two roles, and **only a few values actually trigger value coercion**:
 
-- `str` — string;
-- `int`, `float` — numbers;
-- `bool` — `true/false`;
-- `date`, `datetime` — dates (ISO 8601 recommended);
-- `enum` — a value from a fixed set;
-- `url` — http(s) link;
-- `file` — file (linked to storage).
+- **Coerced by `vedana_core.utils.cast_dtype`** when Grist providers read the value:
+  - `str`, `int`, `float`, `bool` — value is cast to the matching Python type.
+- **Hint-only (LLM uses it in the data-model description, but no automatic cast / validation)**:
+  - `date`, `datetime` — ISO 8601 recommended, but stored as the original string;
+  - `enum` — a value from a fixed set;
+  - `url` — http(s) link;
+  - `file` — file (linked to storage);
+  - any other string you put here.
+
+In practice this means: for `date`/`datetime`/`enum`/`url`/`file` the value lands in Memgraph in the exact form Grist returned it. If you need a parsed Python `date`/`datetime` downstream, do the parsing in a custom ETL step. Cypher-level filtering on these attributes still works because Memgraph stores them as strings.
 
 ## query
 

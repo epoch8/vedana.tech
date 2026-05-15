@@ -72,7 +72,7 @@ ETL sequentially:
 
 ```cypher
 // node counts per type
-CALL llm_util.schema() YIELD * RETURN *
+CALL llm_util.schema() YIELD schema RETURN schema
 
 // product → category links
 MATCH (p:product)-[:PRODUCT_belongs_to_CATEGORY]->(c:category)

@@ -11,7 +11,7 @@ Vedana uses **four** stores, each with its own area of responsibility.
 | Store        | Responsibility                                                                                              |
 | ------------ | ----------------------------------------------------------------------------------------------------------- |
 | **Postgres** | JIMS (threads, events), Datapipe (data model, intermediate tables), pgvector (embeddings) — all in one DB.  |
-| **Memgraph** | The knowledge graph (anchors, links), text and vector indices (optional).                                   |
+| **Memgraph** | The knowledge graph (anchors, links) and text indices.                                                       |
 | **pgvector** | Embeddings of embeddable attributes on nodes and edges.                                                     |
 | **Grist**    | The data model and the actual domain data — the source of truth that humans edit.                          |
 
@@ -113,7 +113,6 @@ Extension management: see [`CREATE_PGVECTOR_EXTENSION`](../getting-started/confi
 
 - **nodes** with labels (label = anchor.noun) and properties (the node's attributes);
 - **edges** with a type (type = link.sentence) and properties;
-- **vector indices** (optional, via `MemgraphVectorStore`);
 - **text indices** (for full-text search via `text_search.search_all`).
 
 Creating nodes and edges:
@@ -128,30 +127,6 @@ CREATE (nf)-[r:`PRODUCT_belongs_to_CATEGORY` {since: $since}]->(nt) RETURN r
 In Vedana this is done by Datapipe (`pass_df_to_memgraph` via `Neo4JStore`).
 
 Read-only Cypher is executed with `RoutingControl.READ` so you can split read/write replicas if your cluster is configured that way.
-
-### Vector index in Memgraph (optional)
-
-`MemgraphVectorStore` is implemented in `vedana_core.vts` but is **not wired up by default** — `make_vedana_app` uses `PGVectorStore`. The ETL also no longer creates Memgraph vector indexes automatically: the blocks in `vedana_etl/steps.py:494-511, 555-572` are commented out (with the note "Deprecated due to move to pgvectorstore"), and the migration `2026_02_18_1105-3c5cc51455c5_rm_memgraph_vector_indices.py` dropped the related metadata tables. To use this path you need to create the vector indexes manually in Memgraph.
-
-If you do enable it, search for nodes uses:
-
-```cypher
-CALL vector_search.search($idx_name, $top_n, $embedding)
-YIELD similarity, node
-WHERE similarity > $threshold
-RETURN *
-```
-
-Search for edges uses a separate procedure:
-
-```cypher
-CALL vector_search.search_edges($idx_name, $top_n, $embedding)
-YIELD similarity, edge
-WITH similarity, edge WHERE similarity > $threshold
-RETURN similarity, edge, startNode(edge) AS start, endNode(edge) AS end;
-```
-
-Index names follow the pattern `{label}_{prop}_embed_idx` (spaces become underscores).
 
 ### Storage mode
 

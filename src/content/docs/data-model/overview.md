@@ -36,7 +36,15 @@ For each request:
 
 ## Rendering templates
 
-By default the data model is rendered into five sections (Nodes, Node attributes, Links, Link attributes, Typical questions). Section headers in the built-in defaults are in Russian — `## Узлы:`, `## Атрибуты узлов:`, etc. — and can be overridden via `dm_descr_template` in the `Prompts` table:
+By default the data model is rendered into five sections. Section headers in the built-in template (`vedana_core.data_model.dm_descr_template`) are in Russian:
+
+- `## Узлы:` — anchors;
+- `## Атрибуты узлов:` — anchor attributes;
+- `## Связи между узлами:` — links;
+- `## Атрибуты связей:` — link attributes;
+- `## Типичные вопросы:` — typical questions (playbook).
+
+You can override these by setting `dm_descr_template` in the `Prompts` table — e.g. to translate them to English:
 
 ```text
 ## Nodes:

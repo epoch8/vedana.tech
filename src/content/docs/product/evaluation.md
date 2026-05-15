@@ -78,8 +78,8 @@ In the backoffice → ETL → the **eval** tab → **Run Selected**. This loads 
 In the backoffice → Eval:
 
 1. In the **Golden QA Dataset** window, pick questions (a subset is fine).
-2. Check **Judge Configuration** (judge model and prompt).
-3. Check **Pipeline Configuration** (main pipeline model, filtering flag, top_n).
+2. Check **Judge configuration** (judge model and prompt).
+3. Check **Pipeline config** (main pipeline model, filtering flag, top_n).
 4. Click **Refresh Data Model** — guarantees the latest model is used.
 5. Click **Run Selected**.
 
@@ -138,7 +138,7 @@ Grow the golden dataset over time — especially with questions from real users.
 
 ## LLM-as-judge
 
-Vedana uses a separate model (`JUDGE_MODEL`, default `gpt-4.1-mini`) to evaluate match between the answer and the reference. The judge prompt can be overridden via `Prompts.eval_judge_prompt` (if your repo version has that key — otherwise the built-in default is used).
+Vedana uses a separate model (`JUDGE_MODEL`, default `gpt-4.1-mini`) to evaluate match between the answer and the reference. The judge prompt is configured **per eval run in Backoffice → Eval → Judge configuration** (fields `judge_model`, `judge_prompt_id`, `judge_prompt` on `JudgeMeta`, see `vedana-backoffice/states/eval.py`); it is **not** part of the shared `Prompts` registry that `vedana-core` uses at runtime. If you don't override it in the UI, the built-in judge default is used.
 
 Important:
 

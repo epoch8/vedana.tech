@@ -7,7 +7,7 @@ export const SEOBase: SEOConfig = {
   description:
     "Structured reasoning infrastructure for enterprises. Build knowledge graphs and answer constrained business questions reliably.",
 
-  canonical: "https://vedana.tech",
+  siteUrl: "https://vedana.tech",
 
   og: {
     type: "website",

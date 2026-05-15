@@ -26,6 +26,8 @@ const {
   showNav = true,
 } = Astro.props;
 
+const currentPath = Astro.url.pathname;
+
 /* ======================================================
    SEO MERGE
 ====================================================== */
@@ -41,14 +43,18 @@ const {
   noindex,
   og,
   twitter,
+  siteUrl,
 } = seo;
+
+const resolvedCanonical = canonical || (siteUrl ? `${siteUrl}${currentPath}` : undefined);
 
 /* ======================================================
    BASE URL (важно для schema!)
 ====================================================== */
 
 const baseUrl =
-  (canonical && new URL(canonical).origin) ||
+  (resolvedCanonical && new URL(resolvedCanonical).origin) ||
+  siteUrl ||
   "https://vedana.tech";
 
 /* ======================================================
@@ -85,13 +91,13 @@ const allStructuredData = [
     <meta name="description" content={description} />
 
     {noindex && <meta name="robots" content="noindex,nofollow" />}
-    {canonical && <link rel="canonical" href={canonical} />}
+    {resolvedCanonical && <link rel="canonical" href={resolvedCanonical} />}
 
     {/* Open Graph */}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={og?.type ?? "website"} />
-    {canonical && <meta property="og:url" content={canonical} />}
+    {resolvedCanonical && <meta property="og:url" content={resolvedCanonical} />}
     {og?.image && <meta property="og:image" content={og.image} />}
     {og?.imageAlt && (
       <meta property="og:image:alt" content={og.imageAlt} />

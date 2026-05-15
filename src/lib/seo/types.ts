@@ -4,6 +4,7 @@ export interface SEOConfig {
   title: string;
   description: string;
 
+  siteUrl?: string;
   canonical?: string;
   noindex?: boolean;
 

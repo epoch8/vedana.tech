@@ -16,7 +16,7 @@ In Memgraph each anchor corresponds to a class of nodes whose label equals `anch
 
 | Field           | Type   | Description                                                                                                                          |
 | --------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| **noun**        | str    | Entity name. Becomes the label in Memgraph **literally** (no case conversion). Latin script and uniqueness across the table are required; singular vs. plural and case are your choice — pick a style and stay consistent. PK of the table. |
+| **noun**        | str    | Entity name. Becomes the label in Memgraph **literally** (no case conversion). The data table for this anchor in the Grist Data doc must be named `Anchor_<noun>` (e.g. `noun = "person"` ↔ table `Anchor_person`) — ETL discovers data tables by prefix; see [Naming conventions](../architecture/vedana-etl.md#naming-conventions-in-grist). Latin script and uniqueness across the table are required; singular vs. plural and case are your choice — pick a style and stay consistent. PK of the table. |
 | **description** | str    | Human-readable description. Goes into the LLM context. The more precise — the better the assistant picks the anchor.               |
 | **id_example**  | str    | A real example of a primary key (`product_id: "p-001"`). Helps the ETL and the LLM understand the format.                            |
 | **query**       | str    | Cypher query to retrieve entities of this type. Without it, detail retrieval is unreliable — the assistant falls back to less precise methods. |

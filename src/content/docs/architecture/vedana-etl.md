@@ -67,6 +67,77 @@ flowchart LR
     class S1,S2,SE,P1,P2,I1,I2,L1,L2,EM1,EM2 step
 ```
 
+## Naming conventions in Grist
+
+Vedana ETL relies on **strict naming conventions** to wire up the Data doc, the Data Model doc, and Memgraph. Knowing the rules prevents the most common "ETL ran, but the graph is empty / partial" failure mode.
+
+### Data doc — tables must be prefixed
+
+`GristDataProvider` discovers data tables purely by **prefix** (`libs/vedana-core/src/vedana_core/data_provider.py:69-94`):
+
+- Anchor tables — `Anchor_<noun>` (e.g. `Anchor_person`, `Anchor_interest`).
+- Link tables — `Link_<sentence>` (e.g. `Link_PERSON_has_INTEREST`).
+
+The part after the prefix (`<noun>` / `<sentence>`) is what becomes the Memgraph label / edge type. A table that doesn't start with `Anchor_` or `Link_` is **invisible to ETL** — it isn't even listed and won't trigger a warning.
+
+### Data Model doc — `noun` / `sentence` are the join keys
+
+In the Data Model doc the join is the other side of the same key (`libs/vedana-core/src/vedana_core/data_provider.py:174-178`, `libs/vedana-etl/src/vedana_etl/steps.py:160-200`):
+
+| Data Model table          | Key column     | Joins to                                              |
+| -------------------------- | --------------- | ----------------------------------------------------- |
+| `Anchors`                  | `noun`          | the `<noun>` part of `Anchor_<noun>` in the Data doc  |
+| `Anchor_attributes`        | `anchor`        | `Anchors.noun`                                         |
+| `Links`                    | `sentence`      | the `<sentence>` part of `Link_<sentence>` in Data    |
+| `Link_attributes`          | `link`          | `Links.sentence`                                       |
+
+So `Anchors.noun = "person"` ↔ Data doc table `Anchor_person` ↔ Memgraph label `person`. The `Anchor_attributes.anchor = "person"` rows describe which columns of `Anchor_person` Vedana should treat as attributes.
+
+### Attribute names — column name in Grist == `attribute_name` in Data Model
+
+For each row in `Anchor_attributes`:
+
+- `attribute_name` must **literally match a column name** in the corresponding `Anchor_<noun>` table.
+- `attribute_name` is also the key Vedana stores in the Memgraph node's properties.
+
+Mismatch behaviour (`libs/vedana-etl/src/vedana_etl/steps.py:319`):
+
+```python
+"attributes": {k: v for k, v in a.data.items() if k in dm_anchor_attrs} or {}
+```
+
+— so a column present in the Grist table but **not** described in `Anchor_attributes` is silently dropped (it never reaches Memgraph). The other direction — an attribute described in the Data Model but missing from the Grist table — also produces no error: the key just won't appear in the node's properties.
+
+### What happens on mismatch
+
+| Situation                                                                | Behaviour                                                                       |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| `Anchor_person` exists in Data, but `Anchors.noun = "person"` row is missing | ETL **logs an error and skips** the table (`steps.py:244-249` — `'Anchor "{anchor_type}" not described in data model, skipping'`); no nodes for this anchor land in Memgraph. |
+| `Anchors.noun = "person"` exists in Data Model, but `Anchor_person` is missing from Data | ETL silently produces no nodes for `person`. No error.                          |
+| `Anchor_attributes` row references attribute `price`, but `Anchor_product` has no `price` column | The node is created without `price`. No error.                                  |
+| `Anchor_product` has a column not described in `Anchor_attributes`        | The column is dropped during node preparation. No error.                        |
+| `Anchor_<noun>` lower/upper-case mismatch with `Anchors.noun`             | Same as "anchor not described" — Grist column names are case-sensitive in the join. |
+| Table in Data doc without an `Anchor_` / `Link_` prefix                   | Ignored entirely — not even listed.                                              |
+
+**Practical implication:** if your graph is unexpectedly empty after an ETL run, the first check is **always** "does each `Anchor_<x>` table in Data have a matching `Anchors.noun = <x>` row in Data Model, and vice versa?".
+
+### Full path for a single anchor
+
+For LIMIT's `person`:
+
+1. Grist Data doc contains the table `Anchor_person` with columns `id, name, email, …`.
+2. Grist Data Model doc has:
+   - `Anchors.noun = "person"`;
+   - `Anchor_attributes` rows with `anchor = "person"` and `attribute_name ∈ {name, email, …}`.
+3. `get_grist_data` builds a row in `grist_nodes` with `node_type = "person"`, `node_id = "person:<id>"`, and `attributes = {<only described attributes>}`.
+4. `pass_df_to_memgraph` runs the equivalent of:
+
+   ```cypher
+   MERGE (n:person {id: $id}) SET n = {id: $id, name: $name, email: $email, …} RETURN n
+   ```
+
+Edges follow the same path with `Link_<sentence>` ↔ `Links.sentence` and `Link_attributes`.
+
 ## Datapipe in brief
 
 Datapipe is an incremental ETL framework. Each step (`BatchTransform`, `BatchGenerate`) describes:

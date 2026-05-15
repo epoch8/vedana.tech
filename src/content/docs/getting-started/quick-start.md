@@ -107,7 +107,11 @@ Then open in your browser:
 - Memgraph Lab → <http://localhost:3000>
 - Grist → <http://localhost:8484>
 
-By default Grist points at three remote documents: **Data**, **Data Model**, and **Golden Dataset** (the LIMIT test dataset — see [Test Dataset](../guides/test-dataset.md)). 
+The local Grist container ships with three seeded documents — **Data Model**, **Data**, and **Golden Dataset** (the LIMIT test dataset — see [Test Dataset](../guides/test-dataset.md)). They are served from `apps/vedana/infra/grist/docs/` and live entirely on your machine — Quick Start does **not** contact `api.getgrist.com`. The IDs used by ETL (`GRIST_DATA_MODEL_DOC_ID`, `GRIST_DATA_DOC_ID`, `GRIST_TEST_SET_DOC_ID` in `.env.example`) point at these local docs:
+
+- Data Model — <http://localhost:8484/o/docs/j6PTmqgw4caB/Data-Model>
+- Data — <http://localhost:8484/o/docs/eB5kH8Z7NVEr/Data>
+- Golden Dataset — <http://localhost:8484/o/docs/2FDgbBNtEDmg/Golden-Dataset>
 
 Sign in to Grist and confirm the documents are visible:
 

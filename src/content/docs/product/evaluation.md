@@ -45,42 +45,47 @@ In the Grist Test Set doc (`GRIST_TEST_SET_DOC_ID`), tables:
 
 ## How to run an evaluation
 
-### 1. Prepare the golden dataset
+### 1. Prepare the golden dataset in Grist
 
-Create a table with at least two columns: `question` and `expected_answer`. One row per evaluation pair.
+The golden dataset lives in the **Golden Dataset** Grist doc (`GRIST_TEST_SET_DOC_ID`; in the Quick Start setup that's <http://localhost:8484/o/docs/2FDgbBNtEDmg/Golden-Dataset>). Add rows to the `Gds` table — one row per evaluation pair. The columns the eval pipeline reads are:
 
-Example:
+| Grist column         | Meaning                                                                              |
+| -------------------- | ------------------------------------------------------------------------------------- |
+| `gds_question`       | the question, phrased the way a real user would phrase it                             |
+| `gds_answer`         | the reference (expected) answer                                                       |
+| `question_scenario`  | category (e.g. `structured` / `document` / `faq` / `smalltalk` / `edge`) — used for filtering in the UI |
+| `question_context`   | optional extra context the judge can use when grading                                 |
 
-| question                                         | expected_answer                                                              |
+Reference answers should be short and factual. For structured questions, the exact value from the graph. For document questions, the key information a correct answer would contain.
+
+LIMIT-dataset examples:
+
+| `gds_question`                                   | `gds_answer`                                                                  |
 | ------------------------------------------------ | ----------------------------------------------------------------------------- |
 | Who likes Quokkas?                               | Geneva Durben                                                                 |
 | What are Geneva Durben's interests?              | Quokkas, Slide Rules, Mosaic, Eating Disorders, Tantric, Marrakesh           |
 | Who is interested in Joshua Trees?               | Flo Zaugg, Nathen Saadia                                                      |
 
-Reference answers should be short and factual. For structured questions, the exact value from the graph. For document questions, the key information a correct answer would contain.
-
-### 2. Upload to Grist
-
-Place the table in the Test Set doc (or your own Grist doc if you've redirected `GRIST_TEST_SET_DOC_ID`).
-
-### 3. Run ETL for the golden dataset
+### 2. Sync the dataset into the backoffice
 
 ![Eval ETL run](../images/eval%201.png)
 
-In the backoffice → ETL → the **eval** tab → **Run Selected**. This loads questions from Grist into `eval_gds`.
+In the backoffice → **Eval** (<http://localhost:9000/eval>), click the small **↻** button next to the "Golden QA Dataset" header (tooltip: *"Refresh golden dataset from Grist"*). It runs the single `get_eval_gds_from_grist` ETL step and reloads the question list — synchronous and near-instant, nothing else from the main ETL is touched.
 
-> Make sure the main ETL steps (data model, data, embeddings) have already run — otherwise the assistant has nothing to answer with.
+> The same step can also be triggered from **ETL → eval tab → Run Selected** if you prefer to run it together with other ETL flows. Both paths invoke the same `get_eval_gds_from_grist` step under the hood.
 
-### 4. Run evaluation
+> Make sure the **main** ETL (data model, data, embeddings) has already run for your domain — otherwise the assistant has nothing to answer with and every test will fail for the wrong reason.
+
+### 3. Run evaluation
 
 ![Eval pipeline](../images/eval%202.png)
 
 In the backoffice → Eval:
 
-1. In the **Golden QA Dataset** window, pick questions (a subset is fine).
+1. In the **Golden QA Dataset** window, pick questions (a subset is fine; filter by `question_scenario` if you want one category only).
 2. Check **Judge configuration** (judge model and prompt).
 3. Check **Pipeline config** (main pipeline model, filtering flag, top_n).
-4. Click **Refresh Data Model** — guarantees the latest model is used.
+4. Click **Refresh Data Model** — this is a **separate** action from the GDS refresh above; it reloads the data model description that the assistant sees, guaranteeing the latest model is used. Click it whenever you changed the data model in Grist.
 5. Click **Run Selected**.
 
 The pipeline:

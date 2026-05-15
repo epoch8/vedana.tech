@@ -72,7 +72,7 @@ After running `docker compose up` and Grist initialisation:
 
 ## Test questions for a quick check
 
-After ETL has completed, try:
+After ETL has completed, open the chat at <http://localhost:9000/chat> (Backoffice → Chat) and try these:
 
 1. "Who likes Quokkas?" → should return everyone with that interest.
 2. "What are Geneva Durben's interests?" → should return the full list (Quokkas, Slide Rules, Mosaic, …).

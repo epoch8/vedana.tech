@@ -16,7 +16,7 @@ Links turn isolated nodes into a graph and make traversal, multi-hop reasoning, 
 | ------------------------------ | --------------------------------------------------------------------------------------------- |
 | **anchor1**                    | Source entity of the link.                                                                   |
 | **anchor2**                    | Target entity of the link.                                                                    |
-| **sentence**                   | Edge label in the graph (`PERSON_has_INTEREST`, `PRODUCT_belongs_to_CATEGORY`). Used in Cypher. |
+| **sentence**                   | Edge label in the graph (`PERSON_has_INTEREST`, `PRODUCT_belongs_to_CATEGORY`). Used in Cypher. If you provide link data via its own Grist table (rather than via FK columns on the anchor tables), that table must be named `Link_<sentence>` — ETL discovers link tables by prefix. See [Naming conventions](../architecture/vedana-etl.md#naming-conventions-in-grist). |
 | **description**                | Plain-text explanation of the relationship. Goes into the LLM context.                        |
 | **query**                      | Cypher to traverse the link. Critical for multi-hop reasoning.                                |
 | **anchor1_link_column_name**   | FK column on the anchor1 side (optional).                                                     |

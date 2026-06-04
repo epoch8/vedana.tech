@@ -1,0 +1,89 @@
+/* src/components/products/vedana/demo-form/DemoForm.module.css */
+
+.form {
+  max-width: 36rem;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* role + team_size sit side by side on wider screens */
+.row {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 560px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* purpose radio buttons wrap instead of overflowing on mobile */
+.purposeGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.purposeGroup :global(.ant-radio-button-wrapper) {
+  border-radius: 9999px;
+  border-inline-start-width: 1px;
+}
+
+/* antd adds a left pseudo-border between grouped buttons – hide it since we gap them */
+.purposeGroup :global(.ant-radio-button-wrapper::before) {
+  display: none;
+}
+
+.error {
+  margin: 0 0 1rem;
+  color: #b91c1c;
+  font-size: 0.9rem;
+}
+
+.legal {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+/* =========================
+   Success state
+========================= */
+
+.success {
+  max-width: 36rem;
+  margin: 0 auto;
+  text-align: center;
+  padding: 2rem 1.25rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.successTitle {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.successCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5rem;
+  padding: 0.65rem 1.5rem;
+  border-radius: 0.75rem;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.successCta:hover {
+  background: #1d4ed8;
+}

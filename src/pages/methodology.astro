@@ -6,6 +6,8 @@ import type { SEOConfig } from "@/lib/seo/types";
 
 import Footer from "@/components/products/vedana/footer/Footer.astro";
 
+import DemoCTA from "@/components/products/vedana/demo-cta/DemoCTA.astro";
+
 import IconGrid from "@/components/blocks/icon-grid/IconGrid.astro";
 import IconGridItem from "@/components/blocks/icon-grid/IconGridItem.astro";
 
@@ -91,6 +93,7 @@ const pageSEO: Partial<SEOConfig> = {
   </EntityBoard>
           </div>
     </section>
-        
+
+    <DemoCTA from="methodology" />
 
     <Footer />

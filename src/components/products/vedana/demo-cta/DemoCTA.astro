@@ -1,0 +1,66 @@
+---
+// DemoCTA.astro – reusable bottom CTA that points at /demo.
+// Used on the home page, industries pages, and methodology to unify all
+// "Talk to us" entry points (replaces the old Calendly CTAs).
+import Callout from "@/components/blocks/callout/Callout.astro";
+import Button from "@/components/blocks/button/Button.astro";
+
+interface Props {
+  headline?: string;
+  text?: string;
+  cta?: string;
+  // Attribution slug → appended as /demo?from=<from> for the form's subscribed_from.
+  from?: string;
+}
+
+const {
+  headline = "Talk to the Vedana team",
+  text =
+    "Vedana is open source – clone it and ship for free. When you want a live demo on your data, a managed deployment, or to discuss OEM, we respond within 1 business day.",
+  cta = "Talk to us",
+  from,
+} = Astro.props;
+
+const href = from ? `/demo?from=${from}` : "/demo";
+---
+
+<section class="section">
+  <div class="container flow">
+    <Callout
+      style={`
+        --callout-bg:
+          linear-gradient(
+            180deg,
+            hsl(210 100% 98%),
+            hsl(220 90% 96%)
+          );
+
+        --callout-gradient:
+          radial-gradient(
+            600px 200px at 20% -20%,
+            rgba(42, 91, 255, 0.08),
+            transparent 70%
+          );
+
+        --callout-border-color: var(--color-primary-border);
+        --callout-ink: var(--color-text);
+      `}
+    >
+      <div>
+        <h3>{headline}</h3>
+        <p></p>
+        <p>{text}</p>
+      </div>
+
+      <div slot="actions">
+        <Button href={href} variant="primary">
+          {cta}
+        </Button>
+
+        <Button href="/docs" variant="secondary">
+          Read the docs <span>→</span>
+        </Button>
+      </div>
+    </Callout>
+  </div>
+</section>

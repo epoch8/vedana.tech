@@ -22,6 +22,8 @@ import ProductDemo from "@/components/products/vedana/product-demo/ProductDemo.t
 import { scenarios } from "@/content/vedana/demo/horeca"
 import { cardRegistry } from "@/content/vedana/demo/horeca"
 
+import DemoCTA from "@/components/products/vedana/demo-cta/DemoCTA.astro";
+
 const bot = {
   name: "Vedana AI assistant",
   bubbleBg: "#eef3ff"
@@ -176,17 +178,10 @@ const pageSEO: Partial<SEOConfig> = {
 
 
 
-    <section class="section">
-        <div class="container flow">
-        <h2>
-            Page header H2-3
-        </h1>
-
-        <p>
-            Simple page text.
-        </p>
-        </div>
-    </section>
-
+    <DemoCTA
+      headline="Want to see Vedana on your menu and service docs?"
+      text="Bring your menus, recipes, certifications, and service protocols. We'll show Vedana reasoning over them on a live demo – or run it for you as a managed deployment."
+      from="industries-horeca"
+    />
 
 </InternalLayout>

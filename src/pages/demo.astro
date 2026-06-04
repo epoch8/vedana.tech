@@ -1,0 +1,145 @@
+---
+import BaseLayout from "@/layouts/baseLayout.astro";
+
+import { SEOBase } from "@content/vedana/seo/seo";
+import type { SEOConfig } from "@/lib/seo/types";
+
+import DemoForm from "@/components/products/vedana/demo-form/DemoForm.tsx";
+import FAQ from "@/components/blocks/faq/FAQ.astro";
+import FAQItem from "@/components/blocks/faq/FAQItem.astro";
+import Footer from "@/components/products/vedana/footer/Footer.astro";
+
+import "../styles/global.css";
+import "@/styles/vedana/extra-tokens.css";
+
+// Keep in sync with CALENDLY_URL in demo-form/DemoForm.tsx (single source of truth there).
+const CALENDLY_URL = "https://calendly.com/olga_t/30min";
+
+const pageSEO: Partial<SEOConfig> = {
+  title: "Talk to the Vedana team – demo, managed, OEM",
+  description:
+    "Open-source Semantic RAG. This form is for when you want a live demo on your data, a managed Vedana deployment, or to discuss OEM. We respond within 1 business day.",
+  canonical: "https://vedana.tech/demo",
+};
+---
+
+<BaseLayout baseSEO={SEOBase} pageSEO={pageSEO}>
+  <section class="demo-hero">
+    <div class="container">
+      <h1 class="demo-hero-title">Talk to the Vedana team</h1>
+      <p class="demo-hero-lead">
+        Vedana is open source – you can clone, deploy, and ask in GitHub
+        Discussions for free. This form is for when you want a live demo on your
+        data, a managed deployment, or to discuss OEM. We respond within
+        <strong>1 business day</strong>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section demo-form-section">
+    <div class="container">
+      <DemoForm client:only="react">
+        <p slot="fallback" class="demo-form-loading">Loading the form…</p>
+      </DemoForm>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container flow">
+      <p class="demo-proof-label">Used by teams in legal, automotive, retail, and HoReCa</p>
+      <ul class="demo-proof-points">
+        <li>Cut answer hallucination on long, structured documents.</li>
+        <li>Roll one data model across many product categories in weeks.</li>
+        <li>Open source, Apache 2.0 – clone, deploy, ship.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section faq-section">
+    <div class="container flow">
+      <h2 class="text-center">A few quick answers</h2>
+
+      <FAQ>
+        <FAQItem question="Do I need to fill this out to use Vedana?">
+          <p>
+            No. Vedana is open source – clone the repo and ask in GitHub
+            Discussions. This form is for a demo, a managed deployment, or OEM.
+          </p>
+        </FAQItem>
+
+        <FAQItem question="How fast do you respond?">
+          <p>Within 1 business day, every time.</p>
+        </FAQItem>
+
+        <FAQItem question="Can I skip the form and book a call directly?">
+          <p>
+            Yes – book a 30-min slot
+            <a href={CALENDLY_URL}>here</a>. We just prefer the form because it
+            lets us prepare for the call.
+          </p>
+        </FAQItem>
+      </FAQ>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .demo-hero {
+    padding-top: var(--page-hero-padding-top);
+    padding-bottom: var(--space-6);
+    text-align: center;
+  }
+
+  .demo-hero-title {
+    margin: 0 0 var(--space-6);
+    color: var(--color-text-strong);
+    letter-spacing: -0.02em;
+  }
+
+  .demo-hero-lead {
+    max-width: 620px;
+    margin: 0 auto;
+    font-size: var(--font-size-lg);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .demo-hero-lead strong {
+    color: var(--color-text-strong);
+    font-weight: 600;
+  }
+
+  .demo-form-section {
+    padding-top: var(--space-6);
+  }
+
+  .demo-form-loading {
+    max-width: 36rem;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--color-text-subtle);
+  }
+
+  .demo-proof-label {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-4);
+  }
+
+  .demo-proof-points {
+    max-width: 620px;
+    margin: 0 auto;
+    padding-left: 1.25rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+</style>

@@ -70,8 +70,8 @@ export const mainNav: NavItem[] = [
   },
 
   {
-    label: "Book a demo",
-    href: "https://calendly.com/olga_t/60min",
+    label: "Talk to us",
+    href: "/demo",
     variant: "cta",
     enabled: true,
   },

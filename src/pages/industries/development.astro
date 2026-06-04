@@ -21,6 +21,8 @@ import ChatItem from "@/components/blocks/chat/ChatItem.astro";
 import ProductDemo from "@/components/products/vedana/product-demo/ProductDemo.tsx";
 import { scenarios, cardRegistry } from "@/content/vedana/demo/development"
 
+import DemoCTA from "@/components/products/vedana/demo-cta/DemoCTA.astro";
+
 const bot = {
   name: "Vedana AI assistant",
   bubbleBg: "#eef3ff"
@@ -339,7 +341,10 @@ targets: [
   </div>
 </section>
 
-
-
+    <DemoCTA
+      headline="Want to see Vedana on your codebase and specs?"
+      text="Bring your technical assignments, investigation scopes, and regulatory requirements. We'll show Vedana reasoning over them on a live demo – or run it for you as a managed deployment."
+      from="industries-development"
+    />
 
 </InternalLayout>

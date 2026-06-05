@@ -1,0 +1,1 @@
+Vedana lets you model your domain as a knowledge graph and gives AI tools to query it, so answers follow your business rules and stay traceable.

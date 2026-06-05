@@ -1,0 +1,12 @@
+Your company knowledge lives in many places at once: PDFs, specs, spreadsheets, wikis, ERP exports. Classic RAG retrieves the top-K most similar fragments and hopes the answer is in there. That works for summaries; it fails when answers must be exact, complete, and follow business rules.
+
+Vedana takes a structure-first approach. You describe your domain as a data model: anchors (entities), attributes (facts), and links (relations). Vedana loads your data into a typed knowledge graph that follows this model, and AI agents explore it step by step: issuing structured graph queries, running vector search, verifying sources, and assembling answers from real data. The LLM interprets the data, and the data stays the source of truth.
+
+What you get:
+- Exact values: real prices, dates, and statuses fetched straight from the graph
+- Complete results: queries return every matching record, with nothing silently dropped
+- Multi-hop reasoning: product to category to regulation to document
+- Traceability: every answer maps back to nodes, edges, and source chunks
+- Determinism: the same question triggers the same operations
+
+An evaluation harness with golden datasets keeps quality measurable. Connect via HTTP API, web widget, or Telegram; works with any LLM provider. Built for product catalogs, legal and compliance, internal knowledge bases, and B2B support, anywhere answers must follow constraints. Open-core, managed cloud, or on-premise. A structured pilot ships in 4 weeks.

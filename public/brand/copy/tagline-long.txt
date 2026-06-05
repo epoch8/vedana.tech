@@ -1,0 +1,1 @@
+Vedana is an open-source, structure-first AI engine. You describe your domain as entities, facts, and relations; Vedana builds a typed knowledge graph and lets AI agents query it with tools, step by step. Answers are exact, complete, and traceable.

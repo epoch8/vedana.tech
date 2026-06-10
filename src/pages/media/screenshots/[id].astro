@@ -1,0 +1,190 @@
+---
+import MediaLayout from "@/layouts/MediaLayout.astro";
+import Frame from "@/components/products/vedana/media/Frame.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const items = (await getCollection("screenshots")).sort(
+    (a, b) => a.data.order - b.data.order,
+  );
+  return items.map((item) => ({ params: { id: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const { title, caption, url, shot } = item.data;
+
+// Optional retina export: /media/screenshots/<id>?scale=2 → 2540×1520 capture.
+const scale = Astro.url.searchParams.get("scale") === "2" ? 2 : 1;
+---
+
+<MediaLayout title={`Vedana — ${title}`}>
+  <div class="stage-wrap" data-scale={scale}>
+    <div class:list={["stage", { "stage--2x": scale === 2 }]}>
+      <section class="stage-hero hero-section">
+        <!-- Floating document cloud — copied from index.astro hero -->
+        <div class="hero-docs">
+          <!-- LEFT CLOUD -->
+          <div class="doc doc-pdf" style="top:3%;  left:-10%; --r:-18deg"></div>
+          <div class="doc doc-docx" style="top:7%;  left:-6%;  --r:11deg"></div>
+          <div class="doc doc-xlsx" style="top:12%; left:8%; --r:-7deg"></div>
+          <div class="doc doc-docx" style="top:15%; left:8%;   --r:14deg"></div>
+          <div class="doc doc-pdf" style="top:23%; left:-1%; --r:-13deg"></div>
+          <div class="doc doc-docx" style="top:29%; left:-10%;   --r:9deg"></div>
+          <div class="doc doc-docx" style="top:35%; left:-5%; --r:10deg"></div>
+          <div class="doc doc-pdf" style="top:44%; left:-4%;   --r:12deg"></div>
+          <div class="doc doc-xlsx" style="top:56%; left:-8%; --r:-6deg"></div>
+          <div class="doc doc-docx" style="top:66%; left:-2%; --r:10deg"></div>
+          <div class="doc doc-xlsx" style="top:72%; left:4%;   --r:-12deg"></div>
+          <div class="doc doc-pdf" style="top:80%; left:-8%;  --r:15deg"></div>
+          <div class="doc doc-docx" style="top:88%; left:20%;   --r:-9deg"></div>
+          <div class="doc doc-xlsx" style="top:96%; left:-16%;  --r:6deg"></div>
+
+          <!-- RIGHT CLOUD -->
+          <div class="doc doc-docx" style="top:4%;  right:-16%; --r:17deg"></div>
+          <div class="doc doc-xlsx" style="top:9%;  right:-6%;  --r:-12deg"></div>
+          <div class="doc doc-pdf" style="top:14%; right:-12%; --r:10deg"></div>
+          <div class="doc doc-docx" style="top:18%; right:2%;   --r:-14deg"></div>
+          <div class="doc doc-xlsx" style="top:26%; right:-14%; --r:9deg"></div>
+          <div class="doc doc-pdf" style="top:34%; right:8%;   --r:-11deg"></div>
+          <div class="doc doc-docx" style="top:42%; right:-4%;  --r:8deg"></div>
+          <div class="doc doc-xlsx" style="top:50%; right:-18%; --r:-6deg"></div>
+          <div class="doc doc-pdf" style="top:64%; right:-12%; --r:12deg"></div>
+          <div class="doc doc-docx" style="top:72%; right:4%;   --r:-10deg"></div>
+          <div class="doc doc-xlsx" style="top:80%; right:-8%;  --r:14deg"></div>
+          <div class="doc doc-pdf" style="top:90%; right:2%;   --r:-8deg"></div>
+          <div class="doc doc-docx" style="top:97%; right:-6%;  --r:6deg"></div>
+
+          <!-- TOP FLOATERS -->
+          <div class="doc doc-xlsx" style="top:-2%; left:34%;  --r:-7deg"></div>
+          <div class="doc doc-docx" style="top:1%;  right:32%; --r:11deg"></div>
+        </div>
+
+        <div class="stage-content">
+          <img
+            class="stage-logo"
+            src="/brand/vedana-logo-horizontal.svg"
+            alt="Vedana"
+            width="160"
+            height="48"
+          />
+
+          <h1 class="hero-title stage-title">{title}</h1>
+          <p class="hero-lead stage-caption">{caption}</p>
+
+          <div class="stage-shot">
+            <Frame shot={shot} url={url} alt={title} />
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</MediaLayout>
+
+<style>
+  /* Light gutter around the capture target so it's easy to grab the node. */
+  .stage-wrap {
+    min-height: 100vh;
+    padding: 24px;
+    background: #eef1f6;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  /* The PH capture target — exact gallery size. Change format in one place. */
+  .stage {
+    --shot-w: 1270px;
+    --shot-h: 760px;
+    width: var(--shot-w);
+    height: var(--shot-h);
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  /* Retina export: scale the stage 2× (capture = 2540×1520). */
+  .stage--2x {
+    transform: scale(2);
+    transform-origin: top left;
+  }
+  .stage-wrap[data-scale="2"] {
+    /* make room so the scaled stage isn't clipped by the viewport */
+    min-width: calc(1270px * 2 + 48px);
+  }
+
+  /* Override hero-section's page padding — fill the stage instead. */
+  .stage-hero {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    display: flex;
+  }
+
+  .stage-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 44px 64px 48px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+  }
+
+  .stage-logo {
+    height: 30px;
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .stage-title {
+    flex-shrink: 0;
+    margin: 0;
+    font-size: 34px;
+    line-height: 1.15;
+    max-width: 900px;
+  }
+
+  .stage-caption {
+    flex-shrink: 0;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+    max-width: 760px;
+  }
+
+  /* Screenshot frame fills the remaining height, preserving aspect ratio. */
+  .stage-shot {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 4px;
+  }
+
+  .stage-shot :global(.media-frame) {
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .stage-shot :global(.media-frame__viewport) {
+    min-height: 0;
+    display: flex;
+  }
+  .stage-shot :global(.media-frame__img) {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+</style>

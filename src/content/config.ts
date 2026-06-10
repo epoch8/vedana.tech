@@ -72,6 +72,23 @@ const docsCollection = defineCollection({
   },
 });
 
+/**
+ * Marketing screenshot pages (/media/screenshots/*).
+ * One co-located `.md` + `.png` per screen = one page. Internal, noindex.
+ */
+const screenshots = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/screenshots" }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      caption: z.string(),
+      url: z.string(), // text shown in the browser-frame address bar
+      order: z.number().default(0),
+      shot: image(), // co-located png
+    }),
+});
+
 export const collections = {
   docs: docsCollection,
+  screenshots,
 };

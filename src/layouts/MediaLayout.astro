@@ -1,0 +1,27 @@
+---
+// MediaLayout.astro — bare layout for internal /media/ screenshot pages.
+// No Nav, no Footer, no SEO/JSON-LD machinery (unlike baseLayout). Just the
+// site's styles so hero visuals, system fonts, and brand assets render natively.
+import "../styles/global.css"; // pulls tokens.css → ui.css → components.css
+import "@/styles/vedana/extra-tokens.css";
+import "@/styles/vedana/problem.css";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "Vedana — media" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

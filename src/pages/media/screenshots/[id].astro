@@ -148,6 +148,8 @@ const scale = Astro.url.searchParams.get("scale") === "2" ? 2 : 1;
     font-size: 34px;
     line-height: 1.15;
     max-width: 900px;
+    /* honour manual line breaks from the title (YAML `|-` block) */
+    white-space: pre-line;
   }
 
   .stage-caption {
@@ -156,6 +158,8 @@ const scale = Astro.url.searchParams.get("scale") === "2" ? 2 : 1;
     font-size: 17px;
     line-height: 1.5;
     max-width: 760px;
+    /* honour manual line breaks from the caption (YAML `|-` block) */
+    white-space: pre-line;
   }
 
   /* Screenshot frame fills the remaining height, preserving aspect ratio. */

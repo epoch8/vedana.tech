@@ -1,7 +1,10 @@
 ---
 order: 1
-title: "Ask in plain language. Get answers you can trust."
-caption: "Answers are grounded in your own sources — every claim traceable back to the record it came from, not guessed from text similarity."
+title: "Grounded answers, traceable to the source."
+caption: |-
+  AI-assistant that gives precise, complete and traceable answers. 
+  Every relevant record is covered, and every claim links back to its source.
+  For domains where answers have to be exact: legal, e-commerce, manufacturing and others.
 url: "app.vedana.tech/chat"
 shot: ./01-chat.png
 ---

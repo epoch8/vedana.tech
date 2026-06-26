@@ -3,6 +3,7 @@ import { extendSEO } from "@/lib/seo/extend";
 import type { SEOConfig } from "@/lib/seo/types";
 
 import Nav from "@/components/blocks/header/Nav.astro";
+import GoogleAnalytics from "@/components/blocks/analytics/GoogleAnalytics.astro";
 
 import { mainNav, footerNav } from "@/content/vedana/navigation/navigation";
 import {
@@ -85,6 +86,7 @@ const allStructuredData = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <GoogleAnalytics />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <title>{title}</title>

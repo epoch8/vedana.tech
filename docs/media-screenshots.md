@@ -6,8 +6,11 @@ landing, social, OG. Rendered by the real site, so fonts, logo and styling
 stay in sync with vedana.tech instead of being faked in an image editor.
 
 - Pages live at `/media/screenshots/<id>` plus an index at `/media/screenshots/`.
+- A vertical **Instagram Stories** variant lives at `/media/stories/<id>` (1080×1920),
+  same content, different layout. See "Instagram Stories" below.
 - They are `noindex` and out of the sitemap / nav. Internal tooling.
-- Design doc (vault): `🌅 Vedana/design-docs/2026-06-10 Media screenshots pages — design.md`.
+- Design docs (vault): `🌅 Vedana/design-docs/2026-06-10 Media screenshots pages — design.md`
+  and `… 2026-06-10 Media screenshots Instagram Stories — design.md`.
 
 ## How it works
 
@@ -63,7 +66,23 @@ caption: |-
 
 Single line — just keep it quoted: `title: "All on one line."`
 
-### Copy style
+## Instagram Stories
+
+The same five entries also render as vertical **1080×1920** story frames at
+`/media/stories/<id>` (index at `/media/stories/`). Same content collection, no
+extra files — adding a screenshot gives you both the horizontal page and the
+story automatically.
+
+- Route: `src/pages/media/stories/[id].astro`, index `…/stories/index.astro`.
+- Layout: logo + larger headline + caption at the top, then the screenshot in a
+  tilted, enlarged browser frame; floating doc cloud fills the background.
+- Content is kept inside Instagram's safe zones (top ~250px, bottom ~310px).
+- Tilt and scale are CSS variables on `.stage--story` in the route file
+  (`--story-tilt`, `--story-scale`) plus the `transform-origin` on
+  `.story-shot .media-frame` — tweak there if a screen reads badly under the
+  angle.
+
+## Capture the images (script)
 
 No "A, not B" contrast constructions and no em/en dashes. Use plain sentences,
 colons or commas.
@@ -84,21 +103,25 @@ npx playwright install chromium
 Run (with `npm run dev` going in another terminal):
 
 ```bash
-npm run shots
+npm run shots                  # horizontal screenshots → media-shots/screenshots/
+npm run shots TARGET=stories   # Instagram Stories      → media-shots/stories/
+npm run shots TARGET=both      # both
 ```
 
-Output lands in `media-shots/`. Default is dpr 2 → **2540×1520** (2× the PH
-gallery size). Options via env vars:
+Options are passed as `KEY=VALUE` args (shown above) or env vars; args win.
 
-| var    | default                 | meaning                                  |
-|--------|-------------------------|------------------------------------------|
-| `DPR`  | `2`                     | `1` → exact 1270×760; `2` → 2540×1520     |
-| `ANIM` | `0`                     | `1` keeps the doc animation live          |
-| `OUT`  | `./media-shots`         | output folder                             |
-| `BASE` | `http://localhost:4321` | dev server origin (if not the default port)|
+| var      | default                 | meaning                                                    |
+|----------|-------------------------|------------------------------------------------------------|
+| `TARGET` | `screenshots`           | `screenshots` \| `stories` \| `both`                       |
+| `DPR`    | per target              | screenshots → `2` (2540×1520); stories → `1` (1080×1920)   |
+| `ANIM`   | `0`                     | `1` keeps the doc animation live                           |
+| `OUT`    | `./media-shots`         | output folder (a `screenshots/` or `stories/` subdir is added) |
+| `BASE`   | `http://localhost:4321` | dev server origin (if not the default port)                |
 
-The script reads ids straight from `src/content/screenshots/*.md`, so a newly
-added screen is picked up automatically.
+The screenshots default is dpr 2 → **2540×1520** (2× the PH gallery size).
+Stories default to dpr 1 → exact **1080×1920** (dpr 2 would be an oversized
+2160×3840). The script reads ids straight from `src/content/screenshots/*.md`,
+so a newly added screen is picked up automatically for both targets.
 
 ## Gotcha: renaming entries
 

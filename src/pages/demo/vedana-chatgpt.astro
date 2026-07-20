@@ -1,0 +1,288 @@
+---
+import BaseLayout from "@/layouts/baseLayout.astro";
+
+import { SEOBase } from "@content/vedana/seo/seo";
+import type { SEOConfig } from "@/lib/seo/types";
+
+import Footer from "@/components/products/vedana/footer/Footer.astro";
+import {
+  benchmarkQuestions,
+  questionTypeFilters,
+  outcomeFilters,
+  passedCount,
+  totalCount,
+  passRate,
+  chatgptPassedCount,
+  chatgptPassRate,
+} from "@/content/demo/benchmark";
+
+import "../../styles/global.css";
+import "@/styles/vedana/extra-tokens.css";
+import "@/styles/vedana/demo.css";
+
+const pageSEO: Partial<SEOConfig> = {
+  title: "Vedana vs ChatGPT – DIFC demo",
+  description:
+    "All 93 questions from the Agentic RAG Challenge, answered by both Vedana and ChatGPT and scored against the official answer key.",
+  canonical: "https://vedana.tech/demo/vedana-chatgpt",
+};
+---
+
+<BaseLayout baseSEO={SEOBase} pageSEO={pageSEO}>
+  <section class="demo-section" style="padding-top: var(--space-8);">
+    <div class="demo-container">
+      <p class="demo-breadcrumb"><a href="/demo">Demo</a> › Vedana vs ChatGPT</p>
+
+      <h1 class="vc-title">Vedana vs ChatGPT</h1>
+      <p class="demo-hero-lead" style="margin-bottom: var(--space-6);">
+        All 93 questions from the Agentic RAG Challenge, answered by both and
+        scored against the official answer key. Same questions, same model —
+        the difference is the architecture.
+      </p>
+
+      <a href="/demo/contact" class="vc-cta">Request a live link →</a>
+
+      <div class="vc-score">
+        <div class="vc-score__side">
+          <div class="vc-score__num vc-score__num--muted">{chatgptPassRate}%</div>
+          <div class="vc-score__label">ChatGPT · same questions</div>
+          <div class="vc-score__meta-inline">{chatgptPassedCount} / {totalCount}</div>
+        </div>
+        <div class="vc-score__arrow">→</div>
+        <div class="vc-score__side">
+          <div class="vc-score__num">{passRate}%</div>
+          <div class="vc-score__label">Vedana · graph RAG</div>
+          <div class="vc-score__meta-inline">{passedCount} / {totalCount}</div>
+        </div>
+      </div>
+
+      <div class="vc-filter-group">
+        <p class="vc-filter-group__label">Question type</p>
+        <div class="demo-pills" id="type-filters">
+          {questionTypeFilters.map((f, i) => (
+            <button type="button" class="demo-pill" data-filter={f.key} aria-pressed={i === 0 ? "true" : "false"}>
+              {f.label} {f.key !== "all" ? f.count : ""}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="vc-filter-group">
+        <p class="vc-filter-group__label">Outcome</p>
+        <div class="demo-pills" id="outcome-filters">
+          {outcomeFilters.map((f, i) => (
+            <button type="button" class="demo-pill" data-filter={f.key} aria-pressed={i === 0 ? "true" : "false"}>
+              {f.label} {f.key !== "all" ? f.count : ""}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="vc-list" id="question-list">
+        {benchmarkQuestions.map((q) => (
+          <div class="vc-card" data-type={q.type} data-outcome={q.outcome}>
+            <p class="vc-card__q">
+              <span class={`demo-type-badge demo-type-badge--${q.type}`}>{q.typeLabel}</span>
+              "{q.question}"
+            </p>
+
+            <div class="vc-answers">
+              <div class="vc-answer">
+                <p class="vc-answer__head">Official answer · challenge key</p>
+                <p class="vc-answer__text">{q.official}</p>
+              </div>
+              {q.chatgpt && (
+                <div class="vc-answer">
+                  <p class="vc-answer__head">
+                    ChatGPT <span class={`demo-status demo-status--${q.chatgpt.verdict.toLowerCase()}`}>{q.chatgpt.verdict}</span>
+                  </p>
+                  <p class="vc-answer__text">{q.chatgpt.answer}</p>
+                </div>
+              )}
+              <div class="vc-answer">
+                <p class="vc-answer__head vc-answer__head--vedana">
+                  Vedana <span class={`demo-status demo-status--${q.vedana.verdict.toLowerCase()}`}>{q.vedana.verdict}</span>
+                </p>
+                <p class="vc-answer__text">{q.vedana.answer}</p>
+              </div>
+            </div>
+
+            <p class="vc-comment"><strong>Judge:</strong> {q.vedana.comment}</p>
+            {q.chatgpt && <p class="vc-comment"><strong>ChatGPT scoring:</strong> {q.chatgpt.comment}</p>}
+          </div>
+        ))}
+      </div>
+
+      <p class="demo-load-more">Showing all {benchmarkQuestions.length} questions from the run</p>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .vc-title {
+    margin: 0 0 var(--space-3);
+    font-size: var(--heading-2-size);
+    color: var(--color-text-strong);
+  }
+
+  .vc-cta {
+    display: inline-flex;
+    padding: var(--space-3) var(--space-6);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    border-radius: var(--radius-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    margin-bottom: var(--space-6);
+  }
+
+  .vc-cta:hover {
+    background: var(--color-primary-hover);
+  }
+
+  .vc-score {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    background: var(--color-bg-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  .vc-score__num {
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary-ink);
+    line-height: 1;
+  }
+
+  .vc-score__num--muted {
+    color: var(--color-text-subtle);
+  }
+
+  .vc-score__label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-subtle);
+    margin-top: var(--space-1);
+  }
+
+  .vc-score__arrow {
+    font-size: 1.5rem;
+    color: var(--color-text-subtle);
+  }
+
+  .vc-score__meta-inline {
+    font-size: var(--font-size-xs, 0.75rem);
+    color: var(--color-text-subtle);
+    margin-top: var(--space-1);
+  }
+
+  .vc-filter-group__label {
+    font-size: 0.6875rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: 0 0 var(--space-2);
+  }
+
+  .vc-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+
+  .vc-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+  }
+
+  .vc-card__q {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-strong);
+    margin: 0 0 var(--space-4);
+  }
+
+  .vc-answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+
+  @media (max-width: 900px) {
+    .vc-answers {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .vc-answer {
+    background: var(--color-bg-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--space-4);
+  }
+
+  .vc-answer__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-2);
+  }
+
+  .vc-answer__head--vedana {
+    color: var(--color-primary-ink);
+  }
+
+  .vc-answer__text {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+  }
+
+  .vc-comment {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-subtle);
+  }
+</style>
+
+<script>
+  function wireFilterGroup(id: string, attr: string) {
+    const group = document.getElementById(id);
+    if (!group) return;
+    const buttons = group.querySelectorAll<HTMLButtonElement>(".demo-pill");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        buttons.forEach((b) => b.setAttribute("aria-pressed", "false"));
+        btn.setAttribute("aria-pressed", "true");
+        applyFilters();
+      });
+    });
+  }
+
+  function applyFilters() {
+    const type = document.querySelector<HTMLButtonElement>('#type-filters .demo-pill[aria-pressed="true"]')?.dataset.filter;
+    const outcome = document.querySelector<HTMLButtonElement>('#outcome-filters .demo-pill[aria-pressed="true"]')?.dataset.filter;
+
+    document.querySelectorAll<HTMLDivElement>("#question-list .vc-card").forEach((card) => {
+      const typeMatch = type === "all" || card.dataset.type === type;
+      const outcomeMatch = outcome === "all" || card.dataset.outcome === outcome;
+      card.style.display = typeMatch && outcomeMatch ? "" : "none";
+    });
+  }
+
+  wireFilterGroup("type-filters", "type");
+  wireFilterGroup("outcome-filters", "outcome");
+</script>

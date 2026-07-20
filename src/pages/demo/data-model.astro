@@ -1,0 +1,270 @@
+---
+import BaseLayout from "@/layouts/baseLayout.astro";
+
+import { SEOBase } from "@content/vedana/seo/seo";
+import type { SEOConfig } from "@/lib/seo/types";
+
+import Footer from "@/components/products/vedana/footer/Footer.astro";
+
+import "../../styles/global.css";
+import "@/styles/vedana/extra-tokens.css";
+import "@/styles/vedana/demo.css";
+
+const pageSEO: Partial<SEOConfig> = {
+  title: "The data model – DIFC demo",
+  description:
+    "Vedana turns the DIFC corpus into a knowledge graph — typed nodes and the relationships between them.",
+  canonical: "https://vedana.tech/demo/data-model",
+};
+
+const nodeTypes = [
+  {
+    name: "court_case",
+    color: "#2A5BFF",
+    desc: "One section of a DIFC court judgment.",
+    attrs: ["case_id", "parties", "judge", "decision_date", "outcome", "claim_value"],
+  },
+  { name: "judge", color: "#7e22ce", desc: "A judge who presided over one or more cases.", attrs: ["name", "title"] },
+  {
+    name: "legal_party",
+    color: "#dc2626",
+    desc: "A claimant, respondent, appellant or defendant.",
+    attrs: ["name", "role", "case_id"],
+  },
+  {
+    name: "law_document",
+    color: "#0d9488",
+    desc: "One article or sub-article of a law — not the whole document.",
+    attrs: [
+      "law_name",
+      "article_number",
+      "sub_article",
+      "article_title",
+      "law_number",
+      "enactment_year",
+      "commencement_date",
+      "administering_entity",
+      "amends_law_names",
+      "source_file",
+    ],
+  },
+];
+
+const relationships = [
+  { from: "court_case", rel: "IS_PARTY_IN", to: "legal_party" },
+  { from: "court_case", rel: "IS_JUDGED_BY", to: "judge" },
+  { from: "law_document", rel: "AMENDS", to: "law_document" },
+];
+---
+
+<BaseLayout baseSEO={SEOBase} pageSEO={pageSEO}>
+  <section class="demo-section" style="padding-top: var(--space-8);">
+    <div class="demo-container">
+      <p class="demo-breadcrumb"><a href="/demo">Demo</a> › Data model</p>
+
+      <h1 class="dm-title">The data model</h1>
+      <p class="demo-hero-lead" style="margin-bottom: var(--space-6);">
+        Vedana turns the corpus into a knowledge graph — typed nodes and the
+        relationships between them. Answers traverse these links instead of
+        guessing by text similarity, which is why relationship questions
+        come back exact. Each <code>law_document</code> node is one article
+        or sub-article of a law, not the whole document — that granularity is
+        what lets Vedana cite an exact clause instead of a whole PDF.
+      </p>
+
+      <div class="dm-diagram">
+        <svg viewBox="0 0 760 340" role="img" aria-label="Graph diagram: law_document, court_case, legal_party and judge nodes">
+          <path d="M 105 202 C 85 262, 175 262, 152 204" fill="none" stroke="#c3ceE0" stroke-width="1.5" marker-end="url(#dm-arrow)" />
+          <text x="93" y="278" font-size="11" fill="#60728f" font-family="var(--font-mono)">AMENDS</text>
+
+          <line x1="384" y1="128" x2="566" y2="82" stroke="#c3ceE0" stroke-width="1.5" marker-end="url(#dm-arrow)" />
+          <text x="415" y="90" font-size="11" fill="#60728f" font-family="var(--font-mono)">IS_PARTY_IN</text>
+
+          <line x1="384" y1="172" x2="568" y2="230" stroke="#c3ceE0" stroke-width="1.5" marker-end="url(#dm-arrow)" />
+          <text x="415" y="222" font-size="11" fill="#60728f" font-family="var(--font-mono)">IS_JUDGED_BY</text>
+
+          <defs>
+            <marker id="dm-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+              <path d="M 0 0 L 8 4 L 0 8 z" fill="#c3ceE0" />
+            </marker>
+          </defs>
+
+          <circle cx="128" cy="150" r="55" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5" />
+          <text x="128" y="145" text-anchor="middle" font-size="13" font-weight="600" fill="#0d9488">law_</text>
+          <text x="128" y="162" text-anchor="middle" font-size="13" font-weight="600" fill="#0d9488">document</text>
+
+          <circle cx="326" cy="150" r="58" fill="#eef3ff" stroke="#2A5BFF" stroke-width="1.5" />
+          <text x="326" y="145" text-anchor="middle" font-size="13" font-weight="600" fill="#2A5BFF">court_</text>
+          <text x="326" y="162" text-anchor="middle" font-size="13" font-weight="600" fill="#2A5BFF">case</text>
+
+          <circle cx="622" cy="72" r="52" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5" />
+          <text x="622" y="77" text-anchor="middle" font-size="13" font-weight="600" fill="#dc2626">legal_party</text>
+
+          <circle cx="622" cy="245" r="52" fill="#f3e8ff" stroke="#7e22ce" stroke-width="1.5" />
+          <text x="622" y="250" text-anchor="middle" font-size="13" font-weight="600" fill="#7e22ce">judge</text>
+        </svg>
+      </div>
+
+      <p class="demo-section-label" style="margin-top: var(--space-8);">Node types &amp; attributes</p>
+
+      <div class="dm-node-grid">
+        {nodeTypes.map((n) => (
+          <div class="dm-node-card">
+            <p class="dm-node-card__title">
+              <span class="dm-node-card__dot" style={`background:${n.color}`}></span>
+              {n.name}
+            </p>
+            <p class="dm-node-card__desc">{n.desc}</p>
+            <ul class="dm-node-card__attrs">
+              {n.attrs.map((a) => <li>{a}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <p class="demo-section-label" style="margin-top: var(--space-8);">
+        Relationships · {relationships.length}
+      </p>
+
+      <div class="dm-rel-list">
+        {relationships.map((r) => (
+          <div class="dm-rel-row">
+            <span class="dm-rel-row__type">{r.from}</span>
+            <span class="dm-rel-row__rel">— {r.rel} →</span>
+            <span class="dm-rel-row__type">{r.to}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section" style="padding-top: 0;">
+    <div class="demo-container">
+      <div class="demo-cta-band">
+        <h2 class="demo-cta-band__title">Ask it yourself, live</h2>
+        <p class="demo-cta-band__lead">
+          Query this graph in plain language — answers run live against the
+          model, grounded in the source. Leave your email and we'll send a
+          personal link.
+        </p>
+        <a href="/demo/contact" class="demo-cta-band__submit-link">Request a live link →</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .dm-title {
+    margin: 0 0 var(--space-3);
+    font-size: var(--heading-2-size);
+    color: var(--color-text-strong);
+  }
+
+  .dm-diagram {
+    background: var(--color-bg-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+  }
+
+  .dm-diagram svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .dm-node-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+
+  @media (max-width: 900px) {
+    .dm-node-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .dm-node-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+  }
+
+  .dm-node-card__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-strong);
+    margin: 0 0 var(--space-3);
+  }
+
+  .dm-node-card__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dm-node-card__desc {
+    margin: 0 0 var(--space-3);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-subtle);
+  }
+
+  .dm-node-card__attrs {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .dm-rel-list {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .dm-rel-row {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+  }
+
+  .dm-rel-row:not(:last-child) {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .dm-rel-row__type {
+    color: var(--color-text-strong);
+  }
+
+  .dm-rel-row__rel {
+    color: var(--color-primary-ink);
+  }
+
+  .demo-cta-band__submit-link {
+    display: inline-flex;
+    padding: var(--space-3) var(--space-6);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    border-radius: var(--radius-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .demo-cta-band__submit-link:hover {
+    background: var(--color-primary-hover);
+  }
+</style>

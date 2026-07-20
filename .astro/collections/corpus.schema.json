@@ -1,0 +1,107 @@
+{
+  "$ref": "#/definitions/corpus",
+  "definitions": {
+    "corpus": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "law",
+            "reg",
+            "case"
+          ]
+        },
+        "meta": {
+          "type": "string"
+        },
+        "caseType": {
+          "type": "string"
+        },
+        "order": {
+          "type": "number",
+          "default": 0
+        },
+        "pageInfo": {
+          "type": "string",
+          "default": "Page 1 / 12"
+        },
+        "file": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "extraction": {
+          "type": "object",
+          "properties": {
+            "nodeType": {
+              "type": "string"
+            },
+            "nodeId": {
+              "type": "string"
+            },
+            "attributes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "key",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "links": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "rel": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "rel",
+                  "label"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "nodeType",
+            "nodeId",
+            "attributes",
+            "links"
+          ],
+          "additionalProperties": false
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "type",
+        "meta"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

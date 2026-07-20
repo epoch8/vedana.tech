@@ -61,6 +61,14 @@ export const mainNav: NavItem[] = [
   },
 
   {
+    label: "Demo",
+    href: "/demo",
+    description: "See Vedana on a real legal corpus",
+    variant: "link",
+    enabled: true,
+  },
+
+  {
     label: "GitHub",
     href: "https://github.com/epoch8/vedana",
     external: true,

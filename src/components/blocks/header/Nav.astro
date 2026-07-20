@@ -123,8 +123,8 @@ const navigationSchema = {
 
 <div id="nav-overlay" class={styles["nav-overlay"]}></div>
 
-<script type="application/ld+json">
-  {JSON.stringify(navigationSchema)}
-</script>
+<script type="application/ld+json" set:html={JSON.stringify(navigationSchema)} />
 
-<script type="module" src="/src/components/blocks/header/nav.js"></script>
+<script>
+  import "./nav.js";
+</script>

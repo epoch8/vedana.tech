@@ -1,0 +1,350 @@
+---
+import BaseLayout from "@/layouts/baseLayout.astro";
+
+import { SEOBase } from "@content/vedana/seo/seo";
+import type { SEOConfig } from "@/lib/seo/types";
+
+import Footer from "@/components/products/vedana/footer/Footer.astro";
+import { getCollection, render } from "astro:content";
+
+import "../../../styles/global.css";
+import "@/styles/vedana/extra-tokens.css";
+import "@/styles/vedana/demo.css";
+
+export async function getStaticPaths() {
+  const docs = await getCollection("corpus");
+  return docs.map((doc) => ({
+    params: { slug: doc.id },
+    props: { doc },
+  }));
+}
+
+const { doc } = Astro.props;
+const { extraction } = doc.data;
+const { Content } = await render(doc);
+const hasExcerpt = Boolean(doc.body?.trim());
+
+const docTypeLabel = { law: "LAW", reg: "REG", case: "CASE" };
+
+const pageSEO: Partial<SEOConfig> = {
+  title: `${doc.data.title} – DIFC demo`,
+  description: `What Vedana extracted from ${doc.data.title} in the DIFC legal corpus demo.`,
+  canonical: `https://vedana.tech/demo/corpus/${doc.id}`,
+};
+---
+
+<BaseLayout baseSEO={SEOBase} pageSEO={pageSEO}>
+  <section class="demo-section" style="padding-top: var(--space-8);">
+    <div class="demo-container">
+      <p class="demo-breadcrumb">
+        <a href="/demo">Demo</a> › <a href="/demo/corpus">Corpus</a> › {doc.data.title}
+      </p>
+
+      <div class="doc-title-row">
+        <span class={`demo-type-badge demo-type-badge--${doc.data.type}`}>
+          {docTypeLabel[doc.data.type]}
+        </span>
+        <h1 class="doc-title">{doc.data.title}</h1>
+      </div>
+
+      <div class="doc-split">
+        <div class="doc-pane doc-pane--pdf">
+          <div class="pdf-toolbar">
+            <span class="pdf-toolbar__file">📄 {doc.data.file ?? `${doc.id}.pdf`}</span>
+          </div>
+
+          <div class="pdf-page">
+            {hasExcerpt ? (
+              <Content />
+            ) : (
+              <p class="pdf-page__placeholder">
+                Text preview isn't included for this document — Vedana works
+                from the original file listed above.
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div class="doc-pane doc-pane--extract">
+          <p class="extract-heading">What Vedana extracted</p>
+
+          {extraction ? (
+            <>
+              <p class="extract-node">
+                <span class="extract-node__dot"></span>
+                <span class="extract-node__type">{extraction.nodeType}</span>
+                <strong>{extraction.nodeId}</strong>
+              </p>
+
+              <p class="extract-label">Attributes</p>
+              <dl class="extract-attrs">
+                {extraction.attributes.map((a) => (
+                  <>
+                    <dt>{a.key}</dt>
+                    <dd>{a.value}</dd>
+                  </>
+                ))}
+              </dl>
+
+              <p class="extract-label">Links</p>
+              <ul class="extract-links">
+                {extraction.links.map((l) => (
+                  <li>
+                    <span class="extract-links__rel">{l.rel} →</span>
+                    <span class="extract-links__pill">{l.label}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p class="extract-empty">
+              Extraction preview for this document isn't wired up yet — see
+              <a href="/demo/corpus/arb-032-2025">ARB-032-2025</a> for a full
+              worked example.
+            </p>
+          )}
+        </div>
+      </div>
+
+      <p class="doc-caption">
+        Highlighted spans in the PDF became the structured node on the right
+        — attributes and typed links Vedana can traverse, instead of
+        searching raw text.
+      </p>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .doc-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+
+  .doc-title {
+    margin: 0;
+    font-size: var(--heading-2-size);
+    color: var(--color-text-strong);
+  }
+
+  .doc-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  @media (max-width: 900px) {
+    .doc-split {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .doc-pane {
+    background: var(--color-bg);
+  }
+
+  .doc-pane--pdf {
+    border-right: 1px solid var(--color-border);
+  }
+
+  .pdf-toolbar {
+    display: flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-dark);
+    color: var(--color-on-dark);
+    font-size: var(--font-size-sm);
+  }
+
+  .pdf-page {
+    padding: var(--space-6);
+    font-size: var(--font-size-sm);
+    line-height: 1.8;
+    color: var(--color-text);
+    max-height: 42rem;
+    overflow-y: auto;
+    overflow-wrap: anywhere;
+  }
+
+  /* Reconstructed PDF tables (fine schedules, term glossaries): scroll horizontally
+     rather than letting the browser crush a short-content column (e.g. "Terms")
+     down to one letter per line to make room for a long one. */
+  .pdf-page :global(table) {
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin: var(--space-4) 0;
+  }
+
+  .pdf-page :global(th),
+  .pdf-page :global(td) {
+    border: 1px solid var(--color-border);
+    padding: var(--space-2) var(--space-3);
+    text-align: left;
+    vertical-align: top;
+    white-space: normal;
+  }
+
+  .pdf-page :global(th) {
+    background: var(--color-bg-muted);
+    font-weight: var(--font-weight-semibold);
+    white-space: nowrap;
+  }
+
+  .pdf-page :global(.pdf-page__court),
+  .pdf-page :global(.pdf-page__division) {
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+  }
+
+  .pdf-page :global(.pdf-page__division) {
+    font-weight: var(--font-weight-regular);
+    margin-bottom: var(--space-4);
+  }
+
+  .pdf-page__placeholder {
+    color: var(--color-text-subtle);
+  }
+
+  .pdf-page :global(.hl) {
+    padding: 0 3px;
+    border-radius: 3px;
+  }
+
+  .pdf-page :global(.hl-blue) {
+    background: var(--color-primary-soft);
+    color: var(--color-primary-ink);
+  }
+
+  .pdf-page :global(.hl-red) {
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+  }
+
+  .pdf-page :global(.hl-green) {
+    background: var(--color-success-soft);
+    color: var(--color-success);
+  }
+
+  .pdf-page :global(.hl-purple) {
+    background: #f3e8ff;
+    color: #7e22ce;
+  }
+
+  .doc-pane--extract {
+    padding: var(--space-6);
+    background: var(--color-bg-muted);
+  }
+
+  .extract-heading {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: var(--color-primary-ink);
+    margin: 0 0 var(--space-4);
+  }
+
+  .extract-node {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    margin: 0 0 var(--space-5);
+  }
+
+  .extract-node__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+  }
+
+  .extract-node__type {
+    color: var(--color-text-subtle);
+  }
+
+  .extract-label {
+    font-size: 0.6875rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-wide);
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin: var(--space-4) 0 var(--space-2);
+  }
+
+  .extract-attrs {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-2) var(--space-4);
+    margin: 0;
+    font-size: var(--font-size-sm);
+  }
+
+  .extract-attrs dt {
+    font-family: var(--font-mono);
+    color: var(--color-text-subtle);
+  }
+
+  .extract-attrs dd {
+    margin: 0;
+    color: var(--color-text-strong);
+    text-align: right;
+  }
+
+  .extract-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+  }
+
+  .extract-links li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .extract-links__rel {
+    font-family: var(--font-mono);
+    color: var(--color-primary-ink);
+    font-size: 0.75rem;
+  }
+
+  .extract-links__pill {
+    padding: 2px var(--space-2);
+    border-radius: 999px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-strong);
+    font-size: 0.75rem;
+  }
+
+  .extract-empty {
+    color: var(--color-text-subtle);
+    font-size: var(--font-size-sm);
+  }
+
+  .doc-caption {
+    margin-top: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-subtle);
+  }
+</style>

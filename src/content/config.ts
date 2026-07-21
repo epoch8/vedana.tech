@@ -88,7 +88,30 @@ const screenshots = defineCollection({
     }),
 });
 
+const corpus = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/corpus" }),
+  schema: z.object({
+    title: z.string(),
+    type: z.enum(["law", "reg", "case"]),
+    meta: z.string(),
+    caseType: z.string().optional(),
+    order: z.number().default(0),
+    pageInfo: z.string().default("Page 1 / 12"),
+    file: z.string().optional(),
+    source: z.string().optional(),
+    extraction: z
+      .object({
+        nodeType: z.string(),
+        nodeId: z.string(),
+        attributes: z.array(z.object({ key: z.string(), value: z.string() })),
+        links: z.array(z.object({ rel: z.string(), label: z.string() })),
+      })
+      .optional(),
+  }),
+});
+
 export const collections = {
   docs: docsCollection,
   screenshots,
+  corpus,
 };

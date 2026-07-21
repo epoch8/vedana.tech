@@ -1,0 +1,127 @@
+---
+import BaseLayout from "@/layouts/baseLayout.astro";
+
+import { SEOBase } from "@content/vedana/seo/seo";
+import type { SEOConfig } from "@/lib/seo/types";
+
+import Footer from "@/components/products/vedana/footer/Footer.astro";
+import { getCollection } from "astro:content";
+
+const corpusDocs = (await getCollection("corpus")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const docTypeLabel = { law: "LAW", reg: "REG", case: "CASE" };
+
+const docTypeFilters = [
+  { key: "all", label: "All", count: corpusDocs.length },
+  { key: "law", label: "Laws", count: corpusDocs.filter((d) => d.data.type === "law").length },
+  { key: "reg", label: "Regulations", count: corpusDocs.filter((d) => d.data.type === "reg").length },
+  { key: "case", label: "Court decisions", count: corpusDocs.filter((d) => d.data.type === "case").length },
+];
+
+import "../../../styles/global.css";
+import "@/styles/vedana/extra-tokens.css";
+import "@/styles/vedana/demo.css";
+
+const pageSEO: Partial<SEOConfig> = {
+  title: "The corpus – DIFC demo",
+  description:
+    "Browse the DIFC laws, regulations and court decisions used in the Vedana demo, and see what Vedana extracted from each.",
+  canonical: "https://vedana.tech/demo/corpus",
+};
+---
+
+<BaseLayout baseSEO={SEOBase} pageSEO={pageSEO}>
+  <section class="demo-section" style="padding-top: var(--space-8);">
+    <div class="demo-container">
+      <p class="demo-breadcrumb"><a href="/demo">Demo</a> › Corpus</p>
+
+      <div class="corpus-head">
+        <h1 class="corpus-title">The corpus</h1>
+        <span class="corpus-count">{corpusDocs.length} documents</span>
+      </div>
+
+      <p class="demo-hero-lead" style="margin-bottom: var(--space-6);">
+        The DIFC legal system from the Agentic RAG Challenge — laws,
+        regulations and court decisions, loaded as-is. Open any document to
+        see what Vedana extracted from it.
+      </p>
+
+      <div class="demo-pills" role="tablist" aria-label="Filter by document type" id="corpus-filters">
+        {docTypeFilters.map((f, i) => (
+          <button
+            type="button"
+            class="demo-pill"
+            data-filter={f.key}
+            aria-pressed={i === 0 ? "true" : "false"}
+          >
+            {f.label} {f.count}
+          </button>
+        ))}
+      </div>
+
+      <div class="demo-doc-list" id="corpus-list">
+        {corpusDocs.map((doc) => (
+          <a class="demo-doc-row" href={`/demo/corpus/${doc.id}`} data-type={doc.data.type}>
+            <span class={`demo-type-badge demo-type-badge--${doc.data.type}`}>
+              {docTypeLabel[doc.data.type]}
+            </span>
+            <span class="demo-doc-row__body">
+              <div class="demo-doc-row__title">{doc.data.title}</div>
+              <div class="demo-doc-row__meta">{doc.data.meta}</div>
+            </span>
+            <span class="demo-doc-row__chevron">›</span>
+          </a>
+        ))}
+      </div>
+
+      <p class="demo-load-more">Showing all {corpusDocs.length} documents</p>
+
+      <p class="demo-footnote">
+        The DIFC corpus from the Agentic RAG Challenge, loaded as-is.
+      </p>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .corpus-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+
+  .corpus-title {
+    margin: 0;
+    font-size: var(--heading-2-size);
+    color: var(--color-text-strong);
+  }
+
+  .corpus-count {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-subtle);
+  }
+</style>
+
+<script>
+  const filters = document.querySelectorAll<HTMLButtonElement>("#corpus-filters .demo-pill");
+  const rows = document.querySelectorAll<HTMLAnchorElement>("#corpus-list .demo-doc-row");
+
+  filters.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filters.forEach((b) => b.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
+
+      const type = btn.dataset.filter;
+      rows.forEach((row) => {
+        const show = type === "all" || row.dataset.type === type;
+        row.style.display = show ? "" : "none";
+      });
+    });
+  });
+</script>

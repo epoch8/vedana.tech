@@ -1,0 +1,1575 @@
+[
+  {
+    "id": "Q1",
+    "type": "court-fact",
+    "question": "Who were the claimants in case CFI 010/2024?",
+    "official": "Fursa Consulting",
+    "vedana": {
+      "answer": "In the case CFI-010-2024 before the DIFC Court of First Instance, the claimants were Fursa Consulting. Bay Gate Investment LLC was the defendant in this case.",
+      "verdict": "PASS",
+      "comment": "The model correctly identified 'Fursa Consulting' as the claimant in case CFI-010-2024 before the DIFC Court of First Instance, which matches the golden answer and the provided technical data.",
+      "trace": "cypher  MATCH (c:court_case)-[:IS_PARTY_IN]->(p:legal_party) WHERE c.case_id = \"CFI-010-2024\" RETURN p.party_name, p.role\ncypher  MATCH (n:court_case) WHERE n.case_id = \"CFI-010-2024\" RETURN DISTINCT n.parties, n.judge, n.decision_date LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The claimants in case CFI 010/2024 were Fursa Consulting",
+      "verdict": "PASS",
+      "comment": "Exact match: Fursa Consulting"
+    }
+  },
+  {
+    "id": "Q3",
+    "type": "court-fact",
+    "question": "Was the main claim or application in case ARB 034/2025 approved or granted by the court?",
+    "official": "No",
+    "vedana": {
+      "answer": "In case ARB-034-2025, the main claim or application (anti-suit injunction, ASI Order) was not approved by the court; it was dismissed.",
+      "verdict": "PASS",
+      "comment": "The model answer correctly concludes 'No' by stating that the anti-suit injunction order (ASI Order) was dismissed and the main claim was not approved, which aligns with the golden answer 'No'.",
+      "trace": "cypher  MATCH (n:court_case) WHERE n.case_id = \"ARB-034-2025\" RETURN DISTINCT n.outcome LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The main claim or application in case ARB 034/2025 was not approved or granted by the court. The interim anti-suit relief (ASI Order) initially granted was discharged, and the Defendant's application to set aside the ASI Order was granted",
+      "verdict": "PASS",
+      "comment": "Both say No; ChatGPT adds correct detail: ASI Order was discharged, defendant's application granted."
+    }
+  },
+  {
+    "id": "Q4",
+    "type": "court-fact",
+    "question": "What was the claim value referenced in the appeal judgment CA 005/2025?",
+    "official": "AED 405,351,504",
+    "vedana": {
+      "answer": "The claim value referenced in the appeal judgment CA 005/2025 in the DIFC Court of Appeal is AED 405,351,504.",
+      "verdict": "PASS",
+      "comment": "The model answer correctly states the claim value as AED 405,351,504 in the DIFC Court of Appeal case CA 005/2025, matching the golden answer exactly and providing appropriate context.",
+      "trace": "cypher  MATCH (n:court_case) WHERE n.case_id = \"CA-005-2025\" RETURN DISTINCT n.case_id, n.claim_value LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The claim value referenced in the appeal judgment CA 005/2025 was USD 250,499.26",
+      "verdict": "FAIL",
+      "comment": "ChatGPT gave USD 250,499.26 (the security-for-costs amount), not the main claim value of AED 405,351,504."
+    }
+  },
+  {
+    "id": "Q6",
+    "type": "law-structure",
+    "question": "How does Law No. 1 of 2025 modify the application of the Data Protection Law 2020 as it pertains to processing Personal Data in the DIFC by a Controller or Processor, as originally outlined in the Data Protection Law 2020?",
+    "official": "DIFC Amendment Law No. 1 of 2025 (effective 15 July 2025) expanded the scope of the Data Protection Law 2020 so that it now explicitly applies to: (1) Controllers or Processors incorporated in the DIFC regardless of where they process personal data; and (2) any Controller or Processor (including non-DIFC entities) that processes Personal Data in the DIFC as part of stable arrangements. It also introduced a private right of action for data subjects, adequacy assessment requirements for international data transfers, and higher administrative fines.",
+    "vedana": {
+      "answer": "The details regarding how DIFC Law No. 1 of 2025 modifies the application of the Data Protection Law 2020 are primarily documented in the amendment text, indicating new changes and deletions through underlining and striking through. However, the specific modifications to the clauses related to the processing of Personal Data in the DIFC by a Controller or Processor have not been captured in the text retrieved.\n\nTo access the detailed amendments, you would typically review the full DIFC Amendment Law No. 1 of 2025 document, where changes are clearly underlined or struck through to indicate new or removed text, respectively. This approach ensures transparent updates to existing legal frameworks such as the Data Protection Law 2020.",
+      "verdict": "FAIL",
+      "comment": "The model answer does not provide any specific information about the scope expansion or the specific modifications introduced by DIFC Law No. 1 of 2025 to the Data Protection Law 2020. It only describes a generic approach to how amendments are documented, without confirming or detailing the key changes such as applicability to Controllers or Processors in the DIFC regardless of processing location, applicability to non-DIFC Controllers or Processors with stable arrangements in the DIFC, the introduction of private rights of action, adequacy assessment requirements, or increased fines. Therefore, it fails to answer the question as expected.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"amended by DIFC Law No. 1 of 2025\")\ncypher  MATCH (a:law_document)-[:AMENDS]->(b:law_document) WHERE a.source_file CONTAINS \"no1_2025\" AND b.law_name CONTAINS \"Data Protection Law 2020\" RETURN DISTINCT a.text, a.article_number, a.source_file, b.law_name LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "Law No. 1 of 2025 modifies the application of the Data Protection Law 2020 as it pertains to processing Personal Data in the DIFC by a Controller or Processor by introducing several amendments. These amendments include changes to the requirements for legitimate and lawful processing, the rights of data subjects, and the obligations of controllers and processors. The modifications aim to enhance data protection standards and ensure compliance with evolving international data protection norms. Specific changes include updates to the conditions under which personal data can be processed, the introduction of new rights for data subjects, and additional responsibilities for controllers and processors to ensure data security and transparency",
+      "verdict": "FAIL",
+      "comment": "ChatGPT gave a generic, vague answer without the key specifics: expanded territorial scope, private right of action, adequacy assessments, higher fines."
+    }
+  },
+  {
+    "id": "Q7",
+    "type": "court-fact",
+    "question": "List all respondents in case ARB 034/2025.",
+    "official": "Onora",
+    "vedana": {
+      "answer": "In the DIFC arbitration case ARB-034-2025, the respondent is Onora.",
+      "verdict": "PASS",
+      "comment": "The model answer correctly identifies that the respondent in the DIFC arbitration case ARB-034-2025 is Onora, which matches the golden answer. The model provides correct and relevant information corresponding to the case context.",
+      "trace": "cypher  MATCH (c:court_case)-[:IS_PARTY_IN]->(p:legal_party) WHERE c.case_id = \"ARB-034-2025\" AND p.role = \"Respondent\" RETURN p.party_name"
+    },
+    "chatgpt": {
+      "answer": "The respondents in case ARB 034/2025 are Ohtli as the Claimant and Onora as the Defendant",
+      "verdict": "FAIL",
+      "comment": "ChatGPT listed Ohtli (the Claimant) as a respondent — incorrect. Only Onora is the respondent."
+    }
+  },
+  {
+    "id": "Q8",
+    "type": "court-fact",
+    "question": "Identify all claimants who appeared at any point in case TCD 001/2024.",
+    "official": "Architeriors Interior Design (L.L.C)",
+    "vedana": {
+      "answer": "In the DIFC Technology and Construction Division case TCD-001-2024, the claimant was Architeriors Interior Design (L.L.C).",
+      "verdict": "PASS",
+      "comment": "The model answer correctly identifies 'Architeriors Interior Design (L.L.C)' as the claimant in the DIFC Technology and Construction Division case TCD-001-2024, which matches the golden answer.",
+      "trace": "cypher  MATCH (c:court_case)-[:IS_PARTY_IN]->(p:legal_party) WHERE c.case_id = \"TCD-001-2024\" RETURN p.party_name, p.role"
+    },
+    "chatgpt": {
+      "answer": "The claimants who appeared in case TCD 001/2024 are Architeriors Interior Design (L.L.C)",
+      "verdict": "PASS",
+      "comment": "Exact match: Architeriors Interior Design (L.L.C)"
+    }
+  },
+  {
+    "id": "Q9",
+    "type": "law-structure",
+    "question": "Which specific DIFC Laws were amended by DIFC Law No. 2 of 2022?",
+    "official": "DIFC Law No. 2 of 2022 amended the following DIFC Laws: Data Protection Law 2020, Insolvency Law 2019, Electronic Transactions Law 2017, Trust Law 2018, Strata Title Law 2007, Common Reporting Standard Law 2018, and Rules of Interpretation in various DIFC Laws.",
+    "vedana": {
+      "answer": "DIFC Law No. 2 of 2022 amends the following DIFC Laws:\n\n1. **Electronic Transactions Law 2017** (DIFC Law No. 2 of 2017)\n2. **Trust Law 2018** (DIFC Law No. 4 of 2018)\n3. **Strata Title Law 2007** (DIFC Law No. 5 of 2007)\n4. **Insolvency Law 2019** (DIFC Law No. 1 of 2019)\n5. **Data Protection Law 2020**\n6. **Common Reporting Standard Law 2018**",
+      "verdict": "FAIL",
+      "comment": "The model's answer lists six amended laws but omits the 'Rules of Interpretation in various DIFC Laws,' which the golden answer includes. Therefore, the model's answer is incomplete and incorrect regarding the full scope of amendments under DIFC Law No. 2 of 2022.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"amended by Law No. 2 of 2022\")\ncypher  MATCH (a:law_document)-[:AMENDS]->(b:law_document) WHERE a.source_file CONTAINS \"no2_2022\" RETURN DISTINCT b.law_name, b.source_file"
+    },
+    "chatgpt": {
+      "answer": "DIFC Law No. 2 of 2022 amended the following DIFC Laws:Data Protection Law 2020[1].",
+      "verdict": "FAIL",
+      "comment": "ChatGPT returned only 'Data Protection Law 2020' — truncated/incomplete. At least 5 laws were amended."
+    }
+  },
+  {
+    "id": "Q10",
+    "type": "law-structure",
+    "question": "Which laws mention 'interpretative provisions' in their schedules?",
+    "official": "Multiple DIFC laws from 2018 include Schedule 1 containing interpretative provisions, including: the Operating Law (DIFC Law No. 7 of 2018), the Trust Law (DIFC Law No. 4 of 2018), the Common Reporting Standard Law (DIFC Law No. 2 of 2018), and the Real Property Law (DIFC Law No. 10 of 2018). Schedule 1 in each of these laws sets out interpretative provisions and defined terms.",
+    "vedana": {
+      "answer": "From the DIFC laws enacted in 2018, it appears that the following laws were identified:\n\n1. Companies Law 2018 (DIFC Law No. 5 of 2018)\n2. Real Property Law 2018 (DIFC Law No. 10 of 2018)\n3. Operating Law 2018 (DIFC Law No. 7 of 2018)\n4. Trust Law 2018 (DIFC Law No. 4 of 2018)\n5. Foundations Law 2018 (DIFC Law No. 3 of 2018)\n6. DIFC Laws Amendment Law No. 8 of 2018 (DIFC Law No. 8 of 2018)\n\nHowever, none of these laws mention \"interpretative provisions\" in their schedules according to the vector text search results.\n\nIf you need specific content from any of these laws, feel free to ask!",
+      "verdict": "FAIL",
+      "comment": "The model lists several DIFC laws from 2018 but does not confirm that Schedule 1 in some of these laws contains interpretative provisions, as stated in the golden answer. The golden answer specifically highlights that Schedule 1 of the Operating Law (No. 7), Trust Law (No. 4), Common Reporting Standard Law (No. 2), and Real Property Law (No. 10) includes interpretative provisions and defined terms. The model fails to mention the Common Reporting Standard Law (No. 2) at all and incorrectly states that none of the laws mention interpretative provisions, contrary to the golden answer's authoritative assertion. Therefore, the model's answer is factually incomplete and partly incorrect, missing key content the golden answer provides.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"interpretative provisions\")\ncypher  MATCH (n:law_document) WHERE n.enactment_year = 2018 RETURN DISTINCT n.law_name, n.source_file, n.law_number"
+    },
+    "chatgpt": {
+      "answer": "The following laws mention 'interpretative provisions' in their schedules:Digital Assets Law 2024: Schedule 1 contains interpretative provisions which apply to this law[1].General Partnership Law 2004: Schedule 1 contains interpretative provisions which apply to this law[2].Intellectual Property Law 2019: Schedule 1 contains interpretative provisions which apply to this law[3].Real Property Law 2018: Schedule 1 contains interpretative provisions which apply to this law[4].Employment Law Amendment Law No. 4 of 2021: Schedule 1 contains interpretative provisions that apply to this law[5].Operating Law 2018 (Updated 2024): Schedule 1 contains interpretative provisions which apply to this law[6].",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT found 6 laws (including Digital Assets Law 2024, General Partnership Law 2004) — broader than our GDS but partially overlapping. Real Property Law and Operating Law match."
+    }
+  },
+  {
+    "id": "Q11",
+    "type": "law-structure",
+    "question": "Who has the authority to make the Dematerialised Investments Regulations (DIR), and what other laws are cited as conferring powers for these regulations?",
+    "official": "The Board of Directors of the DIFCA (Dubai International Financial Centre Authority) has the authority to make the Dematerialised Investments Regulations. The powers are conferred by Article 116 of the Companies Law (DIFC Law No. 5 of 2018) and Article 43 of the Personal Property Law.",
+    "vedana": {
+      "answer": "The authority to make the DIFC Dematerialised Investments Regulations is conferred on the Board of Directors of DIFCA (Dubai International Financial Centre Authority). Unfortunately, the specific laws cited as conferring powers for these regulations were not identified within the available data.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the Board of Directors of DIFCA as the authority to make the Dematerialised Investments Regulations, which aligns with the golden answer. Although the model did not explicitly cite Article 116 of the Companies Law and Article 43 of the Personal Property Law, it properly notes that the specific laws were not found within the provided data. The core fact about the authority remains accurate and consistent, so the answer is factually correct.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Dematerialised Investments Regulations\")\nvector search  vector_search(\"law_document\",\"text\",\"powers conferred for Dematerialised Investments Regulations\")\ncypher  MATCH (n:law_document) WHERE n.law_name = 'Dematerialised Investments Regulations' RETURN n.administering_entity, n.law_number, n.source_file LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The authority to make the Dematerialised Investments Regulations (DIR) is vested in the Board of Directors of the DIFCA. This authority is conferred by Article 116 of the Companies Law and Article 43 of the Personal Property Law[1].",
+      "verdict": "PASS",
+      "comment": "Exact match: Board of Directors of DIFCA; Article 116 Companies Law and Article 43 Personal Property Law."
+    }
+  },
+  {
+    "id": "Q12",
+    "type": "law-structure",
+    "question": "What is the title of DIFC Law No. 5 of 2018 and DIFC Law No. 4 of 2019, and when were their consolidated versions last updated?",
+    "official": "DIFC Law No. 5 of 2018 is the Companies Law. DIFC Law No. 4 of 2019 is the Intellectual Property Law. The Companies Law consolidated version was last updated following amendment by DIFC Law No. 2 of 2022. The Intellectual Property Law consolidated version was published; the version available on the DIFC website as of mid-2025 is titled 'Consolidated Version'.",
+    "vedana": {
+      "answer": "The title of DIFC Law No. 5 of 2018 is \"Companies Law 2018 (DIFC Law No. 5 of 2018).\" The consolidated version of this law was last updated in March 2022.\n\nThe title of DIFC Law No. 4 of 2019 is \"Intellectual Property Law 2019 (DIFC Law No. 4 of 2019).\" However, I did not find specific information on when its consolidated version was last updated.",
+      "verdict": "PASS",
+      "comment": "The model correctly identified the titles of DIFC Law No. 5 of 2018 and DIFC Law No. 4 of 2019. It also correctly reported the last update date of the consolidated Companies Law version as March 2022, matching the golden answer. The model honestly states it did not find the last update for the Intellectual Property Law consolidated version, which aligns with the data provided. Overall, the answer is factually accurate and complete as per the available information.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Companies Law 2018 consolidated version last updated\")\nvector search  vector_search(\"law_document\",\"text\",\"Intellectual Property Law 2019 consolidated version last updated\")\ncypher  MATCH (n:law_document) WHERE n.law_number = \"No. 5\" AND n.enactment_year = 2018 RETURN DISTINCT n.law_name, n.source_file LIMIT 1\ncypher  MATCH (n:law_document) WHERE n.law_number = \"No. 4\" AND n.enactment_year = 2019 RETURN DISTINCT n.law_name, n.source_file LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The title of DIFC Law No. 5 of 2018 is \"Companies Law\" and its consolidated version was last updated in March 2022[1].The title of DIFC Law No. 4 of 2019 is not directly available in the search results, but the consolidated version of the \"Trust Law\" (DIFC Law No. 4 of 2018) was last updated in March 2024[2]. If you meant DIFC Law No. 4 of 2018, then it is the \"Trust Law\". If you have a specific document for DIFC Law No. 4 of 2019, please provide it for more accurate information.",
+      "verdict": "FAIL",
+      "comment": "ChatGPT correctly identified Companies Law (No. 5/2018) but confused DIFC Law No. 4 of 2019 (Intellectual Property Law) with DIFC Law No. 4 of 2018 (Trust Law)."
+    }
+  },
+  {
+    "id": "Q14",
+    "type": "law-structure",
+    "question": "Which laws were amended by DIFC Law No. 2 of 2022?",
+    "official": "DIFC Law No. 2 of 2022 amended: Data Protection Law 2020, Insolvency Law 2019, Electronic Transactions Law 2017, Trust Law 2018, Strata Title Law 2007, Common Reporting Standard Law 2018.",
+    "vedana": {
+      "answer": "DIFC Laws Amendment Law No. 2 of 2022 amended the following laws:\n\n1. **Electronic Transactions Law 2017 (DIFC Law No. 2 of 2017)**\n2. **Trust Law 2018 (DIFC Law No. 4 of 2018)**\n3. **Strata Title Law 2007 (DIFC Law No. 5 of 2007)**\n4. **Insolvency Law 2019 (DIFC Law No. 1 of 2019)**\n5. **Data Protection Law 2020**\n6. **Common Reporting Standard Law 2018**",
+      "verdict": "PASS",
+      "comment": "Model's answer correctly lists the laws amended by DIFC Laws Amendment Law No. 2 of 2022, matching the golden answer exactly with correct law names and years.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"amended by Law No. 2 of 2022\")\ncypher  MATCH (a:law_document)-[:AMENDS]->(b:law_document) WHERE a.source_file CONTAINS \"no2_2022\" RETURN DISTINCT b.law_name, b.source_file"
+    },
+    "chatgpt": {
+      "answer": "DIFC Law No. 2 of 2022 amended several laws, including:Electronic Transactions Law 2017[1].Strata Title Law[2].Employment Law[3].Law on the Application of Civil and Commercial Laws in the DIFC[4].Limited Liability Partnership Law[5].Intellectual Property Law[6].Data Protection Law[7].Real Property Law[8].Companies Law[9].Personal Property Law[10].Trust Law[11].Contract Law[12].",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT lists ~12 laws including correct ones (Electronic Transactions, Strata Title, Data Protection, Real Property) but also likely incorrect ones (Employment Law, LLP Law, IP Law). Hallucination risk."
+    }
+  },
+  {
+    "id": "Q15",
+    "type": "law-structure",
+    "question": "Which laws were amended by 'DIFC Law No. 2 of 2022'?",
+    "official": "DIFC Law No. 2 of 2022 amended: Data Protection Law 2020, Insolvency Law 2019, Electronic Transactions Law 2017, Trust Law 2018, Strata Title Law 2007, Common Reporting Standard Law 2018.",
+    "vedana": {
+      "answer": "The DIFC Law No. 2 of 2022 (DIFC Laws Amendment Law No. 2 of 2022) amended the following laws:\n\n1. Electronic Transactions Law 2017 (DIFC Law No. 2 of 2017)\n2. Trust Law 2018 (DIFC Law No. 4 of 2018)\n3. Insolvency Law 2019 (DIFC Law No. 1 of 2019)\n4. Strata Title Law 2007 (DIFC Law No. 5 of 2007)\n5. Data Protection Law 2020\n6. Common Reporting Standard Law 2018",
+      "verdict": "PASS",
+      "comment": "The model correctly lists all the laws amended by DIFC Law No. 2 of 2022, matching the golden answer perfectly in content, including the years and correct naming. The model also provides correct additional identifying info (law numbers) where available, which is relevant and accurate.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"amended by Law No. 2 of 2022\")\ncypher  MATCH (a:law_document)-[:AMENDS]->(b:law_document) WHERE a.source_file CONTAINS \"no2_2022\" RETURN DISTINCT b.law_name, b.source_file"
+    },
+    "chatgpt": {
+      "answer": "DIFC Law No. 2 of 2022' amended the following laws:Data Protection Law 2020Insolvency Law 2019Electronic Transactions Law 2017Trust Law 2018Strata Title Law 2007Common Reporting Standard Law 2018[",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT lists Data Protection, Insolvency Law, Electronic Transactions, Trust Law, Strata Title, CRS Law. Partially correct; Insolvency Law and Trust Law are questionable; missing Real Property Law."
+    }
+  },
+  {
+    "id": "Q16",
+    "type": "law-structure",
+    "question": "When was the DIFC Laws Amendment Law, DIFC Law No. 8 of 2018 enacted and what law did it amend?",
+    "official": "DIFC Law No. 8 of 2018 (DIFC Laws Amendment Law) was enacted on 7 November 2018 and came into force on 12 November 2018. It was part of the comprehensive overhaul of the DIFC companies regime enacted simultaneously with the Companies Law (No. 5/2018) and Operating Law (No. 7/2018), amending various existing DIFC laws related to partnerships, non-profit organisations, and other entities.",
+    "vedana": {
+      "answer": "The DIFC Laws Amendment Law No. 8 of 2018 was enacted on 7 November 2018. It amended the following laws:\n\n1. Operating Law 2018 (DIFC Law No. 7 of 2018)\n2. Companies Law 2018 (DIFC Law No. 5 of 2018)",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the enactment date of the DIFC Laws Amendment Law No. 8 of 2018 as 7 November 2018 and accurately lists the two main laws it amended: the Operating Law 2018 (DIFC Law No. 7 of 2018) and the Companies Law 2018 (DIFC Law No. 5 of 2018). Although the golden answer provides more contextual detail, the model's answer is factually correct and sufficiently addresses the core information about the law and its amendments.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.source_file CONTAINS \"no8_2018\" RETURN DISTINCT n.enactment_date, n.law_name LIMIT 1\ncypher  MATCH (a:law_document)-[:AMENDS]->(b:law_document) WHERE a.source_file CONTAINS \"no8_2018\" RETURN DISTINCT b.law_name"
+    },
+    "chatgpt": {
+      "answer": "The DIFC Laws Amendment Law, DIFC Law No. 8 of 2018, was enacted to amend several laws, including the General Partnership Law 2004 and the Limited Liability Partnership Law 2004",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT mentions GPL and LLPL as amended laws (plausible) but gives no enactment date — a key part of the question."
+    }
+  },
+  {
+    "id": "Q17",
+    "type": "law-structure",
+    "question": "Which laws mention the 'Ruler of Dubai' as the legislative authority and also specify that the law comes into force on the date specified in the Enactment Notice?",
+    "official": "The majority of DIFC Laws are made by the Ruler of Dubai and specify that each law comes into force on the date specified in its Enactment Notice. This includes the major laws enacted in 2018–2020 such as the Companies Law (No. 5/2018), Operating Law (No. 7/2018), Trust Law (No. 4/2018), Common Reporting Standard Law (No. 2/2018), Foundations Law (No. 3/2018), Intellectual Property Law (No. 4/2019), Employment Law (No. 2/2019), and Data Protection Law (No. 5/2020), among others.",
+    "vedana": {
+      "answer": "The DIFC law that mentions the 'Ruler of Dubai' as the legislative authority and specifies that the law comes into force on the date specified in the Enactment Notice is the \"Foundations Law 2018 (DIFC Law No. 3 of 2018)\".",
+      "verdict": "FAIL",
+      "comment": "The model answer incorrectly narrows down the legislative authority and commencement date provision to only the Foundations Law 2018, whereas the golden answer explains that the majority of DIFC Laws are made by the Ruler of Dubai and come into force as specified in their Enactment Notices, citing several major laws from 2018-2020. The model failed to convey the general principle and the broader scope of DIFC laws regarding legislative authority and commencement dates, leading to an incomplete and misleading answer.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Ruler of Dubai as legislative authority, comes into force on date specified in Enactment Notice\")"
+    },
+    "chatgpt": {
+      "answer": "The laws that mention the 'Ruler of Dubai' as the legislative authority and specify that the law comes into force on the date specified in the Enactment Notice include:DIFC Laws Amendment Law, DIFC Law No.1 of 2024[1].Law on the Application of Civil and Commercial Laws in the DIFC[2].Employment Law Amendment Law, DIFC Law No. 4 of 2020[3].DIFC Laws Amendment Law, DIFC Law No. 2",
+      "verdict": "PASS",
+      "comment": "Both describe the same feature (Ruler of Dubai + Enactment Notice commencement). ChatGPT's specific list of 9 laws is correct."
+    }
+  },
+  {
+    "id": "Q18",
+    "type": "law-structure",
+    "question": "Was the Employment Law enacted in the same year as the Intellectual Property Law?",
+    "official": "Yes",
+    "vedana": {
+      "answer": "Yes, the Employment Law (DIFC Law No. 2 of 2019) and the Intellectual Property Law (DIFC Law No. 4 of 2019) were both enacted in the year 2019.",
+      "verdict": "PASS",
+      "comment": "The model correctly confirms that both DIFC Law No. 2 of 2019 (Employment Law) and DIFC Law No. 4 of 2019 (Intellectual Property Law) were enacted in 2019, which matches the golden answer 'Yes'. The model provides relevant context linking the law names and enactment years, aligning with the expected context.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.law_number IN [\"No. 2\", \"No. 4\"] AND n.enactment_year = 2019 RETURN DISTINCT n.law_name, n.law_number, n.enactment_year\ncypher  MATCH (n:law_document) WHERE n.law_name CONTAINS \"Employment Law\" AND n.law_number = \"No. 2\" AND n.enactment_year = 2019 RETURN DISTINCT n.law_name, n.enactment_year"
+    },
+    "chatgpt": {
+      "answer": "Yes, the Employment Law and the Intellectual Property Law were both enacted in the same year, 2019[1]``[2].",
+      "verdict": "PASS",
+      "comment": "Both say Yes, both enacted in 2019."
+    }
+  },
+  {
+    "id": "Q19",
+    "type": "law-structure",
+    "question": "Was the Intellectual Property Law enacted earlier in the year than the Employment Law?",
+    "official": "No — the Intellectual Property Law 2019 (DIFC Law No. 4 of 2019, enacted 14 November 2019) was not enacted earlier in the year than the Employment Law 2019 (DIFC Law No. 2 of 2019, enacted 30 May 2019). The Employment Law was enacted earlier.",
+    "vedana": {
+      "answer": "No, the Intellectual Property Law 2019 (DIFC Law No. 4 of 2019) was enacted on 14 November 2019, which is after the Employment Law 2019 (DIFC Law No. 2 of 2019) that was enacted on 30 May 2019. Therefore, the Employment Law was enacted earlier in the year.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that the Intellectual Property Law 2019 (DIFC Law No. 4 of 2019) was enacted on 14 November 2019, which is after the Employment Law 2019 (DIFC Law No. 2 of 2019) enacted on 30 May 2019, correctly reflecting the golden answer's conclusion that the Employment Law was enacted earlier.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.source_file IN [\"employment_law_2019.pdf\",\"intellectual_property_law_2019.pdf\"] RETURN n.law_name, n.enactment_date"
+    },
+    "chatgpt": {
+      "answer": "The Intellectual Property Law was enacted in 2019[1], and the Employment Law was also enacted in 2019[2]. Therefore, both laws were enacted in the same year, 2019. Without specific enactment",
+      "verdict": "FAIL",
+      "comment": "ChatGPT didn't give a clear Yes/No answer — only said both enacted in 2019 without determining which came first."
+    }
+  },
+  {
+    "id": "Q20",
+    "type": "law-structure",
+    "question": "Is the Intellectual Property Law No. 4 of 2019 administered by the same entity that administers the Trust Law No. 4 of 2018?",
+    "official": "No — the Intellectual Property Law No. 4 of 2019 is administered by the Commissioner of Intellectual Property, while the Employment Law 2019 is administered by the Registrar of Companies",
+    "vedana": {
+      "answer": "The Intellectual Property Law No. 4 of 2019 is administered by the \"Commissioner of Intellectual Property,\" while the Trust Law No. 4 of 2018 is administered by the \"Registrar of Companies.\" Therefore, they are administered by different entities.",
+      "verdict": "FAIL",
+      "comment": "The model incorrectly states that the Trust Law No. 4 of 2018 is administered by the Registrar of Companies, whereas the golden answer correctly says the Employment Law 2019 is administered by the Registrar of Companies. The model answer does not correctly address the question about the Employment Law administration and thus provides wrong information.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.law_number = \"No. 4\" AND n.enactment_year = 2019 RETURN n.law_name, n.administering_entity LIMIT 1\ncypher  MATCH (n:law_document) WHERE n.law_number = \"No. 4\" AND n.enactment_year = 2018 RETURN n.law_name, n.administering_entity LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The Intellectual Property Law No. 4 of 2019 is administered by the Commissioner of Intellectual Property[1]. On the other hand, the Trust Law No. 4 of 2018 is administered by the Dubai International Financial Centre Authority (DIFCA)",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT correctly says IP Law: Commissioner of IP; Trust Law: 'DIFCA' (too vague — should be Registrar of Companies). Conclusion correct (different entities), specificity lacking."
+    }
+  },
+  {
+    "id": "Q21",
+    "type": "cross-case",
+    "question": "Do cases CA 004/2025 and SCT 295/2025 involve any of the same legal entities or individuals as parties?",
+    "official": "No",
+    "vedana": {
+      "answer": "No, there are no common legal entities or individuals involved as parties in cases CA-004-2025 and SCT-295-2025.",
+      "verdict": "PASS",
+      "comment": "The model answer correctly states 'No' and provides a valid explanation in line with the golden answer, indicating no common parties between the cases as per the DIFC cross-case comparison context.",
+      "trace": "cypher  MATCH (c1:court_case)-[:IS_PARTY_IN]->(p:legal_party)<-[:IS_PARTY_IN]-(c2:court_case) WHERE c1.case_id = \"CA-004-2025\" AND c2.case_id = \"SCT-295-2025\" RETURN p.party_name"
+    },
+    "chatgpt": {
+      "answer": "The cases CA 004/2025 and SCT 295/2025 do not involve any of the same legal entities or individuals as parties. In CA 004/2025, the parties involved are Oran, Oaken, and Oved【4:8†source】. In SCT 295/2025, the parties are Olexa and Odon【4:7†source】.",
+      "verdict": "PASS",
+      "comment": "Cross-case: no common parties. ChatGPT correct with citations."
+    }
+  },
+  {
+    "id": "Q22",
+    "type": "cross-case",
+    "question": "Is there any main party that appeared in both cases CFI 010/2024 and ENF 053/2025 at any point?",
+    "official": "No",
+    "vedana": {
+      "answer": "There is no main party that appeared in both cases CFI-010-2024 and ENF-053-2025.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that there is no main party common to both cases CFI-010-2024 and ENF-053-2025, which aligns with the golden answer of 'No'.",
+      "trace": "cypher  MATCH (c1:court_case)-[:IS_PARTY_IN]->(p:legal_party)<-[:IS_PARTY_IN]-(c2:court_case) WHERE c1.case_id = \"CFI-010-2024\" AND c2.case_id = \"ENF-053-2025\" RETURN p.party_name LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The main parties involved in the cases CFI 010/2024 and ENF 053/2025 are different. In CFI 010/2024, the parties are Fursa Consulting and Bay Gate Investment LLC[1]. In ENF 053/2025, the parties are Standard Chartered PLC and Standard Chartered Bank[2]. Therefore, there is no main party that appeared in both cases.",
+      "verdict": "PASS",
+      "comment": "Cross-case: no common parties. ChatGPT correct."
+    }
+  },
+  {
+    "id": "Q23",
+    "type": "cross-case",
+    "question": "Was the same judge involved in both case CFI 010/2024 and case DEC 001/2025 at any point?",
+    "official": "No",
+    "vedana": {
+      "answer": "No, the same judge was not involved in both cases. Case CFI-010-2024 was judged by Hayley Norton, while case DEC-001-2025 was judged by Michael Black KC.",
+      "verdict": "PASS",
+      "comment": "The model correctly answered 'No' consistent with the golden answer and provided a valid legal explanation that the same judge was not involved in both cases, which aligns with the DIFC cross-case comparison expectation. This additional detail enhances the answer without contradicting the golden response.",
+      "trace": "cypher  MATCH (c1:court_case)-[:IS_JUDGED_BY]->(j:judge)<-[:IS_JUDGED_BY]-(c2:court_case) WHERE c1.case_id = \"CFI-010-2024\" AND c2.case_id = \"DEC-001-2025\" RETURN j.judge_name\ncypher  MATCH (c:court_case)-[:IS_JUDGED_BY]->(j:judge) WHERE c.case_id = \"CFI-010-2024\" RETURN j.judge_name LIMIT 1\ncypher  MATCH (c:court_case)-[:IS_JUDGED_BY]->(j:judge) WHERE c.case_id = \"DEC-001-2025\" RETURN j.judge_name LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The same judge, H.E. Justice Michael Black KC, was involved in case DEC 001/2025[1]. However, for case CFI 010/2024, the judgment was given by H.E. Justice Thomas Bathurst[2]. Therefore, the same judge was not involved in both cases.",
+      "verdict": "PASS",
+      "comment": "Cross-case: different judges (Bathurst vs Black KC). ChatGPT correct."
+    }
+  },
+  {
+    "id": "Q24",
+    "type": "cross-case",
+    "question": "Did cases CA 004/2025 and ARB 034/2025 have any judges in common?",
+    "official": "No",
+    "vedana": {
+      "answer": "No, cases CA-004-2025 and ARB-034-2025 did not have any judges in common.",
+      "verdict": "PASS",
+      "comment": "The model correctly answers 'No' and provides a valid explanation that the two cases did not have any judges in common, which aligns with the golden answer 'No'.",
+      "trace": "cypher  MATCH (c1:court_case)-[:IS_JUDGED_BY]->(j:judge)<-[:IS_JUDGED_BY]-(c2:court_case) WHERE c1.case_id = \"CA-004-2025\" AND c2.case_id = \"ARB-034-2025\" RETURN j.judge_name"
+    },
+    "chatgpt": {
+      "answer": "The cases CA 004/2025 and ARB 034/2025 did not have any judges in common. CA 004/2025 was presided over by H.E. Chief Justice Wayne Martin, H.E. Justice Robert French, and H.E. Justice Sir Peter Gross[1]. ARB 034/2025 was presided over by H.E. Justice Shamlan Al Sawalehi[2].",
+      "verdict": "PASS",
+      "comment": "Cross-case: no common judges. ChatGPT correct."
+    }
+  },
+  {
+    "id": "Q25",
+    "type": "cross-case",
+    "question": "Is there any party (claimant or defendant) common to both case TCD 001/2024 and case CFI 016/2025 at any point?",
+    "official": "No",
+    "vedana": {
+      "answer": "No, there are no common parties between case TCD-001-2024 and case CFI-016-2025 in the DIFC court system.",
+      "verdict": "PASS",
+      "comment": "The model correctly answers 'No' and provides a valid explanation related to the absence of common parties between the specified DIFC cases, consistent with the golden answer.",
+      "trace": "cypher  MATCH (c1:court_case)-[:IS_PARTY_IN]->(p:legal_party)<-[:IS_PARTY_IN]-(c2:court_case) WHERE c1.case_id = \"TCD-001-2024\" AND c2.case_id = \"CFI-016-2025\" RETURN p.party_name"
+    },
+    "chatgpt": {
+      "answer": "There is no party common to both case TCD 001/2024 and case CFI 016/2025. In case TCD 001/2024, the parties involved are Architeriors Interior Design (L.L.C) as the claimant and Emirates National Investment Co (L.L.C) as the defendant[1]. In case CFI 016/2025, the parties are Omar Ben Hallam as the claimant/respondent and Natixis as the defendant/applicant[2].",
+      "verdict": "PASS",
+      "comment": "Cross-case: no common parties. ChatGPT correct."
+    }
+  },
+  {
+    "id": "Q26",
+    "type": "cross-case",
+    "question": "Did cases DEC 001/2025 and CFI 057/2025 have any judges in common at any point?",
+    "official": "No",
+    "vedana": {
+      "answer": "No, the cases \"DEC-001-2025\" and \"CFI-057-2025\" do not share any judges in common according to the DIFC court records.",
+      "verdict": "PASS",
+      "comment": "The model correctly answers 'No' and provides a correct and relevant explanation referring to DIFC court records showing that the cases do not share any judges in common, matching the golden answer.",
+      "trace": "cypher  MATCH (c1:court_case)-[:IS_JUDGED_BY]->(j:judge)<-[:IS_JUDGED_BY]-(c2:court_case) WHERE c1.case_id = \"DEC-001-2025\" AND c2.case_id = \"CFI-057-2025\" RETURN j.judge_name"
+    },
+    "chatgpt": {
+      "answer": "The cases DEC 001/2025 and CFI 057/2025 did not have any judges in common. DEC 001/2025 was presided over by H.E. Justice Michael Black KC[1], while CFI 057/2025 was presided over by H.E. Justice Roger Stewart KC[2].",
+      "verdict": "PASS",
+      "comment": "Cross-case: different judges (Black KC vs Stewart KC). ChatGPT correct."
+    }
+  },
+  {
+    "id": "Q27",
+    "type": "cross-case",
+    "question": "Do cases DEC 001/2025 and SCT 514/2025 involve any of the same legal entities or individuals as main parties at any point?",
+    "official": "No",
+    "vedana": {
+      "answer": "No, the cases DEC-001-2025 and SCT-514-2025 do not involve any of the same legal entities or individuals as main parties.",
+      "verdict": "PASS",
+      "comment": "The model correctly answers 'No' and provides a suitable explanation that the two cases do not involve the same legal entities or main parties, aligning with the golden answer and the DIFC cross-case comparison context.",
+      "trace": "cypher  MATCH (c1:court_case)-[:IS_PARTY_IN]->(p:legal_party)<-[:IS_PARTY_IN]-(c2:court_case) WHERE c1.case_id = \"DEC-001-2025\" AND c2.case_id = \"SCT-514-2025\" RETURN p.party_name"
+    },
+    "chatgpt": {
+      "answer": "The cases DEC 001/2025 and SCT 514/2025 do not appear to involve any of the same legal entities or individuals as main parties.In DEC 001/2025, the main parties involved are Techteryx Ltd as the claimant and Aria Commodities DMCC, Mashreq Bank PSC, Emirates NBD Bank PJSC, and Abu Dhabi Islamic Bank PJSC as defendants[1].In SCT 514/2025, the main parties are Okpara as the claimant/respondent and Oralee as the defendant/applicant[2].There is no overlap in the main parties between these two cases based on the provided information.[1][2]",
+      "verdict": "PASS",
+      "comment": "Cross-case: no common parties. ChatGPT correct."
+    }
+  },
+  {
+    "id": "Q28",
+    "type": "cross-case",
+    "question": "Was the same judge involved in both case DEC 001/2025 and case TCD 001/2024 at any point?",
+    "official": "No",
+    "vedana": {
+      "answer": "No, the same judge was not involved in both cases. Case DEC-001-2025 was presided over by Judge Michael Black KC, while case TCD-001-2024 was presided over by Judge Roger Stewart KC.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that the same judge was not involved in both cases, providing the precise names of the judges presiding over each case, aligning with the golden answer of 'No'.",
+      "trace": "cypher  MATCH (c1:court_case)-[:IS_JUDGED_BY]->(j:judge)<-[:IS_JUDGED_BY]-(c2:court_case) WHERE c1.case_id = \"DEC-001-2025\" AND c2.case_id = \"TCD-001-2024\" RETURN j.judge_name\ncypher  MATCH (c:court_case)-[:IS_JUDGED_BY]->(j:judge) WHERE c.case_id = \"DEC-001-2025\" RETURN j.judge_name LIMIT 1\ncypher  MATCH (c:court_case)-[:IS_JUDGED_BY]->(j:judge) WHERE c.case_id = \"TCD-001-2024\" RETURN j.judge_name LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The judge involved in case DEC 001/2025 was H.E. Justice Michael Black KC[1]. In case TCD 001/2024, the judge was H.E. Justice Roger Stewart[2]. Therefore, the same judge was not involved in both cases.",
+      "verdict": "PASS",
+      "comment": "Cross-case: no common judge. ChatGPT correct."
+    }
+  },
+  {
+    "id": "Q29",
+    "type": "cross-case",
+    "question": "Identify whether any person or company is a main party to both CA 005/2025 and CFI 067/2025 at any point.",
+    "official": "No",
+    "vedana": {
+      "answer": "No common party exists between the cases CA-005-2025 and CFI-067-2025 in the DIFC courts.",
+      "verdict": "PASS",
+      "comment": "The model correctly answered \"No\" and provided the reasoning that no common party exists between the specified DIFC cases, which aligns with the golden answer and is relevant to DIFC cross-case comparison.",
+      "trace": "cypher  MATCH (c1:court_case)-[:IS_PARTY_IN]->(p:legal_party)<-[:IS_PARTY_IN]-(c2:court_case) WHERE c1.case_id = \"CA-005-2025\" AND c2.case_id = \"CFI-067-2025\" RETURN p.party_name"
+    },
+    "chatgpt": {
+      "answer": "The main parties involved in CA 005/2025 are LXT Real Estate Broker L.L.C and SIR Real Estate LLC[1]. The main parties involved in CFI 067/2025 are Coinmena B.S.C. (C) and Foloosi Technologies Ltd[2]. There are no common parties between CA 005/2025 and CFI 067/2025.",
+      "verdict": "PASS",
+      "comment": "Cross-case: no common parties. ChatGPT correct."
+    }
+  },
+  {
+    "id": "Q30",
+    "type": "law-structure",
+    "question": "What are the common elements found in the interpretation sections of the Operating Law 2018, Trust Law 2018, and Common Reporting Standard Law 2018?",
+    "official": "All three laws (Operating Law DIFC Law No. 7/2018, Trust Law DIFC Law No. 4/2018, and Common Reporting Standard Law DIFC Law No. 2/2018) contain a Schedule 1 that sets out: (a) interpretative provisions which apply to the law; and (b) a list of defined terms used in the law, with capitalised terms carrying the meanings ascribed in Schedule 1.",
+    "vedana": {
+      "answer": "The search for the interpretation sections of the Operating Law 2018, Trust Law 2018, and Common Reporting Standard Law 2018 did not return specific details about typical interpretation elements. Would you like more general information or analysis based on common interpretative provisions found typically across DIFC laws?",
+      "verdict": "FAIL",
+      "comment": "The model's answer fails to address the question. It does not confirm the existence of Schedule 1 in the three specified DIFC laws or describe its purpose as outlined in the golden answer. Instead, it states that there were no specific details found and offers to provide general information, which is unhelpful and incorrect given the data in the golden answer.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"interpretation section Operating Law 2018\")\nvector search  vector_search(\"law_document\",\"text\",\"interpretation section Trust Law 2018\")\nvector search  vector_search(\"law_document\",\"text\",\"interpretation section Common Reporting Standard Law 2018\")"
+    },
+    "chatgpt": {
+      "answer": "The common elements found in the interpretation sections of the Operating Law 2018, Trust Law 2018, and Common Reporting Standard Law 2018 include:Defined Terms: Each law includes a section or schedule that lists defined terms used throughout the law. This helps in ensuring clarity and consistency in the application of the law【4:5†trust_law_2018.pdf】【4:12†laws_amendment_law_no2_2022.pdf】.Reference to Other Legislation: The interpretation sections often include references to other relevant legislation, indicating how terms or provisions should be understood in the context of other laws【4:5†trust_law_2018.pdf】【4:12†laws_amendment_law_no2_2022.pdf】.Rules of Interpretation: These sections typically provide rules for interpreting the law, such as how references to other documents or laws should be understood, and how terms should be construed in singular or plural forms【4:18†laws_amendment_law_no2_2022.pdf】.Application of Common Law and Equity: The laws often mention that the common law and principles of equity supplement the statutory provisions, except where explicitly modified by the law【4:0†trust_law_2018.pdf】.These elements are designed to ensure that the laws are applied consistently and in harmony with other legal frameworks.",
+      "verdict": "PASS",
+      "comment": "ChatGPT correctly identifies defined terms, interpretative rules, reference to other legislation, and common law supplement as shared elements."
+    }
+  },
+  {
+    "id": "Q31",
+    "type": "law-structure",
+    "question": "What entity administers the Leasing Law 2020 and the Trust Law 2018?",
+    "official": "The Leasing Law 2020 (DIFC Law No. 1 of 2020) is administered by the DIFC Registrar of Real Property. The Trust Law 2018 (DIFC Law No. 4 of 2018) is administered by the DIFC Registrar of Companies.",
+    "vedana": {
+      "answer": "The entity administering the Leasing Law 2020 is the \"Registrar of Real Property,\" and the entity administering the Trust Law 2018 is the \"Registrar of Companies.\"",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the administering entities for both the Leasing Law 2020 and the Trust Law 2018 as per the golden answer. The information matches in substance and naming conventions.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.source_file IN ['leasing_law_2020.pdf','trust_law_2018.pdf'] RETURN DISTINCT n.law_name, n.administering_entity"
+    },
+    "chatgpt": {
+      "answer": "The Leasing Law 2020 is administered by the Dubai International Financial Centre Authority (DIFCA)[1]. The Trust Law 2018 is also administered by the DIFCA",
+      "verdict": "FAIL",
+      "comment": "ChatGPT said 'DIFCA' for both laws — too vague. Correct: Leasing Law → Registrar of Real Property; Trust Law → Registrar of Companies."
+    }
+  },
+  {
+    "id": "Q32",
+    "type": "law-structure",
+    "question": "Which laws are administered by the Registrar and were enacted in 2004?",
+    "official": "DIFC laws administered by the Registrar of Companies and enacted in 2004 include: the General Partnership Law (DIFC Law No. 11 of 2004) and the Limited Liability Partnership Law (DIFC Law No. 5 of 2004). The Contract Law (DIFC Law No. 6 of 2004) and Law on the Application (DIFC Law No. 3 of 2004) are also from 2004 but administered by different authorities.",
+    "vedana": {
+      "answer": "The following laws, enacted in 2004, are administered by the Registrar of Companies in the DIFC:\n\n1. **General Partnership Law 2004 (DIFC Law No. 11 of 2004)**\n   - File: general_partnership_law_2004.pdf\n   - Administering Entity: Registrar of Companies\n\n2. **Limited Liability Partnership Law 2004**\n   - File: limited_liability_partnership_law_2004.pdf\n   - Administering Entity: Registrar of Companies",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the General Partnership Law 2004 (DIFC Law No. 11 of 2004) and the Limited Liability Partnership Law 2004 as enacted in 2004 and administered by the Registrar of Companies, matching the golden answer. The missing law number for the Limited Liability Partnership Law does not detract from correctness. The model appropriately excludes laws administered by other authorities, matching the golden answer's scope.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.administering_entity CONTAINS \"Registrar\" AND n.enactment_year = 2004 RETURN DISTINCT n.law_name, n.law_number, n.administering_entity, n.source_file"
+    },
+    "chatgpt": {
+      "answer": "The laws administered by the Registrar and enacted in 2004 include:Limited Liability Partnership Law 2004: This law is administered by the Registrar and applies in the jurisdiction of the Dubai International Financial Centre (DIFC)[1].Contract Law DIFC Law No. 6 of 2004: This law is also administered by the Registrar[2].",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT lists LLP Law and Contract Law. Our GDS says General Partnership Law, LLP Law, and Law on Application Civil/Commercial Laws. Partial overlap."
+    }
+  },
+  {
+    "id": "Q33",
+    "type": "law-structure",
+    "question": "What are the common elements found in Schedule 1 of the Operating Law 2018 and the Trust Law 2018?",
+    "official": "Both the Operating Law 2018 (DIFC Law No. 7/2018) and the Trust Law 2018 (DIFC Law No. 4/2018) include a Schedule 1 that contains: (a) interpretative provisions applicable to the law; and (b) a list of defined terms used in the law, where capitalised terms carry the meanings ascribed in Schedule 1.",
+    "vedana": {
+      "answer": "It seems that I could not retrieve the specific content of Schedule 1 from both the Operating Law 2018 and the Trust Law 2018. As such, I'm unable to identify common elements between them. You might want to consult the texts of these schedules directly for detailed comparison.",
+      "verdict": "FAIL",
+      "comment": "The model fails to provide the correct and factual information regarding Schedule 1 of both the Operating Law 2018 and the Trust Law 2018. Instead of stating the substantive details (interpretative provisions and defined terms), the model states that it could not retrieve the content, which is factually wrong and unhelpful given the known information. The model answer does not address the question as expected.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.source_file CONTAINS \"operating_law_2018\" AND n.article_title CONTAINS \"Schedule 1\" RETURN n.text LIMIT 3\ncypher  MATCH (n:law_document) WHERE n.source_file CONTAINS \"trust_law_2018\" AND n.article_title CONTAINS \"Schedule 1\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "The common elements found in Schedule 1 of both the Operating Law 2018 and the Trust Law 2018 include interpretative provisions and a list of defined terms used in the respective laws[1]``[2].",
+      "verdict": "PASS",
+      "comment": "Both say interpretative provisions and list of defined terms."
+    }
+  },
+  {
+    "id": "Q34",
+    "type": "law-structure",
+    "question": "Which laws, enacted in 2018, include provisions relating to the application of the Arbitration Law in their Schedule 2?",
+    "official": "The Trust Law 2018 (DIFC Law No. 4 of 2018) and the Foundations Law 2018 (DIFC Law No. 3 of 2018) include Schedule 2 provisions relating to the application of the Arbitration Law.",
+    "vedana": {
+      "answer": "The following DIFC laws, enacted in 2018, include provisions relating to the application of the Arbitration Law in their Schedule 2:\n\n1. **Foundations Law 2018 (DIFC Law No. 3 of 2018)**\n2. **Trust Law 2018 (DIFC Law No. 4 of 2018)**",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies both the Trust Law 2018 (DIFC Law No. 4 of 2018) and the Foundations Law 2018 (DIFC Law No. 3 of 2018) as including Schedule 2 provisions relating to the application of the Arbitration Law, consistent with the golden answer.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.enactment_year = 2018 AND n.text CONTAINS \"Schedule 2\" AND n.text CONTAINS \"Arbitration Law\" RETURN DISTINCT n.law_name, n.source_file, n.law_number"
+    },
+    "chatgpt": {
+      "answer": "The \"Trust Law 2018\" includes provisions relating to the application of the Arbitration Law in its Schedule 2[1].",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT mentions only Trust Law 2018. Our GDS also included Operating Law 2018 (and possibly CRS Law). Incomplete."
+    }
+  },
+  {
+    "id": "Q35",
+    "type": "law-structure",
+    "question": "What is the prescribed penalty for an offense against the Strata Title Law under the Strata Title Regulations, and what is the penalty for using leased premises for an illegal purpose under the Leasing Regulations?",
+    "official": "Insufficient data — the specific penalty amounts under the Strata Title Regulations and the Leasing Regulations could not be verified from publicly available sources during research.",
+    "vedana": {
+      "answer": "### Strata Title Regulations\n\nUnder the Strata Title Regulations as referenced in the Strata Title Law, DIFCA (Dubai International Financial Centre Authority) may make regulations providing that a contravention of, or failure to comply with, the law or any of the regulations is an offense. Furthermore, penalties can be imposed through an Order by the Registrar if there is a breach of a Strata Management Statement or the By-laws. Here are some relevant articles:\n- **Article 143(b):** Allows for regulations that specify that contraventions or failures to comply are offenses.\n- **Article 119(2):** A person bound by the Strata Management Statement and the By-laws may apply for an Order requiring the Body Corporate to pay a penalty for the breach of a By-law.\n\n### Leasing Regulations\n\nI did not retrieve specific information regarding penalties for using leased premises for an illegal purpose under the Leasing Regulations at this time. You may wish to refer directly to the text of the Leasing Regulations for further details. If you have access to specific articles or sections in the regulations, they might provide the needed details.",
+      "verdict": "PASS",
+      "comment": "The model correctly indicates that specific penalty amounts under the Strata Title and Leasing Regulations were not retrieved and states that further reference to the regulations would be needed. It provides relevant legal context and references articles related to offenses and penalties but does not attempt to provide unverified penalty amounts. This matches the 'Insufficient data' conclusion in the golden answer and appropriately informs the user.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"offense penalty Strata Title Regulations\")\nvector search  vector_search(\"law_document\",\"text\",\"illegal purpose penalty Leasing Regulations\")"
+    },
+    "chatgpt": {
+      "answer": "The prescribed penalty for an offense against the Strata Title Law under the Strata Title Regulations is that a person who commits a contravention of this Law is liable to the penalty specified under Regulations made under Article 143 or as ordered by the Registrar[1].For using leased premises for an illegal purpose under the Leasing Regulations, the penalty is that the lease may be terminated by a court order if the lessee uses the residential premises for an illegal purpose[2].",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT found something: Strata Title penalty = 'as specified in Regulations under Article 143' (circular but from text); Leasing = lease termination (not a fine/amount). Our GDS said insufficient data — ChatGPT found more, but answers are incomplete."
+    }
+  },
+  {
+    "id": "Q37",
+    "type": "law-structure",
+    "question": "How do the Limited Liability Partnership Law and the Non Profit Incorporated Organisations Law define their administration?",
+    "official": "The Limited Liability Partnership Law (DIFC Law No. 5 of 2004, as amended) is administered by the DIFC Registrar of Companies. The Non Profit Incorporated Organisations Law (DIFC Law No. 6 of 2012) is also administered by the DIFC Registrar of Companies, which receives and processes all applications for non-profit incorporated organisations in the DIFC.",
+    "vedana": {
+      "answer": "The administration for both the Limited Liability Partnership Law (DIFC Law of 2004) and the Non Profit Incorporated Organisations Law (DIFC Law of 2012) is handled by the Registrar of Companies.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that both the Limited Liability Partnership Law (DIFC Law of 2004) and the Non Profit Incorporated Organisations Law (DIFC Law of 2012) are administered by the Registrar of Companies, matching the golden answer's information. Although the model's answer is less detailed, it correctly identifies the administering entity, which is the essential information.",
+      "trace": "cypher  MATCH (n:law_document) WHERE (n.law_name CONTAINS 'Limited Liability Partnership Law' AND n.enactment_year = 2004) RETURN DISTINCT n.administering_entity LIMIT 1\ncypher  MATCH (n:law_document) WHERE (n.law_name CONTAINS 'Non Profit Incorporated Organisations Law' AND n.enactment_year = 2012) RETURN DISTINCT n.administering_entity LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The administration of the Limited Liability Partnership (LLP) Law and the Non-Profit Incorporated Organisations Law is defined as follows:Limited Liability Partnership Law:The administration of the LLP Law is primarily managed by the Registrar. The Registrar is responsible for maintaining a public register of current and past registrations of LLPs, and has the authority to make regulations to facilitate the administration of the law[1].The LLP must hold a license pursuant to Article 9 of the Operating Law and comply with the requirements of the law and the Operating Law in respect to the conduct of its business[2].The LLP is required to maintain accounting records and ensure that these records are open to inspection by any member or auditor at all reasonable times[3].Non-Profit Incorporated Organisations Law:The administration of the Non-Profit Incorporated Organisations Law is overseen by the Registrar of Companies as defined in the Companies Law 2009[4].An Incorporated Organisation must maintain accounting records that are open to inspection by the Founding Members at all reasonable times[5].The law also requires the organisation to disclose any contraventions or likely contraventions of the law to the Registrar[6].These laws ensure that both LLPs and non-profit incorporated organisations operate within a structured legal framework, with oversight provided by designated authorities to maintain transparency and accountability.",
+      "verdict": "PASS",
+      "comment": "ChatGPT correctly describes administration by the Registrar for both LLP and Non-Profit IO Law."
+    }
+  },
+  {
+    "id": "Q38",
+    "type": "law-structure",
+    "question": "Which laws mention the Ruler of Dubai as the legislative authority and were enacted in 2018?",
+    "official": "All DIFC Laws enacted in 2018 were made by the Ruler of Dubai (His Highness Sheikh Mohammed bin Rashid Al Maktoum). These include: Companies Law (No. 5/2018), Operating Law (No. 7/2018), Trust Law (No. 4/2018), Common Reporting Standard Law (No. 2/2018), Foundations Law (No. 3/2018), Real Property Law (No. 10/2018), Laws Amendment Law (No. 8/2018), Strata Title Law Amendment Law (No. 11/2018), and others.",
+    "vedana": {
+      "answer": "In 2018, the following DIFC laws were enacted with the Ruler of Dubai as the legislative authority:\n\n1. **Foundations Law 2018 (DIFC Law No. 3 of 2018)**\n   - This law specifies that \"DIFC Law is law made by the Ruler (including, by way of example, this Law), as applicable in the DIFC.\"\n\n2. **DIFC Laws Amendment Law No. 8 of 2018 (DIFC Law No. 8 of 2018)**\n   - The legislative authority is specified as \"His Highness Sheikh Mohammed bin Rashid Al Maktoum, Ruler of Dubai.\"\n\n3. **Companies Law 2018 (DIFC Law No. 5 of 2018)**\n   - This law also states that it is a DIFC Law made by the Ruler, as applicable in the DIFC.\n\nThese laws were enacted in the year 2018 and mention the Ruler of Dubai as the legislative authority.",
+      "verdict": "PASS",
+      "comment": "The model accurately identifies several key DIFC laws enacted in 2018 and correctly states that they were made by the Ruler of Dubai, conforming with the golden answer's key facts. Although it mentions only three laws explicitly, those are among the main ones listed, and it captures the essential detail about the legislative authority being the Ruler. The answer is factually correct and well-supported.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.enactment_year = 2018 RETURN DISTINCT n.law_name, n.source_file, n.law_number, n.text"
+    },
+    "chatgpt": {
+      "answer": "The laws enacted in 2018 that mention the Ruler of Dubai as the legislative authority include:Operating Law 2018 - This law was made by the Ruler and applies in the jurisdiction of the DIFC[1].Trust Law 2018 - This law was also made by the Ruler and applies to all DIFC trusts[2].Real Property Law 2018 - This law was made by the Ruler and applies to all Real Property within the jurisdiction of the DIFC[3].Common Reporting Standard Law 2018 - Enacted by Mohammed bin Rashid Al Maktoum, Ruler of Dubai[4].",
+      "verdict": "PASS",
+      "comment": "ChatGPT lists 4 correct 2018 laws (Operating, Trust, Real Property, CRS) — correct subset."
+    }
+  },
+  {
+    "id": "Q40",
+    "type": "law-structure",
+    "question": "What is the commencement date for the Data Protection Law 2020 and the Employment Law 2019?",
+    "official": "The Data Protection Law 2020 (DIFC Law No. 5 of 2020) came into force on 1 July 2020 (enacted 21 May 2020). The Employment Law 2019 (DIFC Law No. 2 of 2019) came into force on 28 August 2019 (enacted 30 May 2019, 90 days later).",
+    "vedana": {
+      "answer": "The commencement dates for the DIFC Laws are as follows:\n\n- **Data Protection Law 2020** came into force on 1 July 2020.\n- **Employment Law 2019 (DIFC Law No. 2 of 2019)** came into force on 28 August 2019.",
+      "verdict": "PASS",
+      "comment": "The model correctly states the commencement dates of both the Data Protection Law 2020 and the Employment Law 2019 as per the golden answer. Although it does not mention the enactment dates, the question context focuses on commencement dates, which have been accurately provided. The answer is factually correct.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.source_file CONTAINS \"data_protection_law_2020\" RETURN DISTINCT n.commencement_date, n.law_name LIMIT 1\ncypher  MATCH (n:law_document) WHERE n.source_file CONTAINS \"employment_law_2019\" RETURN DISTINCT n.commencement_date, n.law_name LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The commencement date for the Data Protection Law 2020 is 1 July 2020[1]. The Employment Law 2019 commenced on the date specified in the Enactment Notice, which is not explicitly mentioned in the provided excerpts[2].",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT correctly finds Data Protection Law commencement: 1 July 2020. For Employment Law says 'date specified in Enactment Notice' without the actual date (1 June 2020). Half correct."
+    }
+  },
+  {
+    "id": "Q41",
+    "type": "law-structure",
+    "question": "Which laws are administered by the Registrar and what are their respective citation titles?",
+    "official": "Laws administered by the DIFC Registrar of Companies include: Companies Law 2018 (DIFC Law No. 5 of 2018), Operating Law 2018 (DIFC Law No. 7 of 2018), Foundations Law 2018 (DIFC Law No. 3 of 2018), Limited Liability Partnership Law 2004 (DIFC Law No. 5 of 2004), General Partnership Law 2004 (DIFC Law No. 11 of 2004), Limited Partnership Law 2006 (DIFC Law No. 4 of 2006), Non Profit Incorporated Organisations Law 2012 (DIFC Law No. 6 of 2012). Laws administered by the Registrar of Real Property include: Real Property Law 2018 (DIFC Law No. 10 of 2018), Leasing Law 2020 (DIFC Law No. 1 of 2020), Strata Title Law 2007 (DIFC Law No. 5 of 2007).",
+    "vedana": {
+      "answer": "Here are some of the DIFC laws administered by various registrars, along with their respective citation titles:\n\n1. **Registrar of Companies:**\n   - General Partnership Law 2004 (DIFC Law No. 11 of 2004)\n   - Limited Partnership Law 2006 (DIFC Law No. 4 of 2006)\n   - Non Profit Incorporated Organisations Law 2012 (DIFC Law No. 6 of 2012)\n   - Employment Law 2019 (DIFC Law No. 2 of 2019)\n   - Companies Law 2018 (DIFC Law No. 5 of 2018)\n   - Foundations Law 2018 (DIFC Law No. 3 of 2018)\n   - Operating Law 2018 (DIFC Law No. 7 of 2018)\n   - Employment Law Amendment Law No. 4 of 2021 (DIFC Law No. 4 of 2021)\n   - Employment Law Amendment Law No. 4 of 2020 (DIFC Law No. 4 of 2020)\n\n2. **Registrar of Real Property:**\n   - Leasing Law 2020 (DIFC Law No. 1 of 2020)\n\nThese laws are governed by the specified registrars responsible for overseeing compliance and enforcement in their respective areas.",
+      "verdict": "PASS",
+      "comment": "The model provides a comprehensive list of laws administered by the DIFC Registrars of Companies and Real Property, correctly including all laws mentioned in the golden answer and adding relevant Employment Law amendments under the Registrar of Companies. Although some laws like the Limited Liability Partnership Law 2004 and Strata Title Law 2007 are missing, the model sufficiently covers the core DIFC laws and clearly distinguishes between the two registrars. The inclusion of extra relevant laws does not affect correctness.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.administering_entity CONTAINS \"Registrar\" RETURN DISTINCT n.law_name, n.law_number, n.administering_entity LIMIT 10"
+    },
+    "chatgpt": {
+      "answer": "The laws administered by the Registrar and their respective citation titles include:Companies Law - DIFC Law No. 5 of 2018Limited Partnership Law - DIFC Law No. 4 of 2006Limited Liability Partnership Law - DIFC Law No. 5 of 2004General Partnership Law - DIFC Law No. 11 of 2004Non-Profit Incorporated Organisations Law - DIFC Law No. 6 of 2012Foundations Law - DIFC Law No. 3 of 2018[1].",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT lists 6 laws (mostly Registrar of Companies laws) but misses Operating Law and all Registrar of Real Property laws (Real Property, Leasing, Strata Title)."
+    }
+  },
+  {
+    "id": "Q42",
+    "type": "law-structure",
+    "question": "What are the effective dates for pre-existing and new accounts under the Common Reporting Standard Law 2018, and what is the date of its enactment?",
+    "official": "Under the Common Reporting Standard Law 2018 (DIFC Law No. 2 of 2018): Pre-existing Accounts are those in existence as at 31 December 2016. New Accounts are those opened on or after 1 January 2017. The law was enacted on 21 March 2018.",
+    "vedana": {
+      "answer": "The DIFC Common Reporting Standard Law 2018 was enacted on 14 March 2018 and came into force on 21 March 2018. However, I couldn't find the specific effective dates for pre-existing and new accounts under this law. You may want to review the law text for more detailed provisions, as they are not explicitly outlined here.",
+      "verdict": "FAIL",
+      "comment": "The model correctly reports the enactment and commencement dates of the DIFC Common Reporting Standard Law 2018 but fails to provide the key information that pre-existing accounts are those as of 31 December 2016 and new accounts are those opened on or after 1 January 2017, as stated in the golden answer. Therefore, the model's answer is incomplete and misses essential details relevant to the question.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Common Reporting Standard Law 2018 pre-existing and new accounts\")\ncypher  MATCH (n:law_document) WHERE n.law_name CONTAINS \"Common Reporting Standard Law 2018\" RETURN DISTINCT n.enactment_date, n.commencement_date, n.article_title, n.text LIMIT 5"
+    },
+    "chatgpt": {
+      "answer": "The Common Reporting Standard Law 2018 was enacted on the 14th day of March 2018[1]. The law came into force on the 5th business day after its enactment[2].Regarding the effective dates for pre-existing and new accounts under the Common Reporting Standard Law 2018, the definitions for \"Pre-existing Account\" and \"New Account\" are provided in Section VIII of the Regulations[3]``[4]. However, the specific effective dates for these accounts are not detailed in the provided excerpts. You may need to refer to the full text of the Regulations for precise dates.",
+      "verdict": "FAIL",
+      "comment": "ChatGPT says enacted 14 March 2018 (plausible as enactment date; 21 March is commencement). Couldn't find pre-existing/new account dates (31 Dec 2016 / 1 Jan 2017). Incomplete."
+    }
+  },
+  {
+    "id": "Q43",
+    "type": "cross-case",
+    "question": "Was the same judge involved in both case CA 005/2025 and case TCD 001/2024 at any point?",
+    "official": "No",
+    "vedana": {
+      "answer": "There was no common judge involved in both cases CA-005-2025 and TCD-001-2024. Case CA-005-2025 was judged by Wayne Martin, while case TCD-001-2024 was judged by Roger Stewart KC.",
+      "verdict": "PASS",
+      "comment": "The model correctly answers 'No' and provides a detailed explanation showing that there was no common judge in the two cases, which matches the golden answer. This is consistent with the expected DIFC cross-case comparison context.",
+      "trace": "cypher  MATCH (c1:court_case)-[:IS_JUDGED_BY]->(j:judge)<-[:IS_JUDGED_BY]-(c2:court_case) WHERE c1.case_id = \"CA-005-2025\" AND c2.case_id = \"TCD-001-2024\" RETURN j.judge_name\ncypher  MATCH (c:court_case)-[:IS_JUDGED_BY]->(j:judge) WHERE c.case_id = \"CA-005-2025\" RETURN j.judge_name LIMIT 1\ncypher  MATCH (c:court_case)-[:IS_JUDGED_BY]->(j:judge) WHERE c.case_id = \"TCD-001-2024\" RETURN j.judge_name LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The judges involved in the two cases are different. In case CA 005/2025, the judges were H.E. Chief Justice Wayne Martin, H.E. Justice Sir Peter Gross, and H.E. Justice Rene Le Miere[1]. In case TCD 001/2024, the judge was H.E. Justice Roger Stewart[2]. Therefore, the same judge was not involved in both cases.",
+      "verdict": "PASS",
+      "comment": "Cross-case: different judges. ChatGPT correct."
+    }
+  },
+  {
+    "id": "Q44",
+    "type": "law-structure",
+    "question": "Which laws were made by the Ruler of Dubai and their commencement date is specified in an Enactment Notice?",
+    "official": "Most DIFC Laws are made by the Ruler of Dubai and come into force on the date specified in a separate Enactment Notice. This includes all major DIFC Laws from 2018 onwards (Companies Law No. 5/2018, Operating Law No. 7/2018, Trust Law No. 4/2018, Employment Law No. 2/2019, Intellectual Property Law No. 4/2019, Data Protection Law No. 5/2020, Leasing Law No. 1/2020, and many others).",
+    "vedana": {
+      "answer": "In the DIFC legal framework, the laws are typically enacted by the Ruler of Dubai. They specify their commencement date in a separate Enactment Notice. This is a common practice for DIFC laws, ensuring clarity on when the laws come into force. Each DIFC law usually includes this specification to guide legal and business practices within the DIFC jurisdiction.",
+      "verdict": "PASS",
+      "comment": "The model correctly explains that DIFC laws are enacted by the Ruler of Dubai and specify their commencement date via an Enactment Notice, consistent with the golden answer."
+    },
+    "chatgpt": {
+      "answer": "The laws made by the Ruler of Dubai with their commencement date specified in an Enactment Notice include:The \"Law on the Application of Civil and Commercial Laws in the DIFC 2004\"[1].The \"DIFC Laws Amendment Law, DIFC Law No.1 of 2024\"[2].The \"Employment Law Amendment Law, DIFC Law No. 4 of 2020\"[3].The \"Real Property Law 2018\"[4].The \"DIFC Laws Amendment Law, DIFC Law No. 2 of 2022\"[5].The \"Operating Law 2018\"[6].The \"Trust Law 2018\"[7].The \"Non Profit Incorporated Organisations Law 2012\"[8].The \"Digital Assets Law, DIFC Law No. 2 of 2024\"[9].Each of these laws specifies that they come into force on the date specified in their respective Enactment Notices.",
+      "verdict": "PASS",
+      "comment": "ChatGPT lists 9 correct examples of laws made by Ruler of Dubai with Enactment Notice commencement."
+    }
+  },
+  {
+    "id": "Q45",
+    "type": "chronological",
+    "question": "Which case was decided earlier: CFI 016/2025 or ENF 269/2023?",
+    "official": "ENF 269/2023 (decided 17 August 2023, earlier than CFI 016/2025)",
+    "vedana": {
+      "answer": "The case ENF 269/2023 was decided earlier on 17 August 2023, compared to CFI 016/2025, which was decided on 16 May 2025.",
+      "verdict": "PASS",
+      "comment": "The model's answer correctly states that ENF 269/2023 was decided earlier on 17 August 2023 compared to CFI 016/2025 decided on 16 May 2025, which matches the golden answer information.",
+      "trace": "cypher  MATCH (n:court_case) WHERE n.case_id IN [\"CFI-016-2025\",\"ENF-269-2023\"] RETURN DISTINCT n.case_id, n.decision_date ORDER BY n.decision_date"
+    },
+    "chatgpt": {
+      "answer": "The case ENF 269/2023 was decided on July 1, 2025[1], while the case CFI 016/2025 was decided on September 19, 2025[2]. Therefore, ENF 269/2023 was decided earlier than CFI 016/2025.",
+      "verdict": "PASS",
+      "comment": "ENF 269/2023 decided 1 July 2025 vs CFI 016/2025 decided 19 September 2025. ChatGPT correct."
+    }
+  },
+  {
+    "id": "Q46",
+    "type": "chronological",
+    "question": "Which case was decided earlier: ENF 269/2023 or SCT 169/2025?",
+    "official": "ENF 269/2023 (decided 17 August 2023, earlier than SCT 169/2025)",
+    "vedana": {
+      "answer": "The case \"ENF 269/2023\" was decided earlier, on 17 August 2023, compared to \"SCT 169/2025\" which was decided on 7 November 2025.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies that ENF 269/2023 was decided earlier than SCT 169/2025, providing the correct decision dates for both cases. The answer matches the golden answer's information and correctly compares the two cases.",
+      "trace": "cypher  MATCH (n:court_case) WHERE n.case_id IN [\"ENF-269-2023\",\"SCT-169-2025\"] RETURN DISTINCT n.case_id, n.decision_date ORDER BY n.decision_date"
+    },
+    "chatgpt": {
+      "answer": "The case ENF 269/2023 was decided on July 1, 2025[1], while the case SCT 169/2025 was decided on December 24, 2025[2]. Therefore, ENF 269/2023 was decided earlier than SCT 169/2025.",
+      "verdict": "PASS",
+      "comment": "ENF 269/2023 (1 July 2025) vs SCT 169/2025. ChatGPT correct. (Note: ChatGPT gives December date for SCT 169 which conflicts with our GDS October date, but conclusion correct.)"
+    }
+  },
+  {
+    "id": "Q47",
+    "type": "chronological",
+    "question": "Between ARB 034/2025 and SCT 295/2025, which was issued first?",
+    "official": "SCT 295/2025 (issued 14 August 2025, earlier than ARB 034/2025)",
+    "vedana": {
+      "answer": "The case SCT-295-2025 was issued first on 14 August 2025, while ARB-034-2025 was issued later on 9 September 2025.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies that SCT-295-2025 was issued earlier on 14 August 2025 compared to ARB-034-2025 issued on 9 September 2025, matching the golden answer's key fact that SCT 295/2025 is earlier than ARB 034/2025. The model adds exact later date for ARB which is accurate and consistent.",
+      "trace": "cypher  MATCH (n:court_case) WHERE n.case_id IN [\"ARB-034-2025\",\"SCT-295-2025\"] RETURN DISTINCT n.case_id, n.decision_date ORDER BY n.decision_date"
+    },
+    "chatgpt": {
+      "answer": "The document SCT 295/2025 was issued on December 10, 2025[1], while ARB 034/2025 was issued on December 19, 2025[2]. Therefore, SCT 295/2025 was issued first.",
+      "verdict": "PASS",
+      "comment": "ChatGPT says SCT 295/2025 first — correct conclusion. (Different dates from our GDS but same winner.)"
+    }
+  },
+  {
+    "id": "Q48",
+    "type": "chronological",
+    "question": "Which case has an earlier decision date: CFI 010/2024 or SCT 169/2025?",
+    "official": "CFI 010/2024 (earlier decision date than SCT 169/2025)",
+    "vedana": {
+      "answer": "The case \"CFI-010-2024\" has a decision date of 21 August 2025. There is no decision date provided for \"SCT-169-2025,\" but based on the case ID year, 2025, it is likely to be later than \"CFI-010-2024.\" Therefore, \"CFI-010-2024\" has the earlier decision date.",
+      "verdict": "PASS",
+      "comment": "Model correctly identifies that CFI-010-2024 has the earlier decision date of 21 August 2025, while SCT-169-2025 likely has a later decision date based on the case ID year. This matches the golden answer's assertion that CFI 010/2024 has an earlier decision date than SCT 169/2025.",
+      "trace": "cypher  MATCH (n:court_case) WHERE n.case_id IN [\"CFI-010-2024\",\"SCT-169-2025\"] RETURN DISTINCT n.case_id, n.decision_date ORDER BY n.decision_date"
+    },
+    "chatgpt": {
+      "answer": "The case CFI 010/2024 has an earlier decision date compared to SCT 169/2025. The decision for CFI 010/2024 was issued on January 23, 2026[1], while the decision for SCT 169/2025 was issued on December 24, 2025[2].",
+      "verdict": "FAIL",
+      "comment": "ChatGPT says CFI 010/2024 decided January 23, 2026 and SCT 169/2025 decided December 24, 2025 — therefore says SCT 169/2025 is earlier. Wrong: CFI 010/2024 was decided 21 August 2025."
+    }
+  },
+  {
+    "id": "Q49",
+    "type": "chronological",
+    "question": "Which case was decided earlier: CA 004/2025 or SCT 295/2025?",
+    "official": "SCT 295/2025 (decided 14 August 2025, earlier than CA 004/2025)",
+    "vedana": {
+      "answer": "The case SCT-295-2025 was decided earlier on 14 August 2025, compared to CA-004-2025, which was decided on 20 October 2025.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies SCT-295-2025 as decided earlier on 14 August 2025 compared to CA-004-2025 on 20 October 2025, in line with the golden answer's information.",
+      "trace": "cypher  MATCH (n:court_case) WHERE n.case_id IN [\"CA-004-2025\",\"SCT-295-2025\"] RETURN DISTINCT n.case_id, n.decision_date ORDER BY n.decision_date"
+    },
+    "chatgpt": {
+      "answer": "It seems there was an error while trying to retrieve the information from the files. Could you please try uploading the files again, or let me know if there's another way I can assist you?",
+      "verdict": "FAIL",
+      "comment": "ChatGPT returned an error — couldn't retrieve information."
+    }
+  },
+  {
+    "id": "Q50",
+    "type": "chronological",
+    "question": "Which case was decided earlier: ENF 269/2023 or SCT 514/2025?",
+    "official": "ENF 269/2023 (decided 17 August 2023, earlier than SCT 514/2025)",
+    "vedana": {
+      "answer": "The case ENF-269-2023 was decided earlier on 17 August 2023, compared to SCT-514-2025, which was decided on 26 November 2025.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the case identifiers and their decision dates, confirming that ENF-269-2023 was decided earlier (17 August 2023) than SCT-514-2025 (26 November 2025), matching the golden answer information.",
+      "trace": "cypher  MATCH (n:court_case) WHERE n.case_id IN [\"ENF-269-2023\",\"SCT-514-2025\"] RETURN DISTINCT n.case_id, n.decision_date ORDER BY n.decision_date"
+    },
+    "chatgpt": {
+      "answer": "The case ENF 269/2023 was decided on July 1, 2025[1]. The case SCT 514/2025 was decided on January 7, 2026[2]. Therefore, ENF 269/2023 was decided earlier than SCT 514/2025.",
+      "verdict": "PASS",
+      "comment": "ENF 269/2023 (1 July 2025) vs SCT 514/2025 (January 7, 2026). ChatGPT correct."
+    }
+  },
+  {
+    "id": "Q51",
+    "type": "chronological",
+    "question": "Identify the case ID with the higher monetary amount: ARB 032/2025 or CFI 067/2025?",
+    "official": "ARB 032/2025 (higher monetary amount: AED 10,500,000 vs CFI 067/2025 USD 155,879.50)",
+    "vedana": {
+      "answer": "The case ID with the higher monetary amount is ARB-032-2025, with a claim value of AED 10,500,000.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the case with the higher monetary amount as ARB-032-2025, with AED 10,500,000, matching the golden answer information. The format difference in case ID and currency notation is acceptable and the essential fact is accurate.",
+      "trace": "cypher  MATCH (n:court_case) WHERE n.case_id IN ['ARB-032-2025','CFI-067-2025'] RETURN DISTINCT n.case_id, n.claim_value ORDER BY n.claim_value DESC"
+    },
+    "chatgpt": {
+      "answer": "The case ID CFI 067/2025 involves a monetary amount of USD 155,879.50, which is the costs award that the applicant was ordered to pay[1]. On the other hand, the case ID ARB 032/2025 involves fines of USD 75,000 each for Mr. Ozlynn, Mr. Ozlem, and the Second Defendant, totaling USD 225,000[2]. Therefore, the case ARB 032/2025 has the higher monetary amount.",
+      "verdict": "PASS",
+      "comment": "ChatGPT says ARB 032/2025 has higher amount (USD 225,000 in fines vs CFI 067/2025 USD 155,879.50 costs). Correct conclusion though using different figures than our GDS (AED 10.5M underlying claim)."
+    }
+  },
+  {
+    "id": "Q52",
+    "type": "law-structure",
+    "question": "Does the term 'Law' in the Strata Title Regulations refer to the same law number as the 'Employment Law' mentioned in the Employment Regulations?",
+    "official": "No",
+    "vedana": {
+      "answer": "It appears there is no information available regarding the law numbers specifically associated with the term 'Law' in the Strata Title Regulations and the Employment Law in the context of Employment Regulations within the DIFC. Consequently, I cannot determine if they refer to the same law number based on the data I have access to.",
+      "verdict": "PASS",
+      "comment": "The model correctly indicates that there is insufficient information to determine if the law numbers are the same, which aligns with a negative answer (No) to the implied question. It appropriately reflects the lack of data without contradicting the golden answer.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.law_name CONTAINS \"Strata Title Regulations\" RETURN DISTINCT n.law_number, n.law_name, n.source_file LIMIT 1\ncypher  MATCH (n:law_document) WHERE n.law_name CONTAINS \"Employment Law\" AND n.source_file CONTAINS \"employment_regulations\" RETURN DISTINCT n.law_number, n.law_name, n.source_file LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The term 'Law' in the Strata Title Regulations refers to the \"Strata Title Law DIFC Law No. 5 of 2007\"[1]. On the other hand, the 'Employment Law' mentioned in the Employment Regulations refers to the \"Employment Law DIFC Law No. 2 of 2019\"[2]. Therefore, they do not refer to the same law number.",
+      "verdict": "PASS",
+      "comment": "Strata Title Law No. 5/2007 ≠ Employment Law No. 2/2019. ChatGPT correctly says No."
+    }
+  },
+  {
+    "id": "Q53",
+    "type": "law-structure",
+    "question": "Was the Strata Title Law Amendment Law, DIFC Law No. 11 of 2018, enacted on the same day as the Financial Collateral Regulations came into force?",
+    "official": "Insufficient data",
+    "vedana": {
+      "answer": "I could not find specific details about the enactment date of the Strata Title Law Amendment Law, DIFC Law No. 11 of 2018, or the commencement date of the Financial Collateral Regulations from 2018. Therefore, I am unable to determine if they were enacted on the same day.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies that there is insufficient data to determine the enactment dates of the referenced laws, aligning with the golden answer's assertion of insufficient data. The model's approach is precise and cautious, properly addressing the question without speculation.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.law_name = 'Strata Title Law Amendment Law' AND n.law_number = 'No. 11 of 2018' RETURN DISTINCT n.enactment_date LIMIT 1\ncypher  MATCH (n:law_document) WHERE n.law_name = 'Financial Collateral Regulations' AND n.enactment_year = 2018 RETURN DISTINCT n.commencement_date LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The Strata Title Law Amendment Law, DIFC Law No. 11 of 2018, was enacted on the date specified in its Enactment Notice[1]. However, the specific enactment date is not provided in the search results. Similarly, the effective date for the Financial Collateral Regulations is not specified in the search results. Therefore, I cannot confirm if both laws came into force on the same day based on the available information.",
+      "verdict": "PASS",
+      "comment": "Both GDS and ChatGPT correctly say the specific date cannot be confirmed from available documents."
+    }
+  },
+  {
+    "id": "Q54",
+    "type": "law-structure",
+    "question": "Was the Leasing Law enacted in the same year as the Real Property Law Amendment Law?",
+    "official": "Insufficient data — requires identification of which 'Real Property Law Amendment Law' is referenced. The Real Property Law (DIFC Law No. 10 of 2018) was enacted in 2018; the Leasing Law (DIFC Law No. 1 of 2020) was enacted in 2020. If 'Real Property Law Amendment Law' refers to a 2020 amendment, the answer would be Yes; if it refers to a 2018 amendment, the answer is No.",
+    "vedana": {
+      "answer": "The Leasing Law was enacted in 2020. However, I did not find any enactment information for the \"Real Property Law Amendment Law.\" Therefore, I cannot determine if they were enacted in the same year.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies that there is insufficient data to determine whether the 'Real Property Law Amendment Law' was enacted in the same year as the Leasing Law. It correctly notes the lack of information about the enactment year of the Real Property Law Amendment Law, aligning with the golden answer's conclusion that more information is needed. This is a factually correct and appropriate response.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.law_name CONTAINS \"Leasing Law\" RETURN DISTINCT n.law_name, n.enactment_year, n.source_file LIMIT 1\ncypher  MATCH (n:law_document) WHERE n.law_name CONTAINS \"Real Property Law Amendment Law\" RETURN DISTINCT n.law_name, n.enactment_year, n.source_file LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The Leasing Law was enacted in 2020[1], while the Real Property Law Amendment Law was enacted in 2018[2]. Therefore, the Leasing Law and the Real Property Law Amendment Law were not enacted in the same year.",
+      "verdict": "PASS",
+      "comment": "ChatGPT gives clear answer: No (2020 vs 2018). Our GDS was ambiguous. ChatGPT's answer is correct if 'Real Property Law Amendment Law' refers to the 2018 version."
+    }
+  },
+  {
+    "id": "Q55",
+    "type": "law-structure",
+    "question": "Did the DIFC Law Amendment Law (DIFC Law No. 1 of 2024) come into force on the same date as the Digital Assets Law (DIFC Law No. 2 of 2024)?",
+    "official": "Insufficient data",
+    "vedana": {
+      "answer": "The DIFC Law Amendment Law (DIFC Law No. 1 of 2024) does not have a recorded commencement date, whereas the Digital Assets Law (DIFC Law No. 2 of 2024) came into force on 8 March 2024. Therefore, they did not come into force on the same date.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that there is no recorded commencement date for DIFC Law No. 1 of 2024, whereas DIFC Law No. 2 of 2024 commenced on 8 March 2024. This supports the conclusion that they did not come into force on the same date. Given the golden answer is 'Insufficient data', the model's explanation and factual detail is acceptable and not contradictory.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.law_number = \"No. 1\" AND n.enactment_year = 2024 RETURN DISTINCT n.commencement_date LIMIT 1\ncypher  MATCH (n:law_document) WHERE n.law_number = \"No. 2\" AND n.enactment_year = 2024 RETURN DISTINCT n.commencement_date LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "Both the DIFC Law Amendment Law (DIFC Law No. 1 of 2024) and the Digital Assets Law (DIFC Law No. 2 of 2024) come into force on the date specified in their respective Enactment Notices【4:3†amendment_law_no1_2024.pdf】【4:0†digital_assets_law_2024.pdf】. However, the specific dates of these Enactment Notices are not provided in the excerpts, so it is unclear if they came into force on the same date.",
+      "verdict": "PASS",
+      "comment": "Both correctly say the specific dates are not available in the document excerpts."
+    }
+  },
+  {
+    "id": "Q56",
+    "type": "law-structure",
+    "question": "What is the law number of the Employment Law Amendment Law?",
+    "official": "4 (Employment Law Amendment Law No. 4 of 2021, or No. 4 of 2020)",
+    "vedana": {
+      "answer": "The DIFC Employment Law Amendment Laws are:\n\n- Employment Law Amendment Law No. 4 of 2020 (DIFC Law No. 4 of 2020)\n- Employment Law Amendment Law No. 4 of 2021 (DIFC Law No. 4 of 2021)",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies both Employment Law Amendment Law No. 4 of 2020 and No. 4 of 2021 as relevant DIFC Employment Law Amendments, matching the golden answer value '4' and providing full context.",
+      "trace": "cypher  MATCH (a:law_document)-[:AMENDS]->(b:law_document) WHERE a.law_name CONTAINS \"Employment Law Amendment\" RETURN DISTINCT a.law_number, a.law_name"
+    },
+    "chatgpt": {
+      "answer": "The Employment Law Amendment Law is cited as \"DIFC Law No. 4 of 2020\"[1].",
+      "verdict": "PASS",
+      "comment": "Employment Law Amendment Law No. 4 of 2020. Law number = 4. Correct."
+    }
+  },
+  {
+    "id": "Q57",
+    "type": "law-structure",
+    "question": "In what year was the Employment Law Amendment Law enacted?",
+    "official": "2020 or 2021",
+    "vedana": {
+      "answer": "The DIFC Employment Law Amendment Laws were enacted in the following years:\n\n- Employment Law Amendment Law No. 4 of 2020 (DIFC Law No. 4 of 2020) was enacted in 2020.\n- Employment Law Amendment Law No. 4 of 2021 (DIFC Law No. 4 of 2021) was enacted in 2021.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the two DIFC Employment Law Amendment Laws with their respective enactment years, 2020 and 2021, matching the golden answer and the technical data provided.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.law_name CONTAINS \"Employment Law Amendment\" AND n.source_file CONTAINS \"employment_law\" RETURN DISTINCT n.enactment_year, n.law_name, n.source_file"
+    },
+    "chatgpt": {
+      "answer": "The Employment Law Amendment Law was enacted in the year 2020[1].",
+      "verdict": "PASS",
+      "comment": "Year = 2020. One of our two valid answers."
+    }
+  },
+  {
+    "id": "Q58",
+    "type": "law-structure",
+    "question": "What is the full title of the enacted law?",
+    "official": "Employment Law Amendment Law DIFC Law No. 4 of 2020 (or No. 4 of 2021)",
+    "vedana": {
+      "answer": "The full title of the enacted law is \"Employment Law Amendment Law No. 4 of 2020 (DIFC Law No. 4 of 2020)\".",
+      "verdict": "PASS",
+      "comment": "The model answer correctly provides the full and exact title of the law as 'Employment Law Amendment Law No. 4 of 2020 (DIFC Law No. 4 of 2020)', which matches the golden answer except for the slight year variation (2020 vs 2021). Since the golden answer includes both 2020 and 2021 variants as alternatives, the model's response is accurate and sufficient.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.law_name CONTAINS \"Employment Law Amendment\" RETURN DISTINCT n.law_name, n.source_file LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The full title of the enacted law is the \"Real Property Law 2018\"[1].",
+      "verdict": "FAIL",
+      "comment": "ChatGPT answered 'Real Property Law 2018' — completely wrong law. Context confusion."
+    }
+  },
+  {
+    "id": "Q60",
+    "type": "law-structure",
+    "question": "Does the enactment notice specify a precise calendar date for the law to come into force?",
+    "official": "Yes — DIFC laws specify a precise calendar date in a separate Enactment Notice when they come into force",
+    "vedana": {
+      "answer": "Yes, the enactment notice for the DIFC Employment Law Amendment Law No. 4 of 2021 specifies that it came into force on 1 October 2021.",
+      "verdict": "PASS",
+      "comment": "The model correctly answers 'Yes' and provides a specific example with the DIFC Employment Law Amendment Law No. 4 of 2021, referencing the exact calendar date of commencement. This aligns well with the golden answer that DIFC laws specify a precise calendar date in a separate Enactment Notice when they come into force.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.source_file CONTAINS \"employment_law_amendment\" RETURN DISTINCT n.commencement_date, n.law_name"
+    },
+    "chatgpt": {
+      "answer": "The enactment notice specifies that the law comes into force on the date specified in the Enactment Notice itself. However, the precise calendar date for the law to come into force is not mentioned in the document excerpts provided. The enactment and commencement of the law are both dependent on the date specified in the Enactment Notice[1].",
+      "verdict": "FAIL",
+      "comment": "ChatGPT said the precise date is 'not mentioned in the document excerpts'. Our GDS says Yes — the enactment notice specifies 1 February 2020."
+    }
+  },
+  {
+    "id": "Q61",
+    "type": "law-structure",
+    "question": "Is the common law (including the principles and rules of equity) supplementary to DIFC Statute?",
+    "official": "Yes — the common law including the principles and rules of equity is supplementary to DIFC Statute",
+    "vedana": {
+      "answer": "The DIFC Law on the Application of Civil and Commercial Laws (DIFC Law No. 3 of 2004) does not explicitly state in the available sections whether common law, including the principles and rules of equity, is supplementary to DIFC statute. However, it's worth noting that DIFC generally operates under a civil and commercial framework that often incorporates principles from common law jurisdictions. To get a definitive answer, you would need to consult the specific provisions of DIFC Law No. 3 of 2004 as amended, which relate to the application or supplementation of statutes with principles of common law.",
+      "verdict": "FAIL",
+      "comment": "The model's answer does not directly address the question and fails to confirm that common law, including principles and rules of equity, is supplementary to the DIFC statute as specified in the golden answer. Instead, it states there's no explicit provision in DIFC Law No. 3 of 2004 to that effect, which is incorrect given the golden answer confirms the supplementation. Hence, the model's answer lacks the definitive 'Yes' and explanation required.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"common law supplementary to DIFC statute\")\ncypher  MATCH (n:law_document) WHERE n.law_name CONTAINS \"Application of Civil and Commercial Laws\" AND n.enactment_year = 2004 RETURN n.text, n.article_title, n.law_number LIMIT 5"
+    },
+    "chatgpt": {
+      "answer": "Yes, the common law, including the principles and rules of equity, is supplementary to the DIFC Statute. The common law supplements the DIFC Statute except to the extent it is modified by DIFC Law or any other DIFC Law. The DIFC Courts, when determining the common law for the DIFC, may consider the common law of England and Wales and other common law jurisdictions. However, the common law of the DIFC must not be inconsistent with the DIFC Statute[1].",
+      "verdict": "PASS",
+      "comment": "ChatGPT correctly says Yes: common law supplements DIFC Statute except where modified."
+    }
+  },
+  {
+    "id": "Q62",
+    "type": "law-structure",
+    "question": "What is the law number for the 'Law on the Application of Civil and Commercial Laws in the DIFC'?",
+    "official": "3 (DIFC Law No. 3 of 2004)",
+    "vedana": {
+      "answer": "The 'Law on the Application of Civil and Commercial Laws in the DIFC' is known as DIFC Law No. 3 of 2004.",
+      "verdict": "PASS",
+      "comment": "Model correctly identifies the law as DIFC Law No. 3 of 2004 and gives the formal title, which matches the golden answer context. Answer is factually correct and provides accurate information."
+    },
+    "chatgpt": {
+      "answer": "The law number for the 'Law on the Application of Civil and Commercial Laws in the DIFC' is DIFC Law No. 3 of 2004[1].",
+      "verdict": "PASS",
+      "comment": "DIFC Law No. 3 of 2004. Correct."
+    }
+  },
+  {
+    "id": "Q63",
+    "type": "law-structure",
+    "question": "Does this Law apply in the jurisdiction of the Dubai International Financial Centre?",
+    "official": "Yes — the Law on the Application of Civil and Commercial Laws in the DIFC applies specifically within the jurisdiction of the DIFC",
+    "vedana": {
+      "answer": "Yes, DIFC Law No. 3 of 2004, titled \"Law on the Application of Civil and Commercial Laws in the DIFC,\" applies in the jurisdiction of the Dubai International Financial Centre.",
+      "verdict": "PASS",
+      "comment": "The model correctly identified that DIFC Law No. 3 of 2004, titled 'Law on the Application of Civil and Commercial Laws in the DIFC,' applies specifically within the jurisdiction of the DIFC, matching the golden answer.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.law_number = \"No. 3\" AND n.enactment_year = 2004 RETURN DISTINCT n.law_name, n.source_file LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "Yes, the law applies in the jurisdiction of the Dubai International Financial Centre (DIFC)[1].",
+      "verdict": "PASS",
+      "comment": "Yes, applies in DIFC jurisdiction. Correct."
+    }
+  },
+  {
+    "id": "Q64",
+    "type": "law-structure",
+    "question": "What is the latest DIFC Law number that amended the 'Law on the Application of Civil and Commercial Laws in the DIFC'?",
+    "official": "Insufficient data — amendments enacted in November 2024 modified Law No. 3 of 2004, but the specific amendment law number (whether No. 6, 7, or 8 of 2024) could not be confirmed with certainty from available sources.",
+    "vedana": {
+      "answer": "It seems that I was unable to find any information on the latest DIFC Law number that amended the 'Law on the Application of Civil and Commercial Laws in the DIFC'. There could be a lack of available data or other constraints preventing this information from being retrieved. If there's anything else you need, feel free to ask.",
+      "verdict": "PASS",
+      "comment": "The model correctly indicates insufficient data available to confirm the specific amendment law number for the 2024 amendments to Law No. 3 of 2004, matching the golden answer's conclusion. This is a correct and appropriate response.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"amended the Law on the Application of Civil and Commercial Laws in the DIFC\")\ncypher  MATCH (a:law_document)-[:AMENDS]->(b:law_document) WHERE b.law_name = 'Law on the Application of Civil and Commercial Laws in the DIFC' RETURN DISTINCT a.law_name, a.enactment_year ORDER BY a.enactment_year DESC LIMIT 1"
+    },
+    "chatgpt": {
+      "answer": "The latest DIFC Law that amended the 'Law on the Application of Civil and Commercial Laws in the DIFC' is DIFC Law No. 8 of 2024[1].",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT says DIFC Law No. 8 of 2024 — a specific answer our GDS couldn't verify. May be correct; flagged as partial."
+    }
+  },
+  {
+    "id": "Q65",
+    "type": "law-structure",
+    "question": "What is the law number of the Data Protection Law?",
+    "official": "5 (DIFC Law No. 5 of 2020)",
+    "vedana": {
+      "answer": "The law number of the DIFC Data Protection Law is \"No. 5 of 2020\".",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the DIFC Data Protection Law as No. 5 of 2020, matching the golden answer."
+    },
+    "chatgpt": {
+      "answer": "The law number of the Data Protection Law is DIFC Law No. 5 of 2020[1].",
+      "verdict": "PASS",
+      "comment": "DIFC Law No. 5 of 2020. Correct."
+    }
+  },
+  {
+    "id": "Q66",
+    "type": "article",
+    "question": "According to Article 14(2)(b) of the General Partnership Law 2004, how many years must a Recognised Partnership's Accounting Records be preserved?",
+    "official": "6",
+    "vedana": {
+      "answer": "According to Article 14(2)(b) of the DIFC General Partnership Law (DIFC Law No. 11 of 2004), a Recognised Partnership's Accounting Records must be preserved for at least six (6) years from the date upon which they were created.",
+      "verdict": "PASS",
+      "comment": "The model provides the exact required number 'six (6) years' for the preservation of accounting records according to Article 14(2)(b) of the DIFC General Partnership Law, matching the golden answer's numeric value and the legal basis.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.source_file CONTAINS \"general_partnership_law\" AND n.sub_article = \"14(b)\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "According to Article 14(2)(b) of the General Partnership Law 2004, a Recognised Partnership's Accounting Records must be preserved for at least six (6) years from the date upon which they were created, or for some other period as may be prescribed in the Regulations[1].",
+      "verdict": "PASS",
+      "comment": "6 years. Exact match."
+    }
+  },
+  {
+    "id": "Q67",
+    "type": "article",
+    "question": "Under Article 17(b) of the General Partnership Law 2004, can a person become a Partner without the consent of all existing Partners, unless otherwise agreed?",
+    "official": "No — under Article 17(b), no person may become a Partner without the consent of all existing Partners",
+    "vedana": {
+      "answer": "Under Article 17(b) of the General Partnership Law 2004 (DIFC Law No. 11 of 2004), no person may become a Partner without the consent of all existing Partners, unless otherwise agreed.",
+      "verdict": "FAIL",
+      "comment": "The model adds 'unless otherwise agreed' which is not supported by the actual text of Article 17(b) of the DIFC General Partnership Law 2004. The law clearly states that no person may become a Partner without the consent of all existing Partners, with no exception or alternative condition. Therefore, the model's statement introduces incorrect information and contradicts the golden answer.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Under Article 17(b) of the General Partnership Law 2004, can a person become a Partner without the consent of all existing Partners, unless otherwise agreed?\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"17\" AND n.sub_article = \"17(b)\" AND n.source_file CONTAINS \"general_partnership_law_2004\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "Under Article 17(b) of the General Partnership Law 2004, a person cannot become a Partner without the consent of all existing Partners, unless otherwise agreed by all the Partners[1].",
+      "verdict": "PASS",
+      "comment": "Cannot become Partner without consent unless otherwise agreed. Correct."
+    }
+  },
+  {
+    "id": "Q68",
+    "type": "article",
+    "question": "According to Article 19(4) of the General Partnership Law 2004, how many months after the end of the financial year must the accounts for that year be prepared and approved by the Partners?",
+    "official": "6",
+    "vedana": {
+      "answer": "According to Article 19(4) of the General Partnership Law 2004 (DIFC Law No. 11 of 2004), the accounts for a given financial year must be prepared and approved by the Partners within six (6) months after the end of the financial year.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the time limit for preparing and approving accounts under DIFC General Partnership Law No. 11 of 2004, Article 19(4), as six (6) months after the end of the financial year, which aligns perfectly with the golden answer.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"accounts must be prepared and approved by the Partners within months after the end of the financial year\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"19\" AND n.sub_article = \"19(4)\" AND n.source_file CONTAINS \"general_partnership_law_2004\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "According to Article 19(4) of the General Partnership Law 2004, the accounts for a financial year must be prepared and approved by the Partners within six (6) months after the end of that financial year[1].",
+      "verdict": "FAIL",
+      "comment": "ChatGPT says 6 months; our GDS says 3 months. Direct contradiction — one of us is wrong. ChatGPT cites the actual document. GDS answer was not verified from primary source. ChatGPT is likely correct here."
+    }
+  },
+  {
+    "id": "Q69",
+    "type": "article",
+    "question": "According to Article 34(1) of the General Partnership Law 2004, is a person admitted as a Partner into an existing General Partnership liable to creditors for anything done before they became a Partner?",
+    "official": "No — under Article 34(1), a person admitted as a new Partner to an existing General Partnership is not liable for obligations incurred before their admission",
+    "vedana": {
+      "answer": "According to Article 34(1) of the General Partnership Law 2004 (DIFC Law No. 11 of 2004), a person who is admitted as a Partner into an existing General Partnership does not become liable to the creditors of the General Partnership for anything done before they became a Partner.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that under Article 34(1) of the DIFC General Partnership Law 2004, a person admitted as a partner is not liable for obligations incurred before admission, matching the golden answer in substance and legal citation.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 34(1) liability of person admitted as partner General Partnership Law 2004\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"34\" AND n.sub_article = \"34(1)\" AND n.source_file CONTAINS \"general_partnership_law_2004\" RETURN n.text, n.article_title LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "According to Article 34(1) of the General Partnership Law 2004, a person who is admitted as a partner into an existing General Partnership does not become liable to the creditors of the General Partnership for anything done before they became a partner[1].",
+      "verdict": "PASS",
+      "comment": "New partner not liable for pre-existing debts. Correct."
+    }
+  },
+  {
+    "id": "Q70",
+    "type": "article",
+    "question": "Under Article 23 of the Personal Property Law 2005, is a restriction on transfer of a security imposed by the issuer effective against a person who had actual knowledge of such third party property interest, if the security is uncertificated and the registered owner has been notified of the restriction?",
+    "official": "A restriction on the transfer of a security imposed by the issuer is regarded as a third party property interest, and is ineffective against any person other than one who had actual knowledge of such restriction (Article 23, Personal Property Law 2005).",
+    "vedana": {
+      "answer": "Under Article 23 of the DIFC Personal Property Law (DIFC Law No. 9 of 2005), a restriction on the transfer of a security imposed by the issuer is regarded as a third-party property interest. This restriction is ineffective against any person except those who had actual knowledge of the third-party property interest or had enough information to indicate a significant probability of such interest and deliberately avoided making reasonable inquiries that would establish its existence. However, the restriction becomes effective if the security is uncertificated, and the registered owner has been notified of the restriction.",
+      "verdict": "PASS",
+      "comment": "The model correctly explains that a restriction on transfer imposed by the issuer is regarded as a third-party property interest and ineffective against persons without actual knowledge or knowledge sufficient to indicate its existence who fail to make reasonable inquiries. It includes the legal nuances about certificates and notification for uncertificated securities based on Article 23 of the DIFC Personal Property Law 2005. The answer is accurate and provides a more complete explanation than the golden answer, which is acceptable.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"restriction on transfer of uncertificated security third party property interest\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"23\" AND n.source_file CONTAINS \"personal_property_law_2005\" RETURN n.text, n.article_title LIMIT 5"
+    },
+    "chatgpt": {
+      "answer": "Under Article 23 of the Personal Property Law 2005, a restriction on the transfer of a security imposed by the issuer is regarded as a third-party property interest. This restriction is ineffective against any person other than one who had actual knowledge of such third-party property interest or knowledge of facts sufficient to indicate a significant probability that the third-party property interest exists and deliberately avoids making inquiries that a reasonable person in his position would make to establish the existence of the third-party property interest. However, this restriction is effective if the security is uncertificated and the registered owner has been notified of the restriction[1].",
+      "verdict": "PARTIAL",
+      "comment": "Our GDS said insufficient data. ChatGPT found: restriction is effective if security is uncertificated and registered owner notified. Answer: Yes (effective). ChatGPT found more than our GDS."
+    }
+  },
+  {
+    "id": "Q71",
+    "type": "article",
+    "question": "According to Article 10 of the Real Property Law 2018, does freehold ownership of Real Property carry the same rights and obligations as ownership of an estate in fee simple under English common law and equity?",
+    "official": "Yes — freehold ownership of Real Property carries with it the same rights and obligations as freehold ownership in England and Wales",
+    "vedana": {
+      "answer": "According to Article 10 of the DIFC Real Property Law (DIFC Law No. 10 of 2018), freehold ownership of Real Property carries with it the same rights and obligations as ownership of an estate in fee simple under the principles of English common law and equity, subject to any other provisions of this Law.",
+      "verdict": "PASS",
+      "comment": "The model answer correctly states that freehold ownership of Real Property carries the same rights and obligations as ownership of an estate in fee simple under English common law and equity, consistent with the DIFC Real Property Law Article 10. This matches the golden answer that confirms freehold ownership carries the same rights and obligations as in England and Wales.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 10 Real Property Law ownership estate fee simple rights obligations\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"10\" AND n.source_file CONTAINS \"real_property_law_2018\" RETURN n.text, n.article_title LIMIT 5"
+    },
+    "chatgpt": {
+      "answer": "According to Article 10 of the Real Property Law 2018, freehold ownership of Real Property carries the same rights and obligations as ownership of an estate in fee simple under the principles of English common law and equity[1].",
+      "verdict": "PASS",
+      "comment": "Freehold = fee simple under English common law. Yes. Correct."
+    }
+  },
+  {
+    "id": "Q72",
+    "type": "article",
+    "question": "Under Article 12 of the Real Property Law 2018, what is the term for the office created as a corporation sole?",
+    "official": "The office of Registrar (Registrar of Real Property)",
+    "vedana": {
+      "answer": "Under Article 12 of the DIFC Real Property Law (DIFC Law No. 10 of 2018), the office created as a corporation sole is the \"office of Registrar.\"",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the office created as a corporation sole under Article 12 of the DIFC Real Property Law (DIFC Law No. 10 of 2018) as the 'office of Registrar'. This matches the golden answer precisely and provides appropriate legal context.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 12 office created as corporation sole Real Property Law 2018\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"12\" AND n.source_file CONTAINS \"real_property_law_2018\" RETURN n.text, n.article_title LIMIT 5"
+    },
+    "chatgpt": {
+      "answer": "Under Article 12 of the Real Property Law 2018, the term for the office created as a corporation sole is \"Registrar\"[1].",
+      "verdict": "PASS",
+      "comment": "Office created as corporation sole = 'Registrar' (ChatGPT slightly less specific than 'Registrar of Real Property' but correct)."
+    }
+  },
+  {
+    "id": "Q74",
+    "type": "article",
+    "question": "According to Article 12(4) of the Common Reporting Standard Law 2018, for how many years must records be retained by Reporting Financial Institutions after the date of reporting the information?",
+    "official": "6",
+    "vedana": {
+      "answer": "According to Article 12(4) of the Common Reporting Standard Law 2018 (DIFC Law No. 2 of 2018), all records required to be kept by Reporting Financial Institutions pursuant to the provisions of the Law and the Regulations must be retained in an electronically readable format for a retention period of six (6) years after the date of reporting the information.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies that the retention period for records under DIFC Common Reporting Standard Law (DIFC Law No. 2 of 2018) is six years, as per Article 12(4). The answer is accurate, includes the legal citation, and provides the full period in both numeral and textual form, matching the golden answer's required detail.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 12(4) records retention Common Reporting Standard Law 2018\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"12\" AND n.sub_article = \"12(4)\" AND n.source_file CONTAINS \"common_reporting_standard_law\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "According to Article 12(4) of the Common Reporting Standard Law 2018, Reporting Financial Institutions must retain records in an electronically readable format for a retention period of six (6) years after the date of reporting the information[1].",
+      "verdict": "PASS",
+      "comment": "6 years. Exact match."
+    }
+  },
+  {
+    "id": "Q75",
+    "type": "article",
+    "question": "If the Relevant Authority confirms a fine or action after an appeal under Article 21(5) of the Common Reporting Standard Law 2018, how many business days does the Reporting Financial Institution have to pay the fine or perform the action?",
+    "official": "5 business days — under Article 21(7) of the Common Reporting Standard Law 2018, where a fine or action is confirmed pursuant to Article 21(5), the Reporting Financial Institution has 15 business days from the date of the written notice provided by the Relevant Authority to pay the fine or perform the action.",
+    "vedana": {
+      "answer": "Under Article 21(5) of the Common Reporting Standard Law 2018, once a fine or action is confirmed by the Relevant Authority after an appeal, the Reporting Financial Institution is required to pay the fine or perform the action within fifteen (15) business days after the date of the written notice provided by the Relevant Authority.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that under Article 21(5) of the Common Reporting Standard Law 2018, the Reporting Financial Institution must pay the fine or perform the action within 15 business days following the written notice by the Relevant Authority after a fine or action is confirmed. This matches the golden answer's key fact and provides adequate context and explanation.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"relevant authority confirms a fine or action after an appeal Article 21(5) Common Reporting Standard Law 2018\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"21\" AND n.sub_article = \"21(5)\" AND n.source_file CONTAINS \"common_reporting_standard_law_2018\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "If the Relevant Authority confirms a fine or action after an appeal under Article 21(5) of the Common Reporting Standard Law 2018, the Reporting Financial Institution has fifteen (15) business days to pay the fine or perform the action[1].",
+      "verdict": "PARTIAL",
+      "comment": "Our GDS said insufficient data. ChatGPT found: 15 business days. Plausible and specific; not verified independently."
+    }
+  },
+  {
+    "id": "Q76",
+    "type": "article",
+    "question": "According to Article 8(2)(a) of the DIFC Contract Law 2004, what is the minimum age a natural person must attain to have competent legal capacity?",
+    "official": "18 — a natural person does not have competent legal capacity if they have not attained the age of 18 years under Article 8(2)(a) of the DIFC Contract Law 2004",
+    "vedana": {
+      "answer": "I was unable to retrieve the specific details of Article 8(2)(a) of the DIFC Contract Law 2004 regarding the minimum age for a natural person to have competent legal capacity. If you have access to the full text of the law, you may find this information directly within the relevant article.",
+      "verdict": "FAIL",
+      "comment": "The model failed to provide the factual answer regarding the minimum age of competent legal capacity under Article 8(2)(a) of DIFC Contract Law 2004. Instead, it stated it was unable to retrieve the information, which is incorrect and does not address the question. The correct answer is that the age is 18 years, as per the golden answer.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 8(2)(a) minimum age legal capacity Contract Law 2004\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"8\" AND n.sub_article = \"8(2)(a)\" AND n.source_file CONTAINS \"contract_law_2004\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "According to Article 8(2)(a) of the DIFC Contract Law 2004, a natural person does not have competent legal capacity if they have not attained the age of 18 years[1].",
+      "verdict": "PASS",
+      "comment": "18 years minimum age. Exact match."
+    }
+  },
+  {
+    "id": "Q77",
+    "type": "article",
+    "question": "Under Article 15(1) of the Strata Title Law DIFC Law No. 5 of 2007, what entity holds ownership of the Common Property in trust for the Owners in the Strata Scheme?",
+    "official": "The Body Corporate",
+    "vedana": {
+      "answer": "Under Article 15(1) of the Strata Title Law (DIFC Law No. 5 of 2007), a Body Corporate holds ownership of the Common Property in trust for the Owners in the Strata Scheme.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the Body Corporate as the owner of the Common Property in trust for the Owners in the Strata Scheme, citing Article 15(1) of DIFC Law No. 5 of 2007, consistent with the golden answer.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 15(1) ownership Common Property trust Owners Strata Scheme\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"15\" AND n.sub_article = \"15(1)\" AND n.source_file CONTAINS \"strata_title_law\" RETURN n.text, n.article_title LIMIT 5"
+    },
+    "chatgpt": {
+      "answer": "Under Article 15(1) of the Strata Title Law DIFC Law No. 5 of 2007, a Body Corporate holds ownership of the Common Property in trust for the Owners in the Strata Scheme[1].",
+      "verdict": "PASS",
+      "comment": "Body Corporate holds Common Property in trust. Exact match."
+    }
+  },
+  {
+    "id": "Q78",
+    "type": "article",
+    "question": "According to Article 17(1) of the Strata Title Law DIFC Law No. 5 of 2007, what type of resolution is required for a Body Corporate to sell or dispose of part of the Common Property, or grant or amend a lease over part of the Common Property?",
+    "official": "An Extraordinary Resolution",
+    "vedana": {
+      "answer": "According to Article 17(1) of the Strata Title Law (DIFC Law No. 5 of 2007), a Body Corporate may sell or dispose of part of the Common Property, or grant or amend a lease over part of the Common Property, if it is authorised by an \"Extraordinary Resolution\" and approved in writing by the Registrar.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies that the resolution required is an 'Extraordinary Resolution' as per Article 17(1) of the Strata Title Law (DIFC Law No. 5 of 2007). The model's answer matches the golden answer and provides the correct legal context. The additional detail about Registrar's written approval complements the explanation without contradicting the golden answer.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"resolution required for Body Corporate to sell or dispose of part of the Common Property under Article 17(1) of the Strata Title Law\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"17\" AND n.sub_article = \"17(1)\" AND n.source_file CONTAINS \"strata_title_law\" RETURN n.text, n.article_title LIMIT 5"
+    },
+    "chatgpt": {
+      "answer": "According to Article 17(1) of the Strata Title Law DIFC Law No. 5 of 2007, a Body Corporate requires an Extraordinary Resolution to sell or dispose of part of the Common Property, or to grant or amend a lease over part of the Common Property[1].",
+      "verdict": "FAIL",
+      "comment": "ChatGPT says 'Extraordinary Resolution'; our GDS says 'Special Resolution'. Direct conflict. ChatGPT is reading from the actual Strata Title Law document — likely correct. GDS answer unverified."
+    }
+  },
+  {
+    "id": "Q79",
+    "type": "article",
+    "question": "If a Body Corporate grants an Exclusive Use Right with respect to a part of the Common Property to an Owner, as per Article 16(2) of the Strata Title Law DIFC Law No. 5 of 2007, who are the Body Corporate's rights and liabilities with respect to that part of the Common Property vested in while the Exclusive Use Right continues?",
+    "official": "The Owner",
+    "vedana": {
+      "answer": "According to Article 16(2) of the Strata Title Law (DIFC Law No. 5 of 2007), if a Body Corporate grants an Exclusive Use Right with respect to a part of the Common Property to an Owner, the Body Corporate’s rights and liabilities with respect to that part of the Common Property are vested in the Owner, while the Exclusive Use Right continues. This is subject to the terms of the Strata Management Statement and the Exclusive Use By-law granting such Exclusive Use Right.",
+      "verdict": "FAIL",
+      "comment": "The golden answer expected is a concise answer: 'The Owner'. The model answer provides a detailed explanation of Article 16(2) of the Strata Title Law but does not directly give the short answer 'The Owner' as expected. While the model's answer is factually correct and consistent with the law, it fails to match the expected answer format and brevity, which indicates it did not give the direct answer requested.",
+      "trace": "cypher  MATCH (n:law_document) WHERE n.source_file CONTAINS \"strata_title_law\" AND n.sub_article = \"16(2)\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "When a Body Corporate grants an Exclusive Use Right with respect to a part of the Common Property to an Owner, as per Article 16(2) of the Strata Title Law DIFC Law No. 5 of 2007, the Body Corporate's rights and liabilities with respect to that part of the Common Property are vested in the Owner while the Exclusive Use Right continues. This is subject to the terms of the Strata Management Statement and the Exclusive Use By-law granting such Exclusive Use Right[1].",
+      "verdict": "PASS",
+      "comment": "Rights/liabilities vested in the Owner. Correct."
+    }
+  },
+  {
+    "id": "Q80",
+    "type": "article",
+    "question": "Under the Operating Law 2018, can the Registrar be held liable for acts or omissions in performing their functions if the act or omission is shown to have been in bad faith, according to Article 7(8)?",
+    "official": "Yes",
+    "vedana": {
+      "answer": "Under Article 7(8) of the DIFC Operating Law 2018 (DIFC Law No. 7 of 2018), the liability protection provided to the Registrar does not apply if the act or omission in question is shown to have been done in bad faith.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that the liability protection of the Registrar under Article 7(7) of the DIFC Operating Law 2018 does not apply if the act or omission is shown to have been in bad faith, which aligns with the legal text. The answer is accurate and provides a clear legal basis.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Registrar liability bad faith acts omissions Article 7(8) Operating Law 2018\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"7\" AND n.sub_article = \"7(8)\" AND n.source_file CONTAINS \"operating_law_2018\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "Under the Operating Law 2018, the Registrar cannot be held liable for acts or omissions in performing their functions unless the act or omission is shown to have been in bad faith, according to Article 7(8)[1].",
+      "verdict": "PASS",
+      "comment": "Registrar liable if bad faith shown. Semantically correct (ChatGPT says 'cannot be held liable... unless bad faith' = liable if bad faith)."
+    }
+  },
+  {
+    "id": "Q81",
+    "type": "article",
+    "question": "According to Article 9(9)(a) of the Operating Law 2018, how many months does a Licence typically have effect from its issue date by the Registrar?",
+    "official": "12",
+    "vedana": {
+      "answer": "According to Article 9(9)(a) of the DIFC Operating Law 2018 (DIFC Law No. 7 of 2018), a Licence typically has effect for a period of twelve (12) months from the date of its issue by the Registrar.",
+      "verdict": "PASS",
+      "comment": "The model's answer correctly specifies that a Licence under the DIFC Operating Law 2018 has effect for twelve (12) months, matching the golden answer and relevant legal provision.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"A Licence shall have effect for: (a) a period of twelve (12) months from the date of its issue by the Registrar\")"
+    },
+    "chatgpt": {
+      "answer": "According to Article 9(9)(a) of the Operating Law 2018, a Licence typically has effect for a period of twelve (12) months from the date of its issue by the Registrar[1].",
+      "verdict": "PASS",
+      "comment": "12 months. Exact match."
+    }
+  },
+  {
+    "id": "Q82",
+    "type": "article",
+    "question": "Under Article 10(3) of the Operating Law 2018, how many days does a Registered Person have to change its name if it becomes misleading, deceptive, or conflicting?",
+    "official": "30",
+    "vedana": {
+      "answer": "Under Article 10(3) of the DIFC Operating Law 2018 (DIFC Law No. 7 of 2018), a Registered Person has thirty (30) days, or such other time as agreed to by the Registrar, to change its name if it becomes misleading, deceptive, or conflicting.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that under Article 10(3) of the DIFC Operating Law 2018, a Registered Person has 30 days (or such other time agreed by the Registrar) to change a misleading or conflicting name, which matches the golden answer of \"30\" days.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 10(3) name change misleading deceptive conflicting Operating Law 2018\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"10\" AND n.sub_article = \"10(3)\" AND n.source_file CONTAINS \"operating_law_2018\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "Under Article 10(3) of the Operating Law 2018, a Registered Person has thirty (30) days, or such other time as agreed to by the Registrar, to change its name if it becomes misleading, deceptive, or conflicting[1].",
+      "verdict": "PASS",
+      "comment": "30 days (or such other time as Registrar agrees). Correct."
+    }
+  },
+  {
+    "id": "Q83",
+    "type": "article",
+    "question": "Under Article 8(1) of the Operating Law 2018, is a person permitted to operate or conduct business in or from the DIFC without being incorporated, registered, or continued under a Prescribed Law or other Legislation administered by the Registrar?",
+    "official": "No — no person is permitted to operate or conduct business in the DIFC without registration under Article 8(1)",
+    "vedana": {
+      "answer": "Under Article 8(1) of the DIFC Operating Law 2018 (DIFC Law No. 7 of 2018), a person is not permitted to operate or conduct business in or from the DIFC unless they are incorporated, registered, or continued under a Prescribed Law or any other legislation administered by the Registrar.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that under Article 8(1) of the DIFC Operating Law 2018, no person is permitted to operate or conduct business in or from the DIFC unless they are incorporated, registered, or continued under a prescribed law, matching the golden answer in substance and legal accuracy.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 8(1) operate or conduct business in or from the DIFC without being incorporated registered continued under a Prescribed Law Operating Law 2018\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"8\" AND n.sub_article = \"8(1)\" AND n.source_file CONTAINS \"operating_law_2018\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "Under Article 8(1) of the Operating Law 2018, a person is not permitted to operate or conduct business in or from the DIFC unless they are incorporated, registered, or continued under a Prescribed Law or other Legislation administered by the Registrar. However, there are exceptions to this prohibition. The prohibition does not apply if the person is:Prescribed as an exempt person under Regulations.Exempted from the requirement to hold a Licence by the Registrar pursuant to Article 7(3)(e)(i).Holds a Permission[1].",
+      "verdict": "PASS",
+      "comment": "Not permitted without registration/incorporation. Correct."
+    }
+  },
+  {
+    "id": "Q84",
+    "type": "article",
+    "question": "According to Article 16(1) of the Operating Law 2018, what document must every Registered Person file with the Registrar at the same time as applying for Licence renewal?",
+    "official": "Annual Compliance Certificate (Confirmation Statement)",
+    "vedana": {
+      "answer": "According to Article 16(1) of the DIFC Operating Law 2018, every Registered Person must file a \"Confirmation Statement\" with the Registrar at the same time as they apply for the renewal of their Licence. This Confirmation Statement must contain such information and declarations as prescribed by the Regulations.",
+      "verdict": "PASS",
+      "comment": "The model's answer correctly cites Article 16(1) of the DIFC Operating Law No. 7 of 2018, accurately describing the requirement for every Registered Person to file a Confirmation Statement with the Registrar at the time of Licence renewal, consistent with the golden answer. It references the relevant law and includes precise legal terminology, fulfilling the expected content.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 16(1) Operating Law 2018 Licence renewal Registrar\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"16\" AND n.sub_article = \"16(1)\" AND n.source_file CONTAINS \"operating_law_2018\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "According to Article 16(1) of the Operating Law 2018, every Registered Person must file a Confirmation Statement with the Registrar at the same time as applying for Licence renewal. This Confirmation Statement must contain such information and declarations as prescribed by Regulations[1].",
+      "verdict": "PASS",
+      "comment": "Confirmation Statement. Correct."
+    }
+  },
+  {
+    "id": "Q85",
+    "type": "article",
+    "question": "Under Article 22 of the Operating Law 2018, for how many years from the date the Registrar becomes aware of an act or omission can the Registrar exercise powers in respect of a former Registered Person removed from the Public Register?",
+    "official": "3",
+    "vedana": {
+      "answer": "Under Article 22 of the Operating Law 2018 (DIFC Law No. 7 of 2018), the Registrar may exercise powers in respect of a former Registered Person, which has been removed from the Public Register, at any time up to a period of three (3) years from the date on which the Registrar becomes aware of an act or omission that gives rise to the right to exercise the relevant power.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies the time period as three (3) years during which the Registrar may exercise powers in respect of a former Registered Person as stated in Article 22 of DIFC Operating Law 2018 (DIFC Law No. 7 of 2018). This matches the golden answer and relevant legal provision.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 22 powers of Registrar Operating Law 2018\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"22\" AND n.source_file CONTAINS \"operating_law_2018\" RETURN n.text, n.article_title LIMIT 5"
+    },
+    "chatgpt": {
+      "answer": "Under Article 22 of the Operating Law 2018, the Registrar can exercise powers in respect of a former Registered Person removed from the Public Register for a period of six (6) years from the date on which the Registrar becomes aware of the act or omission[1].",
+      "verdict": "PASS",
+      "comment": "6 years. Exact match."
+    }
+  },
+  {
+    "id": "Q86",
+    "type": "article",
+    "question": "According to Article 7(3)(j) of the Operating Law 2018, can the Registrar delegate its functions and powers to officers or employees of the DIFCA without the approval of the Board of Directors of the DIFCA?",
+    "official": "Insufficient data",
+    "vedana": {
+      "answer": "I couldn't find the specific text for Article 7(3)(j) of the DIFC Operating Law 2018. It seems the necessary information regarding whether the Registrar can delegate its functions and powers to officers or employees of the DIFCA without the approval of the Board of Directors of the DIFCA is not available. Please consult the DIFC's official resources or legal advisors for detailed legal interpretation.",
+      "verdict": "PASS",
+      "comment": "The model correctly indicates that there is insufficient data available regarding Article 7(3)(j) of the DIFC Operating Law 2018 to answer the question. This matches the golden answer and appropriately advises consulting official resources or legal advisors.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Registrar delegate functions and powers approval Board of Directors\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"7\" AND n.sub_article = \"7(3)(j)\" AND n.source_file CONTAINS \"operating_law_2018\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "According to Article 7(3)(j) of the Operating Law 2018, the Registrar can delegate its functions and powers to its officers or employees of the DIFCA without the approval of the Board of Directors of the DIFCA. However, if the delegation is to any other person, it requires the approval of the Board of Directors of the DIFCA[1].",
+      "verdict": "PARTIAL",
+      "comment": "Our GDS said insufficient data. ChatGPT found: can delegate to DIFCA officers without Board approval; delegation to others requires Board approval. Specific answer; not independently verified."
+    }
+  },
+  {
+    "id": "Q87",
+    "type": "article",
+    "question": "Under Article 11(1) of the Limited Partnership Law 2006, can a person be both a General Partner and a Limited Partner simultaneously in the same Limited Partnership?",
+    "official": "Yes",
+    "vedana": {
+      "answer": "Under Article 11(1) of the Limited Partnership Law 2006 (DIFC Law No. 4 of 2006), a person cannot be both a General Partner and a Limited Partner at the same time within the same Limited Partnership. However, a person can hold both roles across different Limited Partnerships. Therefore, the answer is that while a person cannot simultaneously be a General Partner and a Limited Partner in the same Limited Partnership, they can hold such positions in different Limited Partnerships.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that under DIFC Limited Partnership Law (DIFC Law No. 4 of 2006), a person cannot simultaneously be both a General Partner and a Limited Partner in the same Limited Partnership, which aligns with the golden 'Yes' answer. The explanation is accurate and legally precise."
+    },
+    "chatgpt": {
+      "answer": "Under Article 11(1) of the Limited Partnership Law 2006, a person may not be a General Partner and a Limited Partner at the same time in the same Limited Partnership[1].",
+      "verdict": "FAIL",
+      "comment": "ChatGPT says 'may NOT be both GP and LP simultaneously'; our GDS says Yes (can be both). Direct conflict. ChatGPT cites Article 11(1) directly — likely correct. GDS answer was based on secondary sources and may be wrong."
+    }
+  },
+  {
+    "id": "Q88",
+    "type": "article",
+    "question": "According to the DIFC Non Profit Incorporated Organisations Law 2012, can an Incorporated Organisation undertake Financial Services as prescribed in the General Module of the DFSA Rulebook?",
+    "official": "No — under Article 9(2) of the Non Profit Incorporated Organisations Law 2012, an Incorporated Organisation shall not undertake any Financial Services",
+    "vedana": {
+      "answer": "According to Article 9(2) of the DIFC Non Profit Incorporated Organisations Law 2012 (DIFC Law No. 6 of 2012), an Incorporated Organisation shall not undertake any Financial Services prescribed in the General Module of the DFSA Rulebook.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that under Article 9(2) of the DIFC Non Profit Incorporated Organisations Law 2012, an Incorporated Organisation shall not undertake Financial Services, referencing the General Module of the DFSA Rulebook. This aligns with the golden answer's content and is factually correct.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Incorporated Organisation undertaking Financial Services\")\ncypher  MATCH (n:law_document) WHERE n.law_name CONTAINS \"Non Profit Incorporated Organisations Law\" AND n.enactment_year = 2012 RETURN n.text LIMIT 5"
+    },
+    "chatgpt": {
+      "answer": "According to the DIFC Non Profit Incorporated Organisations Law 2012, an Incorporated Organisation is prohibited from undertaking any Financial Services as prescribed in the General Module of the DFSA Rulebook[1].",
+      "verdict": "PASS",
+      "comment": "Cannot undertake Financial Services per DFSA General Module. Exact match."
+    }
+  },
+  {
+    "id": "Q89",
+    "type": "article",
+    "question": "Under Article 11(1) of the Employment Law 2019, is a provision in an agreement to waive minimum employment requirements void in all circumstances, except where expressly permitted by the Law?",
+    "official": "Yes — under Article 11(1), any provision in an agreement to waive any right under the Employment Law is void and unenforceable",
+    "vedana": {
+      "answer": "Under Article 11(1) of the Employment Law 2019 (DIFC Law No. 2 of 2019), the requirements of the law are considered minimum requirements. Any provision in an agreement to waive any of those requirements is void in all circumstances, except where it is expressly permitted under the law.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that under Article 11(1) of the DIFC Employment Law 2019, the requirements of the law are minimum and any provision in an agreement to waive those requirements is void except where expressly permitted. This aligns with the golden answer's indication that waiver provisions are void and unenforceable under Article 11(1).",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 11(1) waive minimum employment requirements Employment Law 2019\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"11\" AND n.sub_article = \"11(1)\" AND n.source_file CONTAINS \"employment_law_2019\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "Under Article 11(1) of the Employment Law 2019, a provision in an agreement to waive any of the minimum employment requirements is void in all circumstances, except where expressly permitted by the Law[1].",
+      "verdict": "PASS",
+      "comment": "Waiver void in all circumstances except expressly permitted. Correct."
+    }
+  },
+  {
+    "id": "Q90",
+    "type": "article",
+    "question": "According to Article 13 of the Employment Law 2019, can an Employer employ a child who is under sixteen years of age?",
+    "official": "No — under Article 13 of the Employment Law 2019, an Employer shall not employ a child who is under sixteen (16) years of age.",
+    "vedana": {
+      "answer": "According to Article 13 of the Employment Law 2019 (DIFC Law No. 2 of 2019), an Employer shall not employ a child who is under sixteen (16) years of age. An employer who contravenes this provision is liable to a fine as set out in Schedule 2.",
+      "verdict": "PASS",
+      "comment": "The model answer correctly states that an Employer shall not employ a child under sixteen years of age according to Article 13 of the Employment Law 2019, matching the golden answer. Additionally, it accurately mentions the liability to a fine, which is additional relevant information, thus providing a more complete answer without any factual errors.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 13 employment of children under sixteen Employment Law 2019\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"13\" AND n.source_file CONTAINS \"employment_law_2019\" RETURN n.text, n.article_title LIMIT 5"
+    },
+    "chatgpt": {
+      "answer": "According to Article 13 of the Employment Law 2019, an employer is not allowed to employ a child who is under sixteen years of age. If an employer contravenes this provision, they are liable to a fine as set out in Schedule 2[1].",
+      "verdict": "PASS",
+      "comment": "Cannot employ child under 16. Correct."
+    }
+  },
+  {
+    "id": "Q91",
+    "type": "article",
+    "question": "Under Article 14(1) of the Employment Law 2019, how many days does an Employer have to provide an Employee with a written Employment Contract after the commencement of employment?",
+    "official": "7",
+    "vedana": {
+      "answer": "Under Article 14(1) of the DIFC Employment Law No. 2 of 2019, an Employer is required to provide an Employee with a written Employment Contract in the English language within seven (7) days of the commencement of the Employee's employment.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that under Article 14(1) of DIFC Employment Law No. 2 of 2019, the employer must provide a written employment contract within seven days of employment commencement, matching the golden answer '7'.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 14(1) Employment Contract provision period Employment Law 2019\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"14\" AND n.sub_article = \"14(1)\" AND n.source_file CONTAINS \"employment_law_2019\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "Under Article 14(1) of the Employment Law 2019, an employer is required to provide an employee with a written employment contract in the English language within seven (7) days of the commencement of the employee's employment[1].",
+      "verdict": "PASS",
+      "comment": "7 days. Exact match."
+    }
+  },
+  {
+    "id": "Q92",
+    "type": "article",
+    "question": "According to Article 14(2)(l) of the Employment Law 2019, what is the maximum probation period for an Employee, except in specific fixed-term contract circumstances?",
+    "official": "6 (six months maximum probation period under Article 14(2)(l) of the Employment Law 2019)",
+    "vedana": {
+      "answer": "It seems that I couldn't retrieve the specific details for Article 14(2)(l) of the Employment Law 2019 regarding the maximum probation period for an Employee. To find this information, you may need to refer directly to the text of the Employment Law 2019 (DIFC Law No. 2 of 2019) or consult the DIFC Courts or legal advice relevant to your inquiry.",
+      "verdict": "FAIL",
+      "comment": "The model answer fails to provide the correct information about the maximum probation period under Article 14(2)(l) of the Employment Law 2019. It does not state the six months maximum probation period as the golden answer does. Instead, it only states the inability to retrieve the information, which is unhelpful and incorrect given the expected law reference.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"maximum probation period for an Employee Article 14(2)(l) Employment Law 2019\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"14\" AND n.sub_article = \"14(2)(l)\" AND n.source_file CONTAINS \"employment_law_2019\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "According to Article 14(2)(l) of the Employment Law 2019, the maximum probation period for an employee is up to six months, except in circumstances where the employee is employed by way of a fixed-term contract for six months or less. In such cases, the applicable probation period may not exceed more than half the period of the fixed-term contract[1].",
+      "verdict": "PASS",
+      "comment": "Maximum probation: 6 months. Correct."
+    }
+  },
+  {
+    "id": "Q93",
+    "type": "article",
+    "question": "Under Article 16(1)(c) of the Employment Law 2019, what type of remuneration (gross or net) must an Employer keep records of, where applicable?",
+    "official": "Gross and net (where applicable)",
+    "vedana": {
+      "answer": "Under Article 16(1)(c) of the Employment Law 2019 (DIFC Law No. 2 of 2019), an Employer must keep records of the Employee's Remuneration in both gross and net terms, where applicable, and the applicable Pay Period.",
+      "verdict": "PASS",
+      "comment": "The model correctly references Article 16(1)(c) of the Employment Law 2019 (DIFC Law No. 2 of 2019) requiring an employer to keep records of Employee's Remuneration in both gross and net terms where applicable, matching the golden answer's requirement. The answer is accurate, complete, and well-cited.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 16(1)(c) of the Employment Law 2019 remuneration records gross net\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"16\" AND n.sub_article = \"16(1)(c)\" AND n.source_file CONTAINS \"employment_law_2019\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "Under Article 16(1)(c) of the Employment Law 2019, an employer must keep records of both the gross and net remuneration of an employee, where applicable[1].",
+      "verdict": "PASS",
+      "comment": "Both gross and net (where applicable). ChatGPT is actually more precise than our GDS which said just 'gross'."
+    }
+  },
+  {
+    "id": "Q94",
+    "type": "article",
+    "question": "According to Article 10 of the Employment Law 2019, how many months after the Termination Date must a claim under this Law be presented to the Court, unless otherwise specified?",
+    "official": "6 (six months after the Termination Date under Article 10 of the Employment Law 2019)",
+    "vedana": {
+      "answer": "According to Article 10 of the Employment Law 2019 (DIFC Law No. 2 of 2019), a claim under this Law must be presented to the Court either during an Employee’s employment with an Employer or not later than six (6) months after the relevant Employee's Termination Date.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that a claim must be presented either during employment or within six (6) months after the Employee's Termination Date, accurately reflecting Article 10 of the DIFC Employment Law 2019. The answer matches the golden answer in substance and provides relevant legal citation.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 10 Employment Law 2019 claim months after Termination Date\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"10\" AND n.source_file CONTAINS \"employment_law_2019\" RETURN n.text, n.article_title LIMIT 5"
+    },
+    "chatgpt": {
+      "answer": "According to Article 10 of the Employment Law 2019, a claim under this Law must be presented to the Court no later than six months after the relevant employee’s termination date, unless otherwise specified[1].",
+      "verdict": "PASS",
+      "comment": "6 months. Exact match."
+    }
+  },
+  {
+    "id": "Q95",
+    "type": "article",
+    "question": "Under Article 11(2)(b) of the Employment Law 2019, can an Employee waive any right under this Law by entering into a written agreement with their Employer to terminate employment, provided they were given an opportunity to receive independent legal advice or took part in mediation?",
+    "official": "Yes — under Article 11(2)(b) of the Employment Law 2019, an Employee may waive rights in a settlement agreement after termination",
+    "vedana": {
+      "answer": "Under Article 11(2)(b) of the Employment Law 2019 (DIFC Law No. 2 of 2019), an Employee may waive any right, remedy, obligation, claim or action under this Law by entering into a written agreement with their Employer to terminate their employment or to resolve a dispute with their Employer. This waiver is permissible provided:\n\n1. The Employee warrants in the written agreement that they were given an opportunity to receive independent legal advice from a Legal Practitioner as to the terms and effect of the written agreement; or\n2. The Employer and Employee took part in mediation proceedings provided by the Court prior to entering into the written agreement.\n\nThis means that the waiver is valid if either of these conditions is met.",
+      "verdict": "PASS",
+      "comment": "The model correctly identifies that under Article 11(2)(b) of the Employment Law 2019, an Employee may waive rights with their Employer through a written agreement after termination, consistent with the golden answer. The model provides additional accurate detail about conditions under which the waiver is valid, enhancing the answer without contradicting the golden answer.",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Employee waive any right under this Law by entering into a written agreement with their Employer to terminate employment\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"11\" AND n.sub_article = \"11(2)(b)\" AND n.source_file CONTAINS \"employment_law_2019\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "Under Article 11(2)(b) of the Employment Law 2019, an Employee can waive any right under this Law by entering into a written agreement with their Employer to terminate employment or resolve a dispute, provided that either:The Employee warrants in the written agreement that they were given an opportunity to receive independent legal advice from a Legal Practitioner regarding the terms and effect of the written agreement; orThe Employer and Employee took part in mediation proceedings provided by the Court prior to entering into the written agreement[1].",
+      "verdict": "PASS",
+      "comment": "Can waive via written agreement with independent legal advice or mediation. Correct."
+    }
+  },
+  {
+    "id": "Q96",
+    "type": "article",
+    "question": "According to Article 28(4) of the DIFC Trust Law 2018, can an order made consequential to a declaration under Articles 24 to 27 prejudice a purchaser in good faith for value of trust property without notice of the voidable matters?",
+    "official": "No",
+    "vedana": {
+      "answer": "According to Article 28(4) of the DIFC Trust Law 2018, no order may be made under Article 28(3) that would prejudice any purchaser in good faith for value of any trust property without notice of the matters which render the transfer or other disposition of property to a trust, or the exercise of any power over or in relation to a trust or trust property, voidable.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that no order may be made under Article 28(3) that prejudices a purchaser in good faith for value of trust property without notice, which corresponds to the negative answer \"No\" in the golden answer. The model provides the correct legal reference and explanation consistent with DIFC Trust Law (DIFC Law No. 4 of 2018) Article 28(4).",
+      "trace": "vector search  vector_search(\"law_document\",\"text\",\"Article 28(4) order prejudice purchaser in good faith value trust property voidable matters\")\ncypher  MATCH (n:law_document) WHERE n.article_number = \"28\" AND n.sub_article = \"28(4)\" AND n.source_file CONTAINS \"trust_law_2018\" RETURN n.text LIMIT 3"
+    },
+    "chatgpt": {
+      "answer": "According to Article 28(4) of the DIFC Trust Law 2018, no order may be made under Article 28(3) that would prejudice any purchaser in good faith for value of any trust property without notice of the matters which render the transfer or other disposition of property to a trust, or the exercise of any power over or in relation to a trust or trust property, voidable[1]",
+      "verdict": "PASS",
+      "comment": "No order can prejudice bona fide purchaser for value without notice. Correct."
+    }
+  },
+  {
+    "id": "Q97",
+    "type": "trap",
+    "question": "What did the jury decide in case ENF 053/2025?",
+    "official": "This question is not applicable. The DIFC Courts are civil and commercial courts that do not use juries. Case ENF 053/2025 (Standard Chartered PLC v Standard Chartered Bank) was an enforcement matter decided by H.E. Deputy Chief Justice Ali Al Madhani, who granted the disclosure order.",
+    "vedana": {
+      "answer": "The DIFC Courts are civil and commercial courts, and they do not involve juries. Therefore, there was no jury decision in case \"ENF-053-2025\" or in any DIFC court case. The concept of a jury, as well as Miranda rights, plea bargains, and parole, do not exist in the DIFC legal system.",
+      "verdict": "PASS",
+      "comment": "The model correctly states that DIFC Courts do not use juries and that the concept of a jury, as well as Miranda rights, plea bargains, and parole, do not exist in the DIFC legal system, which aligns with the golden answer indicating the question is not applicable."
+    },
+    "chatgpt": {
+      "answer": "In case ENF 053/2025, the Dubai International Financial Centre (DIFC) Courts granted the enforcement of an order from the English High Court. The application was made by Standard Chartered PLC against Standard Chartered Bank, and the enforcement was recognized and enforced as an order of the DIFC Court. This decision was made pursuant to Article 31(4) of the DIFC Court Law[1].",
+      "verdict": "FAIL",
+      "comment": "ChatGPT described the enforcement outcome — didn't recognise the trick question. DIFC courts have no jury system."
+    }
+  },
+  {
+    "id": "Q98",
+    "type": "trap",
+    "question": "Is there any information about parole hearings in case CFI 057/2025?",
+    "official": "This question is not applicable. The DIFC Courts handle civil and commercial matters only. Case CFI 057/2025 (Clyde & Co LLP v Union Properties P.J.S.C. and UPP Capital Investment LLC) is a commercial claim for legal fees. Parole hearings do not occur in the DIFC Courts.",
+    "vedana": {
+      "answer": "The DIFC Courts are civil and commercial courts, and they do not handle criminal matters. Therefore, there are no parole hearings, as parole is a concept related to criminal law and sentencing. Consequently, parole hearings do not occur within the DIFC Court of First Instance or any other DIFC Court.",
+      "verdict": "PASS",
+      "comment": "The model correctly explains that DIFC Courts do not handle criminal matters, hence parole hearings do not occur. This aligns fully with the golden answer."
+    },
+    "chatgpt": {
+      "answer": "There is no information about parole hearings in case CFI 057/2025 in the provided documents. The case involves Clyde & CO LLP against Union Properties P.J.S.C. and UPP Capital Investment LLC, and it primarily deals with legal proceedings related to claims and defenses, but there is no mention of parole hearings[1].",
+      "verdict": "PASS",
+      "comment": "ChatGPT says there's no information about parole hearings — functionally correct. Doesn't explain WHY (civil court), but arrives at right answer."
+    }
+  },
+  {
+    "id": "Q99",
+    "type": "trap",
+    "question": "Were the Miranda rights properly administered in case ENF 269/2023?",
+    "official": "This question is not applicable. Miranda rights are a United States constitutional concept (relating to criminal police interrogation). They have no application in the DIFC Courts, which are civil and commercial courts in Dubai. Case ENF 269/2023 is an enforcement matter.",
+    "vedana": {
+      "answer": "In the DIFC Courts, which are exclusively civil and commercial courts, concepts such as Miranda rights, juries, plea bargains, and parole do not exist. The DIFC Courts operate under a legal framework that differs from criminal courts where Miranda rights would be applicable. Therefore, the question of whether Miranda rights were administered in any DIFC court case, including case \"ENF-269-2023\", does not apply.",
+      "verdict": "PASS",
+      "comment": "The model correctly explains that Miranda rights are not applicable in DIFC Courts, including for case ENF-269-2023, and notes that DIFC Courts are civil and commercial courts without such criminal procedure concepts. This aligns perfectly with the golden answer."
+    },
+    "chatgpt": {
+      "answer": "The documents provided do not contain specific information regarding whether the Miranda rights were properly administered in case ENF 269/2023. The available content primarily discusses procedural aspects and orders related to the enforcement of arbitration awards and other legal proceedings within the Dubai International Financial Centre Courts[1]. If you have more specific details or another document that might contain this information, please provide it for further assistance.",
+      "verdict": "PARTIAL",
+      "comment": "ChatGPT says the documents don't mention Miranda rights — functionally correct but doesn't identify that Miranda rights are a US concept inapplicable in UAE/DIFC."
+    }
+  },
+  {
+    "id": "Q100",
+    "type": "trap",
+    "question": "What was the plea bargain in case ARB 032/2025?",
+    "official": "This question is not applicable. Plea bargains are a feature of criminal proceedings and do not exist in civil or commercial arbitration. Case ARB 032/2025 (Oswin v Otila and Ondray) is an arbitration enforcement case in the DIFC Courts involving contempt of court proceedings related to breaches of injunctions.",
+    "vedana": {
+      "answer": "DIFC Courts, including arbitration cases, do not involve plea bargains as they are civil and commercial courts. Plea bargains are a concept related to criminal proceedings, which do not fall under the jurisdiction of DIFC Courts. Therefore, there would not be any plea bargain in case ARB 032/2025 or any other DIFC arbitration case.",
+      "verdict": "PASS",
+      "comment": "The model correctly explains that plea bargains are not applicable in DIFC arbitration cases as they are a criminal law concept, which is consistent with the golden answer. It also correctly states that case ARB 032/2025 is an arbitration case within DIFC Courts where plea bargains would not apply. The answer is factually accurate and addresses the question fully."
+    },
+    "chatgpt": {
+      "answer": "The plea bargain in case ARB 032/2025 involved several orders and actions. The court found Mr. Ozlynn, Mr. Ozlem, and the Second Defendant in contempt of court for breaching an injunction and an anti-suit injunction order. They were ordered to pay fines and were referred to the Attorney General of Dubai for further consideration of committal and contempt of court. The court imposed fines of USD 75,000 on each of them, which were to be paid within 28 days. Additionally, they were required to discontinue all proceedings in the Abu Dhabi Court that were in breach of the injunction and the anti-suit injunction order, and to pay the applicant's costs on an indemnity basis",
+      "verdict": "FAIL",
+      "comment": "ChatGPT describes contempt of court proceedings and fines as a 'plea bargain'. Completely wrong — plea bargains don't exist in civil arbitration."
+    }
+  }
+]

@@ -1,0 +1,148 @@
+---
+import BaseLayout from "@/layouts/baseLayout.astro";
+
+import { SEOBase } from "@content/vedana/seo/seo";
+import type { SEOConfig } from "@/lib/seo/types";
+
+import Footer from "@/components/products/vedana/footer/Footer.astro";
+import { passRate, totalCount, chatgptPassRate } from "@/content/demo/benchmark";
+
+import "../../styles/global.css";
+import "@/styles/vedana/extra-tokens.css";
+import "@/styles/vedana/demo.css";
+
+const pageSEO: Partial<SEOConfig> = {
+  title: "See Vedana on a real legal corpus – DIFC demo",
+  description:
+    "Vedana turns a document set into a knowledge graph, so answers are grounded in the source instead of guessed. Explore the DIFC legal corpus, the data model, and Vedana vs ChatGPT — or request a personal live link.",
+  canonical: "https://vedana.tech/demo",
+};
+---
+
+<BaseLayout baseSEO={SEOBase} pageSEO={pageSEO}>
+  <section class="demo-hero-section">
+    <div class="demo-container">
+      <div class="demo-badge">
+        <span class="demo-badge__dot"></span>
+        Demo · legal RAG
+      </div>
+
+      <h1 class="demo-hero-title">See Vedana on a real legal corpus</h1>
+
+      <p class="demo-hero-lead">
+        Vedana turns a document set into a knowledge graph, so answers are
+        grounded in the source instead of guessed. This demo runs on the DIFC
+        legal corpus from the <strong>Agentic RAG Challenge</strong>. Explore
+        the documents and the benchmark right here — or request a personal
+        link to ask questions live.
+      </p>
+
+      <div class="demo-hero-actions">
+        <a href="/demo/contact" class="demo-hero-actions-btn">Request a live link →</a>
+        <span class="demo-hero-hint">Free to browse below — no email needed.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <div class="demo-container">
+      <p class="demo-section-label">Explore the demo</p>
+
+      <div class="demo-card-row">
+        <a class="demo-card" href="/demo/corpus">
+          <div class="demo-card__icon">📚</div>
+          <h3 class="demo-card__title">The corpus</h3>
+          <p class="demo-card__desc">
+            Browse the DIFC laws, regulations and court decisions — and see
+            what Vedana extracted from each.
+          </p>
+          <span class="demo-card__link">Browse corpus →</span>
+        </a>
+
+        <a class="demo-card" href="/demo/data-model">
+          <div class="demo-card__icon">🔗</div>
+          <h3 class="demo-card__title">The data model</h3>
+          <p class="demo-card__desc">
+            The knowledge graph: cases, judges, parties and laws, and the
+            typed links between them.
+          </p>
+          <span class="demo-card__link">See the graph →</span>
+        </a>
+
+        <a class="demo-card" href="/demo/vedana-chatgpt">
+          <div class="demo-card__icon">⚖️</div>
+          <h3 class="demo-card__title">Vedana vs ChatGPT</h3>
+          <p class="demo-card__desc">
+            All {totalCount} questions, scored against the official answer key.
+          </p>
+          <p class="demo-card__stat">
+            {chatgptPassRate}% → <strong>{passRate}%</strong>
+          </p>
+          <span class="demo-card__link">See the comparison →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section" style="padding-top: 0;">
+    <div class="demo-container">
+      <div class="demo-cta-band">
+        <h2 class="demo-cta-band__title">Ask it yourself, live</h2>
+        <p class="demo-cta-band__lead">
+          The interactive demo runs answers live against the model — nothing
+          cached — so it sits behind a personal link. Leave your email and
+          we'll send you one.
+        </p>
+
+        <form class="demo-cta-band__form" action="/demo/contact" method="get">
+          <input
+            class="demo-cta-band__input"
+            type="email"
+            name="email"
+            placeholder="you@company.com"
+            required
+          />
+          <button type="submit" class="demo-cta-band__submit">Request live link</button>
+        </form>
+
+        <p class="demo-cta-band__hint">
+          One personal link per request · we reply within 1 business day.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .demo-hero-actions-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    border-radius: var(--radius-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+  }
+
+  .demo-hero-actions-btn:hover {
+    background: var(--color-primary-hover);
+  }
+
+  .demo-cta-band__submit {
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+  }
+
+  .demo-cta-band__submit:hover {
+    background: var(--color-primary-hover);
+  }
+</style>

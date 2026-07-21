@@ -50,7 +50,7 @@ const typeMeta: Record<string, string> = {
     <!-- Branded top bar (mockup p.9): client badge · powered by Vedana · quota pill -->
     <header class="lv-bar">
       <div class="lv-bar__inner">
-        <span class="lv-bar__sub" id="lv-mode">private demo · powered by <a href="/demo">Vedana</a></span>
+        <span class="lv-bar__sub" id="lv-mode">Private demo · powered by <a href="/demo">Vedana</a></span>
         <span class="lv-bar__quota" id="lv-quota"><span class="lv-bar__dot"></span><span id="lv-quota-text">… questions</span></span>
       </div>
     </header>
@@ -71,7 +71,7 @@ const typeMeta: Record<string, string> = {
             <span class="demo-badge__dot"></span>
             Your private demo
           </div>
-          <h1 class="lv-hero__title">Hi — this is Vedana, live on DIFC law</h1>
+          <h1 class="lv-hero__title">Hi - this is Vedana, live on DIFC law</h1>
           <p class="lv-hero__lead">
             <strong>Vedana turns a document set into a knowledge graph</strong>,
             so answers are grounded in the source instead of guessed. This demo
@@ -1137,8 +1137,8 @@ const typeMeta: Record<string, string> = {
     const started = thread.childElementCount > 0;
     el("lv-quota-text").textContent = started ? `${left} left` : `${left} questions`;
     el("lv-mode").innerHTML = started
-      ? 'live demo · powered by <a href="/demo">Vedana</a>'
-      : 'private demo · powered by <a href="/demo">Vedana</a>';
+      ? 'Live demo · powered by <a href="/demo">Vedana</a>'
+      : 'Private demo · powered by <a href="/demo">Vedana</a>';
     if (left <= 0) {
       startScreen.hidden = true;
       chatScreen.hidden = thread.childElementCount === 0;

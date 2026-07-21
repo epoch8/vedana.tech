@@ -50,7 +50,6 @@ const typeMeta: Record<string, string> = {
     <!-- Branded top bar (mockup p.9): client badge · powered by Vedana · quota pill -->
     <header class="lv-bar">
       <div class="lv-bar__inner">
-        <span class="lv-bar__client" id="lv-client">Al Tamimi &amp; Co</span>
         <span class="lv-bar__sub" id="lv-mode">private demo · powered by <a href="/demo">Vedana</a></span>
         <span class="lv-bar__quota" id="lv-quota"><span class="lv-bar__dot"></span><span id="lv-quota-text">… questions</span></span>
       </div>
@@ -72,7 +71,7 @@ const typeMeta: Record<string, string> = {
             <span class="demo-badge__dot"></span>
             Your private demo
           </div>
-          <h1 class="lv-hero__title">Hi <span id="lv-client-inline">Al Tamimi &amp; Co</span> — this is Vedana, live on DIFC law</h1>
+          <h1 class="lv-hero__title">Hi — this is Vedana, live on DIFC law</h1>
           <p class="lv-hero__lead">
             <strong>Vedana turns a document set into a knowledge graph</strong>,
             so answers are grounded in the source instead of guessed. This demo
@@ -858,7 +857,6 @@ const typeMeta: Record<string, string> = {
   const params = new URLSearchParams(window.location.search);
   const token = params.get("token");
   const mock = params.get("mock") === "1";
-  const clientName = params.get("client") ?? "Al Tamimi & Co";
 
   function widgetContactId(): string {
     const key = `lv-contact:${token ?? "mock"}`;
@@ -1330,8 +1328,6 @@ const typeMeta: Record<string, string> = {
 
     if (mock) localStorage.setItem(quotaKey, String(QUOTA_TOTAL));
     questionsTotal = QUOTA_TOTAL;
-    el("lv-client").innerHTML = escapeHtml(clientName);
-    el("lv-client-inline").innerHTML = escapeHtml(clientName);
     setQuota(quotaLeft());
 
     document.querySelectorAll<HTMLButtonElement>(".lv-qtype__head").forEach((head) => {

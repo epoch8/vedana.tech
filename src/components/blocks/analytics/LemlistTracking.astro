@@ -1,0 +1,7 @@
+---
+const SRC =
+  "https://app.lemlist.com/api/visitors/tracking?k=mfilq0ZoF%2B7Idovlj9fXx1YYuuTtspXtc2ymS3V%2BB2s%3D&t=tea_aNWc2dJhZrxpeNAYy";
+const enabled = import.meta.env.PROD;
+---
+
+{enabled && <script is:inline async src={SRC}></script>}

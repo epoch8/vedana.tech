@@ -4,6 +4,7 @@ import type { SEOConfig } from "@/lib/seo/types";
 
 import Nav from "@/components/blocks/header/Nav.astro";
 import GoogleAnalytics from "@/components/blocks/analytics/GoogleAnalytics.astro";
+import LemlistTracking from "@/components/blocks/analytics/LemlistTracking.astro";
 
 import { mainNav, footerNav } from "@/content/vedana/navigation/navigation";
 import {
@@ -87,6 +88,7 @@ const allStructuredData = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <GoogleAnalytics />
+    <LemlistTracking />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <title>{title}</title>
